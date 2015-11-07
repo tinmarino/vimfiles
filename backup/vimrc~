@@ -44,6 +44,8 @@ filetype on
   set undolevels=100000        " use many levels of undo
   set autoread                 " when reopening a file, go to the position as when you quit it +  This will disable read-only to writeable warnings
 
+  set undodir=~/.vim/undo
+
 
 "MOUSE INTEGRATION 
   " Send more characters for redraws
