@@ -53,6 +53,7 @@ filetype on
 
 
 "MAP = SHORTCUTS 
+  let mapleader=','
   "move one line 
   nnoremap <S-Down> :let tmp=getpos('.') <CR>:m+1 <CR>: call cursor(tmp[1]+1,tmp[2]) <CR>
   nnoremap <S-Up>   :let tmp=getpos('.') <CR>:m-2 <CR>: call cursor(tmp[1]-1,tmp[2]) <CR>
