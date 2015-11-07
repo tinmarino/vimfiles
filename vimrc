@@ -38,12 +38,14 @@ filetype on
 
 
 " BACKUP  
-  set backup
-  set backupdir=~/.vim/backup
-  set history=100000           " remember more commands and search history
-  set undolevels=100000        " use many levels of undo
-  set autoread                 " when reopening a file, go to the position as when you quit it +  This will disable read-only to writeable warnings
-
+  set nobackup                  " I may change that 
+  set noswapfile                " I will this if this is harmfull
+  set backupdir=~/.vim/backup// " the double // will put the backup with the full directory  
+  set directory=~/.vim/backup// " for the swap files 
+  set history=100000            " remember more commands and search history
+  set undolevels=100000         " use many levels of undo
+  set autoread                  " when reopening a file, go to the position as when you quit it +  This will disable read-only to writeable warnings
+ 
   if has('persistent_undo')
     set undodir=~/.vim/undo
     set undofile 
@@ -150,7 +152,10 @@ filetype on
     vnoremap <silent> <C-Down> zM
 
 
-" BUFFER MANAGEMENT 
+" BUFFER MANAGEMENT  and it maps 
+  map <Tab> :bnext<cr>
+  map <S-Tab> :bprevious<cr>
+  noremap <C-Tab> :BufExplorer<CR>
   " from http://vim.wikia.com/wiki/Easier_buffer_switching
   set wildchar=<Tab> wildmenu wildmode=full
   set wildcharm=<C-Z>
@@ -174,6 +179,7 @@ filetype on
   map <Leader>8 :8b<CR>
   map <Leader>9 :9b<CR>
   map <Leader>0 :10b<CR>
+
 
 "ECLIM 
   set nocompatible
