@@ -1,4 +1,9 @@
 echo "use it like ./gitscript.sh \"my commited string\""
+echo $1 
+if [[ $1 == "" ]] 
+then 
+   echo "no first arg" 
+fi 
 git init 
 git add .
 #git remote add origin https://github.com/tinmarino/Vimfiles.git

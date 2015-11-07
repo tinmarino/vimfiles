@@ -1,4 +1,6 @@
-
+TODO 
+  evalutate arithmetic expression in file ane put its value 
+the runtime! debian was making pathogen not working 
 command! -nargs=1 MyCommand call s:MyFunc(<f-args>) " transform a function to user-command
 type join split 
 Shift+J removes the line change character from the current line, so by pressing "J" at any place in the line you can combine the current line and the next line in the way you want.
@@ -9,7 +11,7 @@ sett "foldtext", witch show what you see when folded
 :map <S-Up> let a:a=call 
 :verbose noremap <leader>b
 
-"nnoremap <A-j> :m .+1<CR>==
+"nnoremap <A-j> :m .+1<CR>=
 "nnoremap <A-k> :m .-2<CR>==
 "inoremap <A-j> <Esc>:m .+1<CR>==gi
 "inoremap <A-k> <Esc>:m .-2<CR>==gi
