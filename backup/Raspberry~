@@ -1,0 +1,6 @@
+sudo dd if=/home/username/Downloads/2012-10-28-wheezy-raspbian.img of=/dev/sdc
+
+dd is fine, but I prefer cat /dev/sdc/ > ~/backup.iso If you want to put it on an SD card again, just run cat ~/backup.iso > /dev/sdc
+
+
+sudo raspi-config

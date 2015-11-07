@@ -1,0 +1,6 @@
+https://www.star.fr/fr/boutique-en-ligne/mon-compte.html?tx_stacrmvad_pilogin[controller]=Login&cHash=96fd58405e9208076f5056b44de567aa
+
+https://www.java.com/fr/download/installed8.jsp
+     Pixmap pixmap = new Pixmap(pixmapWidth,pixmapHeight,Format.RGBA8888); 
+     pixmap.setColor(1,1,1,1); 
+     pixmap.fill();

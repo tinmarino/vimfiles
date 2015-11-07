@@ -1,0 +1,149 @@
+
+export LEPHAREDIR='/home2/tourneboeuf/Documentos/Hawaii_doc/lephare_dev'
+export LEPHAREWORK='/home2/tourneboeuf/Documentos/Hawaii_doc/lpwork'
+       ##############################
+       #La corbeille  = POUBELLE    #
+       ##############################
+
+export POUBELLE='/home2/tourneboeuf/.Trash'
+alias rmv='/bin/rm'
+alias rm='/bin/mv -t  $POUBELLE'
+alias eboueur='/bin/rm -fr "$POUBELLE"; mkdir "$POUBELLE"'
+    #eboueur pour vider la corbeille
+alias undelete="/home/tourneboeuf/script/aliasundelete"
+    #undelete pour restaurer
+
+  ##################################
+export PB='/run/media/tourneboeuf/Dur/.Trash'
+alias mvv='/bin/mv -t $PB'
+
+
+export astro='/home/tourneboeuf/Escritorio/AstroDoc'
+
+export windows='/media/sda3/Users/tourneboeuf/Desktop'
+
+                                     #CD
+#function cl () { if [ -z "$1" ] 
+#then
+#builtin cd
+#echo welcome home 
+#else 
+#builtin cd "$*" && ls ; 
+#fi  }
+#alias cd="bash /home/tourneboeuf/script/cdls"
+alias p='cd ..'
+
+
+############################## Software ###############
+export PYTHON='/home2/tourneboeuf/Software/Python'
+export PYTHON2='/home2/tourneboeuf/Software/Python/python'
+
+############################# USELFUL FROM TEH NET
+alias diskspace="du -S | sort -n -r |more"
+alias terminal2="terminal --geometry=65x130 --title=Hello"
+
+ ###########################   MUSIQUE
+alias musiqueaby="totem /home/tourneboeuf/Música/aby/MENJUNJE"
+
+alias pwork="cd /home/tourneboeuf/Software/Python/Strehl/Abism99"
+alias truc="bash /home/tourneboeuf/script/truc"
+
+ ###################################  Abism 
+#alias pwork='cd /home/tourneboeuf/Software/Python/Strehl/test'
+alias Abism="python /home2/tourneboeuf/Software/Python/Abism/Abism99/Abism.py"
+
+######################################## LENSING
+alias Dur="cd /run/media/Dur"
+alias Gasgano="bash /home/tourneboeuf/Software/Gasgano/bin/gasgano"
+alias Aladin="bash ~/Software/Aladin/Aladin"
+alias FourGroup="csh /media/Dur/Pipeline/FSRED/bin/fsgroup.csh"
+alias FourRed="csh /media/Dur/Pipeline/FSRED/bin/fsred.csh"
+alias cosmocalc="python $PYTHON/cosmocalc.py"
+
+export PNG='/home2/tourneboeuf/Desktop/ScreenShot/GravLens/'
+
+
+
+########################################## IRAF 
+alias Iraf="cd && xgterm -e ecl &" # the -e is use to automatically run cl in xterm
+#alias gethead="cshj /iraf/iraf/wcstools/bin/gethead"
+alias fwork="cd /media/Dur/FOURSTAR/4/c2"
+
+################  VIM #######################
+alias vit="echo -ne '\033]0;Vim\007'"
+alias vi="vim.gnome"
+# for the crtl + s
+# zsh
+alias vi="stty stop '' -ixoff ; vim_function"
+# `Frozing' tty, so after any command terminal settings will be restored
+#ttyctl -f
+vim_function()
+{
+    local STTYOPTS="$(stty --save)"
+    stty stop '' -ixoff
+    command vim.gnome "$@"
+    stty "$STTYOPTS"
+}
+
+
+
+#################  GREP #############
+alias h="history|grep "
+alias f="find . |grep "
+#alias p="ps aux |grep "
+#alias o="gnome-open "
+#first three let you search command line history, files in current directory and subdirs, and running processes. the 'o' lets you open a file in what ever it would use if you double clicked it.
+
+# dropbox
+alias dropbox='~/.dropbox-dist/dropboxd $' 
+
+#battery 
+alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep percentage'
+
+#TODO 
+alias todo='vi ~/Mem/todo'
+
+#eclim 
+alias work='cd Software/Java/Libgdx/Gdx2/'
+virep='core/src/com/mygdx/gdx2'
+#alias eclim='cd ~/Program/Eclipse/eclipse/ ; ./eclimd'
+
+# calendar cal http://cutup.org/anize/?bash_calendar_oneliner
+
+
+bite(){ a=" alpha          bravo           charlie        delta              eco            india          jack            kili              lima            mama            nov            oscar         paris " 
+b="RCS2-2111_21.18 RCS2-2143_21.85 RCS2-2338_23.60 RCS2-0047_4381    RCS2-0310_2399  RCS2-0047_2527 RCS2-0047_0.95 RCS2-2143_21.58   RCS2-2143_21.79 RCS2-2329_5295 RCS2-2327_0204 RCS2-2338_23.48 RCS2-0047_18.79"
+c="3 3 5 3 2 3 5 3 3 3 3 5 5"
+IFS=' ' read -a a <<< "$a"
+IFS=' ' read -a b <<< "$b"
+IFS=' ' read -a c <<< "$c"
+for ((i=0;i<${#a[@]};i++)) ; do echo ${a[$i]},${b[$i]} ; done
+}
+alias myname=bite
+alias topcat="bash /iraf/iraf/vo/java/topcat"
+
+
+####################EXTRACT 
+function extract () {
+   if [ -f $1 ] ; then
+       case $1 in
+           *.tar.bz2)   tar xvjf $1    ;;
+           *.tar.gz)    tar xvzf $1    ;;
+           *.bz2)       bunzip2 $1     ;;
+           *.rar)       unrar x $1       ;;
+           *.gz)        gunzip $1      ;;
+           *.tar)       tar xvf $1     ;;
+           *.tbz2)      tar xvjf $1    ;;
+           *.tgz)       tar xvzf $1    ;;
+           *.zip)       unzip $1       ;;
+           *.Z)         uncompress $1  ;;
+           *.7z)        7z x $1        ;;
+           *)           echo "don't know how to extract '$1'..." ;;
+       esac
+   else
+       echo "'$1' is not a valid file!"
+   fi
+ }
+
+alias clip="xclip -selection c"
+alias c="clip"

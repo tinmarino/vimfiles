@@ -1,0 +1,105 @@
+package com.example.app1.KillThemAll;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+
+public class KillThemAllView extends SurfaceView {
+
+        private Bitmap bmp; 
+	private Bitmap bmpBlood;
+	private SurfaceHolder holder; 
+	private GameLoopThread gameLoopThread;
+	private List<Sprite> sprites = new ArrayList<Sprite>();
+	private long lastClick;
+	private static final int ENEMY_NUM = 20;
+	private List<TempSprite> temps = new ArrayList<TempSprite>();
+        
+	public KillThemAllView(Context context) {
+		super(context);
+		gameLoopThread = new GameLoopThread(this); 
+		holder = getHolder(); // who we call onDraw
+		holder.addCallback(new SurfaceHolder.Callback() {
+
+			@Override
+			public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2,
+					int arg3) {
+			}
+
+			@Override
+			public void surfaceCreated(SurfaceHolder arg0) {
+		             createSprites(); // After creating the surface
+			     gameLoopThread.setRunning(true);
+			     gameLoopThread.start();
+			     //Canvas c = holder.lockCanvas(); 
+			     //onDraw(c); 
+			     //holder.unlockCanvasAndPost(c);
+			}
+
+			@Override
+			public void surfaceDestroyed(SurfaceHolder arg0) {
+			     gameLoopThread.setRunning(false); 
+
+			}
+		  
+		});
+		bmpBlood = BitmapFactory.decodeResource(getResources(), R.drawable.blood1);
+
+	}
+
+	private void createSprites(){
+	  for (int i=0; i<ENEMY_NUM; i++){
+		bmp = BitmapFactory.decodeResource( getResources(), R.drawable.bad1);
+		Sprite sprite = new Sprite(this,bmp);
+		sprites.add(sprite);
+	  }
+	}
+
+
+	@Override 
+	public boolean onTouchEvent(MotionEvent event){
+	  if (System.currentTimeMillis() - lastClick > 300) {
+	    lastClick = System.currentTimeMillis();   
+	    synchronized (getHolder()){ // avoid this code to be runnned at same time as the other synchronized
+            for (int i = sprites.size()-1; i>=0; i--){ // from last one to first one otherwise error due to reoder
+	      Sprite sprite = sprites.get(i); 
+	      if (sprite.isCollition(event.getX(),event.getY())){
+	        sprites.remove(sprite); 
+		temps.add(new TempSprite(temps,this,event.getX(),event.getY(),bmpBlood));
+	        break;
+	      }
+	    }} // end for end synchronized
+	  }
+	  return true;
+	}
+
+
+
+	@Override
+        protected void onDraw(Canvas canvas) { // A view is contained in a holder and automatically calls onDraw on his canvas but we need to call it ourselves in a surfaceView
+	  canvas.drawColor(Color.BLACK); 
+	  for (int i = temps.size() -1; i >=0; i--){
+	    temps.get(i).onDraw(canvas);
+	  }
+	  for (Sprite sprite : sprites){
+	    sprite.onDraw(canvas);
+	  }
+	}
+
+}
+
+
+
+
+	  //if (x > getWidth() - bmp.getWidth()) { xSpeed = -1;}
+	  //if (x <= 0) {xSpeed = 1;}
+	  //x += xSpeed;
+	  //canvas.drawBitmap(bmp, x, 10, null); 

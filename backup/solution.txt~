@@ -1,0 +1,393 @@
+==============================================================
+                      Qnix's qcrk5
+          http://www.crackmes.de/users/qnix/qcrk5/
+
+               solution by pof (January 2008)
+==============================================================
+
+
+0. Tools used
+=============
+Only GPL'd tools used to solve this crackme.
+
+  *) radare - advanced cmdline hexadecimal editor, disassembler and debugger
+           http://radare.nopcode.org/
+  *) unix commands - file, strace, etc..
+
+
+1. Binary analisys
+==================
+
+$ file qcrk5
+qcrk5: ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), for GNU/Linux 2.4.1, statically linked, stripped
+
+$ strace qcrk5
+strace: qcrk5: command not found
+pau@cool:~/CRACKMES.DE/qcrk5$ strace ./qcrk5
+execve("./qcrk5", ["./qcrk5"], [/* 19 vars */]) = 0
+uname({sys="Linux", node="cool", ...})  = 0
+brk(0)                                  = 0x80b1000
+brk(0x80d2000)                          = 0x80d2000
+open("/dev/urandom", O_RDONLY)          = 3
+read(3, "s\365\246n", 4)                = 4
+close(3)                                = 0
+ptrace(PTRACE_TRACEME, 0, 0x1, 0)       = -1 EPERM (Operation not permitted)
+exit_group(1)                           = ?
+Process 19099 detached
+
+As we can see, it is an stripped and statcially linked ELF which detects when is being debugged...
+
+
+2. First test
+=============
+
+$ ./qcrk5
+Usage : ./qcrk5 <password>
+
+$ ./qcrk5 1234
+Using 1234
+Wrong!
+
+
+3. Static analysis
+==================
+
+Radare to the rescue!
+
+Let's start by setting up some reasonable defaults on our ~./radarerc file:
+
+ eval cfg.color=true
+ eval file.identify=true
+ eval file.flag=true
+ eval dbg.bep=entry
+ eval dbg.bt=false
+ eval asm.lines=false
+ eval graph.depth=7
+ eval graph.callblocks=false
+
+Now open the binary file using radare:
+
+pau@cool:~/CRACKMES.DE/qcrk5$ radare qcrk5
+open ro qcrk5
+Automagically flagging qcrk5
+4 symbols added.
+1388 strings added.
+84 syscalls added.
+[0x08048110]>
+
+Let's find the main function, radare puts the current seek on the entry point:
+
+[0x08048110]> bs 34
+bsize = 34
+[0x08048110]> pD
+0x08048110 entrypoint:
+0x08048110 31ed                      ebp ^= ebp
+0x08048112 5e                        pop esi
+0x08048113 89e1                      ecx = esp
+0x08048115 83e4f0                    esp &= 0xf0  ; 240
+0x08048118 50                        push eax
+0x08048119 54                        push esp
+0x0804811A 52                        push edx
+0x0804811B 68e0860408                push dword 0x80486e0
+0x08048120 6880860408                push dword 0x8048680
+0x08048125 51                        push ecx
+0x08048126 56                        push esi
+0x08048127 6808820408                push dword 0x8048208
+0x0804812C e80f020000              v call 0x340  ; entrypoint+0x230
+; ------------------------------------
+0x08048131 f4                        hlt
+; ------------------------------------
+
+In the last push we see address 0x8048208, which looks like the entry point of the main() function.
+
+Now let's see where is the syscall to ptrace, by looking at the flagged syscalls (rsc syscall-flag $FILE).
+
+[0x08048110]> f |grep -i ptrace
+1418 0x00006a74 512 LINUX_sys_ptrace
+[0x08048110]> s LINUX_sys_ptrace
+[0x0804EA74]>
+
+As we can see, the virtual address of the ptrace syscall is 0x0804EA74.
+
+We'll put breakpoints in those two addresses to debug the process.
+
+
+5. Dynamic Analysis
+===================
+
+Now we start radare in debugger mode, we choose as password the value 1094795585 = 0x414141 (AAAA),
+this way we can see how it gets changed on the stack easily by identifying the 'AAAA' string.
+
+
+pau@cool:~/CRACKMES.DE/qcrk5$ radare dbg://"./qcrk5 1094795585"
+argv = './qcrk5', '1094795585', ]
+Program './qcrk5 1094795585' loaded.
+open debugger ro ./qcrk5 1094795585
+Automagically flagging ./qcrk5
+4 symbols added.
+1388 strings added.
+84 syscalls added.
+0xffffe000 - 0xfffff000 r-x- 0x00001000 [vdso]
+0xffffe000 - 0xfffff000 r-x- 0x00001000 [vdso]
+0xbfa2d000 - 0xbfa43000 rw-- 0x00016000 [stack]
+0x080af000 - 0x080b1000 rw-u 0x00002000 /home/pau/CRACKMES.DE/qcrk5/qcrk5
+0x08048000 - 0x080af000 r-xu 0x00067000 /home/pau/CRACKMES.DE/qcrk5/qcrk5
+flag 'entry' at 0x08048110 and size 200
+[0x08048110]>
+
+Put the breakpoints we've found previously:
+
+[0x08048110]> !bp 0x8048208
+new breakpoint at 0x8048208
+[0x08048110]> !bp 0x0804EA74
+new breakpoint at 0x804ea74
+[0x08048110]> !cont
+cont: breakpoint stop (0x8048208)
+[0x08048110]>
+
+It stops at main function first, lets analyze what the program does:
+
+- Hit 'V' to change to visual mode, hit 'p' to change the print mode until we see the
+  debugger interface.
+
+- Hit 's' to step a few instructions in main, note this value is pushed into the stack,
+  we will use it later on...
+
+  eip:
+  0x08048224 c745fca03d7f4b            dword [ebp-0x4] = 0x4b7f3da0
+
+- Continue stepping until the eip reaches the first call at 0x0804824A
+- Hit 'S' to step over the call
+
+Now the ptrace breakpoint is hit:
+
+Registers:
+  eax  0x0000001a    esi  0x00000000    eip    0x0804ea74
+  ebx  0x00000000    edi  0x00000003    oeax   0xffffffff
+  ecx  0x00000000    esp  0xbfbb7acc    eflags 0x0282
+  edx  0x00000001    ebp  0xbfbb7ad8    cpazStIdor0 (SI)
+Disassembly:
+0x0804EA74 LINUX_sys_ptrace:
+0x0804EA74 cd80                      int 0x80
+0x0804EA76 3d00f0ffff                cmp eax, 0xfffff000
+0x0804EA7B 89c6                      esi = eax
+0x0804EA7D 772f                    v ja 0x804EAAE   ; "Z[^]"+0xc
+; ------------------------------------
+
+- Note the value of 'eax' before the 'int 0x80' is executed (eax = 0x0000001a).
+- Now hit 's' to step one instruction:
+
+Registers:
+  eax  0xffffffff    esi  0x00000000    eip    0x0804ea76
+  ebx  0x00000000    edi  0x00000003    oeax   0x0000001a
+  ecx  0x00000000    esp  0xbfbb7acc    eflags 0x0282
+  edx  0x00000001    ebp  0xbfbb7ad8    cpazStIdor0 (SI)
+Disassembly:
+0x0804EA76 eip:
+0x0804EA76 3d00f0ffff                cmp eax, 0xfffff000
+0x0804EA7B 89c6                      esi = eax
+0x0804EA7D 772f                    v ja 0x804EAAE   ; "Z[^]"+0xc
+; ------------------------------------
+
+As you can see, the value of eax after the ptrace syscall is eax = 0xffffffff.
+The jump at offset 0x0804EA7D will detect we are debugging the process, so we
+will change the value of 'eax' to its original value:
+
+- Hit ':' to see the command line in visual mode, and type the next command
+  to change the value of eax:
+
+:> !set eax 0x0000001a
+
+Step a few more instructions until you return to main again, we've just avoided
+being ptraced :)
+
+Back into main, we see the program checks it has been called with an argument,
+otherwise it shows the usage instructions:
+
+0x08048260 eip:
+0x08048260 837d0802                  cmp dword [ebp+0x8], 0x2
+0x08048264 742b                    v jz 0x8048291   ; eip+0x31
+; ------------------------------------
+0x08048266 8b450c                    eax = [ebp+0xc]
+0x08048269 8b00                      eax = [eax]
+0x0804826B 8b15b4f30a08              edx = [0x80af3b4]
+0x08048271 89442408                  [esp+0x8] = eax
+0x08048275 c744240488820908          dword [esp+0x4] = 0x8098288 ; "Usage:%s_password_"
+0x0804827D 891424                    [esp] = edx
+0x08048280 e8ab120000              v call 0x8049530  ; "t^;u"+0x100
+; ------------------------------------
+
+Step until eip reaches 0x080482A1, this is the main routine that will check
+the password, so let's analyze it. Note the password we've entered is now 
+stored in 'eax' register:
+
+Registers:
+  eax  0x41414141    esi  0x080486e0    eip    0x080482a1
+  ebx  0x00000000    edi  0x00000003    oeax   0xffffffff
+  ecx  0x19999999    esp  0xbfada200    eflags 0x0296
+  edx  0x00000000    ebp  0xbfada238    cPAzStIdor0 (PASI)
+
+Disassembly:
+0x080482A1 eip:
+0x080482A1 8945f8                    [ebp-0x8] = eax
+0x080482A4 8d45f8                    lea eax, [ebp-0x8]
+
+And now note the password has been pushed into the stack:
+
+Stack:
+   offset   0 1  2 3  4 5  6 7  8 9  A B  C D  E F  0 1 0123456789ABCDEF01
+.--------+---------------------------------------------+-------------------
+0xBFADA200 e3ba adbf 0000 0000 0100 0000 0000 0000 0000 ..................
+0xBFADA212 0000 0000 0000 28a2 adbf 0981 0408 0300 0000 ......(...........
+0xBFADA224 5af4 0408 38a2 adbf b186 0408 4141 4141 a03d Z...8.......AAAA.=
+0xBFADA236 7f4b 48a4 adbf e384 0408 0200                .KH.........
+
+
+- Add 5 to the first byte of the password ( 0x41 + 5 == 0x46):
+
+0x080482A7 830005                    dword [eax] += 0x5  ; 5
+0x080482AA 8d45f8                    lea eax, [ebp-0x8]
+
+In the stack we can see the password has been changed to 'FAAA'.
+
+- Add 0x60 to the result (0x46 + 0x60 == 0xa6):
+
+0x080482AD 830060                    dword [eax] += 0x60  ; 96 
+
+- Store the value in edx and eax (0x414141a6):
+
+0x080482B0 8b55f8                    edx = [ebp-0x8]
+0x080482B3 89d0                      eax = edx
+
+- Shift the result by 8 (0x4141a600):
+
+0x080482B5 c1e008                    eax <<= 0x8  ; 8     ; 0x4141a600
+
+- 0x4141a600 - 0x414141a6 ==  0x0000645a (stored in eax, then put into the stack):
+
+0x080482B8 29d0                      eax -= edx
+0x080482BA 8945f8                    [ebp-0x8] = eax    ; eax = 0x0000645a
+
+- The result is multiplied by 0x909090, and stored in the stack agian:
+
+0x080482BD 8b45f8                    eax = [ebp-0x8]
+0x080482C0 69c090909000              imul eax, eax, 0x909090
+0x080482C6 8945f8                    [ebp-0x8] = eax            ; eax = 0xab4b12a0
+
+The resulting value of all this operations is 0xab4b12a0.
+
+Finally, it restores the value that was put into the stack at the beinging of the
+main function, prints 'Using AAAA', we'll skip this and put a breakpoint at 0x080482EB: 
+
+:> !bp 0x080482EB
+new breakpoint at 0x80482eb
+
+The next comparison is crucial, because if it matches the program will print the message
+ "Correct,Cracked!!", otherwise it will jump to 0x8048314 and print the bad-boy message.
+
+0x080482EB 8b45fc                    eax = [ebp-0x4]
+0x080482EE 3b45f8                    cmp eax, [ebp-0x8]
+0x080482F1 7521                    v jnz 0x8048314   ; bad-boy message
+; ------------------------------------
+0x080482F3 a1b4f30a08                eax = [0x80af3b4]
+0x080482F8 c7442404a9820908          dword [esp+0x4] = 0x80982a9 ; "Correct,Cracked!!"
+0x08048300 890424                    [esp] = eax
+0x08048303 e828120000              v call 0x8049530
+; ------------------------------------
+
+If you look at 'eax' register, it contains the value '0x4b7f3da0' which was stored at
+the begining of main:
+
+Registers:
+  eax  0x4b7f3da0    esi  0x080486e0    eip    0x080482ee
+  ebx  0x00000000    edi  0x00000003    oeax   0xffffffff
+  ecx  0x00000011    esp  0xbfa739a0    eflags 0x0246
+  edx  0x080af7c0    ebp  0xbfa739d8    cPaZstIdor0 (PZI)
+
+This value is compared with something in the stack:
+
+Disassembly:
+0x080482EE eip:
+0x080482EE 3b45f8                    cmp eax, [ebp-0x8]
+0x080482F1 7521                    v jnz 0x8048314   ; eip+0x26
+
+Let's print it:
+
+:> px 4@ebp-0x8
+   offset   0 1  2 3  4 5  6 7  8 9  A B  C D  E F  0 1 0123456789ABCDEF01
+.--------+---------------------------------------------+-------------------
+0xBFA739D0 a012 4bab                                    ..K.
+
+As you can see, this is compared with '0xab4b12a0' which is the result of the
+previous routine we've analyzed.
+
+So now we know that we need a number which results in 0xab4b12a0 after doing
+the same operations, let's write the keygen :D
+
+
+
+6. Writing the keygen
+=====================
+
+As the value is small, we can bruteforce all the possible combinations
+that will lead to the right value in little time, this keygen does it:
+
+-----------------------------------------------------------------
+#include <stdio.h>
+#define WANTED 0x4b7f3da0
+int main()
+{
+	int eax, edx, num;
+	printf ("Qnix's qcrk5 key generator by pof\n");
+	num = 0;
+	do 
+	{
+		eax = num + 0x60 + 0x5;
+		edx = eax;
+		eax <<= 0x8;
+		eax = eax - edx;
+		eax = eax * 0x909090;
+		if ( eax == WANTED ) printf ("key: %d\n", num);
+		num ++;
+	} while ( num < 0xffffffff);
+	printf ("Done!\n");
+	return 0;
+}
+-----------------------------------------------------------------
+
+$ time ./keygen
+Qnix's qcrk5 key generator by pof
+key: 91867153
+key: 360302609
+key: 628738065
+key: 897173521
+key: 1165608977
+key: 1434044433
+key: 1702479889
+key: 1970915345
+key: -2055616495
+key: -1787181039
+key: -1518745583
+key: -1250310127
+key: -981874671
+key: -713439215
+key: -445003759
+key: -176568303
+Done!
+
+real    1m18.156s
+user    1m7.176s
+sys     0m0.200s
+
+All possible combinations bruteforced in 1 minute :)
+
+7. Greets
+=========
+
+Qnix, crackmes.de and pancake :D
+
+Cheers,
+
+
+	pof
+	http://pof.eslack.org/

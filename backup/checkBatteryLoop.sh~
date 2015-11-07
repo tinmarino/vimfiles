@@ -1,0 +1,15 @@
+#!/bin/bash
+
+while true 
+do 
+  sleep 60
+  batteryLevel =$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '/percentage/ {gsub ("%","") ; print $2}')
+  if [ $battery_level -ge 100 ]; then
+       notify-send "Battery is fully charged !"    
+       espeak "Battery is fully charged !"    
+  else if [ $battery_level -le 10 ]
+       notify-send "Battery is lower 10%!"    
+       espeak  "Battery is lower 10%!"    
+  fi
+
+done

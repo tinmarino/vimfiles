@@ -1,0 +1,13 @@
+package com.mygdx.gdx2;
+
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
+
+
+public class Card2 extends Table{
+  public String mainText; 
+
+  public Card2(){}
+
+
+}

@@ -1,0 +1,1218 @@
+
+command! -nargs=1 MyCommand call s:MyFunc(<f-args>) " transform a function to user-command
+type join split 
+Shift+J removes the line change character from the current line, so by pressing "J" at any place in the line you can combine the current line and the next line in the way you want.
+:set foldmethod=expr
+:set foldexpr=empty(getline(v:lnum))?'=':indent(v:lnum)/4
+sett "foldtext", witch show what you see when folded 
+:syn match comment "\v(^\s*//.*\n)+" fold
+:map <S-Up> let a:a=call 
+:verbose noremap <leader>b
+
+"nnoremap <A-j> :m .+1<CR>==
+"nnoremap <A-k> :m .-2<CR>==
+"inoremap <A-j> <Esc>:m .+1<CR>==gi
+"inoremap <A-k> <Esc>:m .-2<CR>==gi
+"vnoremap <A-j> :m '>+1<CR>gv=gv
+"vnoremap <A-k> :m '<-2<CR>gv=gv
+  test 
+{
+
+}
+
+echom exists('g:a')
+" mine 
+vnoremap <S-Up> :m '>+1<CR>gv
+noremap <S-Up>   :let tmp=getpos('.') <CR>:m-2 <CR>: callcursor(tmp[1]-1,tmp[2]) <CR>
+
+
+  this is test 
+  this is test 
+  test 
+ # Check if a variable exists
+    eval_value = int(vim.eval('exists("g:example_global_var")'))
+    if eval_value:
+    else:
+        print("The variable is not defined => {}".format(eval_value))
+
+To turn off highlighting until the next search:
+
+
+
+:noh
+
+Or turn off highlighting completely:
+
+set nohlsearch
+
+
+
+MOVE
+  ctrl-d    | scroll downmove
+  crtl-u    | scroll up1
+  :1,$,:g,:%           | the entire file
+  42g or 42G or :42<CR>  | go to line 42
+
+
+INSERT 
+  i         | insert at cursor 
+  u         | undo 
+  ctrl-r    | redo
+  D ,dd     | delete line
+  dw,d$     | delete word,rest of line
+  o         | new line after
+  O         | new line before
+  x         | delete caracter
+  s,r       | substitue caracter
+
+
+EDIT
+  >> <<          | shift
+  m+name,'+name  | mark, goto mark
+  . , |          | Redo last editing operation, separe 2 commands
+  U,u            | transform to capital, small letter , in visual mode
+  ctrl-A,ctrl-X  | increment, decrement number
+  :r             | vous pouvez insérer un fichier à la position du curseur. Vous devez indiquer le nom du fichier à insérer, par exemple 
+  :e  | refresh
+  ZZ   | save n quit      
+  
+
+SPLIT 
+  :sp            | découper l'écran horizontalement
+  :vsp           | découper l'écran verticalement
+  Ctrl + w puis Ctrl + w : navigue de viewport en viewport. Répétez l'opération plusieurs fois pour accéder au
+  viewport désiré.
+  Ctrl + w puis j : déplace le curseur pour aller au viewport juste en-dessous. La même chose fonctionne avec les
+  touches h, k et l que l'on utilise traditionnellement pour se déplacer dans Vim.
+  Ctrl + w puis + : agrandit le viewport actuel.
+  Ctrl + w puis - : réduit le viewport actuel.
+  Ctrl + w puis = : égalise à nouveau la taille des viewports.
+  Ctrl + w puis r : échange la position des viewports. Fonctionne aussi avec "R" majuscule pour échanger en sens
+  inverse.
+  Ctrl + w puis q : ferme le viewport actuel.
+
+FIND/REPLACE
+  see http://vimregex.com/
+  /,?       | find forward, backward
+  :%s/fff/rrr    | replace first instance
+  :%s/ff/rr/g    | replace all instances
+  :%s/ff/rr/gc   | ask for confirmation
+  :5,20s/ff/rr   | betwenn line  5 and 20
+  :%!/^#/d       | delete lines not begining with #
+  :%s/^/#        | append # at begining of line
+  v, crtl-v      | selection
+  p              | paste
+  Y or yy, y     | yank (copy) one line, the selection
+  y$,y^,y4w,y'x  | to end, begin, 4 word, upto mark x
+  %s/\(.*\).*/&\1/   | 
+  :g/^#/d  begining with #
+  :g!/^#/d not begining with #
+  :g/^$/d blanck lines 
+  :echo @% 	def/my.txt 	directory/name of file
+  :echo expand('%:t') 	my.txt 	name of file ('tail')
+  :echo expand('%:p') 	/abc/def/my.txt 	full path
+  :echo expand('%:p:h') 	/abc/def 	directory containing file ('head') 
+  without % , vim works on the current line 
+  vim -u NONE -i NONE -Nnes "+se ul=-1" "+argdo %s/bite/W\.psf_fit\[0\]\[0\]/ge|up" "+q" *
+  ^\(-*[0-9]*\.[0-9]*\s\)\{21}   " match the 21 first numbers like 12232.23 23.23 
+  %s/\(good\|nice\)/awesome/g  "OR 
+  %s/^/\=line(".") . ". "/g    " substitute all lines by its line number 
+  :4,$s/\d\+/\=submatch(0) + 1/ # add one to every one 
+
+  s:\a*\a:\='"'.submatch(0).'"'
+  However a more readable solution is:
+  s:\a*\a:"\0"
+  submatch(0) 
+  strpart 
+  s/[^"],/\=strpart(submatch(0),0,1)/g
+
+
+BUFFER
+  :ls                 | display buffer list
+  :e +name     | edit
+  :bn          | new
+  :bd          | delete
+  :b3          | goto 3
+  :qa          | quit all 
+  :n :p        | next, previous
+  :rew         | rewind to 1st file
+  :bufdo       | do the command to all buffer
+  :update      | save if changes
+  :arg *.cpp 	             |All *.cpp files in current directory.
+  :argadd *.h 	             |And all *.h files.
+  :arg 	                     |Optional: Display the current arglist.
+  :argdo %s/pattern/replace/ge | update 	Search and replace in all files in arglist. 
+  :sav php.html        |   Save current file as php.html and "move" to php.html
+  :sp fred.txt  : open fred.txt into a split
+  :e!           : return to unmodified file
+  :w /some/path/%:r   : save file in another directory, but with the same name
+  :e #          : edit alternative file
+  :args                   |    display argument list
+
+VIMRC
+  set showcmd
+  set number 
+  set ttymouse=xterm2
+  set mouse=a
+
+
+MAKE A SECTIONN
+	:mksession ~/mysession.vim
+	Then later you can source that vim file and you'll have your old session back:
+	:source ~/mysession.vim
+	or open vim with the -S option:
+	$ vim -S ~/mysession.vim
+
+"FOLD"
+   zf#j creates a fold from the cursor down # lines.
+   zf/ string creates a fold from the cursor to string .
+   zj moves the cursor to the next fold.
+   zk moves the cursor to the previous fold.
+   zo opens a fold at the cursor.
+  ->zO opens all folds at the cursor.
+   zm increases the foldlevel by one.
+  ->zM closes all open folds.
+   zr decreases the foldlevel by one.
+  ->zR decreases the foldlevel to zero -- all folds will be open.
+   zd deletes the fold at the cursor.
+   zE deletes all folds.
+  ->[z move to start of open fold.
+   ]z move to end of open fold.
+   Mem/vim
+   mer. 04 nov. 2015 21:18:53 CETmap! <F3> <C-R>=strftime('%c')<CR>
+     this is a test 
+       this is a test 
+         this is a test 
+           this is a test 
+           this is a test 
+         this is a test 
+       this is a test 
+     this is a test 
+  
+  :set foldmethod=syntax
+  
+  should fold all functions and other blocks automatically, if you have syntax file for your language.
+
+
+"FAST TUTORIAL"
+  Basics
+  	:e filename 	Open filename for edition
+  	:w 	Save file
+  	:q 	Exit Vim
+  	:w! 	Exit Vim without saving
+  "SEARCH"
+  	/word 	        Search word from top to bottom
+  	?word 	        Search word from bottom to top
+  	/jo[ha]n 	Search john or joan
+  	/\< the 	Search the, theatre or then
+  	/the\> 	        Search the or breathe
+  	/\< the\> 	Search the
+  	/\< ¦.\> 	Search all words of 4 letters
+  	/\/ 	        Search fred but not alfred or frederick
+  	/fred\|joe 	Search fred or joe
+  	/\<\d\d\d\d\> 	Search exactly 4 digits
+  	/^\n\{3} 	Find 3 empty lines
+  	:bufdo /searchstr/ 	Search in all open files
+          /\cstring       Search without regard to the case 
+  Replace
+  	:%s/old/new/g 	Replace all occurences of old by new in file
+  	:%s/old/new/gw 	Replace all occurences with confirmation
+  	:2,35s/old/new/g 	Replace all occurences between lines 2 and 35
+  	:5,$s/old/new/g 	Replace all occurences from line 5 to EOF
+  	:%s/^/hello/g 	Replace the begining of each line by hello
+  	:%s/$/Harry/g 	Replace the end of each line by Harry
+  	:%s/onward/forward/gi 	Replace onward by forward, case unsensitive
+  	:%s/ *$//g 	Delete all white spaces
+  	:g/string/d 	Delete all lines containing string
+  	:v/string/d 	Delete all lines containing which didn’t contain string
+  	:s/Bill/Steve/ 	Replace the first occurence of Bill by Steve in current line
+  	:s/Bill/Steve/g 	Replace Bill by Steve in current line
+  	:%s/Bill/Steve/g 	Replace Bill by Steve in all the file
+  	:%s/\r//g 	Delete DOS carriage returns (^M)
+  	:%s/\r/\r/g 	Transform DOS carriage returns in returns
+  	:%s#<[^>]\+>##g 	Delete HTML tags but keeps text
+  	:%s/^\(.*\)\n\1$/\1/ 	Delete lines which appears twice
+  Ctrl+a 	Increment number under the cursor
+  Ctrl+x 	Decrement number under cursor
+  	ggVGg? 	Change text to Rot13
+  Case
+  	Vu 	Lowercase line
+  	VU 	Uppercase line
+  	g~~ 	Invert case
+  	vEU 	Switch word to uppercase
+  	vE~ 	Modify word case
+  	ggguG 	Set all text to lowercase
+  	:set ignorecase 	Ignore case in searches
+  	:set smartcase 	Ignore case in searches excepted if an uppercase letter is used
+  	:%s/\<./\u&/g 	Sets first letter of each word to uppercase
+  	:%s/\<./\l&/g 	Sets first letter of each word to lowercase
+  	:%s/.*/\u& 	Sets first letter of each line to uppercase
+  	:%s/.*/\l& 	Sets first letter of each line to lowercase
+  Read/Write files
+  	:1,10 w outfile 	Saves lines 1 to 10 in outfile
+  	:1,10 w >> outfile 	Appends lines 1 to 10 to outfile
+  	:r infile 	Insert the content of infile
+  	:23r infile 	Insert the content of infile under line 23
+  File explorer
+  	:e . 	Open integrated file explorer
+  	:Sex 	Split window and open integrated file explorer
+  	:browse e 	Graphical file explorer
+  	:ls 	List buffers
+  	:cd .. 	Move to parent directory
+  	:args 	List files
+  	:args *.php 	Open file list
+  	:grep expression *.php 	Returns a list of .php files contening expression
+  	gf 	Open file name under cursor
+  Interact with Unix
+  	:!pwd 	Execute the pwd unix command, then returns to Vi
+  	!!pwd 	Execute the pwd unix command and insert output in file
+  	:sh 	Temporary returns to Unix
+  	$exit 	Retourns to Vi
+  Alignment
+  	:%!fmt 	Align all lines
+  	!}fmt 	Align all lines at the current position
+  	5!!fmt 	Align the next 5 lines
+  Tabs
+  	:tabnew 	Creates a new tab
+  	gt 	Show next tab
+  	:tabfirst 	Show first tab
+  	:tablast 	Show last tab
+  	:tabm n(position) 	Rearrange tabs
+  	:tabdo %s/foo/bar/g 	Execute a command in all tabs
+  	:tab ball 	Puts all open files in tabs
+  Window spliting
+  	:e filename 	Edit filename in current window
+  	:split filename 	Split the window and open filename
+  	ctrl-w up arrow 	Puts cursor in top window
+  	ctrl-w ctrl-w 	Puts cursor in next window
+  	ctrl-w_ 	Maximise current window
+  	ctrl-w= 	Gives the same size to all windows
+  	10 ctrl-w+ 	Add 10 lines to current window
+  	:vsplit file 	Split window vertically
+  	:sview file 	Same as :split in readonly mode
+  	:hide 	Close current window
+  	:­nly 	Close all windows, excepted current
+  	:b 2 	Open #2 in this window
+  Auto-completion
+  	Ctrl+n Ctrl+p (in insert mode) 	Complete word
+  	Ctrl+x Ctrl+l 	Complete line
+  	:set dictionary=dict 	Define dict as a dictionnary
+  	Ctrl+x Ctrl+k 	Complete with dictionnary
+  Marks
+  	mk 	Marks current position as k
+  	˜k 	Moves cursor to mark k
+  	d™k 	Delete all until mark k
+  Abbreviations
+  	:ab mail mail@provider.org 	Define mail as abbreviation of mail@provider.org
+  Text indent
+  	:set autoindent 	Turn on auto-indent
+  	:set smartindent 	Turn on intelligent auto-indent
+  	:set shiftwidth=4 	Defines 4 spaces as indent size
+  	ctrl-t, ctrl-d 	Indent/un-indent in insert mode
+  	>> 	Indent
+  	<< 	Un-indent
+  Syntax highlighting
+  	:syntax on 	Turn on syntax highlighting
+  	:syntax off 	Turn off syntax highlighting
+  	:set syntax=perl 	Force syntax highlighting
+  
+  
+
+
+
+  bufdo normal 2G"Ayy
+
+  which iterates through the buffers and runs the given command in normal mode. 2G jumps to the appropriate line, and "Ay yanks into register a, appending instead of overwriting (since the A is capitalized). Make sure register a is empty before you start
+  
+  :r filename 	insert filename after cursor
+  :10r filename 	insert filename after line 10
+  :g/pattern/r filename 	search pattern and insert filename after cursor
+  :r !shell-command 	insert the result of a shell-command after cursor
+  !!shell-command 	insert command output in place of current line
+  :r foo.txt    Insert the file foo.txt below the cursor.
+  :0r foo.txt   Insert the file foo.txt before the first line.
+  :r !ls        Insert a directory listing below the cursor.
+  :$r !pwd      Insert the current working directory below the last line.
+
+
+SECTION SAVE
+  :mksession! ~/today.ses
+  vim -S ~/today.ses    
+
+
+CONCATENATE
+  :5,8del | let l=split(@","\n") | 1,4s/$/\=remove(l,0)/
+  1/ del
+  2/ split buffer
+  3/ remove(l,0) delete first elt of list l and return it :)
+  
+   will transfor : 
+  work it 
+  make it 
+  do it 
+  makes us 
+  harder
+  better
+  faster
+  stronger
+  ~
+  in 
+  work it harder
+  make it better
+  do it faster
+  makes us stronger
+  
+  paste -d "" 1 2 > merged.txt
+
+
+  Copy the text from file A with visual bock mode by hitting Ctrl-V at the top left corner of the text chunk then moving the cursor to opposite corner of the text chunk then hit y. Move to file B where you want to paste your chunk of text, then execute the following:
+  
+  :put
+  :'[,']join
+  
+  :put will paste text from a register in line mode, including visual block yanked text.
+  
+  :join will join lines together just like the J command.
+  
+  '[ and '] are marks set at the beginning and ending of a change.
+  
+  :'[,']join will join from the beginning of pasted text to the end of the pasted text.
+  
+  For more information see:
+  
+  :h :put
+  :h :j
+
+
+MAPS 
+  <CR> = <Enter> = <Return>
+  <C-R><C-W>  get the word under cursor 
+  :inoremap <F2> <C-R>=expand('%:p:h')<CR>   [give the current directory name under cursor
+  map <2-LeftMouse> zA
+  To move between long lines
+  :nnoremap k gk
+  :nnoremap j gj
+  fold save, load  
+  :mkview  :loadview
+
+  :colorscheme pychimp
+  colors for python
+
+  :let @" = expand("%")
+    this will copy the file name to the unamed register, then you can use good old 'p' to paste it. and of course you can map this to a key for quicker use.
+  :nmap cp :let @" = expand("%")
+    you can also use this for full path
+  :let @" = expand("%:p")
+    use :help expand for more details
+
+COPY PASTE TO CLIPBOARD 
+  call vimx instead of vim 
+  then select and "+y 
+ 
+
+MAP 
+  :nmap - Display normal mode maps
+  :imap - Display insert mode maps
+  :vmap - Display visual and select mode maps
+  :smap - Display select mode maps
+  :xmap - Display visual mode maps
+  :cmap - Display command-line mode maps
+  :omap - Display operator pending mode maps
+  
+  nmapclear - Clear all normal mode maps
+  :nnoremap k gk " to move between long lines 
+  :nnoremap j gj
+  
+  :nnoremap ,b :ls<CR>:buffer<Space>
+  <CR> = return 
+
+  From a normal mode map, you can get the keyword under the cursor using the expand('<cword>') function or using the <C-R><C-W> command
+  
+  The following command maps <F2> to insert the directory name of the current buffer:
+  :inoremap <F2> <C-R>=expand('%:p:h')<CR>
+  
+  The '< Vim mark represents the beginning line of a visual region and the '> mark represents the ending line of the visual region
+  
+
+VIM FUNCTION : 
+  function! CalculateAge()
+      normal 03wdei^R=2012-^R"^M^[0j 
+  endfunction
+
+  :call CalculateAge()
+  nnoremap <leader>a :call CalculateAge()<CR> # to map it to \a
+  # save a macro : 
+    let @a='03wdei^R=2012-^R"^M^[0j'
+
+  One usefull macro : 03wdei^R=2012-^R"^M^[0j
+    0 — Move to the start of the line
+    3w — Skip three words, in this case to the fourth column
+    de — Delete to the end of the word
+    i — Enter insert mode
+    ^R= — Insert the contents of the special = register, which accepts an expression to evaluate
+    2012-^R"^M — Enter the expression 2012-(birth year) and press Enter (literal ^M), which completes the operation, and inserts the result
+    ^[ — Leave insert mode
+    0 — Return to the start of the line
+    j — Move down a line
+  :normal @a  # to run macro a from ex command
+  :g/vim/ normal @a  # run a for lines containing vim 
+
+
+OPERATION ON COLUMN ARITHMETIC 
+  :%!column -t #make the columns aligned, prettyer
+  :%!sort -k1  # sort column 1 
+  :% s/\d\{4}/\=2012-submatch(0)/    
+    % on every line
+    s substitute
+    \d\{4} four consecutive digits
+    \=2012-submatch(0) expression subtract matched value from 2012
+  %s/\%8c\d*/\=submatch(0)*100  # for column 8, means string number 8 
+  %s/\d\+/\=submatch(0)+2/g     # find all integer and add 2 to its
+  :%!ruby -pe 'gsub(/\d+/) {|m| m.to_f/2}  # same but float division by 2 using ruby 
+  :s/|\(\d\+\)/\='|'.(submatch(1)*60)/g
+  :s/|\(\d\+\):\(\d\+\)/\='|'.(submatch(1)+submatch(2))/g
+    transform 
+    |23:58|6:40|
+    |12:45|0:25|
+    |36:13|12:00|
+    in 
+    |1438|400|
+    |765|25|
+    |2173|720|
+
+
+"ARITHEMTIC"
+  :let result=(100*21)/23
+  :echo printf("%d.%02d",result/100,result%100)
+  %s/[0-9.]\+/\=2.0*str2float(submatch(0))/g 
+  [0-9.]\+    one or more digits or periods
+  \=  ...  evaluate following expression
+  2.0 ... obvious
+  *    ... also obvious
+  str2float(submatch(0))  take entire match and convert that string to a float
+  /g ...  as many matches as possible per line 
+
+
+"EXECUTE COMMAND FROM SHELL" 
+    +{command}
+    -c {command}
+    {command} will be executed after the first file has been read. {command} is interpreted as an Ex command. If the {command} contains spaces it must be enclosed in double quotes (this depends on the shell that is used). Example: Vim "+set si" main.c
+    Note: You can use up to 10 "+" or "-c" commands.
+
+    vim -nes "+se ul=-1" "+argdo %s/foo/bar/ge|up" "+q" *.fb 
+
+   For speed, using a standard startup, not in vi mode, in ex
+       batch mode with undo off and no swap files:
+
+   vim -u NONE -i NONE -Nnes "+se ul=-1" "+argdo %s/foo/bar/ge|up" "+q" *.fb 
+
+   BTW, if your shell is 4nt, replace "%s" with "%%s" - so that
+   %s isn't treated as a variable.  This is a good practice for
+   CMD users also, even though not necessary for this example. 
+
+   this one works 
+   vim -u NONE -i NONE -Nnes "+se ul=-1" "+argdo %s/line/bite/ge|up" "+q" *
+
+CASE
+  /\<[A-Z]\+\>
+  or
+  /\v<[A-Z]+>
+  or 
+  /\<\u\+\> # find upper case words
+
+  <ESC>:%s/.*/\L&/  # tranform everything to lowar case
+  <ESC>:%s/.*/\U&/  # upper
+
+
+FUNCTION
+  function Func()
+    : command1
+    : command2
+  endfunction
+  exec Func() 
+
+
+Install 
+  install vim -full 
+
+
+RUN BASH PYTHON
+  :set makeprg=python\ %
+  Yes, you need to escape the space. After this you can simply run:
+  :make
+
+  For Shell script I've used
+  :set makeprg=%
+  :make
+
+TIPS 
+  qa ... q     | record a macro that you call with @a
+  :%normal @a #execute the macro recorded in register a on all lines of the current file.
+  :normal @a   #or, with a visually selected set of lines:
+  
+  :'a,'b g/^Error/ .w >> errors.txt   | write line starting with Error in errors.txt
+  :w /some/path/%:r   | save file in another directory, but with the same name
+  :g/one\|two/     : list lines containing "one" or "two"
+  :g/^\s*$/d       : delete all blank lines
+  The following commands insert lines consisting of the full path of the current and alternate files into the buffer:
+  :put =expand('%:p')
+  :put =expand('#:p')
+  gf                  |  open file name under cursor (SUPER)
+  :map <F9>  :r file            |     " Read text from 'file' and insert it below the current line
+
+
+
+Register % contains the name of the current file, and register # contains the name of the alternate file. These registers allow the name of the current or alternate files to be displayed or inserted. The name, or full path, or directory containing the file can be used. 
+
+
+MAP PATH  cnoremap %% <C-R>=expand('%:p:h')<CR>/
+    " copy current file name (relative/absolute) to system clipboard
+if   has("mac") || has("gui_macvim") || has("gui_mac")
+    " relative path  (src/foo.txt)
+    nnoremap <leader>cf :let @*=expand("%")<CR>
+
+    " absolute path  (/something/src/foo.txt)
+    nnoremap <leader>cF :let @*=expand("%:p")<CR>
+
+    " filename       (foo.txt)
+    nnoremap <leader>ct :let @*=expand("%:t")<CR>
+
+    " directory name (/something/src)
+    nnoremap <leader>ch :let @*=expand("%:p:h")<CR>
+en  dif
+
+"   copy current file name (relative/absolute) to system clipboard (Linux version)
+if   has("gui_gtk") || has("gui_gtk2") || has("gui_gnome") || has("unix")
+    " relative path (src/foo.txt)
+    nnoremap <leader>cf :let @+=expand("%")<CR>
+echo "aazr"
+echo "aazr"
+
+    " absolute path (/something/src/foo.txt)
+    nnoremap <leader>cF :let @+=expand("%:p")<CR>
+
+    " filename (foo.txt)
+    nnoremap <leader>ct :let @+=expand("%:t")<CR>
+
+    " directory name (/something/src)
+    nnoremap <leader>ch :let @+=expand("%:p:h")<CR>
+endif
+
+PASTE REGISTER EDIT COMMAND   http://stackoverflow.com/questions/3997078/how-to-paste-text-into-vim-command-line
+    Yes. Hit Ctrl-R then ". If you have literal control characters in what you have yanked, use Ctrl-R, Ctrl-O, ".
+    
+    Here is an explanation of what you can do with registers. What you can do with registers is extraordinary, and once you know how to use them you cannot live without them.
+    
+    Registers are basically storage locations for strings. Vim has many registers that work in different ways:
+    
+        0 (yank register: when you use y without specifying a register, it goes there and also to the default register),
+        1 to 9 (shifting delete registers, when you use commands such as c or d, what has been deleted goes to register 1, what was in register 1 goes to register 2, etc.),
+        " (default register, hence the Ctrl-R, ", also known as unnamed register),
+        a to z for your own use (capitalized A to Z are for appending to corresponding registers).
+        _ (acts like /dev/null, you can write to it but it's discarded and when you read from it, it is always empty),
+        - (small delete register),
+        / (search pattern register, you can write to it to dynamically change the search pattern),
+        : (last command register, readonly),
+        + and * (system clipboard registers, you can write to them to set the clipboard and read the clipboard contents from them)
+    
+    See :help registers for the full reference.
+    
+    You can, at any moment, use :registers to display the contents of all registers. Synonyms and shorthands for this command are :display, :reg and :di.
+    
+    In Insert or Command-line mode, Ctrl-R plus a register name, inserts the contents of this register. If you want to insert them literally (no auto-indenting, no conversion of control characters like 0x08 to backspace, etc), you can use Ctrl-R, Ctrl-O, register name. See :help i_CTRL-R and following paragraphs for more reference.
+    
+    But you can also do the following (and I probably forgot many uses for registers).
+    
+        In normal mode, insert into your buffer the last Vim command: ":p (Note that " is a Normal mode command that lets you select what register is to be used during the next yank, delete or paste operation). Here, you select the colon register (storing the last command) and paste its contents.
+    
+        cf. :help ", :help quote_:
+    
+        If you have your cursor on a line containing a vim command (like noremap ^ 0 for example), and want to run it: yy:@". yy will yank the whole line into the default register (also known as the unnamed register). The :@ Ex command plays Ex commands stored in the register given as argument, and " is how you refer to the unnamed register. Also see the top of this answer, which is related.
+    
+        Do not confuse " used here (which is a register name) with the " from first example, which was a Normal-mode command.
+    
+        cf. :help :@ and :help quote_quote
+    
+        Insert the last search pattern into your file in Insert mode, or into the command line: Ctrl-R, /.
+    
+        cf. :help quote_/, help i_CTRL-R
+    
+        Corollary: Keep your search pattern but add an alternative: / Ctrl-R, / \|alternative.
+    
+        You've selected two words in the middle of a line in visual mode, yanked them with y, they are in the unnamed register. Now you want to open a new line juste below where you are, with those two words: :put ". The :put command, like many Ex commands, works only linewise.
+    
+        cf. :help :put
+    
+        You could also have done: :call setreg('"', @", 'V') then p. The setreg function sets the register of which the name is given as first argument, initializes it with the contents of the second argument, and turns it into the mode specified in the third argument, V for linewise.
+    
+        cf. :help setreg(). The reverse functions are getreg() and getregtype().
+    
+        If you have recorded a macro with qa...q, then :echo @a will tell you what you have typed, and @a will replay the macro (probably you knew that one, very useful in order to avoid repetitive tasks)
+    
+        cf. :help q, help @
+    
+        Corollary from the previous example: If you have 8go in the clipboard, then @+ will play the clipboard contents as a macro, and thus go to the 8th byte of your file. Actually this will work with almost every register. If your last inserted string was dd in Insert mode, then @. will (because the . register contains the last inserted string) delete a line. (Vim documentation is wrong in this regard, since it states that the registers #, %, : and . will only work with p, P, :put and Ctrl-R).
+    
+        cf. :help @
+    
+        Don't confuse :@ (command that plays Vim commands from a register) and @ (normal-mode command that plays normal-mode commands from a register).
+    
+        Notable exception is @:. The command register does not contain the initial colon neither does it contain the final carriage return. However in Normal mode, @: will do what you expect, interpreting the register as an Ex command, not trying to play it in Normal mode. So if your last command was :e, the register contains e but @: will reload the file, not go to end of word.
+    
+        cf. :help @:
+    
+        Show what you will be doing in Normal mode before running it: @='dd' Enter. As soon as you hit the = key, Vim switches to expression evaluation: as you enter an expression and hit Enter, Vim computes it, and the result acts as a register content. Of course the register = is read-only, and one-shot. Each time you start using it, you will have to enter a new expression.
+    
+        cf. :help quote_=
+    
+        Corollary: If you are editing a command, and you realize that you should need to insert into your command line some line from your current buffer: don't press Esc! Use Ctrl-R =getline(58) Enter. After that you will be back to command line editing, but it has inserted the contents of the 58th line.
+    
+        Define a search pattern manually: :let @/ = 'foo'
+    
+        cf. :help :let
+    
+        Note that doing that, you needn't to escape / in the pattern. However you need to double all single quotes of course.
+    
+        Copy all lines beginning with foo, and afterwards all lines containing bar to clipboard, chain these commands: qaq (resets the a register storing an empty macro inside it), :g/^foo/y A, :g/bar/y A, :let @+ = @a.
+    
+        Using a capital register name makes the register work in append mode
+    
+        Better, if Q has not been remapped by mswin.vim, start Ex mode with Q, chain those “colon commands” which are actually better called “Ex commands”, and go back to Normal mode by typing visual.
+    
+        cf. :help :g, :help :y, :help Q
+    
+        Double-space your file: :g/^/put _. This puts the contents of the black hole register (empty when reading, but writable, behaving like /dev/null) linewise, after each line (because every line has a beginning!).
+    
+        Add a line containing foo before each line: :g/^/-put ='foo'. This is a clever use of the expression register. Here, - is a synonym for .-1 (cf. :help :range). Since :put puts the text after the line, you have to explicitly tell it to act on the previous one.
+    
+        Copy the entire buffer to the system clipboard: :%y+.
+    
+        cf. :help :range (for the % part) and :help :y.
+    
+        If you have misrecorded a macro, you can type :let @a=' Ctrl-R =replace(@a,"'","''",'g') Enter ' and edit it. This will modify the contents of the macro stored in register a, and it's shown here how you can use the expression register to do that.
+    
+        If you did dddd, you might do uu in order to undo. With p you could get the last deleted line. But actually you can also recover up to 9 deletes with the registers @1 through @9.
+    
+        Even better, if you do "1P, then . in Normal mode will play "2P, and so on.
+    
+        cf. :help . and :help quote_number
+    
+        If you want to insert the current date in Insert mode: Ctrl-R=strftime('%y%m%d')Enter.
+    
+        cf. :help strftime()
+    
+    Once again, what can be confusing:
+    
+        :@ is a command-line command that interprets the contents of a register as vimscript and sources it
+    
+        @ in normal mode command that interprets the contents of a register as normal-mode keystrokes (except when you use : register, that contains last played command without the initial colon: in this case it replays the command as if you also re-typed the colon and the final return key).
+    
+        " in normal mode command that helps you select a register for yank, paste, delete, correct, etc.
+        " is also a valid register name (the default, or unnamed, register) and therefore can be passed as an arguments for commands that expect register names
+    
+
+
+MOVE
+  ctrl-d    | scroll downmove
+  crtl-u    | scroll up1
+  :1,$,:g,:%           | the entire file
+  42g or 42G or :42<CR>  | go to line 42
+
+
+INSERT 
+  i         | insert at cursor 
+  u         | undo 
+  ctrl-r    | redo
+  D ,dd     | delete line
+  dw,d$     | delete word,rest of line
+  o         | new line after
+  O         | new line before
+  x         | delete caracter
+  s,r       | substitue caracter
+
+
+EDIT
+  >> <<          | shift
+  m+name,'+name  | mark, goto mark
+  . , |          | Redo last editing operation, separe 2 commands
+  U,u            | transform to capital, small letter , in visual mode
+  ctrl-A,ctrl-X  | increment, decrement number
+  :r             | vous pouvez insérer un fichier à la position du curseur. Vous devez indiquer le nom du fichier à insérer, par exemple 
+  :e  | refresh
+  ZZ   | save n quit      
+  
+
+SPLIT 
+  :sp            | découper l'écran horizontalement
+  :vsp           | découper l'écran verticalement
+  Ctrl + w puis Ctrl + w : navigue de viewport en viewport. Répétez l'opération plusieurs fois pour accéder au
+  viewport désiré.
+  Ctrl + w puis j : déplace le curseur pour aller au viewport juste en-dessous. La même chose fonctionne avec les
+  touches h, k et l que l'on utilise traditionnellement pour se déplacer dans Vim.
+  Ctrl + w puis + : agrandit le viewport actuel.
+  Ctrl + w puis - : réduit le viewport actuel.
+  Ctrl + w puis = : égalise à nouveau la taille des viewports.
+  Ctrl + w puis r : échange la position des viewports. Fonctionne aussi avec "R" majuscule pour échanger en sens
+  inverse.
+  Ctrl + w puis q : ferme le viewport actuel.
+
+
+FIND/REPLACE
+  see http://vimregex.com/
+  /,?       | find forward, backward
+  :%s/fff/rrr    | replace first instance
+  :%s/ff/rr/g    | replace all instances
+  :%s/ff/rr/gc   | ask for confirmation
+  :5,20s/ff/rr   | betwenn line  5 and 20
+  :%!/^#/d       | delete lines not begining with #
+  :%s/^/#        | append # at begining of line
+  v, crtl-v      | selection
+  p              | paste
+  Y or yy, y     | yank (copy) one line, the selection
+  y$,y^,y4w,y'x  | to end, begin, 4 word, upto mark x
+  %s/\(.*\).*/&\1/   | 
+  :g/^#/d  begining with #
+  :g!/^#/d not begining with #
+  :g/^$/d blanck lines 
+  :echo @% 	def/my.txt 	directory/name of file
+  :echo expand('%:t') 	my.txt 	name of file ('tail')
+  :echo expand('%:p') 	/abc/def/my.txt 	full path
+  :echo expand('%:p:h') 	/abc/def 	directory containing file ('head') 
+  without % , vim works on the current line 
+  vim -u NONE -i NONE -Nnes "+se ul=-1" "+argdo %s/bite/W\.psf_fit\[0\]\[0\]/ge|up" "+q" *
+  ^\(-*[0-9]*\.[0-9]*\s\)\{21}   " match the 21 first numbers like 12232.23 23.23 
+  %s/\(good\|nice\)/awesome/g  "OR 
+  %s/^/\=line(".") . ". "/g    " substitute all lines by its line number 
+  :4,$s/\d\+/\=submatch(0) + 1/ # add one to every one 
+
+  s:\a*\a:\='"'.submatch(0).'"'
+  However a more readable solution is:
+  s:\a*\a:"\0"
+  submatch(0) 
+  strpart 
+  s/[^"],/\=strpart(submatch(0),0,1)/g
+
+
+
+
+BUFFER
+  :ls                 | display buffer list
+  :e +name     | edit
+  :bn          | new
+  :bd          | delete
+  :b3          | goto 3
+  :qa          | quit all 
+  :n :p        | next, previous
+  :rew         | rewind to 1st file
+  :bufdo       | do the command to all buffer
+  :update      | save if changes
+  :arg *.cpp 	             |All *.cpp files in current directory.
+  :argadd *.h 	             |And all *.h files.
+  :arg 	                     |Optional: Display the current arglist.
+  :argdo %s/pattern/replace/ge | update 	Search and replace in all files in arglist. 
+  :sav php.html        |   Save current file as php.html and "move" to php.html
+  :sp fred.txt  : open fred.txt into a split
+  :e!           : return to unmodified file
+  :w /some/path/%:r   : save file in another directory, but with the same name
+  :e #          : edit alternative file
+  :args                   |    display argument list
+
+
+VIMRC
+  set showcmd
+  set number 
+  set ttymouse=xterm2
+  set mouse=a
+
+
+MAKE A SECTIONN
+	:mksession ~/mysession.vim
+	Then later you can source that vim file and you'll have your old session back:
+	:source ~/mysession.vim
+	or open vim with the -S option:
+	$ vim -S ~/mysession.vim
+
+
+"FOLD"
+   zf#j creates a fold from the cursor down # lines.
+   zf/ string creates a fold from the cursor to string .
+   zj moves the cursor to the next fold.
+   zk moves the cursor to the previous fold.
+   zo opens a fold at the cursor.
+  ->zO opens all folds at the cursor.
+   zm increases the foldlevel by one.
+  ->zM closes all open folds.
+   zr decreases the foldlevel by one.
+  ->zR decreases the foldlevel to zero -- all folds will be open.
+   zd deletes the fold at the cursor.
+   zE deletes all folds.
+  ->[z move to start of open fold.
+   ]z move to end of open fold.
+  
+  :set foldmethod=syntax
+  
+  should fold all functions and other blocks automatically, if you have syntax file for your language.
+
+
+"FAST TUTORIAL"
+  Basics
+  	:e filename 	Open filename for edition
+  	:w 	Save file
+  	:q 	Exit Vim
+  	:w! 	Exit Vim without saving
+  "SEARCH"
+  	/word 	        Search word from top to bottom
+  	?word 	        Search word from bottom to top
+  	/jo[ha]n 	Search john or joan
+  	/\< the 	Search the, theatre or then
+  	/the\> 	        Search the or breathe
+  	/\< the\> 	Search the
+  	/\< ¦.\> 	Search all words of 4 letters
+  	/\/ 	        Search fred but not alfred or frederick
+  	/fred\|joe 	Search fred or joe
+  	/\<\d\d\d\d\> 	Search exactly 4 digits
+  	/^\n\{3} 	Find 3 empty lines
+  	:bufdo /searchstr/ 	Search in all open files
+          /\cstring       Search without regard to the case 
+  Replace
+  	:%s/old/new/g 	Replace all occurences of old by new in file
+  	:%s/old/new/gw 	Replace all occurences with confirmation
+  	:2,35s/old/new/g 	Replace all occurences between lines 2 and 35
+  	:5,$s/old/new/g 	Replace all occurences from line 5 to EOF
+  	:%s/^/hello/g 	Replace the begining of each line by hello
+  	:%s/$/Harry/g 	Replace the end of each line by Harry
+  	:%s/onward/forward/gi 	Replace onward by forward, case unsensitive
+  	:%s/ *$//g 	Delete all white spaces
+  	:g/string/d 	Delete all lines containing string
+  	:v/string/d 	Delete all lines containing which didn’t contain string
+  	:s/Bill/Steve/ 	Replace the first occurence of Bill by Steve in current line
+  	:s/Bill/Steve/g 	Replace Bill by Steve in current line
+  	:%s/Bill/Steve/g 	Replace Bill by Steve in all the file
+  	:%s/\r//g 	Delete DOS carriage returns (^M)
+  	:%s/\r/\r/g 	Transform DOS carriage returns in returns
+  	:%s#<[^>]\+>##g 	Delete HTML tags but keeps text
+  	:%s/^\(.*\)\n\1$/\1/ 	Delete lines which appears twice
+  Ctrl+a 	Increment number under the cursor
+  Ctrl+x 	Decrement number under cursor
+  	ggVGg? 	Change text to Rot13
+  Case
+  	Vu 	Lowercase line
+  	VU 	Uppercase line
+  	g~~ 	Invert case
+  	vEU 	Switch word to uppercase
+  	vE~ 	Modify word case
+  	ggguG 	Set all text to lowercase
+  	:set ignorecase 	Ignore case in searches
+  	:set smartcase 	Ignore case in searches excepted if an uppercase letter is used
+  	:%s/\<./\u&/g 	Sets first letter of each word to uppercase
+  	:%s/\<./\l&/g 	Sets first letter of each word to lowercase
+  	:%s/.*/\u& 	Sets first letter of each line to uppercase
+  	:%s/.*/\l& 	Sets first letter of each line to lowercase
+  Read/Write files
+  	:1,10 w outfile 	Saves lines 1 to 10 in outfile
+  	:1,10 w >> outfile 	Appends lines 1 to 10 to outfile
+  	:r infile 	Insert the content of infile
+  	:23r infile 	Insert the content of infile under line 23
+  File explorer
+  	:e . 	Open integrated file explorer
+  	:Sex 	Split window and open integrated file explorer
+  	:browse e 	Graphical file explorer
+  	:ls 	List buffers
+  	:cd .. 	Move to parent directory
+  	:args 	List files
+  	:args *.php 	Open file list
+  	:grep expression *.php 	Returns a list of .php files contening expression
+  	gf 	Open file name under cursor
+  Interact with Unix
+  	:!pwd 	Execute the pwd unix command, then returns to Vi
+  	!!pwd 	Execute the pwd unix command and insert output in file
+  	:sh 	Temporary returns to Unix
+  	$exit 	Retourns to Vi
+  Alignment
+  	:%!fmt 	Align all lines
+  	!}fmt 	Align all lines at the current position
+  	5!!fmt 	Align the next 5 lines
+  Tabs
+  	:tabnew 	Creates a new tab
+  	gt 	Show next tab
+  	:tabfirst 	Show first tab
+  	:tablast 	Show last tab
+  	:tabm n(position) 	Rearrange tabs
+  	:tabdo %s/foo/bar/g 	Execute a command in all tabs
+  	:tab ball 	Puts all open files in tabs
+  Window spliting
+  	:e filename 	Edit filename in current window
+  	:split filename 	Split the window and open filename
+  	ctrl-w up arrow 	Puts cursor in top window
+  	ctrl-w ctrl-w 	Puts cursor in next window
+  	ctrl-w_ 	Maximise current window
+  	ctrl-w= 	Gives the same size to all windows
+  	10 ctrl-w+ 	Add 10 lines to current window
+  	:vsplit file 	Split window vertically
+  	:sview file 	Same as :split in readonly mode
+  	:hide 	Close current window
+  	:­nly 	Close all windows, excepted current
+  	:b 2 	Open #2 in this window
+  Auto-completion
+  	Ctrl+n Ctrl+p (in insert mode) 	Complete word
+  	Ctrl+x Ctrl+l 	Complete line
+  	:set dictionary=dict 	Define dict as a dictionnary
+  	Ctrl+x Ctrl+k 	Complete with dictionnary
+  Marks
+  	mk 	Marks current position as k
+  	˜k 	Moves cursor to mark k
+  	d™k 	Delete all until mark k
+  Abbreviations
+  	:ab mail mail@provider.org 	Define mail as abbreviation of mail@provider.org
+  Text indent
+  	:set autoindent 	Turn on auto-indent
+  	:set smartindent 	Turn on intelligent auto-indent
+  	:set shiftwidth=4 	Defines 4 spaces as indent size
+  	ctrl-t, ctrl-d 	Indent/un-indent in insert mode
+  	>> 	Indent
+  	<< 	Un-indent
+  Syntax highlighting
+  	:syntax on 	Turn on syntax highlighting
+  	:syntax off 	Turn off syntax highlighting
+  	:set syntax=perl 	Force syntax highlighting
+  
+  
+
+
+
+  bufdo normal 2G"Ayy
+
+  which iterates through the buffers and runs the given command in normal mode. 2G jumps to the appropriate line, and "Ay yanks into register a, appending instead of overwriting (since the A is capitalized). Make sure register a is empty before you start
+  
+  :r filename 	insert filename after cursor
+  :10r filename 	insert filename after line 10
+  :g/pattern/r filename 	search pattern and insert filename after cursor
+  :r !shell-command 	insert the result of a shell-command after cursor
+  !!shell-command 	insert command output in place of current line
+  :r foo.txt    Insert the file foo.txt below the cursor.
+  :0r foo.txt   Insert the file foo.txt before the first line.
+  :r !ls        Insert a directory listing below the cursor.
+  :$r !pwd      Insert the current working directory below the last line.
+
+
+SECTION SAVE
+  :mksession! ~/today.ses
+  vim -S ~/today.ses    
+
+
+CONCATENATE
+  :5,8del | let l=split(@","\n") | 1,4s/$/\=remove(l,0)/
+  1/ del
+  2/ split buffer
+  3/ remove(l,0) delete first elt of list l and return it :)
+  
+   will transfor : 
+  work it 
+  make it 
+  do it 
+  makes us 
+  harder
+  better
+  faster
+  stronger
+  ~
+  in 
+  work it harder
+  make it better
+  do it faster
+  makes us stronger
+  
+  paste -d "" 1 2 > merged.txt
+
+
+  Copy the text from file A with visual bock mode by hitting Ctrl-V at the top left corner of the text chunk then moving the cursor to opposite corner of the text chunk then hit y. Move to file B where you want to paste your chunk of text, then execute the following:
+  
+  :put
+  :'[,']join
+  
+  :put will paste text from a register in line mode, including visual block yanked text.
+  
+  :join will join lines together just like the J command.
+  
+  '[ and '] are marks set at the beginning and ending of a change.
+  
+  :'[,']join will join from the beginning of pasted text to the end of the pasted text.
+  
+  For more information see:
+  
+  :h :put
+  :h :j
+
+
+MAPS 
+  <CR> = <Enter> = <Return>
+  <C-R><C-W>  get the word under cursor 
+  :inoremap <F2> <C-R>=expand('%:p:h')<CR>   [give the current directory name under cursor
+ 
+  To move between long lines
+  :nnoremap k gk
+  :nnoremap j gj
+  fold save, load  
+  :mkview  :loadview
+
+  :colorscheme pychimp
+  colors for python
+
+
+COPY PASTE TO CLIPBOARD 
+  call vimx instead of vim 
+  then select and "+y 
+ 
+
+MAP 
+  :nmap - Display normal mode maps
+  :imap - Display insert mode maps
+  :vmap - Display visual and select mode maps
+  :smap - Display select mode maps
+  :xmap - Display visual mode maps
+  :cmap - Display command-line mode maps
+  :omap - Display operator pending mode maps
+  
+  nmapclear - Clear all normal mode maps
+  :nnoremap k gk " to move between long lines 
+  :nnoremap j gj
+  
+  :nnoremap ,b :ls<CR>:buffer<Space>
+  <CR> = return 
+
+  From a normal mode map, you can get the keyword under the cursor using the expand('<cword>') function or using the <C-R><C-W> command
+  
+  The following command maps <F2> to insert the directory name of the current buffer:
+  :inoremap <F2> <C-R>=expand('%:p:h')<CR>
+  
+  The '< Vim mark represents the beginning line of a visual region and the '> mark represents the ending line of the visual region
+  
+
+VIM FUNCTION : 
+  function! CalculateAge()
+      normal 03wdei^R=2012-^R"^M^[0j 
+  endfunction
+
+  :call CalculateAge()
+  nnoremap <leader>a :call CalculateAge()<CR> # to map it to \a
+  # save a macro : 
+    let @a='03wdei^R=2012-^R"^M^[0j'
+
+  One usefull macro : 03wdei^R=2012-^R"^M^[0j
+    0 — Move to the start of the line
+    3w — Skip three words, in this case to the fourth column
+    de — Delete to the end of the word
+    i — Enter insert mode
+    ^R= — Insert the contents of the special = register, which accepts an expression to evaluate
+    2012-^R"^M — Enter the expression 2012-(birth year) and press Enter (literal ^M), which completes the operation, and inserts the result
+    ^[ — Leave insert mode
+    0 — Return to the start of the line
+    j — Move down a line
+  :normal @a  # to run macro a from ex command
+  :g/vim/ normal @a  # run a for lines containing vim 
+
+
+OPERATION ON COLUMN ARITHMETIC 
+  :%!column -t #make the columns aligned, prettyer
+  :%!sort -k1  # sort column 1 
+  :% s/\d\{4}/\=2012-submatch(0)/    
+    % on every line
+    s substitute
+    \d\{4} four consecutive digits
+    \=2012-submatch(0) expression subtract matched value from 2012
+  %s/\%8c\d*/\=submatch(0)*100  # for column 8, means string number 8 
+  %s/\d\+/\=submatch(0)+2/g     # find all integer and add 2 to its
+  :%!ruby -pe 'gsub(/\d+/) {|m| m.to_f/2}  # same but float division by 2 using ruby 
+  :s/|\(\d\+\)/\='|'.(submatch(1)*60)/g
+  :s/|\(\d\+\):\(\d\+\)/\='|'.(submatch(1)+submatch(2))/g
+    transform 
+    |23:58|6:40|
+    |12:45|0:25|
+    |36:13|12:00|
+    in 
+    |1438|400|
+    |765|25|
+    |2173|720|
+
+
+"ARITHEMTIC"
+  :let result=(100*21)/23
+  :echo printf("%d.%02d",result/100,result%100)
+  %s/[0-9.]\+/\=2.0*str2float(submatch(0))/g 
+  [0-9.]\+    one or more digits or periods
+  \=  ...  evaluate following expression
+  2.0 ... obvious
+  *    ... also obvious
+  str2float(submatch(0))  take entire match and convert that string to a float
+  /g ...  as many matches as possible per line 
+
+
+"EXECUTE COMMAND FROM SHELL" 
+    +{command}
+    -c {command}
+    {command} will be executed after the first file has been read. {command} is interpreted as an Ex command. If the {command} contains spaces it must be enclosed in double quotes (this depends on the shell that is used). Example: Vim "+set si" main.c
+    Note: You can use up to 10 "+" or "-c" commands.
+
+    vim -nes "+se ul=-1" "+argdo %s/foo/bar/ge|up" "+q" *.fb 
+
+   For speed, using a standard startup, not in vi mode, in ex
+       batch mode with undo off and no swap files:
+
+   vim -u NONE -i NONE -Nnes "+se ul=-1" "+argdo %s/foo/bar/ge|up" "+q" *.fb 
+
+   BTW, if your shell is 4nt, replace "%s" with "%%s" - so that
+   %s isn't treated as a variable.  This is a good practice for
+   CMD users also, even though not necessary for this example. 
+
+   this one works 
+   vim -u NONE -i NONE -Nnes "+se ul=-1" "+argdo %s/line/bite/ge|up" "+q" *
+
+CASE
+  /\<[A-Z]\+\>
+  or
+  /\v<[A-Z]+>
+  or 
+  /\<\u\+\> # find upper case words
+
+  <ESC>:%s/.*/\L&/  # tranform everything to lowar case
+  <ESC>:%s/.*/\U&/  # upper
+
+
+FUNCTION
+  function Func()
+    : command1
+    : command2
+  endfunction
+  exec Func() 
+
+
+Install 
+  install vim -full 
+
+
+RUN BASH PYTHON
+  :set makeprg=python\ %
+  Yes, you need to escape the space. After this you can simply run:
+  :make
+
+  For Shell script I've used
+  :set makeprg=%
+  :make
+
+TIPS 
+  qa ... q     | record a macro that you call with @a
+  :%normal @a #execute the macro recorded in register a on all lines of the current file.
+  :normal @a   #or, with a visually selected set of lines:
+  
+  :'a,'b g/^Error/ .w >> errors.txt   | write line starting with Error in errors.txt
+  :w /some/path/%:r   | save file in another directory, but with the same name
+  :g/one\|two/     : list lines containing "one" or "two"
+  :g/^\s*$/d       : delete all blank lines
+  The following commands insert lines consisting of the full path of the current and alternate files into the buffer:
+  :put =expand('%:p')  " show current repertory /home2/tourneboeuf/Mem/vim
+  :put =expand('#:p')
+  gf                  |  open file name under cursor (SUPER)
+  :map <F9>  :r file            |     " Read text from 'file' and insert it below the current line
+
+
+

@@ -1,0 +1,67 @@
+Hola Giovanni soy Martin ( el pololo de Rocio). Me dijo que buscabas la verdad sobre la funcion exponencial ( El logaritmo es solo su reciproca ). Bueno, la funcion exponencial es la ultima etapa en el analisis continuo. Es decir, que cuando la entiendes entendiste todas las bases del analisis continuo (osea el calculo). Por lo tanto, Si te falta algo (derivacion, serie de taylor, integracion, funcion reciproca) tendras que aprenderlo. Pero lo bueno es que cuando entenderas la funcion exponencial (y su reciproca el log), entendreras todo. Empiezo :
+
+
+Para empezar un ejemplo : 
+Imaginate 2 conejos. Cada ano doblan su poblacion. 
+En 1 ano hacen 2 hijos, entonces son 2 padres mas 2 hijos = 4. Pero el siguiente anos tambien estos hijos se reproducen (ahora son padres) entonces seran ...4 padres mas 4 hijos = 8 cierto. Y 16 y 32 conejos.
+Si llamamos t (como tiempo) el numero de anos, su poblacion en t anios sera 2*2*2*2  t veces osea 2^t (2 elevado a t). Eso es lo dificil. Mira, el primer anio seran los 2 padres. El segundo 2*2. EL tercero (2*2): los 4 del anio de antes multiplicado por 2, ya que estos 4 hicieron hijos : entonces 2*2*2 el tercer anio. El cuarto 2*2*2*2.... Es una explocions. En 10 anios seran 2^10 = 1024 conejos. El exponencial es la funcion de la explosion o de la potencial del elevado. 
+
+Pero hablé de potencia no de exponencial. Los dos estàn ligados, pero la relacion es difficil de entender. El problema vino de Euler que ya tenia buenas bases de calculo derivado ( inventado por Newton (viva Europa (ninguno era Frances))). La derivada es como una diferencia : es lo que este anio tenemos menos lo del anio pasado. PERO !!! Aqui cada cosa (reproducion) pasa cada anio. Es una realidad discreta : pasa cada unidad determinada de tiempo ( aqui el anio ). Lo contrario de discreto es continuo, es decir que pasa cada momento un poco. En mi exemplo t puede ser 1 anio o 2 anios o 3 ... Pero en el punto de vista continuo t puede ser 1.2 o 3.45524542 o 3.3333333 o 10/3, osea cualquier numero complicado. Entonces, una derivada ya no es lo de este anio menos el pasado sino como un limite de lo que hay ahora menos lo que habia hace muy poco. 
+Entonces si "x" es el numero de conejos llamamos x(t) el numero de conejos del ano t. 
+Yo te dije que la derivada era el numero de este anio menos el numero de conejos del anio pasado osea x(t) - x(t-1). Te menti un poco. En continuo es distinto porque tu no quieres la "diferencia" ( que tiene que ver con el discreto ) quieres la derivada ( que tiene que ver con el continuo ). Entonces la derivada sera :
+
+      (   x(t)-x(t-h) )    /   h
+
+Donde h es un tiempo muy chico. En mi ejemplo tomé h igual a 1 ( ano ). Ahora NO !! h es igual a 0.000000000001 de hecho aun menos.
+El numero de mis conejos dobla cada anio ( Porque yo supongo un probelma asi ). Todo mi sistema era perfectamente exponencial en el mundo discreto. Era solo un ejemplo particular. 
+Fin del ejemplo. 
+
+
+Ahora hablamos funciones y derivadas. La definicion es " La funcion exponencial es la unica funcion cuya derivada es igual a si misma", Que wea ? Es decir que mientras mas grande mas rapido crece  ( como el numero de conejos ).
+Si esta funcion la llamamos "f" tenemos : 
+    
+   A/  f'(t) = f(t)
+   B/  f(0) = 1 
+
+Donde f' es la derivada de f.
+Las ecuaciones A y B son las definiciones de la funcion exponencial, es la BASE, su origen.
+Esta funcion tiene unas caracteristicas importantes : 
+
+       1/ f(0) = 1  y cualquier numero elevado a 0 es igual a 1. 
+       2/ f(a+b) = f(a) * f(b)  (con un poco de calculo llegamos a esta ecuacion) y cualquier numero llamado "n" elevado tiene esta caracteristica  : n^(a+b) = n^a * n^b.
+
+Entonces estas 2 ecuaciones por regla de aritmetica me dice que esta funcion es una potencia. Pero qué numero va a ser elevado ??? Tu sabes que cualquier numero elevado a la 1 es igual a si mismo osea 5 elevado a la 1 vale 5. Entonces este numero es f(1) lo llamamos "e". Y llamamos f() exp() por exponencial. Entonces f(1) = exp(1) = e^1 = e = 2.73.....
+Como calculé 2.73.... por un metodo de Serie de Taylor.  
+
+Sabemos (ver serie de taylor o integraicon por partida) que si llamamos f cualquier function continua tenemos : 
+
+      f(1) = f(0) + f'(0) + f''(0)/2 + f'''(0)/(2*3)  + f''''(0)/(2*3*4) ......
+
+en el caso de exponencial (remplazamos f por exp) : 
+
+      exp(1) = exp(0) + exp'(0) + exp''(0)//2 + exp'''(0)/(2*3)  + exp''''(0)/(2*3*4) ......
+      e      = 1      + 1       + 1/2         + 1/6              + 1/12               ......
+      e      = 2 + 0.5 + 0.16666 + 0.8333333 + .... = 2.7.....
+
+La segunda linea es donde uso el hecho de que la derivada de exponencial es exponencial ( hecho A de la definicion misma, incontestable ya que es lo que suponemos ). 
+Pero si su derivada es ella misma, la dervida de su derivada exp'' tambien es igual a ella : es la derivada de su derivada pero su derivada es ella asi que es la derivada de ella asi que es ella. Osea exp''''''' = exp, puedes derivarla milliones de veces y siempre serà igual a ella misma, esa es la gracia. 
+ 
+
+
+ BUENO !! Todo està aca asi que lo resumo en ecuaciones porque es lo que vas a usar. (la exp te ayuda a resolver ecuaciones gracias a sus caracteristicas)
+
+    1/ exp'(t)  = exp(t)    (y exp derivado cualquier numero de veces es igual a exp, eso sirve para resolver ecuaciones diferenciales, tipicas de la economia)
+    2/ exp(0)   = 0 
+    3/ exp(a+b) = exp(a)*exp(b)  entonces exp(a*b) = exp(a)^b = exp(b)^a
+    4/ exp(t)   = e^t       ( porque es equivalente la funcion exp(t) y e elevado a t son iguales, pero nunca podremos saber exactamente el valor decimal de e, solo usamos un valor aproximado, asi que nos quedamos con su escritura como "e" y no 2.73.... ya que 2.73... tiene una serie de cifras despues de la coma que nunca acaba : e es irracional y aun mas complicado: es transcendante pero eso no es el tema de hoy). 
+
+    NADA Mas que estas 4 ecuaciones.
+
+
+EL Logaritmo como su funcion reciproca tiene estas particularidades. 
+   1/ ln'(t)  = 1/x 
+   2/ ln(1)   = 0 
+   3/ ln(a*b) = ln(a) + ln(b) entonces ln(a^b) = b * ln(a) 
+   
+
+Tienes que ejercerte a calcular, de eso seràn las pruebas, no de la base fundamental que te expliqué : http://www.aulafacil.com/cursos/t646/ciencia/matematicas/logaritmos-y-ecuaciones-exponenciales

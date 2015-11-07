@@ -1,0 +1,60 @@
+package com.mygdx.gdx2;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+
+// Class to be extended for each card 
+public class Card{
+  public Sprite sprite; // the image
+  public ShapeRenderer shapeRenderer = new ShapeRenderer(); // the design
+  public int x,y;  // the position 
+  public String text; 
+  public String comment; 
+  public Texture fullTexture; 
+  public Pixmap fullPixmap; 
+  public int pixmapWidth=100, pixmapHeight=200, pixmapBorder = 4; 
+
+  public Card(){
+    Create();
+  }
+  public void Create(){
+     CreateTexture(); 
+
+     sprite = new Sprite( new Texture(fullPixmap) ) ;
+     sprite = new Sprite( PixmapFactory.texturePixel(new Color(1,1,1,1) ));  
+     sprite = new Sprite( new Texture( PixmapFactory.monocromaticPixmap(50,100,new Color(1,1,1,1) ) ));  
+     Pixmap pixmap = new Pixmap(pixmapWidth,pixmapHeight,Format.RGBA8888); 
+     pixmap.setColor(1,1,1,1); 
+     pixmap.fill();
+     pixmap.setColor( new Color( 1, 0, 0, 1) ) ;
+     pixmap.fillRectangle(0,0, pixmapWidth, pixmapBorder )  ;  // top 
+     pixmap.fillRectangle(0, pixmapHeight - pixmapBorder, pixmapWidth, pixmapBorder )  ;  // bottom 
+     pixmap.fillRectangle(0,0, pixmapBorder, pixmapHeight )  ; // left
+     pixmap.fillRectangle(pixmapWidth - pixmapBorder ,0, pixmapBorder, pixmapHeight )  ; //rgith 
+     sprite = new Sprite (  new Texture( pixmap )  ); 
+     sprite.setCenterX(0) ;
+     sprite.setCenterY(0) ;
+	 
+     text="this is a long string long lgogggggggggggggggggggggg";
+   
+  }
+
+  public void draw(float delta){
+
+  }
+  public void CreateTexture(){
+    fullPixmap = new Pixmap(50, 100, Format.RGBA8888);
+    fullPixmap.setColor(1, 0, 0, 1);
+    fullPixmap.drawRectangle(0, 0,fullPixmap.getWidth(), fullPixmap.getHeight());
+    fullPixmap.drawRectangle(0, 0,fullPixmap.getWidth(), 2);
+    fullPixmap.drawRectangle(0,fullPixmap.getHeight()-2,fullPixmap.getWidth(), 2);
+    fullPixmap.drawRectangle(0, 0, 2, fullPixmap.getHeight());
+    fullPixmap.drawRectangle(0,fullPixmap.getHeight()-2, 2, fullPixmap.getHeight());
+    
+  }
+}
+

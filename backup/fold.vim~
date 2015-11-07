@@ -1,0 +1,91 @@
+set foldmethod=expr
+set foldexpr=FoldMethod(v:lnum)
+
+function! FoldMethod(lnum)
+  let crLine=getline(a:lnum)
+
+  " check if empty line 
+  if empty(crLine) "Empty line or end comment 
+    return -1 " so same indent level as line before 
+  endif 
+
+  " check if comment 
+  let a:data=join( map(synstack(a:lnum, 1), 'synIDattr(v:val, "name")') )
+  if a:data =~ ".*omment.*"
+    return '='
+
+  "Otherwise return foldlevel equal to ident /shiftwidth (like if
+  "foldmethod=indent)
+  else  "return indent base fold
+    return indent(a:lnum)/&shiftwidth
+  endif
+endfunction
+
+
+function! MyFunc()
+  if "foo" == "FOO" || "foo" == "foo"
+      echom "no, it couldn't be"
+  elseif "foo" == "foo"
+      echom "this must be the one"
+  endif
+  if matchstr("aYaa","a. a") == ""
+    echom "it is empty"
+  else 
+    echom matchstr("aYaa","a.a") 
+  endif
+endfunction
+
+function! s:HasSurroundingFencemarks(lnum)
+  let cursorPosition = [line("."), col(".")]
+  call cursor(a:lnum, 1)
+  let startFence = '/\*'
+  let endFence = '\*/'
+  let fenceEndPosition = searchpairpos(startFence,'',endFence,'W')
+  call cursor(cursorPosition)
+  return fenceEndPosition != [0,0]
+endfunction
+
+
+function! CFoldLevel(lnum)
+  let line = getline(a:lnum)
+  else
+    return '1' " This line has a foldlevel of 1.
+  endif
+endfunction
+
+function! CFoldText()
+  " Look through all of the folded text for the function signature.
+  let signature = ''
+  let i = v:foldstart
+  while signature == '' && i < v:foldend
+    let line = getline(i)
+    if line =~ '\w\+(.*)$'
+      let signature = line
+    endif 
+    let i = i + 1
+  endwhile
+
+  " Return what the fold should show when folded.
+  return '+-- ' . (v:foldend - v:foldstart) . ' Lines: ' . signature . ' '
+endfunction
+
+function! CFold()               
+  set foldenable
+  set foldlevel=0   
+  set foldmethod=expr
+  set foldexpr=CFoldLevel(v:lnum)
+  "set foldtext=CFoldText()
+  set foldnestmax=1
+endfunction
+
+
+"Show syntax highlighting groups for word under cursor 
+nnoremap <silent> <F10> :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+   if !exists("*synstack")
+      return
+   endif
+   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
+

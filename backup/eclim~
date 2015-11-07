@@ -1,0 +1,7 @@
+import android cannot be resolved : 
+   add "	<classpathentry kind="src" path="src"/>
+   	<classpathentry exported="true" kind="lib" path="/home2/tourneboeuf/Software/Android/SDK/android-sdk-linux/platforms/android-22/android.jar"/>
+	" to .classpath
+
+
+

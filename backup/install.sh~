@@ -1,0 +1,9 @@
+#!/bin/bash
+echo UNINSTALLING ___________________________________
+adb  uninstall com.example.app1.KillThemAll ;
+echo COMPILING _________________________
+ant debug
+echo INSTALLING  ___________________________________
+adb -d install bin/App1-debug.apk ; 
+echo RUNNING  ___________________________________
+adb shell am start com.example.app1.KillThemAll/.KillThemAllActivity
