@@ -14,6 +14,7 @@ filetype on
 
 
 " APPEARANCE , COLOR, search 
+  
   "SEARCH 
   set smartcase
       "/copyright      " Case insensitive
@@ -137,6 +138,12 @@ filetype on
 
   nnoremap <space> zA
   vnoremap <space> zf
+  map <2-LeftMouse> zA
+  map j gj
+  map k gk
+  
+
+
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0 
   set foldlevel=10  " WTF 
   "set foldlevelstart=5 "the folding at opening
