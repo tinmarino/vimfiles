@@ -1,3 +1,4 @@
+set nocompatible
 call pathogen#infect()
 filetype on 
 
@@ -14,7 +15,6 @@ filetype on
 
 
 " APPEARANCE , COLOR, search 
-  
   "SEARCH 
   set smartcase
       "/copyright      " Case insensitive
@@ -43,14 +43,15 @@ filetype on
   set noswapfile                " I will this if this is harmfull
   set backupdir=~/.vim/backup// " the double // will put the backup with the full directory  
   set directory=~/.vim/backup// " for the swap files 
-  set history=100000            " remember more commands and search history
   set undolevels=100000         " use many levels of undo
+  set history=100000		" After nocompatible 
   set autoread                  " when reopening a file, go to the position as when you quit it +  This will disable read-only to writeable warnings
  
   if has('persistent_undo')
     set undodir=~/.vim/undo
     set undofile 
   endif 
+  set history=100000            " remember more commands and search history
 
 
 "MOUSE INTEGRATION 
@@ -62,7 +63,10 @@ filetype on
 
 "MAP = SHORTCUTS 
   let mapleader=','
+  nnoremap H :set cursorline! cursorcolumn!<CR> 
   "move one line 
+  map <Leader>c :s,^\(\s*\)[^# \t]\@=,\1// ,<CR>gv
+  map <Leader>u :s,^\(\s*\)[^# \t]\@=// ,\1,<CR>gv
   nnoremap <S-Down> :let tmp=getpos('.') <CR>:m+1 <CR>: call cursor(tmp[1]+1,tmp[2]) <CR>
   nnoremap <S-Up>   :let tmp=getpos('.') <CR>:m-2 <CR>: call cursor(tmp[1]-1,tmp[2]) <CR>
   inoremap <S-Up>   <Esc>:let tmp=getpos('.') <CR>:m-2 <CR>: call cursor(tmp[1]-1,tmp[2]) <CR>a
@@ -109,6 +113,21 @@ filetype on
   map yx :s/y/x/g<CR>
 
 
+  nnoremap <space> zA
+  vnoremap <space> zf
+  "map <2-LeftMouse> zA
+  "
+  "zr zm with ctrl + direction, never used ....
+  nnoremap <silent> <C-Right> zr
+  vnoremap <silent> <C-Right> zr
+  nnoremap <silent> <C-Left> zm
+  vnoremap <silent> <C-Left> zm
+  nnoremap <silent> <C-Up> zR
+  vnoremap <silent> <C-Up> zR
+  nnoremap <silent> <C-Down> zM
+  vnoremap <silent> <C-Down> zM
+
+
 "FOLDING, and folding maps 
   highlight Folded ctermfg=DarkGreen ctermbg=Black
   set foldmethod=expr
@@ -120,8 +139,21 @@ filetype on
     let crLine=getline(a:lnum)
   
     " check if empty line 
-    if empty(crLine) "Empty line or end comment 
+    if empty(crLine) || crLine[0]== "#" "Empty line or end comment 
       return -1 " so same indent level as line before 
+    endif 
+
+    " check if there is #ifdef .... staff 
+  
+    " check if { or }
+    if crLine =~ "\s*[{}]\s*" 
+      if crLine =~ ".*{.*"
+	let g:tmp = crLine
+        return FoldMethod(a:lnum+1) "value of the next line   
+      else 
+	return FoldMethod(a:lnum-1) "value of the previous line + 0 
+      endif 
+    
     endif 
   
     " check if comment  in syntax
@@ -134,13 +166,9 @@ filetype on
     else  "return indent base fold
       return indent(a:lnum)/&shiftwidth
     endif 
+
   endfunction
 
-  nnoremap <space> zA
-  vnoremap <space> zf
-  map <2-LeftMouse> zA
-  map j gj
-  map k gk
   
 
 
@@ -148,15 +176,6 @@ filetype on
   set foldlevel=10  " WTF 
   "set foldlevelstart=5 "the folding at opening
 
-  "zr zm with ctrl + direction, never used ....
-    nnoremap <silent> <C-Right> zr
-    vnoremap <silent> <C-Right> zr
-    nnoremap <silent> <C-Left> zm
-    vnoremap <silent> <C-Left> zm
-    nnoremap <silent> <C-Up> zR
-    vnoremap <silent> <C-Up> zR
-    nnoremap <silent> <C-Down> zM
-    vnoremap <silent> <C-Down> zM
 
 
 " BUFFER MANAGEMENT  and it maps 
@@ -189,6 +208,6 @@ filetype on
 
 
 "ECLIM 
-  set nocompatible
+  "set nocompatible 
   filetype plugin indent on
   let g:EclimCompletionMethod = 'omnifunc'

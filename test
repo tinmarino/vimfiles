@@ -1,0 +1,21 @@
+syntax on
+syntax include @CPP syntax/cpp.vim
+syntax include @VIM syntax/vim.vim
+
+:syntax region cppSnip matchgroup=Snip start="@begin=cpp@" end="@end=cpp@" contains=@CPP
+:syntax region cppSnip matchgroup=Snip start=">\s*" end="<\s*" contains=@VIM
+:hi link Snip SpecialComment
+
+
+This is simple text, and following is C++:
+@begin=cpp@
+  int q;
+  struct w { double e };
+@end=cpp@
+
+this is simple text 
+\VIM
+  let a=3 
+  add 
+  struct w { double e };
+/VIM
