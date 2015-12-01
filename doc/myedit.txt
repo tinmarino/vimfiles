@@ -1,0 +1,49 @@
+
+===============================================================================
+                                                *mykey*
+Key~
+
+(			| jump backward one sentence (sentences starts with .)
+{			| jump on paragraph backward 
+- or ^			| move to first (non blank caracter)
+%			| jump to matching bracket 
+<C-i> 			| jump to next location, isert position
+<C-o>			| jump to the previous (older) location
+:jumps 			| Display jump list 
+4<C-o>			| jump to the jump number 4 in jump list, works also
+with 4<C-i>
+'.			| jump to last inserted text 
+
+
+shift+J | paste next line at the end of current 
+
+  gf                  |  open file name under cursor (SUPER)
+  :r file            |     " Read text from 'file' and insert it below the current line
+  :e . 			| Open integrated file explorer
+  ga 	Caracter value, in unicode, ascii, hex octal 
+  :Sex 	Split window and open integrated file explorer
+
+EDIT 
+
+  Read/Write files
+  	:1,10 w outfile 	Saves lines 1 to 10 in outfile
+  	:1,10 w >> outfile 	Appends lines 1 to 10 to outfile
+  	:r infile 	Insert the content of infile
+  	:23r infile 	Insert the content of infile under line 23
+  Auto-completion
+  	Ctrl+n Ctrl+p (in insert mode) 	Complete word
+  	Ctrl+x Ctrl+l 	Complete line
+  	:set dictionary=dict 	Define dict as a dictionnary
+  	Ctrl+x Ctrl+k 	Complete with dictionnary
+  :r filename 	insert filename after cursor
+  :10r filename 	insert filename after line 10
+  :g/pattern/r filename 	search pattern and insert filename after cursor
+  :r !shell-command 	insert the result of a shell-command after cursor
+  !!shell-command 	insert command output in place of current line
+  :r foo.txt    Insert the file foo.txt below the cursor.
+  :0r foo.txt   Insert the file foo.txt before the first line.
+  :r !ls        Insert a directory listing below the cursor.
+  :$r !pwd      Insert the current working directory below the last line.
+
+
+vim: ft=myhelp

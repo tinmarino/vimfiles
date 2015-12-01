@@ -92,9 +92,6 @@ function! IntToFloat(col) range
 
 endfunction
 
-" The column must be float 
-let g:tmp=[]
-let g:bool=0
 
 function! ColArith(col)  range 
   " ex: we add first and second column, write in first ( a new one )
@@ -107,8 +104,6 @@ function! ColArith(col)  range
   endfor 
 endfunction
 
-" Get the n'th field of a space separated array file 
-let b:tmp=""
 
 
 function! Getword(line,col)
@@ -154,6 +149,59 @@ function! OutputSplitWindow(...)
   endif
 endfunction
 
+function! Chapter(string)
+  let l:tet  =repeat("=",80)
+  let l:tet .= "\n" .  repeat(" ",50) . "*" . a:string . "*"
+  let l:tet .= "\n" . a:string . ' ~'
+  let l:tet .= "\n\t"
+
+  " The next three lines works 
+  let @t=l:tet
+  "or can use append 
+  execute "put t"
+
+endfunction
+
+
+function! GetIndex()
+  " INIT ALL VARIABLES 
+  let l:cursor = getpos(".")
+  let b:index  = [] " The lines with ========================= 
+  let b:titles = [] 
+  let b:ref    = []
+  execute 'g/' . repeat("=",80) . '/call add(b:index,line("."))'
+
+  " READ THE FILE 
+  while len(b:index) != 0 
+    let b:lineNb = remove(b:index,0) 
+
+    let b:line   =  getline(b:lineNb +1)
+    if b:line =~ "^\\s*\\*\\(\\S*\\)\\*\\s*$"
+      call add(b:ref, substitute( b:line  ,'\s*\*\([^*]*\)\*\s*' , "\\1" , "" )   )
+    endif 
+
+    let b:line   =  getline(b:lineNb +2)
+      call add(b:titles, b:line[:-2]   )
+  endwhile  
+
+  " PREPARE THE BUFFER IN REG To paste 
+  let @t=""
+  let l:i=0
+  while i<len(b:titles)  
+    let @t .= (l:i+1) . "/ " . get(b:titles,i) . "\n"  " \n must be in \"\" these quotes 
+    let i +=1
+  endwhile 
+   
+  " PASTE AND RETURN 
+  call setpos('.',l:cursor) 
+  execute 'put t'
+  return b:ref
+ 
+endfunction 
+
+  "normal! G to go to the end 
+command! -nargs=* -complete=command GetIndex call GetIndex(<f-args>)
+command! -nargs=* -complete=command Chapter call Chapter(<f-args>)
 
 command! -nargs=+ -complete=command Output call OutputSplitWindow(<f-args>)
 

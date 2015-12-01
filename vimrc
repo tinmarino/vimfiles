@@ -127,6 +127,9 @@ filetype on
   nnoremap <silent> <C-Down> zM
   vnoremap <silent> <C-Down> zM
 
+  vnoremap > >gv 
+  vnoremap < <gv 
+
 
 "FOLDING, and folding maps 
   highlight Folded ctermfg=DarkGreen ctermbg=Black
