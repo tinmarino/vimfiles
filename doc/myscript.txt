@@ -1,0 +1,228 @@
+                                                 *myscript*
+Script ~
+
+1. IF						|myif| 
+2. FOR 						|myfor|
+3. VARIABLE					|myvariable|
+4. STRING 					|mystring|
+5. ARITHMETIC 					|myarithmetic|
+6. FUNCTION					|myfunciton-script|
+
+-------------------------------------------------------------------------------
+                                                *myif*
+
+>vim
+   if <expression>
+   	...
+   elseif <expression>
+   	...
+   else
+   	...
+   endif
+   if l:string =~ "y*"
+      let g:tmp ="True"
+   endif " Don't forget that endif 
+<vim
+Expression can be : 
+   <string> == <string> : String equals.
+   <string> != <string> : String does not equal.
+   <string> =~ <pattern>: String matches pattern.
+   <string> !~ <pattern>: String doesn’t match pattern.
+   <operator>#          : Additionally match case.
+   <operator>?          : Additionally don’t match case.
+   exists('var')	; Check if varaible exists 
+
+-------------------------------------------------------------------------------
+                                                 *myfor*
+>vim
+  for <var> in <list>
+  	continue 	" return to the begining of loop 
+  	break		" stop the loop and exit 
+  endfor
+  
+  for l:var in range(30)
+  for [var1, var2] in [[1, 2], [3, 4]]
+  	" on 1st loop, var1 = 1 and var2 = 2
+  	" on 2nd loop, var1 = 3 and var2 = 4
+  endfor
+
+
+  while <expression>
+  endwhile
+
+  while l:bool
+
+  try
+  	...
+  catch <pattern (optional)>
+  	" HIGHLY recommended to catch specific error.
+  finally
+  	...
+  endtry
+<vim
+
+
+-------------------------------------------------------------------------------
+                                                 *myvariables*
+>vim
+g:var " global.
+a:var " function argument.
+l:var " local to function.
+b:var " local to buffer.
+w:var " local to window.
+t:var " local to tab.
+v:var " Predefined by Vim.
+<vim
+
+<Number>: 32-bit signed number.
+>vim
+    -123
+    0x10
+    0177
+<vim
+<Float>: Floating point number. Requires +float on vim compile
+>vim
+    123.456
+    1.15e-6
+    -1.1e3
+<vim
+<String>: NUL terminated string of 8-bit unsigned characters.
+>vim
+    "ab\txx\"--"
+    'x-z''a,c'
+<vim
+<Funcref>: A reference to a function. Variables used for funcref objects must start with a capital letter.
+>
+    :let Myfunc = function("strlen")
+    :echo Myfunc('foobar') " Call strlen on 'foobar'.
+<
+<List>: An ordered sequence of items.
+>
+    :let mylist = [1, 2, ['a', 'b']]
+    :echo mylist[0]
+    1
+    :echo mylist[2][0]
+    a
+    :echo mylist[-2]
+    2
+    :echo mylist[999]
+    E684: list index out of range: 999
+    :echo get(mylist, 999, "THERE IS NO 1000th ELEMENT")
+    THERE IS NO 1000th ELEMENT
+<
+<Dictionary>: An associative, unordered array. Each entry has a key and a value.
+>
+    :let mydict = {'blue': "#0000ff", 'foo': {999: "baz"}}
+    :echo mydict["blue"]
+    #0000ff
+    :echo mydict.foo
+    {999: "baz"}
+    :echo mydict.foo.999
+    baz
+    :let mydict.blue = "BLUE"
+    :echo mydict.blue
+    BLUE
+<
+
+-------------------------------------------------------------------------------
+                                                 *mystring*
+
+
+>vim
+  :5,8del | let l=split(@","\n") | 1,4s/$/\=remove(l,0)/
+<vim
+  1/ del
+  2/ split buffer
+  3/ remove(l,0) delete first elt of list l and return it :)
+  
+   will transfor : 
+  work it 
+  make it 
+  do it 
+  makes us 
+  harder
+  better
+  faster
+  stronger
+  ~
+  in 
+  work it harder
+  make it better
+  do it faster
+  makes us stronger
+  
+
+-------------------------------------------------------------------------------
+                                                 *myarithmetic*
+
+>vim
+  let result=(100*21)/23
+  :echo printf("%d.%02d",result/100,result%100)
+
+  %s/[0-9.]\+/\=2.0*str2float(submatch(0))/g 
+<vim
+      [0-9.]\+    one or more digits or periods
+      \=  ...  evaluate following expression
+      2.0 ... obvious
+      *    ... also obvious
+      str2float(submatch(0))  take entire match and convert that string to a float
+      /g ...  as many matches as possible per line 
+
+  %s/\%8c\d*/\=submatch(0)*100  # for column 8, means string number 8 
+  %s/\d\+/\=submatch(0)+2/g     # find all integer and add 2 to its
+  :s/|\(\d\+\)/\='|'.(submatch(1)*60)/g
+  :s/|\(\d\+\):\(\d\+\)/\='|'.(submatch(1)+submatch(2))/g
+    transform 
+    |23:58|6:40|
+    |12:45|0:25|
+    |36:13|12:00|
+    in 
+    |81|46|
+    |57|25|
+    |49|12|
+
+
+				                 *hex2int*
+HEX TO INT ~
+>vim
+  "IN command 
+  :echo 0x123455 " will echo the dec value 
+  :echo printf('%x',74565)
+
+  "IN insert 
+  <C-R>=0x09ab<Enter>  "will insert 2475
+  <C-R>=printf('0x%04x',2475)<Enter> "will insert 0x09ab
+  ctrl-R + ctrl-W "paste in command move, the wrold under cursor 
+<vim
+
+						*myfunction-script*
+Function are defined like 
+>
+  function! (arg1,arg2) 
+  endfunction
+<
+  Where we dont know the |type()| of the argument, the ! silently forces reload if function is defined yet 
+
+NOTE:  
+  The undo and search pattern are restored after function call. Yo umust change it explicitely |search-script|
+
+
+
+-------------------------------------------------------------------------------
+Change the mysearch pattern 
+						 *search-script*	
+>vim
+  fun! X()
+      /Hello
+      let @/ = 'Hello'
+  endfun
+
+  redir @a 
+  call bla()
+  redir END 
+<vim
+-------------------------------------------------------------------------------
+
+command! -nargs=1 MyCommand call s:MyFunc(<f-args>) " transform a function to user-command
+
+vim: ft=myhelp

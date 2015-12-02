@@ -1,0 +1,44 @@
+
+===============================================================================
+                                                 *myregister*
+Registers ~
+
+-------------------------------------------------------------------------------
+>vim
+  " IN COMMAND 
+  :registers  		"to view content 
+  :normal @a  		" to run macro a from ex command
+  :g/vim/ normal @a  	" run a for lines containing vim 
+  :call setreg('"', @", 'V') " the inverse fct is getreg
+  :ctrl-R + ctrl-W paste "in command move, the wrold under cursor 
+     :Ctrl-R =getline(58) Enter. After that you will be back to command line editing, but it has inserted the contents of the 58th line.
+
+  " IN INSERT 
+  :<C-r> "To paste the content of a register in command <C-r> + name of the reg
+  i<C-R>, <C-O> + reg " paste in insert mode 
+  :g/^foo/y A, :g/bar/y A, :let @+ = @a .Copy all lines beginning with foo, and afterwards all lines containing bar to clipboard, chain these commands: qaq (resets the a register storing an empty macro inside it), 
+  :let @" = expand("%:p") "put in the unamed register the full path
+  :let @b = substitute(@a,'\_s*\(.\{-}\)\_s*$','\1','') " this give the output in reg b 
+  :%y+. 	          "Copy the entire buffer to the system clipboard of the file 
+
+<vim
+                                                 *myregister-list*
+
+
+      a — Named register, "aY Replace the contents of register a with the current line 
+      A — Append, "AY Append the current line to register a.
+      "   Unamed register is the uname reg, everything going to a reg also go to this one
+      _ is the black hole register, empty when reading but writable. everything going to it go to /dev/null to avoid erase the standar register wehn deleting something 
+      - the small delete (lesss than one line for example thing you delete with 3x
+      . last inserted text 
+      % filename 
+      : command 
+      / search 
+      = expression # to take the result of an arbitrary expression 
+      + and * are for interface with system clipboard "maybe install vimx 
+      # name od atlernate file 
+      % contains the name of the current file, and register
+
+
+
+vim: ft=myhelp

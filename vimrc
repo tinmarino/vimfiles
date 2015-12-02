@@ -128,6 +128,9 @@ filetype on
   nnoremap <silent> <C-Down> zM
   vnoremap <silent> <C-Down> zM
 
+  vnoremap > >gv 
+  vnoremap < <gv 
+
 
 "FOLDING, and folding maps 
   highlight Folded ctermfg=DarkGreen ctermbg=Black
@@ -176,6 +179,7 @@ filetype on
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0 
   "set foldlevel=-1  " WTF 
   set foldlevelstart=-1 "the folding at opening
+  "set foldlevelstart=5 "the folding at opening
 
 
 
@@ -212,7 +216,10 @@ filetype on
   "set nocompatible 
   filetype plugin indent on
   let g:EclimCompletionMethod = 'omnifunc'
+<<<<<<< HEAD
 
 " WINDOWS 
   set ruler 
   set backspace=2 
+=======
+>>>>>>> maison

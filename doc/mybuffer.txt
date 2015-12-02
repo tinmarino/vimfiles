@@ -1,0 +1,72 @@
+1. Split 					|mysplit|
+2. Buffer 					|mybuffer|
+3. Tab						|mytab|
+
+===============================================================================
+                                                 *mysplit*
+Split ~
+
+:sp[lit]		| Split Screen horizontaly 
+:vsp[lit]		| Split Screen vertically 
+:sview 			| Same as :split in readonly mode
+:hide 			| Close current window
+:only 			| Close all windows, excepted current
+Ctrl + w and Ctrl+w 	| sWitch viewport 
+Ctrl + w and [hjkl]	| Move to the next viewport
+ctrl + w and arrow	| Same
+Ctrl + w and [+-] 	| Increase/decrease Current Viewport.
+10 Ctrl + w and + 	| Add 10 lines to current window
+Ctrl + w and =		| Igualise viewport size
+Ctrl + w and _		| Maximise current window
+Ctrl + w and [rR]	| Change viewport position 
+Ctrl + w and  q 	| Close current viewport
+
+
+===============================================================================
+                                                *mybuffer*
+Buffer ~
+
+
+:ls			| display buffer list
+
+
+:bn			| new
+:bd			| delete
+:b3			| goto 3
+:n :p			| next, previous
+:rew 			| rewind to 1st file
+
+:args 			| display argument list
+:arg 			|Optional: Display the current arglist.
+:arg *.cpp 		|All *.cpp files in current directory.
+:argadd *.h 		|And all *.h files.
+:argdo %s/pattern/replace/ge | update 	Search and replace in all files in arglist. 
+
+:update			| save if changes
+:bufdo 			| do the command to all buffer
+:e!   			| return to unmodified file
+:e #   			| edit alternative file
+:e +name		| edit
+:w /some/path/%:r 	| save file in another directory, but with the same name
+:sav php.html     	| Save current file as php.html and "move" to php.html
+
+:qa          		| quit all 
+
+
+  bufdo normal 2G"Ayy "which iterates through the buffers and runs the given command in normal mode. 2G jumps to the appropriate line, and "Ay yanks into register a, appending instead of overwriting (since the A is capitalized). Make sure register a is empty before you start
+
+===============================================================================
+                                                *mytab*
+Tab ~
+
+:tabnew 		Creates a new tab
+:tabp			Go to previous tab 
+:tabn			Go to next tab
+:gt 			Show next tab
+:tabfirst 		Show first tab
+:tablast 		Show last tab
+:tabm n(position) 	Rearrange tabs
+:tabdo %s/foo/bar/g 	Execute a command in all tabs
+:tab ball 		Puts all open files in tabs
+
+vim: ft=myhelp

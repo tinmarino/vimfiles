@@ -4,7 +4,7 @@ Maybe to put that instead of Mem/vim
 
 helpKeyword
 ===============================================================================
-Contents  
+Contents ~
 
  0. Fast                                     		|myfast|
  1. Keys                    		      		|mykey|
@@ -40,10 +40,30 @@ Contents
  
 
  
+=======
+
+================================================================================
+                                                  *My-chapt*
+My-chapt ~
+	
+1/ My-chapt 
+2/ Test 
+3/ Test0 
+4/ Test0 
+5/ Test0 
+
+helpKeyword
+===============================================================================
+Contents ~
+
+
+ dont forget to run helptags ./ "in the current dir 
+>>>>>>> maison
 
 
 ===============================================================================
                                                 *myfast*
+<<<<<<< HEAD
 Fast  
 
 q/ 
@@ -60,6 +80,12 @@ gf 	Open file name under cursor
 ga 	Caracter value, in unicode, ascii, hex octal 
   	:Sex 	Split window and open integrated file explorer
   The '< Vim mark represents the beginning line of a visual region and the '> mark represents the ending line of the visual region
+=======
+Fast ~
+
+the runtime! debian was making pathogen not working 
+
+>>>>>>> maison
 
 unicode 
   :digraph 
@@ -67,6 +93,7 @@ unicode
   hexadecimal values (use <C-q> if <C-v> paste) 
   startinsert function 
   feedkeys 
+<<<<<<< HEAD
 ===============================================================================
                                                 *mykey*
 Key 
@@ -703,12 +730,19 @@ Fold
 ===============================================================================
                                                 *myos*
 Os  
+=======
+
+===============================================================================
+                                                *myos*
+Os ~
+>>>>>>> maison
   
 ftype code="C:\gvim.exe" --remote-tab-silent "%1"
 assoc .py code 
 # if you don't know to what python is asso type "assoc .py"
 
 
+<<<<<<< HEAD
 EDIT 
 
   Read/Write files
@@ -745,4 +779,30 @@ EDIT
 
   "this is a comment 
   "This set the filetype as myhelp so avoid me to look at the bottom, things I am doing anyway 
+=======
+
+================================================================================
+                                                  *Test*
+Test ~
+	This is a test 
+
+================================================================================
+                                                  *Test0*
+Test0 ~
+	
+
+================================================================================
+                                                  *Test0*
+Test0 ~
+	
+
+***7aeaz*
+================================================================================
+                                                  *Test0*
+Test0 ~
+	
+
+
+
+>>>>>>> maison
 vim: ft=myhelp
