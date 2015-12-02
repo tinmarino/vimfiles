@@ -154,6 +154,9 @@
 >
 	git branch 
 	git branch -v 	# see the last commit 
+	git branch -m <oldname> <newname>  
+<		rename a branch 
+>
 	git branch [--no-merged] [--merged]
 <		Lists all Branches 
 >
@@ -206,6 +209,9 @@ ancestor with client and apply these changes to master
 7. Remote ~
 							*git-remote*
 
+>
+	git remote add maisonDir D:\Iso\VimMaison
+<
 >
 	git ls-remote (remote) 
 	git remote show (remote) 
