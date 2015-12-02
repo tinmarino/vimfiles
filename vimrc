@@ -216,10 +216,7 @@ filetype on
   "set nocompatible 
   filetype plugin indent on
   let g:EclimCompletionMethod = 'omnifunc'
-<<<<<<< HEAD
 
 " WINDOWS 
   set ruler 
   set backspace=2 
-=======
->>>>>>> maison
