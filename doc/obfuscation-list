@@ -1,0 +1,95 @@
+*obfucation-list.txt*	Possible obfuscation techniques 
+
+
+
+
+0. If Optimization							|optimization-if|
+
+Packers
+Polymorphism 
+Metmorphisme 
+
+
+
+
+
+==============================================================================
+1. Polymorphsm
+							*obfuscation-polymorphism*
+
+	Malware changes the code it contains creating a new signature every
+	times it runs. 
+
+ 1/ Gain entry 	- The polymorphic engine gains control of the cpu 
+ 2/ Execute transfer function - It uses the key to convert the code into
+ executable opcode 
+ 3/ Load executable 	-The executable is loaded in memory 
+ 4/ Run -The executable malware is ran 
+ 5/ Generate a new key 	
+ 6/ Execute inverse transfert function - It encrypts the malware code with a
+ new key generating a new signature. 
+
+==============================================================================
+1. Metamorphism
+							*obfuscation-metamorphism*
+
+	Changes the opcode itselves of the malware everytiem it runs. 
+
+1/ Disassembly - A disassembler decodes the opcodes 
+2/ Shrinking   - A srinker compresses the disassembled code to prevent code
+growth 
+3/ Permutation - A permutator reoders instructions by randomizing their order
+and connecting them with jumps. It also does register and opcode substitution
+4/ Expansion   - An expander takes a single opcode and expands it into several
+instructions. It may insert nops or other frivolous instruction. 
+5/ Assemble    - The program is assmbled and prepared to execute. 
+
+
+
+==============================================================================
+1. Dead Code insertion 
+							*obfuscation-dead-code-insertion*
+
+	Inerstion of No Operation Performed (NOP) code
+
+
+==============================================================================
+1. Subroutine reordering 
+							*obfuscation-subroutine-reordering*
+
+	Randomly changes the order of subroutines in the program
+
+
+==============================================================================
+1. Code transposition
+							*obfuscation-code-transposition*
+
+	Changes the order of instructions altering the code from its native
+	form. 2 options : 
+
+		-> Using unconditional branches 
+		-> Reordering independant instructions
+
+
+==============================================================================
+1. Instruction substitution 
+							*obfuscation-instruction-substitution*
+	Replace some code statements with equivalent statements 
+
+
+==============================================================================
+1. Code integration 
+							*obfuscation-code-integration*
+	Inserts a new brief into the benign source code from a program in
+	order to run malicious code 
+
+
+==============================================================================
+1. Register reassignement 
+							*obfuscation-register-reassignement*
+	Replace the unused registers with malware code registers
+
+
+
+
+vim: ft=myhelp

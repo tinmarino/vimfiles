@@ -1,0 +1,28 @@
+*compiler-optimization.txt*	Theptimisation that can be made by a compiler 
+
+
+
+
+0. If Optimization							|optimization-if|
+
+
+
+
+==============================================================================
+1. If  ~
+							*optimization-if*
+
+Merge if if then hold the same condition
+
+	Setup and config ~
+		-> config 
+		-> help 
+	Getting and Creating project ~
+		-> init 
+		-> clone 
+	Basic Snapshotting ~
+		-> add 
+		-> status 
+
+
+vim: ft=myhelp

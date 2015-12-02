@@ -1,0 +1,748 @@
+*myhelp.txt*  Some of my (tinmarino) personal notes according to vim 
+Maybe to put that instead of Mem/vim
+
+
+helpKeyword
+===============================================================================
+Contents  
+
+ 0. Fast                                     		|myfast|
+ 1. Keys                    		      		|mykey|
+ 1. Commands                                    	|mycommand|
+  1. The |myhelp|	command				|myhelp|
+  1. The |myunlet|	command				|myunlet|
+  2. The |myput|	command				|myput|
+  3. The |mymap|	command 			|mymap|
+ 2. Function                                      	|myfunction|
+  1. Function to command				|myfunction2command| 
+  1. Change the |mysearch| pattern
+  1. The |mywrite| option
+  2. The |myread| option
+  unlet 
+ 5. Scripting                                    	|myscript|
+  1. The IF command					|myif|
+  2. The FOR, WHILE loop				|myfor|
+  3. The Variables					|myvariables|
+  4. The Strings 					|mystring|
+  5. The Arithmetic 					|myarithmetic|
+ 6. Appearance    					|myappearance|
+  1. The |mystatusline| At the bottom of the window    	|mystatusline| 
+ 7. Regiters						|myregister|
+ 8. Split 					 	|mysplit|
+ 9. Editing files 					|myedit|
+ 9. Buffer 					  	|mybuffer|
+ 10.Tab  						|mytab|
+ 11.Search						|mysearch|
+ 12.Substitute						|x|
+ 13.Fold						|myfold|
+ 14.Edit						|myedit|
+ 15.OS							|myos|
+ 
+
+ 
+
+
+===============================================================================
+                                                *myfast*
+Fast  
+
+q/ 
+q: to see history command or search 
+Shift+J removes the line change character from the current line, so by pressing "J" at any place in the line you can combine the current line and the next line in the way you want. 
+
+the runtime! debian was making pathogen not working 
+
+  gf                  |  open file name under cursor (SUPER)
+
+  :r file            |     " Read text from 'file' and insert it below the current line
+:e . 			| Open integrated file explorer
+gf 	Open file name under cursor
+ga 	Caracter value, in unicode, ascii, hex octal 
+  	:Sex 	Split window and open integrated file explorer
+  The '< Vim mark represents the beginning line of a visual region and the '> mark represents the ending line of the visual region
+
+unicode 
+  :digraph 
+  in insert mode <C-v> u aaaa or <C-v> U bbbbbbbb where aaaa and bbbb are
+  hexadecimal values (use <C-q> if <C-v> paste) 
+  startinsert function 
+  feedkeys 
+===============================================================================
+                                                *mykey*
+Key 
+
+(			| jump backward one sentence (sentences starts with .)
+{			| jump on paragraph backward 
+- or ^			| move to first (non blank caracter)
+%			| jump to matching bracket 
+<C-i> 			| jump to next location, isert position
+<C-o>			| jump to the previous (older) location
+:jumps 			| Display jump list 
+4<C-o>			| jump to the jump number 4 in jump list, works also
+with 4<C-i>
+'.			| jump to last inserted text 
+zt 			| put current line at top screen
+zz 			| put current line at middle screen
+zb 			| put current line at bottom screen
+//e<CR>			| go to end of match 
+
+
+===============================================================================
+                                                *mycommand*
+Commands  
+
+-------------------------------------------------------------------------------
+his /  "history of search 
+
+The *myhelp* command 
+  http://vim.wikia.com/wiki/Learn_to_use_help
+ 
+  :help E872
+ 
+  :helptags ~/.vim/doc
+  Ctrl-] 		| Follow the link (jump to the quickref topic). 
+  Ctrl-T 		| Go back to the previous topic.
+  Ctrl-O 		| Jump to older locations
+  Ctrl-I 		| Jump to newer 
+-------------------------------------------------------------------------------
+The *:myunlet* command
+
+To delete a variable. 
+>vim
+   :unlet g:max
+<vim
+-------------------------------------------------------------------------------
+The *:myput* command
+
+To put the result string of an expression. at the cursor position in current
+buffer.  
+>vim
+   :put =range(11,15)
+<vim
+-------------------------------------------------------------------------------
+The *:mymap* command 
+
+Well you know maps are used to map thing around 
+>vim
+  :nmap - Display normal mode maps
+  :imap - Display insert mode maps
+  :vmap - Display visual and select mode maps
+  :smap - Display select mode maps
+  :xmap - Display visual mode maps
+  :cmap - Display command-line mode maps
+  :omap - Display operator pending mode maps
+<vim
+
+  nmapclear - Clear all normal mode maps
+  "insert the directory name of the current buffer:
+  :inoremap <F2> <C-R>=expand('%:p:h')<CR>
+  From a normal mode map, you can get the keyword under the cursor using the expand('<cword>') function or using the <C-R><C-W> command
+
+===============================================================================
+                                                 *myfunction*
+Function  
+
+To see a list of all functions and respectively to see them by use :
+ 
+  :help functions 
+  :help function-list
+ 
+Function are defined like 
+ 
+  function! (arg1,arg2) 
+  endfunction
+ 
+  Where we dont know the |type()| of the argument, the ! silently forces reload if
+  function if defined yet. The undo and search pattern are restored after
+  function call. 
+  sfrtime
+
+-------------------------------------------------------------------------------
+*myinput* 
+
+let s=input('where to jump?')
+*myfunction2command* 
+ 
+command! -nargs=1 MyCommand call s:MyFunc(<f-args>) " transform a function to user-command
+
+-------------------------------------------------------------------------------
+Change the mysearch pattern 
+ 
+  fun! X()
+      /Hello
+      let @/ = 'Hello'
+  endfun
+ 
+ 
+  redir @a 
+  call bla()
+  redir END 
+ 
+-------------------------------------------------------------------------------
+The *myexec* option
+
+  function Func()
+    : command1
+    : command2
+  endfunction
+  exec Func() 
+
+
+===============================================================================
+                                                 *myscript*
+Script  
+
+-------------------------------------------------------------------------------
+                                                 *myif*
+
+>vim
+   if <expression>
+   	...
+   elseif <expression>
+   	...
+   else
+   	...
+   endif
+   if l:string =~ "y*"
+      let g:tmp ="True"
+   endif " Don't forget that endif 
+<vim
+Expression can be : 
+   <string> == <string> : String equals.
+   <string> != <string> : String does not equal.
+   <string> =~ <pattern>: String matches pattern.
+   <string> !~ <pattern>: String doesn’t match pattern.
+   <operator>#          : Additionally match case.
+   <operator>?          : Additionally don’t match case.
+   exists('var')	; Check if varaible exists 
+
+-------------------------------------------------------------------------------
+                                                 *myfor*
+>vim
+  for <var> in <list>
+  	continue 	" return to the begining of loop 
+  	break		" stop the loop and exit 
+  endfor
+  
+  for l:var in range(30)
+  for [var1, var2] in [[1, 2], [3, 4]]
+  	" on 1st loop, var1 = 1 and var2 = 2
+  	" on 2nd loop, var1 = 3 and var2 = 4
+  endfor
+
+
+  while <expression>
+  endwhile
+
+  while l:bool
+
+  try
+  	...
+  catch <pattern (optional)>
+  	" HIGHLY recommended to catch specific error.
+  finally
+  	...
+  endtry
+<vim
+
+
+-------------------------------------------------------------------------------
+                                                 *myvariables*
+>vim
+g:var - global.
+a:var - function argument.
+l:var - local to function.
+b:var - local to buffer.
+w:var - local to window.
+t:var - local to tab.
+v:var - Predefined by Vim.
+<vim
+
+<Number>: 32-bit signed number.
+>vim
+    -123
+    0x10
+    0177
+<vim
+<Float>: Floating point number. Requires +float on vim compile
+>vim
+    123.456
+    1.15e-6
+    -1.1e3
+<vim
+<String>: NUL terminated string of 8-bit unsigned characters.
+>vim
+    "ab\txx\"--"
+    'x-z''a,c'
+<vim
+<Funcref>: A reference to a function. Variables used for funcref objects must start with a capital letter.
+ 
+    :let Myfunc = function("strlen")
+    :echo Myfunc('foobar') " Call strlen on 'foobar'.
+ 
+<List>: An ordered sequence of items.
+ 
+    :let mylist = [1, 2, ['a', 'b']]
+    :echo mylist[0]
+    1
+    :echo mylist[2][0]
+    a
+    :echo mylist[-2]
+    2
+    :echo mylist[999]
+    E684: list index out of range: 999
+    :echo get(mylist, 999, "THERE IS NO 1000th ELEMENT")
+    THERE IS NO 1000th ELEMENT
+ 
+<Dictionary>: An associative, unordered array. Each entry has a key and a value.
+ 
+    :let mydict = {'blue': "#0000ff", 'foo': {999: "baz"}}
+    :echo mydict["blue"]
+    #0000ff
+    :echo mydict.foo
+    {999: "baz"}
+    :echo mydict.foo.999
+    baz
+    :let mydict.blue = "BLUE"
+    :echo mydict.blue
+    BLUE
+ 
+
+-------------------------------------------------------------------------------
+                                                 *mystring*
+
+
+
+  :5,8del | let l=split(@","\n") | 1,4s/$/\=remove(l,0)/
+  1/ del
+  2/ split buffer
+  3/ remove(l,0) delete first elt of list l and return it :)
+  
+   will transfor : 
+  work it 
+  make it 
+  do it 
+  makes us 
+  harder
+  better
+  faster
+  stronger
+   
+  in 
+  work it harder
+  make it better
+  do it faster
+  makes us stronger
+  
+
+-------------------------------------------------------------------------------
+                                                 *myarithmetic*
+
+  
+  : let result=(100*21)/23
+  :echo printf("%d.%02d",result/100,result%100)
+  %s/[0-9.]\+/\=2.0*str2float(submatch(0))/g 
+  [0-9.]\+    one or more digits or periods
+  \=  ...  evaluate following expression
+  2.0 ... obvious
+  *    ... also obvious
+  str2float(submatch(0))  take entire match and convert that string to a float
+  /g ...  as many matches as possible per line 
+  %s/[0-9.]\+/\=2.0*str2float(submatch(0))/g 
+
+  %s/\%8c\d*/\=submatch(0)*100  # for column 8, means string number 8 
+  %s/\d\+/\=submatch(0)+2/g     # find all integer and add 2 to its
+  :s/|\(\d\+\)/\='|'.(submatch(1)*60)/g
+  :s/|\(\d\+\):\(\d\+\)/\='|'.(submatch(1)+submatch(2))/g
+    transform 
+    |23:58|6:40|
+    |12:45|0:25|
+    |36:13|12:00|
+    in 
+    |81|46|
+    |57|25|
+    |49|12|
+
+
+
+HEX TO INT 
+  IN command 
+  :echo 0x123455 " will echo the dec value 
+  :echo printf('%x',74565)
+
+  IN insert 
+ <C-R>=0x09ab<Enter> will insert 2475, and <C-R>=printf('0x%04x',2475)<Enter> will insert 0x09ab
+  ctrl-R + ctrl-W paste in command move, the wrold under cursor 
+  0x09378= 
+  :let @b = substitute(@a,'\_s*\(.\{-}\)\_s*$','\1','') " this give the output in reg b 
+
+
+===============================================================================
+                                                 *myappearance*
+Appearance  
+
+-------------------------------------------------------------------------------
+The *mystatusline* option
+
+This is a line at the bottom to get hud text. The ruler is supperposed to the
+statusline. 
+If you want to play with it, first run 
+
+  set noruler
+  set laststatus=2 
+
+Then you can see what you are doing.
+
+For a *default-statusline* you can take this one 
+ 
+  :set statusline=%<%f\ %h%m%r\ %y%=%{v:register}\ %-14.(%l,%c%V%)\ %P
+ 
+You can also change ruler with 
+ 
+  :set rulerformat=%-14.(%l,%c%V%)\ %P
+ 
+ 
+ hi User2 ctermbg=red   ctermfg=blue  guibg=red   guifg=blue
+ hi User1 ctermbg=green ctermfg=red   guibg=green guifg=red
+ hi User3 ctermbg=blue  ctermfg=green guibg=blue  guifg=green
+
+ set statusline=
+ set statusline+=%1*  "switch to User1 highlight
+ set statusline+=%F   "full filename
+ set statusline+=%2*  "switch to User2 highlight
+ set statusline+=%y   "filetype
+ set statusline+=%3*  "switch to User3 highlight
+ set statusline+=%l   "line number
+ set statusline+=%*   "switch back to statusline highlight
+ set statusline+=%P   "percentage thru file
+ 
+===============================================================================
+                                                 *myregister*
+Registers  
+
+-------------------------------------------------------------------------------
+
+      :registers  "to view content 
+      
+
+      :normal @a  # to run macro a from ex command
+      :g/vim/ normal @a  # run a for lines containing vim 
+      :call setreg('"', @", 'V') " the inverse fct is getreg
+      :<C-r> To paste the content of a register in command <C-r> + name of the
+      :ctrl-R + ctrl-W paste in command move, the wrold under cursor 
+      i<C-R>, <C-O> + reg " paste in insert mode 
+      :Ctrl-R =getline(58) Enter. After that you will be back to command line editing, but it has inserted the contents of the 58th line.
+      :g/^foo/y A, :g/bar/y A, :let @+ = @a .Copy all lines beginning with foo, and afterwards all lines containing bar to clipboard, chain these commands: qaq (resets the a register storing an empty macro inside it), 
+      :g/^/put _       " Double-space your file: 
+      :g/^/-put ='foo'. "Add a line containing foo before each lineThis is a clever use of the expression register. Here, - is a synonym for .-1 (cf. :help :range). Since :put puts the text after the line, you have to explicitly tell it to act on the previous one.
+      :let @" = expand("%:p") "put in the unamed register the full path
+      :%y+. 	          "Copy the entire buffer to the system clipboard of the file 
+
+
+
+                                                 *myregister-list*
+      a — Named register, "aY Replace the contents of register a with the current line 
+      A — Append, "AY Append the current line to register a.
+      "   Unamed register is the uname reg, everything going to a reg also go to this one
+      _ is the black hole register, empty when reading but writable. everything going to it go to /dev/null to avoid erase the standar register wehn deleting something 
+      - the small delete (lesss than one line for example thing you delete with 3x
+      . last inserted text 
+      % filename 
+      : command 
+      / search 
+      = expression # to take the result of an arbitrary expression 
+      * The visual selection 
+      + and * are for interface with system clipboard "maybe install vimx 
+      # Register % contains the name of the current file, and register # contains the name of the alternate file. These registers allow the name of the current or alternate files to be displayed or inserted. The name, or full path, or directory containing the file can be used. 
+
+
+===============================================================================
+                                                 *mysplit*
+Split  
+
+:sp			| Split Screen horizontaly 
+:vsp			| Split Screen vertically 
+:sview 			| Same as :split in readonly mode
+:hide 			| Close current window
+:only 			| Close all windows, excepted current
+Ctrl + w and Ctrl+w 	| sWitch viewport 
+Ctrl + w and [hjkl]	| Move to the next viewport
+ctrl + w and arrow	| Same
+Ctrl + w and [+-] 	| Increase/decrease Current Viewport.
+10 Ctrl + w and + 	| Add 10 lines to current window
+Ctrl + w and =		| Igualise viewport size
+"Ctrl + w and _		| Maximise current window
+Ctrl + w and [rR]	| Change viewport position 
+Ctrl + w and  q 	| Close current viewport
+
+
+===============================================================================
+                                                *mybuffer*
+Buffer  
+
+
+:ls			| display buffer list
+
+
+:bn			| new
+:bd			| delete
+:b3			| goto 3
+:n :p			| next, previous
+:rew 			| rewind to 1st file
+
+:args 			| display argument list
+:arg 			|Optional: Display the current arglist.
+:arg *.cpp 		|All *.cpp files in current directory.
+:argadd *.h 		|And all *.h files.
+:argdo %s/pattern/replace/ge | update 	Search and replace in all files in arglist. 
+
+:update			| save if changes
+:bufdo 			| do the command to all buffer
+:e!   			| return to unmodified file
+:e #   			| edit alternative file
+:e +name		| edit
+:w /some/path/%:r 	| save file in another directory, but with the same name
+:sav php.html     	| Save current file as php.html and "move" to php.html
+
+:qa          		| quit all 
+
+===============================================================================
+                                                *mytab*
+Tab  
+
+  	:tabnew 		Creates a new tab
+	:tabp			Go to previous tab 
+	:tabn			Go to next tab
+  	:gt 			Show next tab
+  	:tabfirst 		Show first tab
+  	:tablast 		Show last tab
+  	:tabm n(position) 	Rearrange tabs
+  	:tabdo %s/foo/bar/g 	Execute a command in all tabs
+  	:tab ball 		Puts all open files in tabs
+
+===============================================================================
+                                                *myregex*
+Regex  
+
+Escped caracter or metecaratcter  
+	.  		any character except new line 
+	\s 		whitespace character (or tab) 	
+	\S 		no whitespace (upper case is the opposite)
+	\d 		digit 	
+	\x 		hex digit 	
+	\o 		octal digit 	
+	\h 		head of word character (a,b,c...z,A,B,C...Z and _) 	
+	\p 		printable character 	
+	\w 		word character 	
+	\a 		alphabetic character 	
+	\l 		lowercase character 	
+	\u 		uppercase character
+	
+	\_s		New line or space or tab 	  	 
+	\n		New line (line ending) 
+	\_^		Begining of line 
+	\_. 		Match any characterincluding newline 
+
+
+Quantifiers  
+    * 		matches 0 or more of the preceding characters, ranges or metacharacters .* matches everything including empty line
+    \+ 		matches 1 or more of the preceding characters...
+    \= 		matches 0 or 1 more of the preceding characters...
+    \{n,m} 	matches from n to m of the preceding characters...
+    \{n} 	matches exactly n times of the preceding characters...
+    \{,m} 	matches at most m (from 0 to m) of the preceding characters...
+    \{n,} 	matches at least n of of the preceding characters...
+    \{-} 	matches 0 or more of the preceding atom, as few as possible
+    \{-n,m} 	matches 1 or more of the preceding characters...
+    \{-n,} 	matches at lease or more of the preceding characters...
+    \{-,m} 	matches 1 or more of the preceding characters... 
+                where n and m are positive integers (>0) 
+
+===============================================================================
+                                                *mysearch*
+Search  
+
+*		in normal mode, search current word
+:noh		no hightlight search 
+/word 	        word from top to bottom
+?word 	        word from bottom to top
+/jo[ha]n 	john or joan
+/fred\|joe 	fred or joe
+/\<the 		the, theatre or then
+/the\> 	        the or breathe
+/\<the\> 	the
+/\<\d\{4}\> 	exactly 4 digits
+/^\n\{3} 	empty lines
+/\cstring       Case insensitive 
+:bufdo /searchstr/ 	Search in all open files
+
+
+<ESC>:%s/.*/\L&/  # tranform everything to lowar case
+<ESC>:%s/.*/\U&/  # upper
+/\<[A-Z]\+\/ or /\v<[A-Z]+> or /\<\u\+\> # find upper case words
+
+\_
+ myregex are following the NFA regular expression 
+
+The pattern.txt explains a lot. 
+\@! to negate 
+  /^\(\(^.*cursor.*$\)\@!.*foo.*\)$
+<
+
+
+===============================================================================
+                                                *mysubstitute*
+Substite 
+
+
+:s:\(\a*\a\):"\1":g "\1 is like submatch(1)
+see zs ze zr .... 
+:%s/identifying text \zs\d\+\(.\d\+\)\=/\=(1.15+str2float(submatch(0)))/
+:%s/pattern \(saved portion\)\zs/\=SaverFunc(submatch(1))[-1]
+:%call setline(line('.'),substitute(getline('.'),'foo','bar','g'))
+1025,$s:^\(\d\+\.*\d*\)\s\+\(\d*\.*\d*\):\=printf("%f\t%f",submatch(1)/3.0, submatch(2) /3.0)
+1025,$s:^\(\d*\)\s\+\(\d*\):\=submatch(1) . "\t" . submatch(2)*200
+1025,$s:^(d*):=submatch(1)*200
+
+  	:%s/\<./\u&/g 	Sets first letter of each word to uppercase
+  	:%s/\<./\l&/g 	Sets first letter of each word to lowercase
+  	:%s/.*/\u& 	Sets first letter of each line to uppercase
+  	:%s/.*/\l& 	Sets first letter of each line to lowercase
+
+:range s[ubstitute]/pattern/string/cgiI 
+c Confirm each substitution
+g Replace all occurrences in the line (without g - only first).
+i Ignore case for the pattern.
+I Don't ignore case for the pattern.
+
+  see http://vimregex.com/
+  :%s/fff/rrr    | replace first instance
+  :%s/ff/rr/g    | replace all instances
+  :%s/ff/rr/gc   | ask for confirmation
+  :5,20s/ff/rr   | betwenn line  5 and 20
+  :%!/^#/d       | delete lines not begining with #
+  :%s/^/#        | append # at begining of line
+  :g/^#/d  begining with #
+  :g!/^#/d not begining with #
+  :%s/pattern//gn | number of times pattern matches 
+  :%s/pattern//n | number of lines 
+  :g/^$/d blanck lines 
+  vim -u NONE -i NONE -Nnes "+se ul=-1" "+argdo %s/bite/W\.psf_fit\[0\]\[0\]/ge|up" "+q" *
+  ^\(-*[0-9]*\.[0-9]*\s\)\{21}   " match the 21 first numbers like 12232.23 23.23 
+  %s/^/\=line(".") . ". "/g    " substitute all lines by its line number 
+  :4,$s/\d\+/\=submatch(0) + 1/ # add one to every one 
+
+  s:\a*\a:\='"'.submatch(0).'"'
+  However a more readable solution is:
+  s:\a*\a:"\0"
+  submatch(0) 
+  strpart 
+  s/[^"],/\=strpart(submatch(0),0,1)/g
+
+
+  <ESC>:%s/.*/\L&/  # tranform everything to lowar case
+  <ESC>:%s/.*/\U&/  # upper
+  /\<[A-Z]\+\/ or /\v<[A-Z]+> or /\<\u\+\> # find upper case words
+
+
+  	:%s/old/new/g 	Replace all occurences of old by new in file
+  	:%s/old/new/gw 	Replace all occurences with confirmation
+  	:2,35s/old/new/g 	Replace all occurences between lines 2 and 35
+  	:5,$s/old/new/g 	Replace all occurences from line 5 to EOF
+  	:%s/^/hello/g 	Replace the begining of each line by hello
+  	:%s/$/Harry/g 	Replace the end of each line by Harry
+  	:%s/onward/forward/gi 	Replace onward by forward, case unsensitive
+  	:%s/ *$//g 	Delete all white spaces
+  	:g/string/d 	Delete all lines containing string
+  	:v/string/d 	Delete all lines containing which didn’t contain string
+  	:s/Bill/Steve/ 	Replace the first occurence of Bill by Steve in current line
+  	:s/Bill/Steve/g 	Replace Bill by Steve in current line
+  	:%s/Bill/Steve/g 	Replace Bill by Steve in all the file
+  	:%s/\r//g 	Delete DOS carriage returns (^M)
+  	:%s/\r/\r/g 	Transform DOS carriage returns in returns
+  	:%s#<[^>]\+>##g 	Delete HTML tags but keeps text
+  	:%s/^\(.*\)\n\1$/\1/ 	Delete lines which appears twice
+  Ctrl+a 	Increment number under the cursor
+  Ctrl+x 	Decrement number under cursor
+  	ggVGg? 	Change text to Rot13
+  Case
+  	g~~ 	Invert case
+  	ggguG 	Set all text to lowercase
+  	:set ignorecase 	Ignore case in searches
+  	:set smartcase 	Ignore case in searches excepted if an uppercase letter is used
+
+===============================================================================
+                                                *myfold*
+Fold  
+
+
+   :syn match comment "\v(^\s*//.*\n)+" fold
+   set "foldtext", witch show what you see when folded 
+   :set foldmethod=expr
+   :set foldexpr=empty(getline(v:lnum))?'=':indent(v:lnum)/4
+   zf#j 	creates a fold from the cursor down # lines.
+   zf/string 	creates a fold from the cursor to string .
+   zfa  	create fold until mark a 
+
+   zj 		moves the cursor to the next fold.
+   zk 		moves the cursor to the previous fold.
+   zo 		opens a fold at the cursor.
+  ->zO 		opens all folds at the cursor.
+   zc 		close 
+   zC		close all 
+   zm 		increases the foldlevel by one.
+  ->zM 		closes all open folds.
+   zr 		decreases the foldlevel by one.
+  ->zR 		decreases the foldlevel to zero -- all folds will be open.
+   zd 		deletes the fold at the cursor.
+   zE 		deletes all folds.
+   ]z 		move to end of open fold.
+  ->[z 		move to start of open fold.
+
+
+===============================================================================
+                                                *myos*
+Os  
+  
+ftype code="C:\gvim.exe" --remote-tab-silent "%1"
+assoc .py code 
+# if you don't know to what python is asso type "assoc .py"
+
+
+EDIT 
+
+  Read/Write files
+  	:1,10 w outfile 	Saves lines 1 to 10 in outfile
+  	:1,10 w >> outfile 	Appends lines 1 to 10 to outfile
+  	:r infile 	Insert the content of infile
+  	:23r infile 	Insert the content of infile under line 23
+  Auto-completion
+  	Ctrl+n Ctrl+p (in insert mode) 	Complete word
+  	Ctrl+x Ctrl+l 	Complete line
+  	:set dictionary=dict 	Define dict as a dictionnary
+  	Ctrl+x Ctrl+k 	Complete with dictionnary
+
+
+
+  bufdo normal 2G"Ayy
+  zaea
+  
+  which iterates through the buffers and runs the given command in normal mode. 2G jumps to the appropriate line, and "Ay yanks into register a, appending instead of overwriting (since the A is capitalized). Make sure register a is empty before you start
+
+  :r filename 	insert filename after cursor
+  :10r filename 	insert filename after line 10
+  :g/pattern/r filename 	search pattern and insert filename after cursor
+  :r !shell-command 	insert the result of a shell-command after cursor
+  !!shell-command 	insert command output in place of current line
+  :r foo.txt    Insert the file foo.txt below the cursor.
+  :0r foo.txt   Insert the file foo.txt before the first line.
+  :r !ls        Insert a directory listing below the cursor.
+  :$r !pwd      Insert the current working directory below the last line.
+ aaa
+ " raeraz 
+ ae " and " 
+
+
+  "this is a comment 
+  "This set the filetype as myhelp so avoid me to look at the bottom, things I am doing anyway 
+vim: ft=myhelp
