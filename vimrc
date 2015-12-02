@@ -220,3 +220,4 @@ filetype on
 " WINDOWS 
   set ruler 
   set backspace=2 
+
