@@ -174,8 +174,8 @@ syn region	helpString	oneline keepend	start=+[^:a-zA-Z>!\\@]'+lc=1 end=+'+
 "execute 'source '.  s:path
 
 
+" WITH VIM SYNTAX 
 syntax include @MYVIM syntax/vim.vim
-<<<<<<< HEAD
 if has("conceal")
   set conceallevel=2
   syntax region vimSnip matchgroup=Snip start=">vim"  end="<vim" concealends  contains=@MYVIM
@@ -183,31 +183,18 @@ else
   syn region vimSnip 	matchgroup=Snip start=">vim"  end="<vim" contains=@MYVIM
 endif
 
-
+"WITH BASH SYNTAX 
 syntax include @MYBASH syntax/sh.vim
 if has("conceal")
   set conceallevel=2
   syntax region bashSnip matchgroup=Snip start=">bash"  end="<bash" concealends  contains=@MYBASH
 else
   syntax region bashSnip matchgroup=Snip start=">bash"  end="<bash" contains=@MYBASH 
-=======
-
-
-if has("conceal")
-  set conceallevel=2
-  syntax region vimSnip matchgroup=Snip start=">vim\s*$"  end="<vim\s*$" concealends  contains=@MYVIM
-else
-  syn region vimSnip 	matchgroup=Snip start=">vim\s*$"  end="<vim\s*$" contains=@MYVIM
->>>>>>> maison
 endif
 
 
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> maison
 "hi link Snip SpecialComment
 "hi def link vimComment	Comment
 "hi def link vimFuncName		Function
