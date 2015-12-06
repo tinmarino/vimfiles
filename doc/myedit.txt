@@ -14,6 +14,8 @@ Key~
 with 4<C-i>
 '.			| jump to last inserted text 
 
+L M H 			| jup to the bottom middel and top of screen 
+:jumps 			| show the jumps 
 
 shift+J | paste next line at the end of current 
 

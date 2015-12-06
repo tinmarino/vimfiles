@@ -105,9 +105,10 @@ function! Getword(line,col)
   " Get the nth word of current line 
   " Todo not only on current line 
   "submatch(1)
-  let l:match = '\('
-  let l:match.= '^\s*' " maybe space at the begining
-  let l:match.= '\%(\S\+\s\+\)' "Any non space followed by any space not counting as submatch 
+  let l:match = '^'
+  let l:match.= '\('
+  let l:match.= '\s*' 		" maybe space at the begining
+  let l:match.= '\%(\S\+\s\+\)' " Any non space followed by any space not counting as submatch 
   let l:match.= '\{' . (a:col-1) . '}' " Number of cols before 
   let l:match.= '\)'
 
@@ -115,15 +116,19 @@ function! Getword(line,col)
   let l:match.= '\(\S*\)' " digit I mean non space, see after what that is 
 
   "submamatch.3)
-  let l:match.= '\(.*\)' " the rest of the line 
+  let l:match.= '\(.*\)$' " the rest of the line 
 
   "replace 
   let l:result= '\=submatch(2)'
   
   "execute 
-  "let g:tmp=l:res
-  let g:line=getline('.')
-  return substitute(getline(a:line),l:match,l:result,'g')
+  let l:res =  substitute(getline(a:line),l:match,l:result,'g')
+
+  "remove non match ; col too high, no replacement and get full line.
+  if l:res == getline(a:line) 
+    let l:res = ""
+  endif 
+  return l:res 
   
 endfunction 
 
@@ -195,7 +200,69 @@ function! GetIndex()
 endfunction 
 
 function! Align()
+  " Analyse 
+  let g:list= []			" the list of word len for all lines 
+  for g:crLine in range(1, line('$') ) 	" for each line 
+    let g:LineList = [] 		" the list of word len in this line
+    for g:crCol in range(1, 99 ) 	" Loop word in line 
+      let g:crWord = Getword(g:crLine,g:crCol) 
+      if g:crWord == ""
+	break 
+      else 
+	call add(g:LineList, len(g:crWord) ) 
+        let g:crCol += 1
+      endif
+    endfor 
+    call add(g:list,g:LineList) 
+  endfor 
   
+  " Calculate max size of each word  and the tab position 
+  let g:maxList = []			" The max word size for each column 
+  for g:crCol in range(0,99) 
+    let g:wordLenList = []
+    for g:crLine in range( 1, line("$") ) 
+      if g:crCol >= len(g:list[g:crLine-1] ) 
+	continue 
+      endif 
+      call add( g:wordLenList , g:list[g:crLine-1][g:crCol] )
+    endfor
+    call add( g:maxList , max(g:wordLenList) )
+  endfor 
+  for i in range(len(g:maxList)) 
+    let mytmp = (g:maxList[i]/&tabstop)* &tabstop  
+    if mytmp != g:maxList[i]
+      let g:maxList[i] = mytmp + &tabstop 
+    endif 
+  endfor 
+
+
+  " Arrangle each line 
+  for g:crLine in range (1, line('$') ) " g starts at line 1 
+    for g:crCol in range(0, 99)  " col starts at col 0 
+      if g:crCol >= (len(g:list[g:crLine-1]) -1)
+	break
+      endif 
+
+      let crLen=g:list[g:crLine-1][g:crCol]
+      let wtLen=g:maxList[g:crCol]
+      let mywidth=wtLen - crLen  
+      let tabNb= mywidth  / &tabstop
+      if &tabstop * mywidth != tabNb   "means there is a rest 
+        let tabNb+=1
+      endif 
+      let tabNb+=1
+
+      let pattern = '\(\%(\s*\S\+\)\{' . (g:crCol+1)  . '}\)\s'
+
+
+      let g:wtLine = substitute(getline(g:crLine),pattern, '\=submatch(1) . repeat("\t",' . tabNb . ')', ''  )
+      call setline(g:crLine,g:wtLine) 
+
+
+      "execute 'normal '  . g:crLine . 'G' .  '0' . repeat('E',g:crCol+1) . 'EB' .  'i' . repeat("\t",tabNb) 
+    endfor 
+  endfor 
+
 endfunction
 
 
