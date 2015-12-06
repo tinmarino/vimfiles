@@ -2,13 +2,15 @@ set nocompatible
 call pathogen#infect()
 filetype on 
 
-" FROM VIM DEBIAN TEAM 
+
+
+" FROM VIM DEBIAN TEAM                
   if filereadable("/etc/vim/vimrc.local")
     source /etc/vim/vimrc.local
   endif
 
 
-" SYNTAX 
+" SYNTAX SLOW 
   "call stfrtime() 
   if has("syntax")
       syntax on
@@ -39,7 +41,7 @@ filetype on
   colorscheme dante
 
 
-" BACKUP  
+" BACKUP SLOW SOMETIMES  
   set nobackup                  " I may change that 
   set noswapfile                " I will this if this is harmfull
   set backupdir=~/.vim/backup// " the double // will put the backup with the full directory  
@@ -208,20 +210,13 @@ filetype on
   let g:EclimCompletionMethod = 'omnifunc'
 
 """ LARGE FILE 
-"  " Protect large files from sourcing and other overhead.
-"  " Files become read only
-"  if !exists("my_auto_commands_loaded")
-"    let my_auto_commands_loaded = 1
-"    " Large files are > 10M
-"    " Set options:
-"    " eventignore+=FileType (no syntax highlighting etc
-"    " assumes FileType always on)
-"    " noswapfile (save copy of file)
-"    " bufhidden=unload (save memory when other file is viewed)
-"    " buftype=nowrite (file is read-only)
-"    " undolevels=-1 (no undo possible)
-"    let g:LargeFile = 1024 * 1024 
-"    augroup LargeFile
-"      autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload buftype=nowrite undolevels=-1 | syntax off | setlocal foldmethod=manual | else | set eventignore-=FileType | endif
-"    augroup END
-"  endif
+  " Protect large files from sourcing and other overhead.
+  " Files become read only
+  if !exists("my_auto_commands_loaded")
+    let my_auto_commands_loaded = 1
+
+    let g:LargeFile = 1024 * 1024 
+    augroup LargeFile
+      autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload undolevels=-1 | syntax off | setlocal foldmethod=manual | else | set eventignore-=FileType | endif
+    augroup END
+  endif
