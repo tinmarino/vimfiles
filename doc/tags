@@ -1,5 +1,13 @@
+:Large	LargeFile.txt	/*:Large*
+:Unlarge	LargeFile.txt	/*:Unlarge*
+LargeFile-copyright	LargeFile.txt	/*LargeFile-copyright*
+LargeFile.txt	LargeFile.txt	/*LargeFile.txt*
+My-chapt	myhelp.txt	/*My-chapt*
+Test	myhelp.txt	/*Test*
 default-statusline	myappearance.txt	/*default-statusline*
 hex2int	myscript.txt	/*hex2int*
+largefile	LargeFile.txt	/*largefile*
+largefile-history	LargeFile.txt	/*largefile-history*
 myappearance	myappearance.txt	/*myappearance*
 myarithmetic	myscript.txt	/*myarithmetic*
 mybuffer	mybuffer.txt	/*mybuffer*
