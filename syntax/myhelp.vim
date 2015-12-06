@@ -5,7 +5,7 @@
 
 " Quit when a (custom) syntax file was already loaded
 if exists("b:current_syntax")
-  finish
+finish
 endif
 
 " Include vim syntax under @VIM name 
@@ -13,35 +13,39 @@ endif
 let s:cpo_save = &cpo
 set cpo&vim
 
+syn keyword arrow -> 
+"hi arrow term=reverse ctermfg=gray ctermbg=red guifg=gray guibg=red3
+hi arrow	term=underline ctermfg=green guifg=firebrick3
+
 syn match helpHeadline		"^[-A-Z .][-A-Z0-9 .()]*[ \t]\+\*"me=e-1
 syn match helpSectionDelim	"^===.*===$"
 syn match helpSectionDelim	"^---.*--$"
 
 
 if has("conceal")
-  syn region helpExample	matchgroup=helpIgnore start=" >$" start="^>$" end="^[^ \t]"me=e-1 end="^<" concealends
+syn region helpExample	matchgroup=helpIgnore start=" >$" start="^>$" end="^[^ \t]"me=e-1 end="^<" concealends
 else
-  syn region helpExample	matchgroup=helpIgnore start=" >$" start="^>$" end="^[^ \t]"me=e-1 end="^<"
+syn region helpExample	matchgroup=helpIgnore start=" >$" start="^>$" end="^[^ \t]"me=e-1 end="^<"
 endif
 
 
 if has("ebcdic")
-  syn match helpHyperTextJump	"\\\@<!|[^"*|]\+|" contains=helpBar
-  syn match helpHyperTextEntry	"\*[^"*|]\+\*\s"he=e-1 contains=helpStar
-  syn match helpHyperTextEntry	"\*[^"*|]\+\*$" contains=helpStar
+syn match helpHyperTextJump	"\\\@<!|[^"*|]\+|" contains=helpBar
+syn match helpHyperTextEntry	"\*[^"*|]\+\*\s"he=e-1 contains=helpStar
+syn match helpHyperTextEntry	"\*[^"*|]\+\*$" contains=helpStar
 else
-  syn match helpHyperTextJump	"\\\@<!|[#-)!+-~]\+|" contains=helpBar
-  syn match helpHyperTextEntry	"\*[#-)!+-~]\+\*\s"he=e-1 contains=helpStar
-  syn match helpHyperTextEntry	"\*[#-)!+-~]\+\*$" contains=helpStar
+syn match helpHyperTextJump	"\\\@<!|[#-)!+-~]\+|" contains=helpBar
+syn match helpHyperTextEntry	"\*[#-)!+-~]\+\*\s"he=e-1 contains=helpStar
+syn match helpHyperTextEntry	"\*[#-)!+-~]\+\*$" contains=helpStar
 endif
 if has("conceal")
-  syn match helpBar		contained "|" conceal
-  syn match helpBacktick	contained "`" conceal
-  syn match helpStar		contained "\*" conceal
+syn match helpBar		contained "|" conceal
+syn match helpBacktick	contained "`" conceal
+syn match helpStar		contained "\*" conceal
 else
-  syn match helpBar		contained "|"
-  syn match helpBacktick	contained "`"
-  syn match helpStar		contained "\*"
+syn match helpBar		contained "|"
+syn match helpBacktick	contained "`"
+syn match helpStar		contained "\*"
 endif
 syn match helpNormal		"|.*====*|"
 syn match helpNormal		"|||"
@@ -54,9 +58,9 @@ syn match helpCommand		"`[^` \t]\+`"hs=s+1,he=e-1 contains=helpBacktick
 syn match helpHeader		"\s*\zs.\{-}\ze\s\=\~$" nextgroup=helpIgnore
 syn match helpGraphic		".* \ze`$" nextgroup=helpIgnore
 if has("conceal")
-  syn match helpIgnore		"." contained conceal
+syn match helpIgnore		"." contained conceal
 else
-  syn match helpIgnore		"." contained
+syn match helpIgnore		"." contained
 endif
 syn keyword helpNote		note Note NOTE note: Note: NOTE: Notes Notes:
 syn match helpSpecial		"\<N\>"
@@ -139,18 +143,18 @@ syn match helpURL `\v<(((https?|ftp|gopher)://|(mailto|file|news):)[^' 	<>"]+|(w
 " Additionally load a language-specific syntax file "help_ab.vim".
 let s:i = match(expand("%"), '\.\a\ax$')
 if s:i > 0
-  exe "runtime syntax/help_" . strpart(expand("%"), s:i + 1, 2) . ".vim"
+exe "runtime syntax/help_" . strpart(expand("%"), s:i + 1, 2) . ".vim"
 endif
 
 " Italian
 if v:lang =~ '\<IT\>' || v:lang =~ '_IT\>' || v:lang =~? "italian"
-  syn keyword helpNote		nota Nota NOTA nota: Nota: NOTA: notare Notare NOTARE notare: Notare: NOTARE:
-  syn match helpSpecial		"Nma"me=e-2
-  syn match helpSpecial		"Nme"me=e-2
-  syn match helpSpecial		"Nmi"me=e-2
-  syn match helpSpecial		"Nmo"me=e-2
-  syn match helpSpecial		"\[interv.]"
-  syn region helpNotVi		start="{non" start="{solo" start="{disponibile" end="}" contains=helpLeadBlank,helpHyperTextJump
+syn keyword helpNote		nota Nota NOTA nota: Nota: NOTA: notare Notare NOTARE notare: Notare: NOTARE:
+syn match helpSpecial		"Nma"me=e-2
+syn match helpSpecial		"Nme"me=e-2
+syn match helpSpecial		"Nmi"me=e-2
+syn match helpSpecial		"Nmo"me=e-2
+syn match helpSpecial		"\[interv.]"
+syn region helpNotVi		start="{non" start="{solo" start="{disponibile" end="}" contains=helpLeadBlank,helpHyperTextJump
 endif
 
 syn sync minlines=40
@@ -178,10 +182,10 @@ syntax include @MYVIM syntax/vim.vim
 
 
 if has("conceal")
-  set conceallevel=2
-  syntax region vimSnip matchgroup=Snip start=">vim\s*$"  end="<vim\s*$" concealends  contains=@MYVIM
+set conceallevel=2
+syntax region vimSnip matchgroup=Snip start=">vim\s*$"  end="<vim\s*$" concealends  contains=@MYVIM
 else
-  syn region vimSnip 	matchgroup=Snip start=">vim\s*$"  end="<vim\s*$" contains=@MYVIM
+syn region vimSnip 	matchgroup=Snip start=">vim\s*$"  end="<vim\s*$" contains=@MYVIM
 endif
 
 

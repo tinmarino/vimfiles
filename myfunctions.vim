@@ -25,8 +25,6 @@ function! TestFunc(word)
   execute "normal /" . a:word . "\<CR>"
 endfunction
 
-
-
 function! RangeMatch(min,max) 
   let l:res = RangeSearchRec(a:min,a:max)
   execute "/" . l:res 
@@ -92,7 +90,6 @@ function! IntToFloat(col) range
 
 endfunction
 
-
 function! ColArith(col)  range 
   " ex: we add first and second column, write in first ( a new one )
   for l:line in range(a:firstline,a:lastline)
@@ -103,8 +100,6 @@ function! ColArith(col)  range
     call setline(l:line, l:x3 . "\t" . getline(l:line))
   endfor 
 endfunction
-
-
 
 function! Getword(line,col)
   " Get the nth word of current line 
@@ -131,6 +126,7 @@ function! Getword(line,col)
   return substitute(getline(a:line),l:match,l:result,'g')
   
 endfunction 
+
 function! OutputSplitWindow(...)
   " this function output the result of the Ex command into a split scratch buffer
   let cmd = join(a:000, ' ')
@@ -161,7 +157,6 @@ function! Chapter(string)
   execute "put t"
 
 endfunction
-
 
 function! GetIndex()
   " INIT ALL VARIABLES 
@@ -196,8 +191,13 @@ function! GetIndex()
   call setpos('.',l:cursor) 
   execute 'put t'
   return b:ref
- 
+
 endfunction 
+
+function! Align()
+  
+endfunction
+
 
   "normal! G to go to the end 
 command! -nargs=* -complete=command GetIndex call GetIndex(<f-args>)
