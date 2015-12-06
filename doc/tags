@@ -1,5 +1,11 @@
 cmder-shortcut	cmder-shortcut.txt	/*cmder-shortcut*
 compiler-optimization.txt	compiler-optimisation.txt	/*compiler-optimization.txt*
+:Large	LargeFile.txt	/*:Large*
+:Unlarge	LargeFile.txt	/*:Unlarge*
+LargeFile-copyright	LargeFile.txt	/*LargeFile-copyright*
+LargeFile.txt	LargeFile.txt	/*LargeFile.txt*
+My-chapt	myhelp.txt	/*My-chapt*
+Test	myhelp.txt	/*Test*
 default-statusline	myappearance.txt	/*default-statusline*
 diff-list	diff-list.txt	/*diff-list*
 git-alias	git.txt	/*git-alias*
@@ -16,6 +22,8 @@ git-rebase	git.txt	/*git-rebase*
 git-remote	git.txt	/*git-remote*
 git.txt	git.txt	/*git.txt*
 hex2int	myscript.txt	/*hex2int*
+largefile	LargeFile.txt	/*largefile*
+largefile-history	LargeFile.txt	/*largefile-history*
 myappearance	myappearance.txt	/*myappearance*
 myarithmetic	myscript.txt	/*myarithmetic*
 mybuffer	mybuffer.txt	/*mybuffer*

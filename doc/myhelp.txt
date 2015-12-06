@@ -1,0 +1,55 @@
+*myhelp.txt*  Some of my (tinmarino) personal notes according to vim 
+Maybe to put that instead of Mem/vim
+
+
+
+================================================================================
+                                                  *My-chapt*
+My-chapt ~
+	
+1/ My-chapt 
+2/ Test 
+3/ Test0 
+4/ Test0 
+5/ Test0 
+
+helpKeyword
+===============================================================================
+Contents ~
+
+
+ dont forget to run helptags ./ "in the current dir 
+
+
+===============================================================================
+                                                *myfast*
+Fast ~
+
+the runtime! debian was making pathogen not working 
+
+
+unicode 
+  :digraph 
+  in insert mode <C-v> u aaaa or <C-v> U bbbbbbbb where aaaa and bbbb are
+  hexadecimal values (use <C-q> if <C-v> paste) 
+  startinsert function 
+  feedkeys 
+
+===============================================================================
+                                                *myos*
+Os ~
+  
+ftype code="C:\gvim.exe" --remote-tab-silent "%1"
+assoc .py code 
+# if you don't know to what python is asso type "assoc .py"
+
+
+
+================================================================================
+                                                  *Test*
+Test ~
+	This is a test 
+
+
+
+vim: ft=myhelp
