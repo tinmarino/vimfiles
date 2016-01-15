@@ -1,0 +1,27 @@
+
+
+
+================================================================================
+							*cs_insn*
+CS_INSN ~
+
+	id 	 (int) 	  Instruction ID of the instruction 
+	address	 (int) 	  Address of the instruction 
+	mnemonic (string) Mnemonic 
+	op_str	 (string) Operand
+	size	 (int)	  The size of the instruciton in byte number 
+	bytes	 (array)  Array of byte of the instruction with size (above) for lenght
+
+
+
+================================================================================
+                                                  *cs_arch*
+cs_arch ~
+	
+	CS_ARCH_ARM	
+		-> CS_MODE_ARM (Arm mode) 
+		-> CS_MODE_THUMB (Thumb mode) 
+
+
+
+vim: ft=myhelp

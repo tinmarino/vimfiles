@@ -2,6 +2,8 @@ set nocompatible
 call pathogen#infect()
 filetype on 
 
+
+
 " FROM VIM DEBIAN TEAM 
   if filereadable("/etc/vim/vimrc.local")
     source /etc/vim/vimrc.local
@@ -131,6 +133,11 @@ filetype on
   vnoremap > >gv 
   vnoremap < <gv 
 
+  " Use CTRL-S for saving, also in Insert mode
+  noremap <C-S>		:update<CR>
+  vnoremap <C-S>		<C-C>:update<CR>
+  inoremap <C-S>		<C-O>:update<CR>
+
 
 "FOLDING, and folding maps 
   highlight Folded ctermfg=DarkGreen ctermbg=Black
@@ -177,10 +184,7 @@ filetype on
 
 
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0 
-  "set foldlevel=-1  " WTF 
-  set foldlevelstart=-1 "the folding at opening
-  "set foldlevelstart=5 "the folding at opening
-
+  set foldlevelstart=30 "the folding at opening
 
 
 " BUFFER MANAGEMENT  and it maps 
@@ -217,7 +221,13 @@ filetype on
   filetype plugin indent on
   let g:EclimCompletionMethod = 'omnifunc'
 
+
 " WINDOWS 
   set ruler 
   set backspace=2 
 
+  set foldlevelstart=30 "the folding at opening
+
+" SOURCE , VARIABLE 
+  let $MYVIM="$VIM/vimfiles"
+  source $MYVIM/myfunctions.vim

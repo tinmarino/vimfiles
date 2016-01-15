@@ -195,6 +195,23 @@ HEX TO INT ~
   ctrl-R + ctrl-W "paste in command move, the wrold under cursor 
 <vim
 
+						*hex-dump*
+HEX DUMP ~
+>
+	:r !xxd sample.bin 
+<		To get a list of Hex and their adresss
+>
+	:r !xxd --help 
+	:r !xxd -i sample.bin
+<		Convert it to a C char[]
+>
+	vim -b binfile.bin 
+	:setlocal disaplay=hex
+	:%!xxd
+	:%!xxd -r
+<		Convert buffer to hex dump and convet back 
+
+
 						*myfunction-script*
 Function are defined like 
 >
