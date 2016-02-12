@@ -2,8 +2,7 @@ set nocompatible
 call pathogen#infect()
 filetype on 
 
-
-
+"aaaaaa
 " FROM VIM DEBIAN TEAM 
   if filereadable("/etc/vim/vimrc.local")
     source /etc/vim/vimrc.local
@@ -16,7 +15,8 @@ filetype on
   endif
 
 
-" APPEARANCE , COLOR, search 
+" APPEARANCE , COLOR, search, set staff
+  set tabstop=4 
   "SEARCH 
   set smartcase
       "/copyright      " Case insensitive
@@ -51,7 +51,7 @@ filetype on
   set autoread                  " when reopening a file, go to the position as when you quit it +  This will disable read-only to writeable warnings
  
   if has('persistent_undo')
-    set undodir=~/.vim/undo
+    set undodir=D:\Program\Vim\undo
     set undofile 
   endif 
   set history=100000            " remember more commands and search history
@@ -230,4 +230,5 @@ filetype on
 
 " SOURCE , VARIABLE 
   let $MYVIM="$VIM/vimfiles"
-  source $MYVIM/myfunctions.vim
+  source $MYVIM/scripts/myfunctions.vim
+  source $MYVIM/scripts/cfunctions.vim

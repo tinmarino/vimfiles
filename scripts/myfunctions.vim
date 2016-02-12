@@ -27,6 +27,7 @@ endfunction
 
 
 
+
 function! RangeMatch(min,max) 
   let l:res = RangeSearchRec(a:min,a:max)
   execute "/" . l:res 
