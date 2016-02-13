@@ -49,9 +49,14 @@ set nocompatible
 call pathogen#infect()
 filetype on 
 
+<<<<<<< HEAD
 
 
 " FROM VIM DEBIAN TEAM                
+=======
+"aaaaaa
+" FROM VIM DEBIAN TEAM 
+>>>>>>> pcdr/pcdr
   if filereadable("/etc/vim/vimrc.local")
     source /etc/vim/vimrc.local
   endif
@@ -64,7 +69,8 @@ filetype on
   endif
 
 
-" APPEARANCE , COLOR, search 
+" APPEARANCE , COLOR, search, set staff
+  set tabstop=4 
   "SEARCH 
   set smartcase
       "/copyright      " Case insensitive
@@ -91,6 +97,7 @@ filetype on
 " BACKUP SLOW SOMETIMES  
   set nobackup                  " I may change that 
   set noswapfile                " I will this if this is harmfull
+  set nowritebackup
   set backupdir=~/.vim/backup// " the double // will put the backup with the full directory  
   set directory=~/.vim/backup// " for the swap files 
   set undolevels=100000         " use many levels of undo
@@ -98,7 +105,7 @@ filetype on
   set autoread                  " when reopening a file, go to the position as when you quit it +  This will disable read-only to writeable warnings
  
   if has('persistent_undo')
-    set undodir=~/.vim/undo
+    set undodir=D:\Program\Vim\undo
     set undofile 
   endif 
   set history=100000            " remember more commands and search history
@@ -180,6 +187,11 @@ filetype on
   vnoremap > >gv 
   vnoremap < <gv 
 
+  " Use CTRL-S for saving, also in Insert mode
+  noremap <C-S>		:update<CR>
+  vnoremap <C-S>		<C-C>:update<CR>
+  inoremap <C-S>		<C-O>:update<CR>
+
 
   " Commenting blocks of code.
   autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
@@ -228,9 +240,7 @@ filetype on
 
 
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0 
-  set foldlevel=10  " WTF 
-  "set foldlevelstart=5 "the folding at opening
-
+  set foldlevelstart=30 "the folding at opening
 
 
 " BUFFER MANAGEMENT  and it maps 
@@ -267,6 +277,7 @@ filetype on
   filetype plugin indent on
   let g:EclimCompletionMethod = 'omnifunc'
 
+<<<<<<< HEAD
 """ LARGE FILE 
   " Protect large files from sourcing and other overhead.
   " Files become read only
@@ -278,3 +289,16 @@ filetype on
       autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload undolevels=-1 | syntax off | setlocal foldmethod=manual | else | set eventignore-=FileType | endif
     augroup END
   endif
+=======
+
+" WINDOWS 
+  set ruler 
+  set backspace=2 
+
+  set foldlevelstart=30 "the folding at opening
+
+" SOURCE , VARIABLE 
+  let $MYVIM="$VIM/vimfiles"
+  source $MYVIM/scripts/myfunctions.vim
+  source $MYVIM/scripts/cfunctions.vim
+>>>>>>> pcdr/pcdr

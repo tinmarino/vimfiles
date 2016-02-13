@@ -1,0 +1,66 @@
+
+
+
+
+================================================================================
+                                                  *python-avantages*
+Avantages ~
+	
+	-> Langage expressif : code concis (!= C, Java) 
+
+
+
+
+================================================================================
+                                                  *python-control-flow*
+Control-flow ~
+	
+
+
+
+================================================================================
+                                                  *python-function*
+Function ~
+
+>python 
+	def my_func(a,b,c,d=None, *args, **kwrags): 
+<python 
+		* give all additional unnamed parameters
+		** gives all additional named parameters
+		*mylst, eclate la list et la donne comme des paramètres
+		séparée
+	def max() 
+
+
+
+================================================================================
+                                                  *python-import*
+Import ~
+	
+	import re
+	re.findall("\d", "azerty")
+	from re import findall, match, search
+	from re import * 
+	from re import findall as f 
+
+	dans import re, python met dans le tableau de global le nom de re
+
+
+
+================================================================================
+                                                  *python-type*
+python-type ~
+
+--------------------------------------------------------------------------------
+Mutable~
+
+	list, dict, set
+	passage par référence
+
+--------------------------------------------------------------------------------
+Immutable ~
+
+	int, long, str, bytes, tuple
+	passage par valeur
+
+vim: ft=myhelp

@@ -1,0 +1,17 @@
+*idid* 
+
+	This show what I found out. 
+
+
+
+================================================================================
+                                                  *idid-gvim*
+idid-gvim ~
+	Select with mouse as wisual selection and no auto-insert 
+		-> behave xterm 
+		-> remove mswim.vim in vim74 
+
+
+
+
+vim: ft=myhelp
