@@ -143,40 +143,31 @@ filetype on
   highlight Folded ctermfg=DarkGreen ctermbg=Black
   set foldmethod=expr
   set foldexpr=FoldMethod(v:lnum)
-  autocmd FileType vim set foldmethod=indent " I don't need to fold comments in vim files 
+  "autocmd FileType vim set foldmethod=indent " I don't need to fold comments in vim files 
   set shiftwidth=2  " the number of column taken into account for aa fold, IMPORTANT
   
   function! FoldMethod(lnum)
     let crLine=getline(a:lnum)
-  
+ 
     " check if empty line 
-    if empty(crLine) || crLine[0]== "#" "Empty line or end comment 
-      return -1 " so same indent level as line before 
+    if crLine =~ '^\s*$' || crLine[0]== "#" "Empty line or end comment 
+      return '=' " so same indent level as line before
     endif 
 
-    " check if there is #ifdef .... staff 
-  
-    " check if { or }
-    if crLine =~ "\s*[{}]\s*" 
-      if crLine =~ ".*{.*"
-	let g:tmp = crLine
-        return FoldMethod(a:lnum+1) "value of the next line   
-      else 
-	return FoldMethod(a:lnum-1) "value of the previous line + 0 
-      endif 
-    
-    endif 
-  
+
     " check if comment  in syntax
-    let a:data=join( map(synstack(a:lnum, 1), 'synIDattr(v:val, "name")') )
-    if a:data =~ ".*omment.*"
+    let l:data =  join( map(synstack(a:lnum, 1), 'synIDattr(v:val, "name")') )
+    if l:data =~ ".*omment.*"
+      "return max([FoldMethod(a:lnum+1), FoldMethod(a:lnum-1) ]) 
       return '='
+
+    endif
+
 
   "Otherwise return foldlevel equal to ident /shiftwidth (like if
   "foldmethod=indent)
-    else  "return indent base fold
-      return indent(a:lnum)/&shiftwidth
-    endif 
+      "return indent base fold
+    return indent(a:lnum)/&shiftwidth
 
   endfunction
 
