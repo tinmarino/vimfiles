@@ -216,10 +216,14 @@ filetype on
 " WINDOWS 
   set ruler 
   set backspace=2 
-
   set foldlevelstart=30 "the folding at opening
 
-" SOURCE , VARIABLE 
-  let $MYVIM="$VIM/vimfiles"
+" SOURCE , VARIABLE  WITH $
+  if has('win64') || has('win32') || has('win16') 
+    let $MYVIM="$VIM/vimfiles"
+  else 
+    let $MYVIM=$HOME."/.vim"
+  endif 
+
   source $MYVIM/scripts/myfunctions.vim
   source $MYVIM/scripts/cfunctions.vim

@@ -27,6 +27,7 @@ CLONE in non empty directory
    git checkout -t origin/master
       or 
    git reset origin/master
+https://github.com/vim-scripts
 ==============================================================================
 0. List ~
 							*git-list*
