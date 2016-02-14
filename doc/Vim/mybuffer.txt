@@ -11,6 +11,7 @@ Split ~
 :sview 			| Same as :split in readonly mode
 :hide 			| Close current window
 :only 			| Close all windows, excepted current
+Ctrl+w,o           
 Ctrl + w and Ctrl+w 	| sWitch viewport 
 Ctrl + w and [hjkl]	| Move to the next viewport
 ctrl + w and arrow	| Same
