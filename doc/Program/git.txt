@@ -15,7 +15,18 @@
 
 
 
+==============================================================================
+0. Stack ~
+							*git-stack*
 
+	git clone --recursive <URL-OF-REPOSITORY> 
+CLONE in non empty directory 
+   git init
+   git remote add origin PATH/TO/REPO
+   git fetch
+   git checkout -t origin/master
+      or 
+   git reset origin/master
 ==============================================================================
 0. List ~
 							*git-list*
