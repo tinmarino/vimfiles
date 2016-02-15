@@ -10,3 +10,6 @@
 [submodule "bundle/command-t"]
 	path = bundle/command-t
 	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\command-t
+[submodule "bundle/L9"]
+	path = bundle/L9
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\L9
