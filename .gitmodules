@@ -1,0 +1,30 @@
+[submodule "bundle/nerdtree"]
+	path = bundle/nerdtree
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\nerdtree
+[submodule "bundle/command-t"]
+	path = bundle/command-t
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\command-t
+[submodule "bundle/L9"]
+	path = bundle/L9
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\L9
+[submodule "bundle/python-mode"]
+	path = bundle/python-mode
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\python-mode
+[submodule "bundle/sparkup"]
+	path = bundle/sparkup
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\sparkup
+[submodule "bundle/tabular"]
+	path = bundle/tabular
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\tabular
+[submodule "bundle/vim-colorscheme-switcher"]
+	path = bundle/vim-colorscheme-switcher
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\vim-colorscheme-switcher
+[submodule "bundle/vim-fugitive"]
+	path = bundle/vim-fugitive
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\vim-fugitive
+[submodule "bundle/vim-misc"]
+	path = bundle/vim-misc
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\vim-misc
+[submodule "bundle/vis"]
+	path = bundle/vis
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\vis

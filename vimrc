@@ -1,62 +1,57 @@
 " FOR VUNDLE 
-set nocompatible              " be iMproved, required
-filetype off                  " required
+  "set nocompatible              " be iMproved, required
+  "filetype off                  " required
+  "
+  "" set the runtime path to include Vundle and initialize
+  "set rtp+=~/.vim/bundle/Vundle.vim
+  "call vundle#begin()
+  "" alternatively, pass a path where Vundle should install plugins
+  ""call vundle#begin('~/some/path/here')
+  "
+  "" let Vundle manage Vundle, required
+  "Plugin 'VundleVim/Vundle.vim'
+  "Plugin 'Valloric/YouCompleteMe'
+  "
+  "" The following are examples of different formats supported.
+  "" Keep Plugin commands between vundle#begin/end.
+  "" plugin on GitHub repo
+  "Plugin 'tpope/vim-fugitive'
+  "" plugin from http://vim-scripts.org/vim/scripts.html
+  "Plugin 'L9'
+  "" Git plugin not hosted on GitHub
+  "Plugin 'git://git.wincent.com/command-t.git'
+  "" git repos on your local machine (i.e. when working on your own plugin)
+  "Plugin 'file:///home/gmarik/path/to/plugin'
+  "" The sparkup vim script is in a subdirectory of this repo called vim.
+  "" Pass the path to set the runtimepath properly.
+  "Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+  "" Avoid a name conflict with L9
+  "Plugin 'user/L9', {'name': 'newL9'}
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'Valloric/YouCompleteMe'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-Plugin 'L9'
-" Git plugin not hosted on GitHub
-Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Avoid a name conflict with L9
-Plugin 'user/L9', {'name': 'newL9'}
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+  " All of your Plugins must be added before the following line
+  "call vundle#end()            " required
+  "filetype plugin indent on    " required
+  " To ignore plugin indent changes, instead use:
+  "filetype plugin on
+  "
+  " Brief help
+  " :PluginList       - lists configured plugins
+  " :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+  " :PluginSearch foo - searches for foo; append `!` to refresh local cache
+  " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+  "
+  " see :h vundle for more details or wiki for FAQ
+  " Put your non-Plugin stuff after this line
 
 
 " BEFORE VUNDLE 
-set nocompatible
-call pathogen#infect()
-filetype on 
+  set nocompatible
+  call pathogen#infect()
+  filetype on 
 
-<<<<<<< HEAD
 
 
 " FROM VIM DEBIAN TEAM                
-=======
-"aaaaaa
-" FROM VIM DEBIAN TEAM 
->>>>>>> pcdr/pcdr
   if filereadable("/etc/vim/vimrc.local")
     source /etc/vim/vimrc.local
   endif
@@ -277,7 +272,7 @@ filetype on
   filetype plugin indent on
   let g:EclimCompletionMethod = 'omnifunc'
 
-<<<<<<< HEAD
+
 """ LARGE FILE 
   " Protect large files from sourcing and other overhead.
   " Files become read only
@@ -289,7 +284,6 @@ filetype on
       autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload undolevels=-1 | syntax off | setlocal foldmethod=manual | else | set eventignore-=FileType | endif
     augroup END
   endif
-=======
 
 " WINDOWS 
   set ruler 
@@ -301,4 +295,8 @@ filetype on
   let $MYVIM="$VIM/vimfiles"
   source $MYVIM/scripts/myfunctions.vim
   source $MYVIM/scripts/cfunctions.vim
->>>>>>> pcdr/pcdr
+
+
+" FILETYPE 
+  au BufNewFile,BufRead *.masm			setf masm 
+  au BufNewFile,BufRead *.asm			setf masm 

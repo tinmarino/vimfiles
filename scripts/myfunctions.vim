@@ -25,12 +25,6 @@ function! TestFunc(word)
   execute "normal /" . a:word . "\<CR>"
 endfunction
 
-<<<<<<< HEAD:myfunctions.vim
-=======
-
-
-
->>>>>>> pcdr/pcdr:scripts/myfunctions.vim
 function! RangeMatch(min,max) 
   let l:res = RangeSearchRec(a:min,a:max)
   execute "/" . l:res 

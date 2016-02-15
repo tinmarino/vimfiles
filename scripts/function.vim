@@ -18,4 +18,34 @@ function! Status2()
  set statusline+=%*   "switch back to statusline highlight
  set statusline+=%P   "percentage thru file
 endfunction 
-call Status2()
+"call Status2()
+
+function! AsciiList()
+  let @a=""
+  for i in range(256) 
+    let l:tmp = printf("%03d : %02x : %c", i, i, i)
+	let @A = l:tmp
+	let @A = "\n"
+
+  endfor 
+endfunction
+"call AsciiList()
+
+	
+
+function! Pyfix()
+	" Change tabs with 4 spaces
+	%s/\t/    /g
+
+	" Remove spaces at the end 
+	%s/ ^//
+
+	" Remove the space befroe : 
+	%s/ :$/:/
+
+	" put a space after ; or : in dic 
+	%s/,\(\S\)/, \1/g
+	%s/:\(\S\)/: \1/g
+endfunction
+
+command! -nargs=* Pyfix call Pyfix(<f-args>)
