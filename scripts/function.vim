@@ -18,4 +18,17 @@ function! Status2()
  set statusline+=%*   "switch back to statusline highlight
  set statusline+=%P   "percentage thru file
 endfunction 
-call Status2()
+"call Status2()
+
+function! AsciiList()
+  let @a=""
+  for i in range(256) 
+    let l:tmp = printf("%03d : %02x : %c", i, i, i)
+	let @A = l:tmp
+	let @A = "\n"
+
+  endfor 
+endfunction
+"call AsciiList()
+
+	
