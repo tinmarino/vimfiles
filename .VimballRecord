@@ -1,2 +1,0 @@
-vis.vba: call delete('/home2/tourneboeuf/.vim/plugin/visPlugin.vim')|call delete('/home2/tourneboeuf/.vim/autoload/vis.vim')|call delete('/home2/tourneboeuf/.vim/plugin/cecutil.vim')|call delete('/home2/tourneboeuf/.vim/doc/vis.txt')
-LargeFile.vba: call delete('/home2/tourneboeuf/.vim/plugin/LargeFile.vim')|call delete('/home2/tourneboeuf/.vim/doc/LargeFile.txt')
