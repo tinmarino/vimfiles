@@ -22,3 +22,6 @@
 [submodule "bundle/vim-fugitive"]
 	path = bundle/vim-fugitive
 	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\vim-fugitive
+[submodule "bundle/vim-misc"]
+	path = bundle/vim-misc
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\vim-misc
