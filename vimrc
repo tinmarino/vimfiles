@@ -272,9 +272,6 @@
   filetype plugin indent on
   let g:EclimCompletionMethod = 'omnifunc'
 
-" FILETYPE 
-  au BufNewFile,BufRead *.masm			setf masm 
-  au BufNewFile,BufRead *.asm			setf masm 
 
 """ LARGE FILE 
   " Protect large files from sourcing and other overhead.
@@ -298,3 +295,8 @@
   let $MYVIM="$VIM/vimfiles"
   source $MYVIM/scripts/myfunctions.vim
   source $MYVIM/scripts/cfunctions.vim
+
+
+" FILETYPE 
+  au BufNewFile,BufRead *.masm			setf masm 
+  au BufNewFile,BufRead *.asm			setf masm 
