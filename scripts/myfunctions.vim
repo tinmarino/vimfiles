@@ -31,7 +31,7 @@ function! RangeMatch(min,max)
   let @/=l:res
 endfunction  
 
-"TODO if both number don't have same number of digit 
+"TODO if both number don't have same number of digit
 function! RangeSearchRec(min,max) " suppose number with the same number of digit 
     if len(a:max) == 1 
       return '[' . a:min . '-' . a:max . ']'

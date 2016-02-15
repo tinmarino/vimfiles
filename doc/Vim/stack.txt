@@ -1,0 +1,49 @@
+https://github.com/vim-scripts
+
+
+CHECK OS
+
+if !exists("g:os")
+    if has("win64") || has("win32") || has("win16")
+        let g:os = "Windows"
+    else
+        let g:os = substitute(system('uname'), '\n', '', '')
+    endif
+endif
+
+    let os = substitute(system('uname'), "\n", "", "")
+    if os == "SunOS"
+    " Do Sun-specific stuff.
+    ...
+    elseif os == "Linux"
+    " Do Linux-specific stuff.
+    ...
+    endif
+    
+    " adjust configuration for such hostile environment as Windows {{{
+    if has("win32") || has("win16")
+      lang C
+      set viminfo='20,\"512,nc:/tmp/_viminfo
+      set iskeyword=48-57,65-90,97-122,_,161,163,166,172,177,179,182,188,191,198,202,209,211,230,234,241,243,143,156,159,165,175,185
+    else
+      set shell=/bin/sh
+    endif
+    " }}}
+    
+    
+    
+    The best way is to use has(), with this function you can check for features of Vim; OS specific features from :help feature-list:
+    
+    macunix                 Macintosh version of Vim, using Unix files (OS-X).
+    unix                    Unix version of Vim.
+    win32                   Win32 version of Vim (MS-Windows 95 and later, 32 or
+                            64 bits)
+    win32unix               Win32 version of Vim, using Unix files (Cygwin)
+    
+    And some older (semi-deprecated) systems:
+    
+    amiga                   Amiga version of Vim.
+    os2                     OS/2 version of Vim.
+    win16                   Win16 version of Vim (MS-Windows 3.1).
+    win64                   Win64 version of Vim (MS-Windows 64 bit).
+    win95                   Win32 version for MS-Windows 95/98/ME.

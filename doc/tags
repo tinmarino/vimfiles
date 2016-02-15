@@ -6,6 +6,12 @@ My-chapt	myhelp.txt	/*My-chapt*
 Test	myhelp.txt	/*Test*
 cmder-shortcut	cmder-shortcut.txt	/*cmder-shortcut*
 compiler-optimization.txt	compiler-optimisation.txt	/*compiler-optimization.txt*
+:Large	LargeFile.txt	/*:Large*
+:Unlarge	LargeFile.txt	/*:Unlarge*
+LargeFile-copyright	LargeFile.txt	/*LargeFile-copyright*
+LargeFile.txt	LargeFile.txt	/*LargeFile.txt*
+My-chapt	myhelp.txt	/*My-chapt*
+Test	myhelp.txt	/*Test*
 default-statusline	myappearance.txt	/*default-statusline*
 diff-list	diff-list.txt	/*diff-list*
 git-alias	git.txt	/*git-alias*
