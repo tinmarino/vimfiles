@@ -272,6 +272,10 @@
   filetype plugin indent on
   let g:EclimCompletionMethod = 'omnifunc'
 
+" FILETYPE 
+  au BufNewFile,BufRead *.masm			setf masm 
+  au BufNewFile,BufRead *.asm			setf masm 
+
 """ LARGE FILE 
   " Protect large files from sourcing and other overhead.
   " Files become read only
