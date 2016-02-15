@@ -7,3 +7,6 @@
 [submodule "bundle/nerdtree"]
 	path = bundle/nerdtree
 	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\nerdtree
+[submodule "bundle/command-t"]
+	path = bundle/command-t
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\command-t
