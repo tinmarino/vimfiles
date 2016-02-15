@@ -49,14 +49,9 @@ set nocompatible
 call pathogen#infect()
 filetype on 
 
-<<<<<<< HEAD
 
 
 " FROM VIM DEBIAN TEAM                
-=======
-"aaaaaa
-" FROM VIM DEBIAN TEAM 
->>>>>>> pcdr/pcdr
   if filereadable("/etc/vim/vimrc.local")
     source /etc/vim/vimrc.local
   endif
@@ -277,7 +272,6 @@ filetype on
   filetype plugin indent on
   let g:EclimCompletionMethod = 'omnifunc'
 
-<<<<<<< HEAD
 """ LARGE FILE 
   " Protect large files from sourcing and other overhead.
   " Files become read only
@@ -289,7 +283,6 @@ filetype on
       autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload undolevels=-1 | syntax off | setlocal foldmethod=manual | else | set eventignore-=FileType | endif
     augroup END
   endif
-=======
 
 " WINDOWS 
   set ruler 
@@ -301,4 +294,3 @@ filetype on
   let $MYVIM="$VIM/vimfiles"
   source $MYVIM/scripts/myfunctions.vim
   source $MYVIM/scripts/cfunctions.vim
->>>>>>> pcdr/pcdr

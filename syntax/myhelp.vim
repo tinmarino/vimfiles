@@ -181,17 +181,10 @@ syn region	helpString	oneline keepend	start=+[^:a-zA-Z>!\\@]'+lc=1 end=+'+
 " WITH VIM SYNTAX 
 syntax include @MYVIM syntax/vim.vim
 if has("conceal")
-<<<<<<< HEAD
-set conceallevel=2
-syntax region vimSnip matchgroup=Snip start=">vim\s*$"  end="<vim\s*$" concealends  contains=@MYVIM
-else
-syn region vimSnip 	matchgroup=Snip start=">vim\s*$"  end="<vim\s*$" contains=@MYVIM
-=======
   set conceallevel=2
   syntax region vimSnip matchgroup=Snip start=">vim"  end="<vim" concealends  contains=@MYVIM
 else
   syn region vimSnip 	matchgroup=Snip start=">vim"  end="<vim" contains=@MYVIM
->>>>>>> pcdr/pcdr
 endif
 
 "WITH BASH SYNTAX 
