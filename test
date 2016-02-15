@@ -1,3 +1,4 @@
+just to change 
 :au FileChangedShell * echo "Warning: File changed on disk"
 syntax on
 syntax include @CPP syntax/cpp.vim
