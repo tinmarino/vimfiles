@@ -1,3 +1,6 @@
 [submodule "bundle/bundle/L9"]
 	path = bundle/bundle/L9
 	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\L9
+[submodule "bundle/bundle/nerdtree"]
+	path = bundle/bundle/nerdtree
+	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\nerdtree
