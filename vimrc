@@ -16,8 +16,10 @@ set nocompatible | filetype on | syntax on
 
   " Vim
   let $MYVIM = expand('<sfile>:p:h')
+  let $MYVIM = expand('<sfile>:p:h')
   let $vim = $MYVIM
   let $v = $MYVIM
+  let $vimrc = $MYVIM . "/vimrc"
   let $s = expand("$v/scripts")
   let $ft = expand("$v/ftplugin")
   let $start = expand("$vim/pack/bundle/start")
@@ -281,6 +283,10 @@ set nocompatible | filetype on | syntax on
   " let g:pymode_lint_ignore =  "E701"   " Multiple statement on one line
   " let g:pymode_lint_ignore .= ",E501" " Line too long > 80 
   " let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
+  " let g:pymode_lint_ignore =  "E701" 	" Multiple statement on one line
+  " let g:pymode_lint_ignore .= ",E501" " Line too long > 80 
+  " let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
+    let g:pymode_lint_ignore="E221,E303,E302,E501,E202,E222, E201"
 
   " ConqueDbg, a gdb plugging
   let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
