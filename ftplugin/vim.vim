@@ -1,6 +1,7 @@
 
 " FOLD 
-  set foldmethod=expr
+  set shiftwidth=2
+  set foldmethod=indent
   set foldexpr=FoldVimMethod(v:lnum)
 
   function! FoldVimMethod(lnum)

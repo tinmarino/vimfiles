@@ -37,15 +37,15 @@ function! Pyfix()
 	" Change tabs with 4 spaces
 	%s/\t/    /g
 
-	" Remove spaces at the end 
-	%s/ ^//
-
 	" Remove the space befroe : 
 	%s/ :$/:/
 
 	" put a space after ; or : in dic 
 	%s/,\(\S\)/, \1/g
 	%s/:\(\S\)/: \1/g
+
+	" Remove spaces at the end 
+	%s/ ^//
 endfunction
 
 command! -nargs=* Pyfix call Pyfix(<f-args>)

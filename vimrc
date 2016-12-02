@@ -43,6 +43,15 @@
   " see :h vundle for more details or wiki for FAQ
   " Put your non-Plugin stuff after this line
 
+" SOURCE , VARIABLE  WITH $
+  if has('win64') || has('win32') || has('win16') 
+    let $MYVIM=$VIM."/vimfiles"
+  else 
+    let $MYVIM=$HOME."/.vim"
+  endif 
+
+  source $MYVIM/scripts/myfunctions.vim
+  source $MYVIM/scripts/cfunctions.vim
 
 " BEFORE VUNDLE 
   set nocompatible
@@ -101,7 +110,7 @@
   set autoread                  " when reopening a file, go to the position as when you quit it +  This will disable read-only to writeable warnings
  
   if has('persistent_undo')
-    set undodir=D:\Program\Vim\undo
+    set undodir=$MYVIM/undo
     set undofile 
   endif 
   set history=100000            " remember more commands and search history
@@ -120,6 +129,7 @@
   "move one line 
   map <Leader>c :s,^\(\s*\)[^# \t]\@=,\1// ,<CR>gv
   map <Leader>u :s,^\(\s*\)[^# \t]\@=// ,\1,<CR>gv
+  " Move lines with shift
   nnoremap <S-Down> :let tmp=getpos('.') <CR>:m+1 <CR>: call cursor(tmp[1]+1,tmp[2]) <CR>
   nnoremap <S-Up>   :let tmp=getpos('.') <CR>:m-2 <CR>: call cursor(tmp[1]-1,tmp[2]) <CR>
   inoremap <S-Up>   <Esc>:let tmp=getpos('.') <CR>:m-2 <CR>: call cursor(tmp[1]-1,tmp[2]) <CR>a
@@ -143,6 +153,7 @@
   "inoremap <C-S>         <C-O>:update<CR>
 
   imap jk <Esc>
+  imap kj <Esc>
 
 
   "Get Ctrl + ARROW KEYS,because if you don't do that, the <C-Up>  (ie crtl + up ) key is notreckognise 
@@ -200,7 +211,23 @@
   noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 
 
-"FOLDING, and folding maps 
+  " Fold 
+  map z0  :set foldlevel=0<CR><Esc>
+  map z1  :set foldlevel=1<CR><Esc>
+  map z2  :set foldlevel=2<CR><Esc>
+  map z3  :set foldlevel=3<CR><Esc>
+  map z4  :set foldlevel=4<CR><Esc>
+  map z5  :set foldlevel=5<CR><Esc>
+  map z6  :set foldlevel=6<CR><Esc>
+  map z7  :set foldlevel=7<CR><Esc>
+  map z8  :set foldlevel=8<CR><Esc>
+  map z9  :set foldlevel=9<CR><Esc>
+
+
+  nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+
+
+"FOLDING 
   highlight Folded ctermfg=DarkGreen ctermbg=Black
   set foldmethod=expr
   set foldexpr=FoldMethod(v:lnum)
@@ -240,8 +267,8 @@
 
 
 " BUFFER MANAGEMENT  and it maps 
-  map <Tab> :bnext<cr>
-  map <S-Tab> :bprevious<cr>
+  "map <Tab> :bnext<cr>
+  "map <S-Tab> :bprevious<cr>
   noremap <C-Tab> :BufExplorer<CR>
   " from http://vim.wikia.com/wiki/Easier_buffer_switching
   set wildchar=<Tab> wildmenu wildmode=full
@@ -268,6 +295,8 @@
   map <Leader>0 :10b<CR>
 
 
+
+
 "ECLIM 
   "set nocompatible 
   filetype plugin indent on
@@ -282,7 +311,7 @@
 
     let g:LargeFile = 1024 * 1024 
     augroup LargeFile
-      autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload undolevels=-1 | syntax off | setlocal foldmethod=manual | else | set eventignore-=FileType | endif
+      autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload | syntax off | setlocal foldmethod=manual | else | set eventignore-=FileType | endif
     augroup END
   endif
 
@@ -291,18 +320,11 @@
   set backspace=2 
   set foldlevelstart=30 "the folding at opening
 
-" SOURCE , VARIABLE  WITH $
-  if has('win64') || has('win32') || has('win16') 
-    let $MYVIM="$VIM/vimfiles"
-  else 
-    let $MYVIM=$HOME."/.vim"
-  endif 
-
-  source $MYVIM/scripts/myfunctions.vim
-  source $MYVIM/scripts/cfunctions.vim
 
 
 " FILETYPE 
   au BufNewFile,BufRead *.masm			setf masm 
   au BufNewFile,BufRead *.asm			setf masm 
 
+
+ 
