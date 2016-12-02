@@ -36,16 +36,16 @@
     let g:TreeExpandSingleDirs = 0
   endif
   if !exists('g:TreeIndent')
+    let g:TreeIndent = 4
+  endif
+  if g:TreeIndent < 2
+    call eclim#util#EchoWarning('g:TreeIndent cannot be less than 2.')
     let g:TreeIndent = 2
   endif
-  "if g:TreeIndent < 2
-  "  call eclim#util#EchoWarning('g:TreeIndent cannot be less than 2.')
-  "  let g:TreeIndent = 2
-  "endif
 " }}}
 
 " Script Variables {{{
-  let s:node_prefix = ' '
+  let s:node_prefix = ''
   let index = 0
   while index < (g:TreeIndent - 2)
     let s:node_prefix .= ' '
