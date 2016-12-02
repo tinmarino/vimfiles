@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =6
+let g:netrw_dirhist_1='/home2/tourneboeuf/Software/Java/Libgdx/MyGridGame/core/src/com/mygdx/game/utils'
+let g:netrw_dirhist_2='/home2/tourneboeuf/Software/Java/Libgdx/MyGridGame/core/src/com/mygdx/game/utils/Menu'
+let g:netrw_dirhist_3='/home2/tourneboeuf/Software/Java/Libgdx/MyGridGame/core/src/com/mygdx/game'
+let g:netrw_dirhist_4='/home2/tourneboeuf/Software/Java/Libgdx/MyGridGame/core/src/com/mygdx/game/utils'
+let g:netrw_dirhist_5='/home2/tourneboeuf/Software/Java/Libgdx/MyGridGame/core/src/com/mygdx/game/utils/Global'
+let g:netrw_dirhist_6='/home2/tourneboeuf/Software/Vim/PracticalVimSource/files/mvc/app/controllers'
