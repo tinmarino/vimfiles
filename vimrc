@@ -42,7 +42,6 @@
   "
   " see :h vundle for more details or wiki for FAQ
   " Put your non-Plugin stuff after this line
-
 " SOURCE , VARIABLE  WITH $
   if has('win64') || has('win32') || has('win16') 
     let $MYVIM=$VIM."/vimfiles"
@@ -53,11 +52,22 @@
   source $MYVIM/scripts/myfunctions.vim
   source $MYVIM/scripts/cfunctions.vim
 
+
+let g:pymode_lint_ignore =  "E701" 	" Multiple statement on one line
+let g:pymode_lint_ignore .= ",E501" " Line too long > 80 
+let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
+
+let g:pymode_options_colorcolumn = 0 " Remove the red line
+
+
+
 " BEFORE VUNDLE 
   set nocompatible
+  let mapleader=','
   call pathogen#infect()
+  call pathogen#helptags()
   filetype on 
-
+  syntax on
 
 
 
@@ -67,21 +77,13 @@
   endif
 
 
-" SYNTAX SLOW 
-  "call stfrtime() 
-  if has("syntax")
-      syntax on
-  endif
 
 
 " APPEARANCE , COLOR, search, set staff
   set tabstop=4 
   "SEARCH 
   set smartcase
-      "/copyright      " Case insensitive
-      "/Copyright      " Case sensitive
-      "/copyright\C    " Case sensitive
-      "/Copyright\c    " Case insensitive
+  set ignorecase
   set hlsearch      " highlight search terms
   set incsearch     " show search matches as you type
   " Title and color 
@@ -105,15 +107,14 @@
   set nowritebackup
   set backupdir=~/.vim/backup// " the double // will put the backup with the full directory  
   set directory=~/.vim/backup// " for the swap files 
-  set undolevels=100000         " use many levels of undo
-  set history=100000		" After nocompatible 
+  set undolevels=10000         " use many levels of undo
+  set history=10000		" After nocompatible 
   set autoread                  " when reopening a file, go to the position as when you quit it +  This will disable read-only to writeable warnings
  
   if has('persistent_undo')
     set undodir=$MYVIM/undo
     set undofile 
   endif 
-  set history=100000            " remember more commands and search history
 
 
 "MOUSE INTEGRATION 
@@ -124,7 +125,6 @@
 
 
 "MAP = SHORTCUTS 
-  let mapleader=','
   nnoremap H :set cursorline! cursorcolumn!<CR> 
   "move one line 
   map <Leader>c :s,^\(\s*\)[^# \t]\@=,\1// ,<CR>gv
@@ -303,17 +303,17 @@
   let g:EclimCompletionMethod = 'omnifunc'
 
 
-""" LARGE FILE 
-  " Protect large files from sourcing and other overhead.
-  " Files become read only
-  if !exists("my_auto_commands_loaded")
-    let my_auto_commands_loaded = 1
-
-    let g:LargeFile = 1024 * 1024 
-    augroup LargeFile
-      autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload | syntax off | setlocal foldmethod=manual | else | set eventignore-=FileType | endif
-    augroup END
-  endif
+"""" LARGE FILE 
+"  " Protect large files from sourcing and other overhead.
+"  " Files become read only
+"  if !exists("my_auto_commands_loaded")
+"    let my_auto_commands_loaded = 1
+"
+"    let g:LargeFile = 1024 * 1024 * 20
+"    augroup LargeFile
+"      autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload | syntax off | setlocal foldmethod=manual | else | set eventignore-=FileType | endif
+"    augroup END
+"  endif
 
 " WINDOWS 
   set ruler 
@@ -325,6 +325,14 @@
 " FILETYPE 
   au BufNewFile,BufRead *.masm			setf masm 
   au BufNewFile,BufRead *.asm			setf masm 
+  au BufNewFile,BufRead *.disarm		setf disarm
 
 
- 
+  map <Leader>v :e ~/.vim/vimrc<CR>
+  map <Leader>s :w<CR>:so %<CR>
+
+
+" ConqueDbg, a gdb plugging
+let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
+let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
+let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly 
