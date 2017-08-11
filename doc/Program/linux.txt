@@ -1,0 +1,27 @@
+
+																	  *mlinux*
+
+df  # list mount points 
+
+
+															  *mlinux-default*
+
+
+  /usr/share/gnome/applications/defaults.list
+  touch ~/.local/share/applications/defaults.list
+  touch ~/.local/share/applications/mimeapps.list
+  mimetype img.jpg 
+
+
+																*mlinux-mouse*
+
+sudo modprobe -r psmouse
+sudo modprobe psmouse proto=imps
+																 *mlinux-font*
+	// Get current font 
+	gsettings get org.gnome.desktop.interface monospace-font-name
+
+	gconftool-2 --get /apps/gnome-terminal/profiles/Unnamed/font
+  	gconftool-2 --set /apps/gnome-terminal/profiles/Unnamed/font --type string "courier new 12"
+
+ vim:tw=78:ft=myhelp 

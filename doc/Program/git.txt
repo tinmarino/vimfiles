@@ -7,9 +7,9 @@
 1. Start						|git-init|
 2. Config 						|git-config|
 3. Aliases 						|git-alias|
-4. Branches 						|git-branch|
+4. Branches 					|git-branch|
 5. Merge 						|git-merge|
-6. Rebasing 						|git-rebase|
+6. Rebasing 					|git-rebase|
 7. Remote 						|git-remote|
 8. Local 						|git-local|
 
