@@ -44,8 +44,8 @@ set nocompatible | filetype on | syntax on
 " Appearance , Color, Search, Set staff
   set encoding=utf-8
   set nu
-  set tabstop=4 
   "SEARCH 
+  set ignorecase
   set smartcase
   set ignorecase
   set hlsearch      " highlight search terms
@@ -65,10 +65,18 @@ set nocompatible | filetype on | syntax on
   colorscheme dante
   " No auto comment
   set formatoptions-=cro
-  " Windows 
+  " WINDOWS 
     set ruler 
     set backspace=2 
     set foldlevelstart=30 "the folding at opening
+    set wrap
+    set fileformat=unix
+    " set shell=H:/Program/cmder-1.2.9/Cmder.exe
+  " TAB
+    set expandtab
+    set shiftwidth=4
+    set tabstop=4
+    set wrapscan
 
 
 " Backup
@@ -268,6 +276,17 @@ set nocompatible | filetype on | syntax on
   map <Leader>9 :9b<CR>
   map <Leader>0 :10b<CR>
 
+  map z0 :set foldlevel=0<CR>
+  map z1 :set foldlevel=1<CR>
+  map z2 :set foldlevel=2<CR>
+  map z3 :set foldlevel=3<CR>
+  map z4 :set foldlevel=4<CR>
+  map z5 :set foldlevel=5<CR>
+  map z6 :set foldlevel=6<CR>
+  map z7 :set foldlevel=7<CR>
+
+  nmap <c-z> :echom "Warning do not use <c-z><CR>u
+
 
 " Filetype
   au BufNewFile,BufRead *.masm      setf masm
@@ -277,38 +296,44 @@ set nocompatible | filetype on | syntax on
 
 " Plugin
   " Pymode
-  let g:pymode_options_colorcolumn = 0 " Remove the red line
-  " Auto open cwindow (quickfix) if any errors have been found
-  let g:pymode_lint_cwindow = 0
-  " let g:pymode_lint_ignore =  "E701"   " Multiple statement on one line
-  " let g:pymode_lint_ignore .= ",E501" " Line too long > 80 
-  " let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
-  " let g:pymode_lint_ignore =  "E701" 	" Multiple statement on one line
-  " let g:pymode_lint_ignore .= ",E501" " Line too long > 80 
-  " let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
+    let g:pymode_options_colorcolumn = 0 " Remove the red line
+    " Auto open cwindow (quickfix) if any errors have been found
+    let g:pymode_lint_cwindow = 0
+    " let g:pymode_lint_ignore =  "E701"   " Multiple statement on one line
+    " let g:pymode_lint_ignore .= ",E501" " Line too long > 80 
+    " let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
+    " let g:pymode_lint_ignore =  "E701" 	" Multiple statement on one line
+    " let g:pymode_lint_ignore .= ",E501" " Line too long > 80 
+    " let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
     let g:pymode_lint_ignore="E221,E303,E302,E501,E202,E222, E201"
+    autocmd FileType python set colorcolumn=120
+    let g:pymode_options_max_line_length=120
+    let $PYTHONHOME='C:\Python27_x64'
+    let g:pymode_options_colorcolumn = 0 " Remove the red line
+    " Auto open cwindow (quickfix) if any errors have been found
+    let g:pymode_lint_cwindow = 0
 
   " ConqueDbg, a gdb plugging
-  let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
-  let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
-  let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly 
+    let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
+    let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
+    let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly 
 
   " CtrlP
-  " E like edit and closer to ctrl + <c-p> used to paste
-  let g:ctrlp_map = '<c-e>'
-  " Mixed to search in MRU, FIles, Buffers
-  let g:ctrlp_cmd = 'CtrlPMixed'
+    " E like edit and closer to ctrl + <c-p> used to paste
+    let g:ctrlp_map = '<c-e>'
+    " Mixed to search in MRU, FIles, Buffers
+    let g:ctrlp_cmd = 'CtrlPMixed'
 
   " Vim Translator
-  ".vimrc
-  " language code iso 639-1
-  "? define key in visual-mode (optional)
-  let g:goog_user_conf = { 'langpair': 'en|ru', 'cmd': 'node', 'v_key': 'T' }
+    ".vimrc
+    " language code iso 639-1
+    "? define key in visual-mode (optional)
+    let g:goog_user_conf = { 'langpair': 'en|ru', 'cmd': 'node', 'v_key': 'T' }
 
   " AnsiEsc
-  "au BufWinEnter *.a.txt AnsiEsc
-  "au BufWinEnter *.a.txt set nowrap | echom "I saw an ansi file"
-  "au ColorScheme * AnsiEsc!
+    " au BufWinEnter *.a.txt AnsiEsc
+    " au BufWinEnter *.a.txt set nowrap | echom "I saw an ansi file"
+    " au ColorScheme * AnsiEsc!
 
   " Emacs Command line
     let g:EmacsCommandLineSearchCommandLineDisable = 1
@@ -316,7 +341,7 @@ set nocompatible | filetype on | syntax on
   " Ctrlp Plugin Buffer with ctrl-b
     map <C-b> :CtrlPBuffer<CR>
 
-  "ECLIM 
+  " Eclim 
     filetype plugin indent on
     let g:EclimCompletionMethod = 'omnifunc'
 
@@ -333,7 +358,6 @@ set nocompatible | filetype on | syntax on
   " YouCompleteMe
     let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/start/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
 
-
   " Vimwiki
   let g:vimwiki_list = [{
     \ 'syntax': 'markdown',
@@ -341,8 +365,6 @@ set nocompatible | filetype on | syntax on
     \ 'custom_wiki2html': '~/vimwiki/wiki2html.sh',
     \'path': '~/vimwiki'
     \ }]
-
-
 
   " Termux
     if 'termux' == $os

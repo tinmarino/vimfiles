@@ -1,8 +1,8 @@
 
 "FOLDING, and folding maps 
   	highlight Folded ctermfg=DarkGreen ctermbg=Black
-  	set foldmethod=syntax
-  	set foldexpr=FoldMethod(v:lnum)
+  	set foldmethod=indent
+  	" set foldexpr=FoldMethod(v:lnum)
   	"autocmd FileType vim set foldmethod=indent " I don't need to fold comments in vim files 
   	set shiftwidth=4  " the number of column taken into account for aa fold, IMPORTANT
   	
