@@ -80,6 +80,7 @@ let g:pymode_options_colorcolumn = 0 " Remove the red line
 
 
 " APPEARANCE , COLOR, search, set staff
+  set nu
   set tabstop=4 
   "SEARCH 
   set smartcase
@@ -280,9 +281,9 @@ let g:pymode_options_colorcolumn = 0 " Remove the red line
   " " \b \f \g : go back/forward/last-used
   " " \1 \2 \3 : go to buffer 1/2/3 etc
   map <Leader>l :ls<CR>
-  map <Leader>b :bp<CR>
+  map <Leader>b :bp<CR>	
+  "overwriten by GDB
   map <Leader>f :bn<CR>
-  map <Leader>g :e#<CR>
   map <Leader>1 :1b<CR>
   map <Leader>2 :2b<CR>
   map <Leader>3 :3b<CR>
@@ -332,7 +333,9 @@ let g:pymode_options_colorcolumn = 0 " Remove the red line
   map <Leader>s :w<CR>:so %<CR>
 
 
+
 " ConqueDbg, a gdb plugging
 let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
 let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
 let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly 
+
