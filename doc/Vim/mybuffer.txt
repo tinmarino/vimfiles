@@ -6,21 +6,47 @@
                                                  *mysplit*
 Split ~
 
-:sp[lit]		| Split Screen horizontaly 
-:vsp[lit]		| Split Screen vertically 
-:sview 			| Same as :split in readonly mode
-:hide 			| Close current window
-:only 			| Close all windows, excepted current
-Ctrl+w,o           
-Ctrl + w and Ctrl+w 	| sWitch viewport 
-Ctrl + w and [hjkl]	| Move to the next viewport
-ctrl + w and arrow	| Same
-Ctrl + w and [+-] 	| Increase/decrease Current Viewport.
-10 Ctrl + w and + 	| Add 10 lines to current window
-Ctrl + w and =		| Igualise viewport size
-Ctrl + w and _		| Maximise current window
-Ctrl + w and [rR]	| Change viewport position 
-Ctrl + w and  q 	| Close current viewport
+:sp[lit]					| Split Screen horizontaly 
+:vsp[lit]					| Split Screen vertically 
+:sview 						| Same as :split in readonly mode
+:hide 						| Close current window
+:only 						| Close all windows, excepted current
+<C-W>o          			| Only 
+<C-W><C-W> 					| Switch viewport 
+<C-W>[hjkl]					| Move to the next viewport
+<C-W>						| Same
+<C-W>+ <C--> 				| Increase/decrease Current Viewport.
+10<C-W>+ 					| Add 10 lines to current window
+<C-W>=						| Igualise viewport size
+<C-W>_						| Maximise current window
+<C-W>[rR]					| Rotate:(clockwise and counter) change viewport position 
+<C-W>q 						| Close current viewport
+
+		^WK Move the current window to the top of the screen, using the full width of the screen.
+		^WJ Move the current window to the bottom of the screen, using the full width of the screen.
+		^WH Move the current window to the left of the screen, using the full height of the screen.
+		^WL Move the current window to the right of the screen, using the full height of the screen.
+		^WT Move the current window to a new existing tab.
+
+		^Wx Swap positions with the next window, or if issued with a count n, swap with n th next window.
+		^W^X
+
+		^W< Increase the current window width. The default amount is one column.
+		^W> Decrease the current window width. The default amount is one column.
+		winheight and winwidth options.
+
+		:vertical resize n ^W| Set the current window width to n. The default is to make window as wide as
+		winheight option When entering or creating a window, set its height to at least the specified value.
+		winwidth option When entering or creating a window, set its width to at least the specified value.
+		equalalways option When the number of windows changes, either by splitting or closing windows,
+		resize them to be the same size.
+		eadirection option Define whether Vim resizes windows equally vertically, horizontally, or both.
+		cmdheight option Set the command line height.
+		winminheight option Define the minimum window height, which applies to all windows created.
+		winminwidth option Define the minimum window width, which applies to all windows created.
+
+
+		z n <ENTER> Set the current window height to n.
 
 
 ===============================================================================

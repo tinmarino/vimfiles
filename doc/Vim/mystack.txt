@@ -1,0 +1,98 @@
+===============================================================================
+                                                 *mystack*
+Stack ~
+
+	Some unsorted but gitted stuff
+
+
+
+
+:e **/CardGame.java
+
+POWER of G  http://vim.wikia.com/wiki/Power_of_g
+:v/./,/./-j
+
+
+`[v`]  # to reselect paste text
+
+
+Practical vim 
+
+	redir @a 
+	redir END
+	vim - u NONE -N
+	see tip 48 
+	:version
+	:h +feature-list
+	:h ex-cmd-index
+	<c-v> or <c-k> to insert char that are nto on keyboard
+	<c-d> in ex to show a list of completion
+	:h command-complete when want auto completion for custom cmd 
+	<c-r><c-w> in cmdline get the word under cursor (esee :h c_CTRL-W_...)
+	q: cmdline window
+	q/ history of search 
+	<c-f> in cmdline to get cmdline windows
+	:shell ... then exit 
+	:write !sh # writes to the stdin of sh 
+	:normal @a executes the macro in all lines o
+	g* and g# performs same seach without word delimiter 
+	\ze \zs
+	:%s//\=@0   replace last search with register 0 content 
+	g& to make a replacement on all file lines ( equivalent to :%s//~/& (or :%&&) 
+	:& repeat last substitute cmd 
+	:t move 
+	:g/{/ .+1,/}/-1 sort    # sort lines betwenn { and }
+	:g/{/ .+1,/}/-1 >       # indeent 
+	cnfile   # first quickfixt in the next file 
+	colder 
+	http://www.moolenaar.net/habits.html
+
+	grep
+	and then coppen. 
+	why vimrep not working on java ?? 
+
+:list
+:listchars				| Choose how to represent tabs and spaces
+
+
+
+
+TIPS 
+		  gUgU or gUU # duplicate operator on whole line
+
+		  >G   # increase indentation until the end of file
+		  s		cl  # change one char
+		  S    ^C
+		  C    c$
+
+		  f+s + <Esc>;.;.;.  # remplace "+" par " + "
+		  note : capital letters and some chars are much rarer. sport them
+		  180<C-a>kkk.  # add 180 to all 
+		  :h operator
+		  :h :map-operator
+			:h omap-info
+
+		  INsret 
+		  <c-h>  delete oback cahr 
+		  <c-w>  word 
+		  <c-u>  line or jsut inserted
+		  ga # show the hewa code for char 
+		  <c-k>cahr1 char2 insert unicode by digraph
+		  R # get in pelace made and stay in replace mode 
+		  80a-<esc>
+
+		you don’t, you probably want to add the following line to your vimrc:
+		set nrformats=
+		This will cause Vim to treat all numerals as decimal, regardless of whether they are
+		padded with zeros.
+
+			Moving Around in Insert Mode Resets the Change
+
+
+
+
+
+
+
+
+vim: ft=myhelp:set modificable  
