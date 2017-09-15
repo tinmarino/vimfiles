@@ -90,6 +90,257 @@ TIPS
 
 
 
+PATH 
+  " Relative path of script file:
+  let s:path = expand('<sfile>')
+  
+  " Absolute path of script file:
+  let s:path = expand('<sfile>:p')
+  
+  " Absolute path of script file with symbolic links resolved:
+  let s:path = resolve(expand('<sfile>:p'))
+  
+  " Folder in which script resides: (not safe for symlinks)
+  let s:path = expand('<sfile>:p:h')
+  
+  " If you're using a symlink to your script, but your resources are in
+  " the same directory as the actual script, you'll need to do this:
+  "   1: Get the absolute path of the script
+  "   2: Resolve all symbolic links
+  "   3: Get the folder of the resolved absolute file
+  let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+
+
+
+
+
+MEM
+
+
+	:e ++ff=unix
+	call feedkeys("i\<C-V>\<C-X>")
+	inoremap <C-X><C-S> <C-O>:set completefunc=syntaxcomplete#Complete<CR><C-X><C-U>
+	inoremap <C-x><C-z> <C-o>:set completefunc=SimpleComplete<CR><C-x><C-u>
+	imap 
+	imap <expr> aa pumvisible() ? "<ESC>:echo 'yes'<CR>" : "<ESC>:echo 'no'<CR>"
+	:command -complete=file -nargs=1 OpenFile e <args>
+	setlocal omnifunc=syntaxcomplete#Complete
+
+	setlocal omnifunc=syntaxcomplete#Complete
+	inoremap <expr><C-X><C-S> neocomplete#start_manual_complete()
+
+	Cv Cj insert \%x00 and can be used as a line separator
+	? How to complete keyword
+
+	/joe/e                      : cursor set to End of match
+	3/joe/e+1                   : find 3rd joe cursor set to End of match plus 1 [C]
+	/joe/s-2                    : cursor set to Start of match minus 2
+	/joe/+3                     : find joe move cursor 3 lines down
+	/.*fred\&.*joe              : Search for FRED AND JOE in any ORDER!
+
+	yy:@"
+
+
+	g,g; gi
+
+	:set virtualedit=all
+	highlight LineNr ctermfg=grey ctermbg=white
+	:highlight NonText ctermfg=12  # to display ~ for empay lines
+	let &colorcolumn=join(range(81,999),",")
+	:b#|bd#
+	vim -w scriptname # to record each keystrike
+
+	:help :sandbox 
+	cpp 
+	CSearchContext for elcim and <C-X> <C-O>
+	youcompleteme, clang_complete or cpp_omnicomplete with ctags, or eclim (currently what I use
+	You can use gn in version 7.4 onwards (and gN to go backwards). It replaces the v//e trick.
+
+		Search forward for the last used search pattern, like with `n`, and start Visual mode to select the match
+
+
+
+	pluggins
+		vim_search_objects
+
+	eclim
+	:Java %
+	:NewJarEntry in .classpath
+
+	:.= 			" show line number
+	4!jsort filter with motion : sort the 4 next lines
+	:r !ls     " read output from running ls, after current line
+	:0r !ls    " after line 0 (before first line)
+	:-r !ls    " before current line ("-" is ".-1")
+	:redir >> out.txt
+	:redir > out.txt
+	:registers
+	  " any other commands
+	:redir END
+	helptags ~/.vim/doc
+	:g// lists all lines containing the last search pattern, and :redir will capture the results. 
+	:wall # save all 
+	:12,20>>> indents lines 12 to 20 inclusive three times 
+	i Ctrl-T indents the current line, and Ctrl-D
+	<c-x> <c-f> 			# for filname completion 
+	cd %:p:h
+	:sh
+	env | grep -i vim # in shell to know I am from vim 
+	K   # get the doc 
+	http://inlehmansterms.net/2014/10/31/debugging-vim/
+	vim -D  # open the debugger.
+	" debug a command
+	debug CommandName
+	" debug a fucntion
+	debug call FunctionName(arg)
+
+	mapclear
+
+
+	# DEBUG
+	java http://eclim.org/vim/java/debug.html
+	python -m pdb script.py
+
+
+	# MAP
+	:nnoremap ,s :exe 'grep ' . expand('<cword>') . ' *'<CR>
+	:nnoremap ,s :grep <C-R><C-W> *<CR>
+	:inoremap <F5> <C-O>:call MyVimFunc()<CR>
+	CTRL-\ CTRL-N command to go to normal mode. I
+
+
+	py
+	:py print 2
+
+	Use 
+
+	copy to clipboard command line hitory or search history 
+	q::%y
+	q/:%y
+
+	Jav afunction names 
+	\v(public|protected|private|static|\s) +(\w|\<|\>|\[|\])+ *\s+\zs\w+\ze *\([^()]*\)
+
+
+		:set fileformat  # UNIX window
+		:verbose set ft ?
+		:syntax list 
+		:scriptnames
+		map ,a :let mycurf=expand("<cfile>")<cr><c-w>w:execute("e ".mycurf)<cr><c-w>p
+		<c-w>f 	open in a new window (Ctrl-w f)
+		<c-w>gf 	open in a new tab (Ctrl-w gf) 
+		:find 
+		:e **/test/Suite.java
+		:r! find . -type f
+		set -o vi    Linux term 
+		TOhtml
+		"background color 
+		:highlight Normal ctermfg=grey ctermbg=darkblue
+		iz for in fold stuff z[ z]
+		ii for in indent 
+		make good fold 
+		:saveas
+
+
+
+	:!mv {file location} {new file location}
+	:e {new file location}
+		Write the file while editing - :w newname - to create a copy.
+		Start editing the new copy - :e#.
+		(Optionally) remove the old copy - :!rm oldname.
+
+
+
+
+
+
+
+
+
+
+
+
+	TODO 
+	  you can read some lines and execute its in current ex
+
+	SMALL TIPS
+	   :read !ls ~
+		 "put the output of a command in current buffer 
+
+
+	OLD TIPS
+		:r! cal.
+		Another good tip is to convert files to the hexdump format using :%!xxd. It's actually possible to convert a binary to hexdump, edit it, then convert it back to binary using xxd's -r (revert) flag.
+		, and ;   All of these motions take an argument as well. After one has been issued, pressing ; will repeat it in the same direction, while , repeats it in the opposite direction.
+
+
+		IN VISUAL 
+		o - move to other end of marked area
+		O - move to other corner of block
+
+	^ - jump to the first non-blank character of the line
+	g_ - jump to the last non-blank character of the line
+	fx - jump to next occurrence of character x
+	tx - jump to before next occurrence of character 
+
+		:vimgrep /pattern/ {file} - search for pattern in multiple files
+
+		e.g. :vimgrep /foo/ **/*
+
+		:cn - jump to the next match
+		:cp - jump to the previous match
+		:copen - open a window containing the list of matches
+		:w !sudo tee % - write out the current file using sudo
+
+	SYNTAX 
+	setf help 
+	  syn keyword basicLanguageKeywords PRINT OPEN IF DO WHILE WEND
+
+
+
+
+	" For when you forget to sudo.. Really Write the file.
+	cmap w!! w !sudo tee % >/dev/null
+	" visual shifting (does not exit Visual mode)
+	vnoremap < <gv
+	vnoremap > >gv
+	" Window mappings
+	map <C-j> <C-W>j
+	map <C-k> <C-W>k
+	map <C-h> <C-W>h
+	map <C-l> <C-W>l
+
+	" Window minimize
+	map <Leader>- <C-W>_<C-W><Bar>
+	map <Leader>_ <C-W>_<C-W><Bar>
+	" Adjust viewports to the same size
+	map <Leader>= <C-w>=
+
+
+	" redirect ouput of a command in split window 
+	function! OutputSplitWindow(...)
+	  " this function output the result of the Ex command into a split scratch buffer
+	  let cmd = join(a:000, ' ')
+	  let temp_reg = @"
+	  redir @"
+	  silent! execute cmd
+	  redir END
+	  let output = copy(@")
+	  let @" = temp_reg
+	  if empty(output)
+		echoerr "no output"
+	  else
+		new
+		setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted
+		put! =output
+	  endif
+	endfunction
+	command! -nargs=+ -complete=command Output call OutputSplitWindow(<f-args>)
+
+
+
+
+
 
 
 
