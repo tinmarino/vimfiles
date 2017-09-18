@@ -1,2 +1,25 @@
 
 Martin Grenfell | tim pope | drew neil
+
+
+EX ~
+http://www.csb.yale.edu/userguides/wordprocess/vi-summary.html
+
+7 HABITS ~
+http://www.moolenaar.net/habits.html
+
+VIMGOLF ~
+Because practise makes perfect
+http://feeds.vimgolf.com/latest-challenges
+https://vimgolf.com/
+https://twitter.com/vimgolf
+
+SEARCHES ~
+To document locally
+http://vim.wikia.com/wiki/Search_for_lines_not_containing_pattern#Using_the_:v_command
+
+STATUSLINE ~
+http://got-ravings.blogspot.fr/2008/08/vim-pr0n-making-statuslines-that-own.html
+
+
+vim: ft=myhelp:set modificable  

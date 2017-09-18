@@ -48,4 +48,43 @@ EDIT
   :$r !pwd      Insert the current working directory below the last line.
 
 
+	:12,20>>> indents lines 12 to 20 inclusive three times 
+	i Ctrl-T indents the current line, and Ctrl-D
+
+	<c-x> <c-f> 			# for filname completion 
+
+		  gUgU or gUU # duplicate operator on whole line
+
+		  >G   # increase indentation until the end of file
+		  s		cl  # change one char
+		  S    ^C
+		  C    c$
+		  f+s + <Esc>;.;.;.  # remplace "+" par " + "
+		  note : capital letters and some chars are much rarer. sport them
+		  180<C-a>k.k.k.  # add 180 to all 
+		  :h operator
+		  :h :map-operator
+		  :h omap-info
+
+		  INsret 
+		  <c-h>  delete oback cahr 
+		  <c-w>  word 
+		  <c-u>  line or jsut inserted
+		  ga # show the hewa code for char 
+		  <c-k>cahr1 char2 insert unicode by digraph
+		  R # get in pelace made and stay in replace mode 
+		  80a-<esc>
+		IN VISUAL 
+		o - move to other end of marked area
+		O - move to other corner of block
+
+	^ - jump to the first non-blank character of the line
+	g_ - jump to the last non-blank character of the line
+	fx - jump to next occurrence of character x
+	tx - jump to before next occurrence of character 
+	g,g; gi
+
+	gx jump to xRef
+	gd goto declaration
+
 vim: ft=myhelp

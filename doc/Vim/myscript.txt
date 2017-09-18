@@ -5,8 +5,41 @@ Script ~
 2. FOR 						|myfor|
 3. VARIABLE					|myvariable|
 4. STRING 					|mystring|
-5. ARITHMETIC 					|myarithmetic|
+5. ARITHMETIC 				|myarithmetic|
 6. FUNCTION					|myfunciton-script|
+7. VIMGREP					|myvimgrep|
+8. COMMAND LINE				|mycommandline|
+9. OUTPUT					|myoutput|
+10.	DEBUG, VERBOSE			|mydebug|
+
+
+
+
+
+
+>bash
+vim - u NONE -N
+set -o vi   		 Linux term 
+<bash
+
+
+>vim
+:TOhtml
+:saveas
+:w !sudo tee %     	" write out the current file using sudo
+:sh[ell]			" Goto shell, then exit to come back
+env | grep -i vim # in shell to know I am from vim 
+vim -w scriptname # to record each keystrike
+yy:@"
+call feedkeys("i\<C-V>\<C-X>")
+:e **/CardGame.java
+<c-d> in ex to show a list of completion
+
+	:.= 			" show line number
+
+	q::%y
+	q/:%y
+<vim
 
 -------------------------------------------------------------------------------
                                                 *myif*
@@ -241,5 +274,182 @@ Change the mysearch pattern
 -------------------------------------------------------------------------------
 
 command! -nargs=1 MyCommand call s:MyFunc(<f-args>) " transform a function to user-command
+
+
+
+																	 *myvimgrep*
+
+>vim
+:vimgrep /pattern/ {file} " search for pattern in multiple files
+:vimgrep /foo/ **/*
+
+:cn - jump to the next match
+:cp - jump to the previous match
+:copen - open a window containing the list of matches
+cnfile   # first quickfixt in the next file 
+colder 
+<vim
+
+
+														   *mydebug* *myverbose*
+
+DEBUG ~
+
+From http://vim.wikia.com/wiki/Displaying_the_current_Vim_environment
+
+>vim
+:abbreviate   - list abbreviations
+:args         - argument list
+:augroup      - augroups
+:autocmd      - list auto-commands
+:buffers      - list buffers
+:breaklist    - list current breakpoints
+:cabbrev      - list command mode abbreviations
+:changes      - changes
+:cmap         - list command mode maps
+:command      - list commands
+:compiler     - list compiler scripts
+:digraphs     - digraphs
+:file         - print filename, cursor position and status (like Ctrl-G)
+:filetype     - on/off settings for filetype detect/plugins/indent
+:function     - list user-defined functions (names and argument lists but not the full code)
+:function Foo - user-defined function Foo() (full code list)
+:highlight    - highlight groups
+:history c    - command history
+:history =    - expression history
+:history s    - search history
+:history      - your commands
+:iabbrev      - list insert mode abbreviations
+:imap         - list insert mode maps
+:intro        - the Vim splash screen, with summary version info
+:jumps        - your movements
+:language     - current language settings
+:let          - all variables
+:let FooBar   - variable FooBar
+:let g:       - global variables
+:let v:       - Vim variables
+:list         - buffer lines (many similar commands)
+:lmap         - language mappings (set by keymap or by lmap)
+:ls           - buffers
+:ls!          - buffers, including "unlisted" buffers
+:map!         - Insert and Command-line mode maps (imap, cmap)
+:map          - Normal and Visual mode maps (nmap, vmap, xmap, smap, omap)
+:map<buffer>  - buffer local Normal and Visual mode maps
+:map!<buffer> - buffer local Insert and Command-line mode maps
+:marks        - marks
+:menu         - menu items
+:messages     - message history
+:nmap         - Normal-mode mappings only
+:omap         - Operator-pending mode mappings only
+:print        - display buffer lines (useful after :g or with a range)
+:reg          - registers
+:scriptnames  - all scripts sourced so far
+:set all      - all options, including defaults
+:setglobal    - global option values
+:setlocal     - local option values
+:set          - options with non-default value
+:set termcap  - list terminal codes and terminal keys
+:smap         - Select-mode mappings only
+:spellinfo    - spellfiles used
+:syntax       - syntax items
+:syn sync     - current syntax sync mode
+:tabs         - tab pages
+:tags         - tag stack contents
+:undolist     - leaves of the undo tree
+:verbose      - show info about where a map or autocmd or function is defined
+:version      - list version and build options
+:vmap         - Visual and Select mode mappings only
+:winpos       - Vim window position (gui)
+:xmap         - visual mode maps only
+<vim
+
+>vim
+:python -m pdb script.py
+:debug CommandName						" debug a command
+:debug call FunctionName(arg)  			" debug a fucntion
+vim -D  # open the debugger.
+		:verbose set ft ?
+		:syntax list 
+		:scriptnames
+<vim
+
+gdb 	https://vi.stackexchange.com/questions/2046/how-can-i-integrate-gdb-with-vim
+		https://www.cprogramming.com/gdb.html
+java 	http://eclim.org/vim/java/debug.html
+vim		http://inlehmansterms.net/2014/10/31/debugging-vim/
+
+
+
+
+PATH ~
+  " Relative path of script file:
+  let s:path = expand('<sfile>')
+  
+  " Absolute path of script file:
+  let s:path = expand('<sfile>:p')
+  
+  " Absolute path of script file with symbolic links resolved:
+  let s:path = resolve(expand('<sfile>:p'))
+  
+  " Folder in which script resides: (not safe for symlinks)
+  let s:path = expand('<sfile>:p:h')
+  
+  " If you're using a symlink to your script, but your resources are in
+  " the same directory as the actual script, you'll need to do this:
+  "   1: Get the absolute path of the script
+  "   2: Resolve all symbolic links
+  "   3: Get the folder of the resolved absolute file
+  let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
+
+
+																 *mycommandline*
+
+
+	<c-v> or <c-k> to insert char that are nto on keyboard
+	:h command-complete when want auto completion for custom cmd 
+	<c-r><c-w> in cmdline get the word under cursor (esee :h c_CTRL-W_...)
+	q: cmdline window
+	q/ history of search 
+	<c-f> in cmdline to get cmdline windows
+
+																	  *myoutput*
+
+	redir @a 
+	redir END
+	:write !sh # writes to the stdin of sh 
+	:normal @a executes the macro in all lines o
+	4!jsort filter with motion : sort the 4 next lines
+	:r !ls     " read output from running ls, after current line
+	:0r !ls    " after line 0 (before first line)
+	:-r !ls    " before current line ("-" is ".-1")
+	:redir >> out.txt
+	:redir > out.txt
+	:registers
+	  " any other commands
+	:redir END
+
+>vim
+	" redirect ouput of a command in split window 
+	function! OutputSplitWindow(...)
+	  " this function output the result of the Ex command into a split scratch buffer
+	  let cmd = join(a:000, ' ')
+	  let temp_reg = @"
+	  redir @"
+	  silent! execute cmd
+	  redir END
+	  let output = copy(@")
+	  let @" = temp_reg
+	  if empty(output)
+		echoerr "no output"
+	  else
+		new
+		setlocal buftype=nofile bufhidden=wipe noswapfile nobuflisted
+		put! =output
+	  endif
+	endfunction
+	command! -nargs=+ -complete=command Output call OutputSplitWindow(<f-args>)
+<vim
+
+
 
 vim: ft=myhelp

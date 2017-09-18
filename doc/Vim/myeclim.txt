@@ -1,0 +1,3 @@
+
+	:Java %
+	:NewJarEntry in .classpath

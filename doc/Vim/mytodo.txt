@@ -1,0 +1,7 @@
+
+
+
+https://noahfrederick.com/log/a-list-of-vims-lists.html
+
+-	iz for in fold stuff z[ z]
+-	ii for in indent 

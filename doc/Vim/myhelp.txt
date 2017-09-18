@@ -1,0 +1,10 @@
+																		*myhelp*
+
+
+>vim
+:helptags ~/.vim/doc
+<vim
+
+
+
+vim: ft=myhelp:set modificable  

@@ -1,9 +1,10 @@
 
-1. Regex 					|myregex|
- 1. Escape Characters 				|myescape|
- 2. Quantifiers Greedy or not 			|myquantifier|
-2. Search					|mysearch|
+1. Regex 						|myregex|
+ 1. Escape Characters 			|myescape|
+ 2. Quantifiers Greedy or not 	|myquantifier|
+2. Search						|mysearch|
 3. Sustitute 					|mysubstitute|
+4. Global						|myglobal|
 
 ===============================================================================
                                                 *myregex*
@@ -50,6 +51,7 @@ Non-greedy ~
                                                 *mysearch*
 Search ~
 
+`[v`]  # to reselect paste text
 *		in normal mode, search current word
 :noh		no hightlight search 
 /word 	        word from top to bottom
@@ -63,7 +65,8 @@ Search ~
 /^\n\{3} 	empty lines
 /\cstring       Case insensitive 
 :bufdo /searchstr/ 	Search in all open files
-
+	g* and g# performs same seach without word delimiter 
+	\ze \zs
 
 <ESC>:%s/.*/\L&/  # tranform everything to lowar case
 <ESC>:%s/.*/\U&/  # upper
@@ -78,11 +81,22 @@ The pattern.txt explains a lot.
 <
 
 
+	/joe/e                      : cursor set to End of match
+	3/joe/e+1                   : find 3rd joe cursor set to End of match plus 1 [C]
+	/joe/s-2                    : cursor set to Start of match minus 2
+	/joe/+3                     : find joe move cursor 3 lines down
+	/.*fred\&.*joe              : Search for FRED AND JOE in any ORDER!
+
+
+
 ===============================================================================
                                                 *mysubstitute*
 Substite~
 
 
+:%s//\=@0   replace last search with register 0 content 
+:& repeat last substitute cmd 
+g& to make a replacement on all file lines ( equivalent to :%s//~/& (or :%&&) 
 :s:\(\a*\a\):"\1":g "\1 is like submatch(1)
 see zs ze zr .... 
 :%s/identifying text \zs\d\+\(.\d\+\)\=/\=(1.15+str2float(submatch(0)))/
@@ -171,7 +185,7 @@ range
 
 
 ================================================================================
-REGEX MATCH NUMBER 
+REGEX MATCH NUMBER ~
 " Integer with - + or nothing in front
 syn match celNumber '\d\+'
 syn match celNumber '[-+]\d\+'
@@ -190,8 +204,16 @@ syn match celNumber '\d[[:digit:]]*\.\d*[eE][\-+]\=\d\+'
 
 
 
+																	  *myglobal*
 
 
+POWER of G  http://vim.wikia.com/wiki/Power_of_g
+>vim
+:v/./,/./-j					" delete duplicates
+:g/{/ .+1,/}/-1 sort    	" sort lines betwenn { and }
+:g/{/ .+1,/}/-1 >       	" indeent 
+:g// 						" lists all lines containing the last search pattern, and :redir will capture the results. 
+<vim
 
 
 vim: ft=myhelp

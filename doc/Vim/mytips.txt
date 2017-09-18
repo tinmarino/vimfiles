@@ -1,0 +1,39 @@
+===============================================================================
+                                                 *mytips*
+Tips ~
+
+
+
+
+:b#|bd#
+											
+
+	:wall # save all 
+	cd %:p:h
+
+	K   # get the doc 
+	mapclear
+
+	:nnoremap ,s :exe 'grep ' . expand('<cword>') . ' *'<CR>
+	:nnoremap ,s :grep <C-R><C-W> *<CR>
+	:inoremap <F5> <C-O>:call MyVimFunc()<CR>
+	CTRL-\ CTRL-N command to go to normal mode. I
+
+
+
+
+	:!mv {file location} {new file location}
+	:e {new file location}
+		Write the file while editing - :w newname - to create a copy.
+		Start editing the new copy - :e#.
+		(Optionally) remove the old copy - :!rm oldname.
+
+
+		<c-w>f 	open in a new window (Ctrl-w f)
+		<c-w>gf 	open in a new tab (Ctrl-w gf) 
+		:find 
+		:e **/test/Suite.java
+		:r! find . -type f
+
+
+vim: ft=myhelp:set modificable  

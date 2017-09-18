@@ -1,0 +1,5 @@
+																	  *myplugin*
+
+
+
+vim: ft=myhelp:set modificable  
