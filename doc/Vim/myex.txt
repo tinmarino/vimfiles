@@ -1,6 +1,9 @@
 ================================================================================
 																		  *myex*
 
+http://www.csb.yale.edu/userguides/wordprocess/vi-summary.html
+
+
 :t$ copy current line to the end
 :# display current line number
 :& repeat last substitue
@@ -11,5 +14,10 @@
 the command :42 jumps to line 42, as does typing42G.
 
 
+	:py print 2
+	:version
+	:h +feature-list
+	:h ex-cmd-index
+	:t move 
 
 vim: ft=myhelp:set modificable  

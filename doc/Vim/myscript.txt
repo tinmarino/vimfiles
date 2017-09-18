@@ -44,6 +44,8 @@ call feedkeys("i\<C-V>\<C-X>")
 	:t move 
 	q::%y
 	q/:%y
+	:oldfiles
+	:browse oldfiles
 <vim
 
 -------------------------------------------------------------------------------

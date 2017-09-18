@@ -12,11 +12,6 @@ Stack ~
 
 
 EX ~
-	:py print 2
-	:version
-	:h +feature-list
-	:h ex-cmd-index
-	:t move 
 
 
 
