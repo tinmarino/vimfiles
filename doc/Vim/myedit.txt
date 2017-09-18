@@ -87,4 +87,13 @@ EDIT
 	gx jump to xRef
 	gd goto declaration
 
+
+
+ge backward to end of word
+ICt  Cd insert indent
+gJ join lone without space
+g-  g+   for older newer changes
+g; and g, to jump to older and newer changes
+[I   for include-search of a word
+
 vim: ft=myhelp

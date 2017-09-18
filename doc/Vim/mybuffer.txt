@@ -47,6 +47,13 @@ Split ~
 
 
 		z n <ENTER> Set the current window height to n.
+:resize 60 or :resize +5
+Cw 10+ and Cw 10>
+nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR> nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
+Some pluginng to use submodes permits Cw ++++
+:new
+:below new
+set splitright set splitbelow
 
 
 ===============================================================================

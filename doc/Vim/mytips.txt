@@ -3,6 +3,9 @@
 Tips ~
 
 
+Vim can browse tar and zip archives
+uppercase maps to jump between files
+Read vimcast of drew neil and tim pope
 
 
 :b#|bd#

@@ -37,6 +37,11 @@ call feedkeys("i\<C-V>\<C-X>")
 
 	:.= 			" show line number
 
+	:py print 2
+	:version
+	:h +feature-list
+	:h ex-cmd-index
+	:t move 
 	q::%y
 	q/:%y
 <vim
@@ -295,6 +300,9 @@ colder
 
 DEBUG ~
 
+
+:digraph show the digraph that can be inserted with Ck
+
 From http://vim.wikia.com/wiki/Displaying_the_current_Vim_environment
 
 >vim
@@ -405,6 +413,11 @@ PATH ~
 																 *mycommandline*
 
 
+<c-e>			" End of cmd (goto)		
+<c-b>			" Beginging of cmd (goto)
+<c-l>			" Longest common match
+<c-n>			"
+<c-p>			"
 	<c-v> or <c-k> to insert char that are nto on keyboard
 	:h command-complete when want auto completion for custom cmd 
 	<c-r><c-w> in cmdline get the word under cursor (esee :h c_CTRL-W_...)
@@ -452,4 +465,4 @@ PATH ~
 
 
 
-vim: ft=myhelp
+vim: ft=myhelp:tw=78:ts=4

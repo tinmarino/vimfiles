@@ -11,8 +11,6 @@ Stack ~
 
 
 
-
-
 EX ~
 	:py print 2
 	:version
@@ -20,8 +18,6 @@ EX ~
 	:h ex-cmd-index
 	:t move 
 
-:list
-:listchars				| Choose how to represent tabs and spaces
 
 
 
