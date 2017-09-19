@@ -3,6 +3,7 @@
                                                 *mykey*
 Key~
 
+80a=<Esc>		" Create tje line
 (			| jump backward one sentence (sentences starts with .)
 {			| jump on paragraph backward 
 - or ^			| move to first (non blank caracter)
@@ -88,6 +89,19 @@ EDIT
 	gd goto declaration
 
 
+<c-o> 			Jump to older position
+<c-i> 			Jump to inner, newer position
+'.				Jump to last modified
+gi 				Insert at last modified position
+<c-q> or <c-v> 	Visual block
+gv				Reselect last selection
+gu, gU, ~		Lower, Uppder case operator
+s				cl: Change one char
+C				c$: Change full line
+S				^C: Change line the end
+
+
+
 
 ge backward to end of word
 ICt  Cd insert indent
@@ -95,5 +109,26 @@ gJ join lone without space
 g-  g+   for older newer changes
 g; and g, to jump to older and newer changes
 [I   for include-search of a word
+ga 				Show char hex
+g*, g#			Smae as *, # but without delimiters
+gq				Filter via formatprg
+X				Delete char before
+gI				Insert at col 1
+-, +			Insert at first non blank char at [count] lines before or after
+<c-g> 			Print filename
+K				See documentation
+
+
+
+
+
+
+																	  *myinsert*
+
+i<c-h> 			Delete Char
+i<c-w> 			Delete Word
+i<c-u> 			Delete Line
+i<c-v><c-m> 	Carraige return for windows
+=				Indent operator
 
 vim: ft=myhelp

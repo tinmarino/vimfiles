@@ -39,4 +39,24 @@ Read vimcast of drew neil and tim pope
 		:r! find . -type f
 
 
+
+q:
+q/
+:<c-f>
+:%normal @a			" Execute a on all lines
+:%s//@=0			" REplace last search by last yanked
+&					" Repeat last s on this line
+g& 					" repeat last s on all lines
+:g/*{/ .+1,/-1 sort " Sort lines between { and }
+:saveas
+:=					" print last line number
+:echo expand('<sfile>') 			" print file of script
+:syntax sync fromstart 				" REdraw syntax
+:b#|bd#				" Delete buffer, not window
+
+vim --servername DEMO
+vim --servername DEMO --remote file.txt
+vim --servername DEMO  --remote-send ":3d<CR>"
+
+
 vim: ft=myhelp:set modificable  

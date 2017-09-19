@@ -18,12 +18,21 @@ Script ~
 
 
 >bash
-vim - u NONE -N
+vim -u NONE -N
 set -o vi   		 Linux term 
 <bash
 
+%!xxd [-r][-g 1]
+%!column -t         " Align column
+:sort [u][n]		" Remove duplicates treats 100 after 20
+
 
 >vim
+:set ntformat=		" Treat all numerical as decimal even if preceded by 0 
+:arg **/*.cpp
+:argadd
+:argdo %/foo/bar/g
+
 :TOhtml
 :saveas
 :w !sudo tee %     	" write out the current file using sudo
@@ -420,6 +429,14 @@ PATH ~
 <c-l>			" Longest common match
 <c-n>			"
 <c-p>			"
+<c-a>			" expand ** like bd **.xml<c-a>
+<c-d>			" Display matches: b *.c<c-d>
+<c-r><c-w>		" Get word under cursor
+
+|				" Cmd separator
+:@"				" Execute register content 
+:e +ff=unix
+:w +ff=dos
 	<c-v> or <c-k> to insert char that are nto on keyboard
 	:h command-complete when want auto completion for custom cmd 
 	<c-r><c-w> in cmdline get the word under cursor (esee :h c_CTRL-W_...)
@@ -442,6 +459,8 @@ PATH ~
 	:registers
 	  " any other commands
 	:redir END
+	
+	let @a=system('ls')
 
 >vim
 	" redirect ouput of a command in split window 

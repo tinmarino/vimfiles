@@ -87,7 +87,12 @@ The pattern.txt explains a lot.
 	/joe/+3                     : find joe move cursor 3 lines down
 	/.*fred\&.*joe              : Search for FRED AND JOE in any ORDER!
 
-
+/.\{-}              " * but non greeedy
+/\%x30 		    " Search hexa
+/\zs /\ze
+/\%^, /\%$	    " Begining and end of document
+'[v']		    " Select last paste
+/\_.		    " Include newline
 
 ===============================================================================
                                                 *mysubstitute*
@@ -174,6 +179,14 @@ I Don't ignore case for the pattern.
 
   :g/^/put _       " Double-space your file: 
   :g/^/-put ='foo'. "Add a line containing foo before each lineThis is a clever use of the expression register. Here, - is a synonym for .-1 (cf. :help :range). Since :put puts the text after the line, you have to explicitly tell it to act on the previous one.
+
+  :%s/pattern//gn		" Just count
+  :g/pattern/m$			" Move EOF
+  :g/^/m0			" Reverse file
+  :g/pattern/y A		" Yank appending to reg a
+  :v/string_to_keep/s/.*//
+  :%s/.*\(string_to_keep\).*/\1 " Better
+
 
 
 ===============================================================================
