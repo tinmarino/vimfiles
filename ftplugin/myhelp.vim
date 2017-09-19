@@ -1,4 +1,13 @@
 
+" TAB
+  set tabstop=4
+  set expandtab
+
+
+" Apperance  
+  set tw=78
+  set noreadonly
+  set modifiable
 
 
 " FOLD 

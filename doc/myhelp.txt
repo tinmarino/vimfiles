@@ -1,5 +1,4 @@
 *myhelp.txt*  Some of my (tinmarino) personal notes according to vim 
-Maybe to put that instead of Mem/vim
 
 
 

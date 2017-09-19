@@ -40,7 +40,7 @@ q/
 q: to see history command or search 
 his /  "history of search 
 
-The *myhelp* command 
+The |myhelp| command 
   http://vim.wikia.com/wiki/Learn_to_use_help
 >
   :help E872

@@ -65,7 +65,6 @@ let g:pymode_options_colorcolumn = 0 " Remove the red line
   set nocompatible
   let mapleader=','
   call pathogen#infect()
-  call pathogen#helptags()
   filetype on 
   syntax on
 

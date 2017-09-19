@@ -1,3 +1,5 @@
+*myregex.txt*   Regex, Search, Substitute, Global
+
 
 1. Regex 						|myregex|
  1. Escape Characters 			|myescape|
@@ -7,10 +9,9 @@
 4. Global						|myglobal|
 
 ===============================================================================
-                                                *myregex*
-Regex ~
+1. Regex ~
 http://vimregex.com/
-						*myescape*
+                                                                    *myescape*
 
 Escaped caracter or metecaratcter ~
     .  		any character except new line 	  	 
