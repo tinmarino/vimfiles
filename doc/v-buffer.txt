@@ -1,3 +1,6 @@
+*mybuffer.txt*      Window, Buffer, Tab
+
+
 1. Split 					|mysplit|
 2. Buffer 					|mybuffer|
 3. Tab						|mytab|
