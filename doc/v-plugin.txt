@@ -1,5 +1,5 @@
-																	  *myplugin*
+*v#plugin.txt*      Pluggin list
 
 
 
-vim: ft=myhelp:set modificable  
+vim: ft=myhelp

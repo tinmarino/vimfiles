@@ -1,27 +1,17 @@
-*myhelp.txt*  Some of my (tinmarino) personal notes according to vim 
+*v#help.txt*        How to add custom help
 
 
 
-================================================================================
-                                                  *My-chapt*
-My-chapt ~
-	
-1/ My-chapt 
-2/ Test 
-3/ Test0 
-4/ Test0 
-5/ Test0 
-
-helpKeyword
-===============================================================================
-Contents ~
 
 
- dont forget to run helptags ./ "in the current dir 
+Dont forget to run helptags ./ "in the current dir 
+Or just :Helptags
+You can see everything I made with :h local-addtions
+Note the name of each file and the first line (and the last)
 
 
 ===============================================================================
-                                                *myfast*
+                                                                      *v#fast*
 Fast ~
 
 the runtime! debian was making pathogen not working 
@@ -35,7 +25,7 @@ unicode
   feedkeys 
 
 ===============================================================================
-                                                *myos*
+                                                                        *v#os*
 Os ~
   
 ftype code="C:\gvim.exe" --remote-tab-silent "%1"
@@ -43,11 +33,6 @@ assoc .py code
 # if you don't know to what python is asso type "assoc .py"
 
 
-
-================================================================================
-                                                  *Test*
-Test ~
-	This is a test 
 
 
 

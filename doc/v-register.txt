@@ -1,6 +1,6 @@
+*v#register.txt*    Register use (small)
 
 ===============================================================================
-                                                 *myregister*
 Registers ~
 
 -------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ Registers ~
   :%y+. 	          "Copy the entire buffer to the system clipboard of the file 
 
 <vim
-                                                 *myregister-list*
+                                                 *v#register-list*
 
 
       a — Named register, "aY Replace the contents of register a with the current line 

@@ -1,3 +1,4 @@
+*v#eclim.txt*       Eclim shortcuts, maps, tips
 
 	:Java %
 	:NewJarEntry in .classpath

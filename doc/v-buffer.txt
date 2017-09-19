@@ -1,12 +1,12 @@
-*mybuffer.txt*      Window, Buffer, Tab
+*v#buffer.txt*      Window, Buffer, Tab
 
 
-1. Split 					|mysplit|
-2. Buffer 					|mybuffer|
-3. Tab						|mytab|
+1. Split 					|v#split|
+2. Buffer 					|v#buffer|
+3. Tab						|v#tab|
 
 ===============================================================================
-                                                 *mysplit*
+                                                 *v#split*
 Split ~
 
 :sp[lit]			| Split Screen horizontaly 
@@ -58,7 +58,7 @@ set splitright set splitbelow
 
 
 ===============================================================================
-                                                *mybuffer*
+                                                *v#buffer*
 Buffer ~
 
 
@@ -91,7 +91,7 @@ Buffer ~
   bufdo normal 2G"Ayy "which iterates through the buffers and runs the given command in normal mode. 2G jumps to the appropriate line, and "Ay yanks into register a, appending instead of overwriting (since the A is capitalized). Make sure register a is empty before you start
 
 ===============================================================================
-                                                *mytab*
+                                                *v#tab*
 Tab ~
 
 :tabnew 		Creates a new tab

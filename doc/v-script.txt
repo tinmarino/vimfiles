@@ -1,16 +1,16 @@
-                                                 *myscript*
+*v#script.txt*      Tokens, functions, debugging (large)
 Script ~
 
-1. IF						|myif| 
-2. FOR 						|myfor|
-3. VARIABLE					|myvariable|
-4. STRING 					|mystring|
-5. ARITHMETIC 				|myarithmetic|
-6. FUNCTION					|myfunciton-script|
-7. VIMGREP					|myvimgrep|
-8. COMMAND LINE				|mycommandline|
-9. OUTPUT					|myoutput|
-10.	DEBUG, VERBOSE			|mydebug|
+1. IF						|v#if| 
+2. FOR 						|v#for|
+3. VARIABLE					|v#variable|
+4. STRING 					|v#string|
+5. ARITHMETIC 				|v#arithmetic|
+6. FUNCTION					|v#funciton-script|
+7. VIMGREP					|v#vimgrep|
+8. COMMAND LINE				|v#commandline|
+9. OUTPUT					|v#output|
+10.	DEBUG, VERBOSE			|v#debug|
 
 
 
@@ -58,7 +58,7 @@ call feedkeys("i\<C-V>\<C-X>")
 <vim
 
 -------------------------------------------------------------------------------
-                                                *myif*
+                                                *v#if*
 
 >vim
    if <expression>
@@ -82,7 +82,7 @@ Expression can be :
    exists('var')	; Check if varaible exists 
 
 -------------------------------------------------------------------------------
-                                                 *myfor*
+                                                 *v#for*
 >vim
   for <var> in <list>
   	continue 	" return to the begining of loop 
@@ -112,7 +112,7 @@ Expression can be :
 
 
 -------------------------------------------------------------------------------
-                                                 *myvariables*
+                                                 *v#variables*
 >vim
 g:var " global.
 a:var " function argument.
@@ -174,7 +174,7 @@ v:var " Predefined by Vim.
 <
 
 -------------------------------------------------------------------------------
-                                                 *mystring*
+                                                 *v#string*
 
 
 >vim
@@ -202,7 +202,7 @@ v:var " Predefined by Vim.
   
 
 -------------------------------------------------------------------------------
-                                                 *myarithmetic*
+                                                 *v#arithmetic*
 
 >vim
   let result=(100*21)/23
@@ -261,7 +261,7 @@ HEX DUMP ~
 <		Convert buffer to hex dump and convet back 
 
 
-						*myfunction-script*
+						*v#function-script*
 Function are defined like 
 >
   function! (arg1,arg2) 
@@ -293,7 +293,7 @@ command! -nargs=1 MyCommand call s:MyFunc(<f-args>) " transform a function to us
 
 
 
-																	 *myvimgrep*
+																	 *v#vimgrep*
 
 >vim
 :vimgrep /pattern/ {file} " search for pattern in multiple files
@@ -307,7 +307,7 @@ colder
 <vim
 
 
-														   *mydebug* *myverbose*
+														   *v#debug* *v#verbose*
 
 DEBUG ~
 
@@ -421,7 +421,7 @@ PATH ~
   let s:path = fnamemodify(resolve(expand('<sfile>:p')), ':h')
 
 
-																 *mycommandline*
+																 *v#commandline*
 
 
 <c-e>			" End of cmd (goto)		
@@ -444,7 +444,7 @@ PATH ~
 	q/ history of search 
 	<c-f> in cmdline to get cmdline windows
 
-																	  *myoutput*
+																	  *v#output*
 
 	redir @a 
 	redir END

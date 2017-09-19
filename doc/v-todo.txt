@@ -1,3 +1,4 @@
+*v#todo.txt*        TODO list for vimrc, doc, pluggins, software, ideas
 
 
 
@@ -5,3 +6,26 @@ https://noahfrederick.com/log/a-list-of-vims-lists.html
 
 -	iz for in fold stuff z[ z]
 -	ii for in indent 
+
+
+
+
+
+
+                                                                        *idid* 
+
+	This show what I found out. 
+
+
+
+================================================================================
+                                                  *idid-gvim*
+idid-gvim ~
+	Select with mouse as wisual selection and no auto-insert 
+		-> behave xterm 
+		-> remove mswim.vim in vim74 
+
+
+
+
+vim: ft=myhelp

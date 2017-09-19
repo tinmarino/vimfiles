@@ -1,11 +1,10 @@
-|myappearance|
+*v#appearance.txt*  Statusline
 
 ===============================================================================
-                                                 *myappearance*
 Appearance ~
 
 -------------------------------------------------------------------------------
-The *mystatusline* option
+The *v#statusline* option
 
 This is a line at the bottom to get hud text. The ruler is supperposed to the
 statusline. 

@@ -1,5 +1,6 @@
+*v#tips.txt*        Tips ordered by result not type
+
 ===============================================================================
-                                                 *mytips*
 Tips ~
 
 
@@ -59,4 +60,4 @@ vim --servername DEMO --remote file.txt
 vim --servername DEMO  --remote-send ":3d<CR>"
 
 
-vim: ft=myhelp:set modificable  
+vim: ft=myhelp

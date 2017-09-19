@@ -1,5 +1,7 @@
+*v#ex.txt*          Ex commands cheatsheet
+
 ================================================================================
-																		  *myex*
+																		  *v#ex*
 
 http://www.csb.yale.edu/userguides/wordprocess/vi-summary.html
 

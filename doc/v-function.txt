@@ -1,7 +1,8 @@
+*v#function.txt*    Functions, scripts, toded or merge
+
 1. FUNCTION 
 2. COMMAND 
 ===============================================================================
-                                                 *myfunction*
 Function ~
 >
   :help functions 
@@ -22,7 +23,7 @@ EXEC ~
   exec Func() 
 <
 
-*myfunction2command* 
+*v#function2command* 
 command! -nargs=1 MyCommand call s:MyFunc(<f-args>) " transform a function to user-command
 
 
@@ -40,7 +41,7 @@ q/
 q: to see history command or search 
 his /  "history of search 
 
-The |myhelp| command 
+The |v#help| command 
   http://vim.wikia.com/wiki/Learn_to_use_help
 >
   :help E872

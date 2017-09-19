@@ -1,6 +1,7 @@
+*v#edit.txt*        Jumps, Normal, Insert mode keys
 
 ===============================================================================
-                                                *mykey*
+                                                *v#key*
 Key~
 
 80a=<Esc>		" Create tje line
@@ -123,7 +124,7 @@ K				See documentation
 
 
 
-																	  *myinsert*
+																	  *v#insert*
 
 i<c-h> 			Delete Char
 i<c-w> 			Delete Word

@@ -1,25 +1,9 @@
+*v#stack.txt*       Drop shit here, git and move it then
+
 ===============================================================================
-                                                 *mystack*
 Stack ~
 
-	Some unsorted but gitted stuff
-
-
-
 		set nrformats=
-
-
-
-
-EX ~
-
-
-
-
-
-MEM
-
-
 	:e ++ff=unix
 	inoremap <C-X><C-S> <C-O>:set completefunc=syntaxcomplete#Complete<CR><C-X><C-U>
 	inoremap <C-x><C-z> <C-o>:set completefunc=SimpleComplete<CR><C-x><C-u>
