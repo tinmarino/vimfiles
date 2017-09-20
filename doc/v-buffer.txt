@@ -1,58 +1,97 @@
 *v#buffer.txt*      Window, Buffer, Tab
 
 
-1. Split 					|v#split|
-2. Buffer 					|v#buffer|
-3. Tab						|v#tab|
+1. Split 		    |v#split|
+2. Buffer 			|v#buffer|
+3. Tab				|v#tab|
 
 ===============================================================================
-                                                 *v#split*
-Split ~
+                                                          *v#split* *v#window*
+Split, Window ~
 
+
+Modify Layout ~
+<C-W>o          	| Only 
+<C-W>q 				| Close current viewport
+<C-W>x				| Swap position with next window or [count] next
+<C-W>[rR]			| Rotate:(clockwise and counter) change viewport position 
+<C-W>[+-]     		| Increase/decrease [count] Current Viewport height
+<C-W>[<>]           | Increase/decrease [count] width
+<C-W>=				| Igualise viewport size
+<C-W>_				| Maximise current window height
+<C-W>|				| Maximise current window width
+<C-W>[HJKL] 		| Move the current window to the top of the screen, using the full width of the screen.
+
+Move ~
+<C-W><C-W> 			| Switch viewport 
+<C-W>[hjkl]			| Move to the next viewport
+<C-W><arrow>		| Move direction
+<C-W>b              | Move to the bottom window
+<C-W>t              | Move to the top window
+<C-W>p              | MOve to previous window
+
+
+Create ~
+<C-W>s				| Split horizontal
+<C-W>v				| Vertical split
+<C-W>T				| Window to Tab
+CTRL-W CTRL-N
+Split the window like :split .The only difference is that if no
+filename is specified, a new window is started on a blank file. (Same as: CTRL-Wn ,
+:new . See page 48.)
+
+Jumps ~
+<C-W>]          | Split the current window and jump to the function whose
+name is under the cursor. If a count is specified, it is the height of the new
+window.
+<C-W>g]         | split followed a CTRL-]
+<C-W>^          | Split the window and edit the alternate file. If a count is specified, split the window and edit the count file on the command line.
+<C-W>d    
+Split the window and find the definition of the word under the
+cursor. If the definition cannot be found, do not split the window. <C-W><C-D>
+<C-W>f              | Split the window and edit the file whose name is under the cursor.  Looks for the file in the current directory, and then all the directories specified by the ‘path’ option. <C-W><C-F>
+<C-W>g}
+Do a :ptjump on the word under the cursor. If a count is
+specified, make the new window count lines high.
+<C-W>i
+Split the window and search for the count occurrence of
+the word under the cursor. Start the search at the beginning of the file
+<C-W>z          | Close preview window
+CTRL-W g }
+Do a :ptjump on the word under the cursor. (Same as:
+See page 277.)
+
+
+
+Miscelanous ~
+<C-W><C-C>          | Cancel window operation
+
+
+
+Options ~
+winheight           option When entering or creating a window, set its height to at least the specified value.
+winwidth            option When entering or creating a window, set its width to at least the specified value.
+equalalways         option When the number of windows changes, either by splitting or closing windows,
+eadirection         option Define whether Vim resizes windows equally vertically, horizontally, or both.
+cmdheight           option Set the command line height.
+winminheight        option Define the minimum window height, which applies to all windows created.
+winminwidth         option Define the minimum window width, which applies to all windows created.
+
+Commands ~
+:vertical resize n 
+:resize 60 or :resize +5
 :sp[lit]			| Split Screen horizontaly 
 :vsp[lit]			| Split Screen vertically 
 :sview 				| Same as :split in readonly mode
 :hide 				| Close current window
-:only 				| Close all windows, excepted current
-<C-W>o          	| Only 
-<C-W><C-W> 			| Switch viewport 
-<C-W>[hjkl]			| Move to the next viewport
-<C-W>				| Same
-<C-W>+ <C--> 		| Increase/decrease Current Viewport.
-10<C-W>+ 			| Add 10 lines to current window
-<C-W>=				| Igualise viewport size
-<C-W>_				| Maximise current window
-<C-W>[rR]			| Rotate:(clockwise and counter) change viewport position 
-<C-W>q 				| Close current viewport
-<C-W>T				| Window to Tab
-<C-W>s				| Split horizontal
-<C-W>v				| Vertical split
-<C-W>[HJKL] 		|  Move the current window to the top of the screen, using the full width of the screen.
+:on[ly] 			| Close all windows, excepted current
 
-		^Wx Swap positions with the next window, or if issued with a count n, swap with n th next window.
-		^W^X
-
-		^W< Increase the current window width. The default amount is one column.
-		^W> Decrease the current window width. The default amount is one column.
-		winheight and winwidth options.
-
-		:vertical resize n ^W| Set the current window width to n. The default is to make window as wide as
-		winheight option When entering or creating a window, set its height to at least the specified value.
-		winwidth option When entering or creating a window, set its width to at least the specified value.
-		equalalways option When the number of windows changes, either by splitting or closing windows,
-		resize them to be the same size.
-		eadirection option Define whether Vim resizes windows equally vertically, horizontally, or both.
-		cmdheight option Set the command line height.
-		winminheight option Define the minimum window height, which applies to all windows created.
-		winminwidth option Define the minimum window width, which applies to all windows created.
-
-
-		z n <ENTER> Set the current window height to n.
-:resize 60 or :resize +5
+z n <ENTER> Set the current window height to n.
 Cw 10+ and Cw 10>
 nnoremap <silent> <Leader>+ :exe "resize " . (winheight(0) * 3/2)<CR> nnoremap <silent> <Leader>- :exe "resize " . (winheight(0) * 2/3)<CR>
 Some pluginng to use submodes permits Cw ++++
 :new
+:enew
 :below new
 set splitright set splitbelow
 

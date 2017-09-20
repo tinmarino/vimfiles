@@ -10,6 +10,13 @@ You can see everything I made with :h local-addtions
 Note the name of each file and the first line (and the last)
 
 
+>vim
+
+command -nargs=* -complete=help Help vertical belowright help <args>
+:vert help
+:vert bo help
+<vim
+
 ===============================================================================
                                                                       *v#fast*
 Fast ~
