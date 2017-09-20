@@ -31,6 +31,25 @@ gf                  | open file name under cursor (SUPER)
 ga 	                | Caracter value, in unicode, ascii, hex octal 
 :Sex 	            | Split window and open integrated file explorer
 
+
+g_ - jump to the last non-blank character of the line
+fx - jump to next occurrence of character x
+tx - jump to before next occurrence of character 
+g,g; gi
+
+gx jump to xRef
+gd goto declaration
+
+
+gi 				Insert at last modified position
+<c-q> or <c-v> 	Visual block
+gv				Reselect last selection
+gu, gU, ~		Lower, Uppder case operator
+s				cl: Change one char
+C				c$: Change full line
+S				^C: Change line the end
+
+
 EDIT 
 
   Read/Write files
@@ -62,9 +81,6 @@ EDIT
 		  gUgU or gUU # duplicate operator on whole line
 
 		  >G   # increase indentation until the end of file
-		  s		cl  # change one char
-		  S    ^C
-		  C    c$
 		  f+s + <Esc>;.;.;.  # remplace "+" par " + "
 		  note : capital letters and some chars are much rarer. sport them
 		  180<C-a>k.k.k.  # add 180 to all 
@@ -73,37 +89,12 @@ EDIT
 		  :h omap-info
 
 		  INsret 
-		  <c-h>  delete oback cahr 
-		  <c-w>  word 
-		  <c-u>  line or jsut inserted
-		  ga # show the hewa code for char 
-		  <c-k>cahr1 char2 insert unicode by digraph
 		  R # get in pelace made and stay in replace mode 
 		  80a-<esc>
 		IN VISUAL 
 		o - move to other end of marked area
 		O - move to other corner of block
 
-	^ - jump to the first non-blank character of the line
-	g_ - jump to the last non-blank character of the line
-	fx - jump to next occurrence of character x
-	tx - jump to before next occurrence of character 
-	g,g; gi
-
-	gx jump to xRef
-	gd goto declaration
-
-
-<c-o> 			Jump to older position
-<c-i> 			Jump to inner, newer position
-'.				Jump to last modified
-gi 				Insert at last modified position
-<c-q> or <c-v> 	Visual block
-gv				Reselect last selection
-gu, gU, ~		Lower, Uppder case operator
-s				cl: Change one char
-C				c$: Change full line
-S				^C: Change line the end
 
 
 
@@ -130,10 +121,12 @@ K				See documentation
 
 																	  *v#insert*
 
-i<c-h> 			Delete Char
-i<c-w> 			Delete Word
-i<c-u> 			Delete Line
-i<c-v><c-m> 	Carraige return for windows
-=				Indent operator
+i<c-h> 			    Delete Char
+i<c-w> 			    Delete Word
+i<c-u> 			    Delete Line
+i<c-v><c-m> 	    Carraige return for windows
+=				    Indent operator
+<c-k>c1 c2          insert unicode by digraph
 
+		  ga # show the hewa code for char 
 vim: ft=myhelp
