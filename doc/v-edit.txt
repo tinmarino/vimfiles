@@ -1,31 +1,35 @@
 *v#edit.txt*        Jumps, Normal, Insert mode keys
+                  Made to go faster
+
+1. Jump Around                      |v#key|
+2. Normal Tricks                    |v#normal|
+3. Insert shortcut                  |v#insert|
+
 
 ===============================================================================
                                                 *v#key*
 Key~
 
 80a=<Esc>		" Create tje line
-(			| jump backward one sentence (sentences starts with .)
-{			| jump on paragraph backward 
-- or ^			| move to first (non blank caracter)
-%			| jump to matching bracket 
-<C-i> 			| jump to next location, isert position
-<C-o>			| jump to the previous (older) location
-:jumps 			| Display jump list 
-4<C-o>			| jump to the jump number 4 in jump list, works also
-with 4<C-i>
-'.			| jump to last inserted text 
+(			        | jump backward one sentence (sentences starts with .)
+{			        | jump on paragraph backward 
+_ or ^			    | move to first (non blank caracter)
+%			        | jump to matching bracket 
+<C-i> 			    | jump to next location, insert position
+<C-o>			    | jump to the previous (older) location
+:jumps 			    | Display jump list 
+4<C-o>			    | jump to the jump number 4 in jump list, works also with 4<C-i>
+'.			        | jump to last inserted text 
 
-L M H 			| jup to the bottom middel and top of screen 
-:jumps 			| show the jumps 
+L M H 			    | jump to the bottom middel and top of screen 
 
-shift+J | paste next line at the end of current 
+shift+J             | paste next line at the end of current 
 
-  gf                  |  open file name under cursor (SUPER)
-  :r file            |     " Read text from 'file' and insert it below the current line
-  :e . 			| Open integrated file explorer
-  ga 	Caracter value, in unicode, ascii, hex octal 
-  :Sex 	Split window and open integrated file explorer
+gf                  | open file name under cursor (SUPER)
+:r file             | " Read text from 'file' and insert it below the current line
+:e . 			    | Open integrated file explorer
+ga 	                | Caracter value, in unicode, ascii, hex octal 
+:Sex 	            | Split window and open integrated file explorer
 
 EDIT 
 

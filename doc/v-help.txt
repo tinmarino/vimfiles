@@ -9,6 +9,11 @@ Or just :Helptags
 You can see everything I made with :h local-addtions
 Note the name of each file and the first line (and the last)
 
+>vim
+:tag v#help
+:h v#help
+<vim
+
 
 >vim
 
