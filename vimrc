@@ -43,12 +43,7 @@
   " see :h vundle for more details or wiki for FAQ
   " Put your non-Plugin stuff after this line
 " SOURCE , VARIABLE  WITH $
-  if has('win64') || has('win32') || has('win16') 
-    let $MYVIM=$VIM."/vimfiles"
-  else 
-    let $MYVIM=$HOME."/.vim"
-  endif 
-
+  let $MYVIM = expand('<sfile>:p:h')
   source $MYVIM/scripts/myfunctions.vim
   source $MYVIM/scripts/cfunctions.vim
 
