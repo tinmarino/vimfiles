@@ -3,6 +3,12 @@
 ===============================================================================
 Stack ~
 
+
+
+:oldfiles
+:browse oldfiles
+
+
 		set nrformats=
 	:e ++ff=unix
 	inoremap <C-X><C-S> <C-O>:set completefunc=syntaxcomplete#Complete<CR><C-X><C-U>

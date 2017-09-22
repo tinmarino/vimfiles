@@ -10,6 +10,10 @@ https://noahfrederick.com/log/a-list-of-vims-lists.html
 
 
 
+todoc ~
+
+Make a sign for what is very nice and not very known 
+ex tips  in tips and with a link in ex (or the opposite)
 
 
                                                                         *idid* 

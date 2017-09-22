@@ -118,6 +118,11 @@ ga # show the hewa code for char
 
 =				    Indent operator
 
+:.,$normal @q       To make macro on all lines
 
+	:py print 2
+	:version
+	:h +feature-list
+	:h ex-cmd-index
 
 vim: ft=myhelp
