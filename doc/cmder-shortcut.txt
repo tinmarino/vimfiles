@@ -1,5 +1,5 @@
+*cmder-shortcut*    Cmder Is the windows terminal emulator
 
-					*cmder-shortcut*
 Tab manipulation  ~
 
 Ctrl + `	: Global summon from taskbar

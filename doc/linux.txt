@@ -1,5 +1,5 @@
-
-																	  *mlinux*
+*linux.txt*            Linux Memories, Usefull when no screen or connection
+Can become ugly 
 
 df  # list mount points 
 
