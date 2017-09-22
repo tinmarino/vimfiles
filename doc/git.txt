@@ -1,4 +1,4 @@
-*git.txt*	To learn git 
+*git.txt*           To learn git 
 
 
 
