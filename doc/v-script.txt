@@ -462,6 +462,20 @@ PATH ~
 	
 	let @a=system('ls')
 
+  	:1,10 w outfile 	Saves lines 1 to 10 in outfile
+  	:1,10 w >> outfile 	Appends lines 1 to 10 to outfile
+  	:r infile 	Insert the content of infile
+  	:23r infile 	Insert the content of infile under line 23
+
+  :r filename 	insert filename after cursor
+  :10r filename 	insert filename after line 10
+  :g/pattern/r filename 	search pattern and insert filename after cursor
+  :r !shell-command 	insert the result of a shell-command after cursor
+  !!shell-command 	insert command output in place of current line
+  :r foo.txt    Insert the file foo.txt below the cursor.
+  :0r foo.txt   Insert the file foo.txt before the first line.
+  :r !ls        Insert a directory listing below the cursor.
+  :$r !pwd      Insert the current working directory below the last line.
 >vim
 	" redirect ouput of a command in split window 
 	function! OutputSplitWindow(...)

@@ -2,131 +2,70 @@
                   Made to go faster
 
 1. Jump Around                      |v#key|
+                                    |v#jump|
 2. Normal Tricks                    |v#normal|
 3. Insert shortcut                  |v#insert|
 
 
 ===============================================================================
-                                                *v#key*
+                                                                       *v#key*
 Key~
 
-80a=<Esc>		" Create tje line
-(			        | jump backward one sentence (sentences starts with .)
-{			        | jump on paragraph backward 
-_ or ^			    | move to first (non blank caracter)
-%			        | jump to matching bracket 
-<C-i> 			    | jump to next location, insert position
-<C-o>			    | jump to the previous (older) location
-:jumps 			    | Display jump list 
-4<C-o>			    | jump to the jump number 4 in jump list, works also with 4<C-i>
-'.			        | jump to last inserted text 
-
-L M H 			    | jump to the bottom middel and top of screen 
-
+ga 	                | Caracter value, in unicode, ascii, hex octal 
+s				    | cl: Change one char
+C				    | c$: Change full line
+S				    | ^C: Change line the end
 shift+J             | paste next line at the end of current 
 
+
+===============================================================================
+                                                                      *v#jump*
+Jump ~
+:jumps 			    | Display jump list 
+
+1. Nice ~
+%			        | Matching bracket 
+<C-i> 			    | Next location, insert position
+<C-o>			    | Previous (older) location
+'.			        | To last inserted text 
+_ or ^			    | move to first (non blank caracter)
+gi 				    | Insert at last modified position
+gI				    | Insert at col 1
+-, +			    | Insert at first non blank char at [count] lines before or after
+gx                  | xRef (html on browser)
+gd, gD              | Local(function), Global (file) declaration (no syntax)
+[I                  | include-search of a word
 gf                  | open file name under cursor (SUPER)
-:r file             | " Read text from 'file' and insert it below the current line
-:e . 			    | Open integrated file explorer
-ga 	                | Caracter value, in unicode, ascii, hex octal 
-:Sex 	            | Split window and open integrated file explorer
 
+2 Not bad ~
+g_                  | Last non-blank character of the line
+L M H 			    | Bottom, Middle, Top of screen 
+ge                  | Backward to end of word
+g; and g,           | Older and newer changes
 
-g_ - jump to the last non-blank character of the line
-fx - jump to next occurrence of character x
-tx - jump to before next occurrence of character 
-g,g; gi
+3 Keys ~
+( , )			    | One sentence (sentences starts with .)
+{ , }			    | One paragraph 
 
-gx jump to xRef
-gd goto declaration
-
-
-gi 				Insert at last modified position
-<c-q> or <c-v> 	Visual block
-gv				Reselect last selection
-gu, gU, ~		Lower, Uppder case operator
-s				cl: Change one char
-C				c$: Change full line
-S				^C: Change line the end
-
-
-EDIT 
-
-  Read/Write files
-  	:1,10 w outfile 	Saves lines 1 to 10 in outfile
-  	:1,10 w >> outfile 	Appends lines 1 to 10 to outfile
-  	:r infile 	Insert the content of infile
-  	:23r infile 	Insert the content of infile under line 23
-  Auto-completion
-  	Ctrl+n Ctrl+p (in insert mode) 	Complete word
-  	Ctrl+x Ctrl+l 	Complete line
-  	:set dictionary=dict 	Define dict as a dictionnary
-  	Ctrl+x Ctrl+k 	Complete with dictionnary
-  :r filename 	insert filename after cursor
-  :10r filename 	insert filename after line 10
-  :g/pattern/r filename 	search pattern and insert filename after cursor
-  :r !shell-command 	insert the result of a shell-command after cursor
-  !!shell-command 	insert command output in place of current line
-  :r foo.txt    Insert the file foo.txt below the cursor.
-  :0r foo.txt   Insert the file foo.txt before the first line.
-  :r !ls        Insert a directory listing below the cursor.
-  :$r !pwd      Insert the current working directory below the last line.
-
-
-	:12,20>>> indents lines 12 to 20 inclusive three times 
-	i Ctrl-T indents the current line, and Ctrl-D
-
-	<c-x> <c-f> 			# for filname completion 
-
-		  gUgU or gUU # duplicate operator on whole line
-
-		  >G   # increase indentation until the end of file
-		  f+s + <Esc>;.;.;.  # remplace "+" par " + "
-		  note : capital letters and some chars are much rarer. sport them
-		  180<C-a>k.k.k.  # add 180 to all 
-		  :h operator
-		  :h :map-operator
-		  :h omap-info
-
-		  INsret 
-		  R # get in pelace made and stay in replace mode 
-		  80a-<esc>
-		IN VISUAL 
-		o - move to other end of marked area
-		O - move to other corner of block
+fx                  | Next occurrence of character x
+tx                  | Before next occurrence of character 
+                    | Note: Capital letters and some chars are much rarer. spot them
 
 
 
 
-
-ge backward to end of word
-ICt  Cd insert indent
-gJ join lone without space
-g-  g+   for older newer changes
-g; and g, to jump to older and newer changes
-[I   for include-search of a word
-ga 				Show char hex
-g*, g#			Smae as *, # but without delimiters
-gq				Filter via formatprg
-X				Delete char before
-gI				Insert at col 1
--, +			Insert at first non blank char at [count] lines before or after
-<c-g> 			Print filename
-K				See documentation
-
-
-
-
-
-
-																	  *v#insert*
+===============================================================================
+                                                                    *v#insert*
 
 i<c-h> 			    Delete Char
 i<c-w> 			    Delete Word
 i<c-u> 			    Delete Line
 i<c-v><c-m> 	    Carraige return for windows
-=				    Indent operator
-<c-k>c1 c2          insert unicode by digraph
+i<c-k>c1 c2         Insert unicode by digraph
+i<c-t>              Indent current line
+i<c-d>              Unindent current line
 
-		  ga # show the hewa code for char 
+
+
+
 vim: ft=myhelp
