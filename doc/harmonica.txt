@@ -11,6 +11,7 @@ AMAZING GRACE ~
 	was blind, but    now I see
 
 
+==============================================================================
 												  *mharmonica-so-long-mariann*
 SO LONG MARIANN ~
   4    4 4  4 4  4   5   6    6  6   6   -5  5 -4 -4
@@ -61,6 +62,7 @@ SO LONG MARIANN ~
   Chorus
 
 
+==============================================================================
 														  *mharmonica-suzanne*
 
 SUZANNE ~
@@ -160,6 +162,7 @@ SUZANNE ~
 	to chorus for end.
 
 
+==============================================================================
 														*mharmonica-halleluja*
 HALLELUJA ~
    5    6     6     6  6 -6 -6   -6 
@@ -213,6 +216,7 @@ HALLELUJA ~
   Hallelujah, Hallelujah
 
 
+==============================================================================
 														 *mharmonica-hey-jude*
 HEY JUDE ~
    6     5     5     6  -6  -4   -4  5  -5   7   7   -7   6 -6 6 -5 5
@@ -239,6 +243,7 @@ HEY JUDE ~
   By making his world a little co ld er. da da da   da    da da da da da
 
 
+==============================================================================
 													 *mharmonica-take-me-home*
 TAKE ME HOME ~
     6  6    -6   6  -6   6  -6   7
@@ -289,6 +294,7 @@ TAKE ME HOME ~
   YES-TER-DAY,YES-TER-DAY 
 
 
+==============================================================================
 												*mharmonica-a-whole-new-world*
 A WHOLE NEW WORLD ~
   5 -4  -5    5   4    3
@@ -319,6 +325,7 @@ A WHOLE NEW WORLD ~
   now I'm in a whole new world with you 
 
 
+==============================================================================
 												 *mharmonica-sound-of-silence*
 SOUND OF SILENCE ~
    -4 -4  -5  -5  -6 -6    6
@@ -399,6 +406,7 @@ SOUND OF SILENCE ~
    And whisper'd in the sounds of silence
 
 
+==============================================================================
 											  *mharmonica-blowing-in-the-wind*
 BLOWING IN THE WIND ~
   How many roads must a  man  walk down
@@ -447,6 +455,7 @@ BLOWING IN THE WIND ~
   The answer is blowin' in the wind.
 
 
+==============================================================================
 													 *mharmonica-guantanamera*
 GUANTANAMERA ~
    -6-6  6 -6 -6 
@@ -487,6 +496,7 @@ GUANTANAMERA ~
    Me complace más que el mar
 
 
+==============================================================================
 													*mharmonica-wonder-of-you*
 WONDER OF YOU ~
    4     6   4   -4  5    -5      5    -4 
@@ -533,6 +543,7 @@ WONDER OF YOU ~
  FOR I CAN'T HELP FALL-ING IN LOVE WITH YOU.
 
 
+==============================================================================
 											 *mharmonica-chant-des-partisants*
 CHANT DES PARTISANTS ~
    6 7 7 -8 8 8 -8 7 7 -7 -6 6 -7 -6 6
@@ -564,6 +575,7 @@ CHANT DES PARTISANTS ~
    Oh oh oh oh oh oh oh oh oh oh oh oh oh oh oh oh...
 
 
+==============================================================================
 															 *mharmonica-mario*
 MARIO ~
 	-7 -7 -7 6 -7 -8 5
@@ -581,6 +593,7 @@ MARIO ~
 	-7 -7 -7 6 -7 -8 5
 
 
+==============================================================================
 												*mharmonica-sound-of-silence2*
 SOUND OF SILENCE ~
 	-4 -4  -5  -5  -6 -6    6
@@ -662,6 +675,7 @@ SOUND OF SILENCE ~
 
 
 
+==============================================================================
 													 *mharmonica-mrs-robinson*
 MRS ROBINSON ~
 	 4    4    -4  5    5-5   5 -4   4 
@@ -681,6 +695,7 @@ MRS ROBINSON ~
 
 
 
+==============================================================================
 													  *mharmonica-penitencier*
 THE HOUSE OF THE RISING SUN ~
 	  5   -6  -7   7    8   -8   -6  -6 
@@ -837,6 +852,7 @@ JE VAIS T'AIMER ~
 
 
 
+==============================================================================
 													*mharmonica-the-first-cut*
 THE FIRST CUT ~
 	6   7    -8   8-9   8  -8  8  -8   7
@@ -932,6 +948,7 @@ THE FIRST CUT ~
 	
 	
 
+==============================================================================
 													  *mharmonica-le-chasseur*
 LE CHASSEUR ~
 	-7 -7 -7   +7    +7   -7 -7 -6

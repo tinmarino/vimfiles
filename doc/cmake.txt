@@ -1,4 +1,4 @@
-												 *cmake*
+*cmake*             Cmake, C, Cpp Project builder
 
 	This help aims to explain some cmake commands lines, functions and
 	examples 
