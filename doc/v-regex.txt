@@ -1,10 +1,18 @@
 *v#regex.txt*       Regex, Search, Substitute, Global
 
+VIM: NFA regular expression 
+
+Forget me and go to :h pattern (or :h regex) that is super well written.
+At least for the first chapter
+
 
 1. Regex 						|v#regex|
  1. Escape Characters 			|v#escape|
  2. Quantifiers Greedy or not 	|v#quantifier|
 2. Search						|v#search|
+ 1. Commands                    |v#search-modifier|
+ 1.             |v#search-modifier|
+ 1. Search modifiers            |v#search-modifier|
 3. Sustitute 					|v#substitute|
 4. Global						|v#global|
 
@@ -14,180 +22,122 @@ http://vimregex.com/
                                                                     *v#escape*
 
 Escaped caracter or metecaratcter ~
-    .  		any character except new line 	  	 
-    \s 		whitespace character 	
-    \S 		no whitespace (upper case is the opposite)
-    \d 		digit 	
-    \x 		hex digit 	
-    \o 		octal digit 	
-    \h 		head of word character (a,b,c...z,A,B,C...Z and _) 	
-    \p 		printable character 	
-    \w 		word character 	
-    \a 		alphabetic character 	
-    \l 		lowercase character 	
-    \u 		uppercase character
+.  		    any character except new line 	  	 
+\s 		    whitespace character 	
+\S 		    no whitespace (upper case is the opposite)
+\d 		    digit 	
+\x 		    hex digit 	
+\o 		    octal digit 	
+\h 		    head of word character (a,b,c...z,A,B,C...Z and _) 	
+\p 		    printable character 	
+\w 		    word character 	
+\a 		    alphabetic character 	
+\l 		    lowercase character 	
+\u 		    uppercase character
+
+                                                                      *v#atom*
+/\%x30 		Search hexa
+/\%^, /\%$	Begining and end of document                                    
+/\_.		Include newline
+\@!         To negate ex: /^\(\(^.*cursor.*$\)\@!.*foo.*\)$
 
                                                                 *v#quantifier*
 Quantifiers ~
-    * 		matches 0 or more of the preceding characters, ranges or metacharacters .* matches everything including empty line
-    \+ 		matches 1 or more of the preceding characters...
-    \= 		matches 0 or 1 more of the preceding characters...
-    \{n,m} 	matches from n to m of the preceding characters...
-    \{n} 	matches exactly n times of the preceding characters...
-    \{,m} 	matches at most m (from 0 to m) of the preceding characters...
-    \{n,} 	matches at least n of of the preceding characters...
-    \{-} 	matches 0 or more of the preceding atom, as few as possible
-    \{-n,m} 	matches 1 or more of the preceding characters...
-    \{-n,} 	matches at lease or more of the preceding characters...
-    \{-,m} 	matches 1 or more of the preceding characters... 
+* 		    matches 0 or more of the preceding characters, ranges or metacharacters .* matches everything including empty line
+\+ 		    matches 1 or more of the preceding characters...
+\= 		    matches 0 or 1 more of the preceding characters...
+\{n,m} 	    matches from n to m of the preceding characters...
+\{n} 	    matches exactly n times of the preceding characters...
+\{,m} 	    matches at most m (from 0 to m) of the preceding characters...
+\{n,} 	    matches at least n of of the preceding characters...
+\{-} 	    matches 0 or more of the preceding atom, as few as possible
+\{-n,m}     	matches 1 or more of the preceding characters...
+\{-n,} 	    matches at lease or more of the preceding characters...
+\{-,m} 	    matches 1 or more of the preceding characters... 
                 where n and m are positive integers (>0) 
-
-Non-greedy ~
-    \{-} 	matches 0 or more of the preceding atom, as few as possible
-    \{-n,m} 	matches 1 or more of the preceding characters...
-    \{-n,} 	matches at lease or more of the preceding characters...
-    \{-,m} 	matches 1 or more of the preceding characters... 
 
 ===============================================================================
                                                                     *v#search*
 Search ~
 
-`[v`]  # to reselect paste text
-*		in normal mode, search current word
-:noh		no hightlight search 
-/word 	        word from top to bottom
-?word 	        word from bottom to top
+``[v``]       Reselect paste text
+*, #        Search current word (backward)
+g*, g#      Without word delimiter 
+:noh		No hightlight search 
+/word 	    word from top to bottom
+?word 	    word from bottom to top
+                                                            *v#search#example*
+Example ~
+\ze \zs     Regex start, stop
 /jo[ha]n 	john or joan
 /fred\|joe 	fred or joe
 /\<the 		the, theatre or then
-/the\> 	        the or breathe
+/the\> 	    the or breathe
 /\<the\> 	the
-/\<\d\{4}\> 	exactly 4 digits
+/\<\d\{4}\> exactly 4 digits
 /^\n\{3} 	empty lines
-/\cstring       Case insensitive 
+/\cstring   Case insensitive 
 :bufdo /searchstr/ 	Search in all open files
-	g* and g# performs same seach without word delimiter 
-	\ze \zs
-
-<ESC>:%s/.*/\L&/  # tranform everything to lowar case
-<ESC>:%s/.*/\U&/  # upper
-/\<[A-Z]\+\/ or /\v<[A-Z]+> or /\<\u\+\> # find upper case words
-
-\_
- myregex are following the NFA regular expression 
-
-The pattern.txt explains a lot. 
-\@! to negate 
-  /^\(\(^.*cursor.*$\)\@!.*foo.*\)$
-<
-
-
-	/joe/e                      : cursor set to End of match
-	3/joe/e+1                   : find 3rd joe cursor set to End of match plus 1 [C]
-	/joe/s-2                    : cursor set to Start of match minus 2
-	/joe/+3                     : find joe move cursor 3 lines down
-	/.*fred\&.*joe              : Search for FRED AND JOE in any ORDER!
-
-/.\{-}              " * but non greeedy
-/\%x30 		    " Search hexa
-/\zs /\ze
-/\%^, /\%$	    " Begining and end of document
-'[v']		    " Select last paste
-/\_.		    " Include newline
+/\<[A-Z]\+\/        or
+/\v<[A-Z]+>         or 
+/\<\u\+\>           Find upper case words
+                                                          *v#search-modifiers*
+Search modifiers ~
+/joe/e              cursor set to End of match
+3/joe/e+1           find 3rd joe cursor set to End of match plus 1 [C]
+/joe/s-2            cursor set to Start of match minus 2
+/joe/+3             find joe move cursor 3 lines down
+/.*fred\&.*joe      Search for FRED AND JOE in any ORDER!
 
 ===============================================================================
                                                                 *v#substitute*
 Substite~
+:range s[ubstitute]/pattern/string/cgiI 
+c                   Confirm each substitution
+g                   Replace all occurrences in the line (without g - only first).
+i                   Ignore case for the pattern.
+I                   Don't ignore case for the pattern.
 
+:%s//\=@0           replace last search with register 0 content 
+:&                  repeat last substitute cmd 
+g&                  to make a replacement on all file lines ( equivalent to :%s//~/& (or :%&&) 
 
-:%s//\=@0   replace last search with register 0 content 
-:& repeat last substitute cmd 
-g& to make a replacement on all file lines ( equivalent to :%s//~/& (or :%&&) 
-:s:\(\a*\a\):"\1":g "\1 is like submatch(1)
-see zs ze zr .... 
+                                                        *v#substitute-example*
+
+:%s/.*\(string_to_keep\).*/\1
+:%s/\<./\u&/g 	    Sets first letter of each word to uppercase
+:%s/\<./\l&/g 	    Sets first letter of each word to lowercase
+:%s/.*/\u& 	        Sets first letter of each line to uppercase
+:%s/.*/\l& 	        Sets first letter of each line to lowercase
+
+:%!/^#/d            Selete lines not begining with #
+^\(-*[0-9]*\.[0-9]*\s\)\{21}   
+                    Match the 21 first numbers like 12232.23 23.23 
+%s/^/\=line(".") . ". "/g    
+                    Substitute all lines by its line number 
+:4,$s/\d\+/\=submatch(0) + 1/ 
+                    Add one to every number
+
+<ESC>:%s/.*/\L&/    Tranform everything to lowar case
+<ESC>:%s/.*/\U&/    Upper
+/\<[A-Z]\+\/ or /\v<[A-Z]+> or /\<\u\+\> # find upper case words
+
+:%s/.*/\L&/         Tranform everything to lowar case
+:%s/.*/\U&/         Upper
+
+:%s/\r//g 	        Delete DOS carriage returns (^M)
+:%s/\r/\r/g 	    Transform DOS carriage returns in returns
+:%s#<[^>]\+>##g 	Delete HTML tags but keeps text
+:%s/^\(.*\)\n\1$/\1/ 	
+                    Delete lines which appears twice
+
+:s:\(\a*\a\):"\1":g \1 is like submatch(1)
 :%s/identifying text \zs\d\+\(.\d\+\)\=/\=(1.15+str2float(submatch(0)))/
 :%s/pattern \(saved portion\)\zs/\=SaverFunc(submatch(1))[-1]
 :%call setline(line('.'),substitute(getline('.'),'foo','bar','g'))
 1025,$s:^\(\d\+\.*\d*\)\s\+\(\d*\.*\d*\):\=printf("%f\t%f",submatch(1)/3.0, submatch(2) /3.0)
 1025,$s:^\(\d*\)\s\+\(\d*\):\=submatch(1) . "\t" . submatch(2)*200
 1025,$s:^(d*):=submatch(1)*200
-
-  	:%s/\<./\u&/g 	Sets first letter of each word to uppercase
-  	:%s/\<./\l&/g 	Sets first letter of each word to lowercase
-  	:%s/.*/\u& 	Sets first letter of each line to uppercase
-  	:%s/.*/\l& 	Sets first letter of each line to lowercase
-
-:range s[ubstitute]/pattern/string/cgiI 
-c Confirm each substitution
-g Replace all occurrences in the line (without g - only first).
-i Ignore case for the pattern.
-I Don't ignore case for the pattern.
-
-  see http://vimregex.com/
-  :%s/fff/rrr    | replace first instance
-  :%s/ff/rr/g    | replace all instances
-  :%s/ff/rr/gc   | ask for confirmation
-  :5,20s/ff/rr   | betwenn line  5 and 20
-  :%!/^#/d       | delete lines not begining with #
-  :%s/^/#        | append # at begining of line
-  :g/^#/d  begining with #
-  :g!/^#/d not begining with #
-  :g/^$/d blanck lines 
-  vim -u NONE -i NONE -Nnes "+se ul=-1" "+argdo %s/bite/W\.psf_fit\[0\]\[0\]/ge|up" "+q" *
-  ^\(-*[0-9]*\.[0-9]*\s\)\{21}   " match the 21 first numbers like 12232.23 23.23 
-  %s/^/\=line(".") . ". "/g    " substitute all lines by its line number 
-  :4,$s/\d\+/\=submatch(0) + 1/ # add one to every one 
-
-  s:\a*\a:\='"'.submatch(0).'"'
-  However a more readable solution is:
-  s:\a*\a:"\0"
-  submatch(0) 
-  strpart 
-  s/[^"],/\=strpart(submatch(0),0,1)/g
-
-
-  <ESC>:%s/.*/\L&/  # tranform everything to lowar case
-  <ESC>:%s/.*/\U&/  # upper
-  /\<[A-Z]\+\/ or /\v<[A-Z]+> or /\<\u\+\> # find upper case words
-
-
-  	:%s/old/new/g 	Replace all occurences of old by new in file
-  	:%s/old/new/gw 	Replace all occurences with confirmation
-  	:2,35s/old/new/g 	Replace all occurences between lines 2 and 35
-  	:5,$s/old/new/g 	Replace all occurences from line 5 to EOF
-  	:%s/^/hello/g 	Replace the begining of each line by hello
-  	:%s/$/Harry/g 	Replace the end of each line by Harry
-  	:%s/onward/forward/gi 	Replace onward by forward, case unsensitive
-  	:%s/ *$//g 	Delete all white spaces
-  	:g/string/d 	Delete all lines containing string
-  	:v/string/d 	Delete all lines containing which didn’t contain string
-  	:s/Bill/Steve/ 	Replace the first occurence of Bill by Steve in current line
-  	:s/Bill/Steve/g 	Replace Bill by Steve in current line
-  	:%s/Bill/Steve/g 	Replace Bill by Steve in all the file
-  	:%s/\r//g 	Delete DOS carriage returns (^M)
-  	:%s/\r/\r/g 	Transform DOS carriage returns in returns
-  	:%s#<[^>]\+>##g 	Delete HTML tags but keeps text
-  	:%s/^\(.*\)\n\1$/\1/ 	Delete lines which appears twice
-  Ctrl+a 	Increment number under the cursor
-  Ctrl+x 	Decrement number under cursor
-  	ggVGg? 	Change text to Rot13
-  Case
-  	g~~ 	Invert case
-  	ggguG 	Set all text to lowercase
-  	:set ignorecase 	Ignore case in searches
-  	:set smartcase 	Ignore case in searches excepted if an uppercase letter is used
-
-
-  :g/^/put _       " Double-space your file: 
-  :g/^/-put ='foo'. "Add a line containing foo before each lineThis is a clever use of the expression register. Here, - is a synonym for .-1 (cf. :help :range). Since :put puts the text after the line, you have to explicitly tell it to act on the previous one.
-
-  :%s/pattern//gn		" Just count
-  :g/pattern/m$			" Move EOF
-  :g/^/m0			" Reverse file
-  :g/pattern/y A		" Yank appending to reg a
-  :v/string_to_keep/s/.*//
-  :%s/.*\(string_to_keep\).*/\1 " Better
-
 
 
 ===============================================================================
@@ -217,17 +167,23 @@ syn match celNumber '[-+]\=\d[[:digit:]]*\.\d*[eE][\-+]\=\d\+'
 syn match celNumber '\d[[:digit:]]*\.\d*[eE][\-+]\=\d\+'
 
 
-
 																	  *v#global*
-
-
 POWER of G  http://vim.wikia.com/wiki/Power_of_g
 >vim
 :v/./,/./-j					" delete duplicates
 :g/{/ .+1,/}/-1 sort    	" sort lines betwenn { and }
 :g/{/ .+1,/}/-1 >       	" indeent 
 :g// 						" lists all lines containing the last search pattern, and :redir will capture the results. 
+:g/pattern/m$			    " Move EOF
+:g/^/m0			            " Reverse file
+:g/pattern/y A		        " Yank appending to reg a
+:v/string_to_keep/s/.*//    "
 <vim
+:g/^/put _                  " Double-space your file: 
+:g/^/-put ='foo'.           "Add a line containing foo before each lineThis is
+    " a clever use of the expression register. Here, - is a synonym for .-1 (cf.
+    " :help :range). Since :put puts the text after the line, you have to explicitly
+    " tell it to act on the previous one. aa
 
 
 vim: ft=myhelp

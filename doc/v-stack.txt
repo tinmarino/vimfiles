@@ -4,6 +4,13 @@
 Stack ~
 
 
+Ctrl+a 	Increment number under the cursor
+Ctrl+x 	Decrement number under cursor
+ggVGg? 	Change text to Rot13
+g~~ 	Invert case
+ggguG 	Set all text to lowercase
+
+
 
 ===============================================================================
                                                                         *v#os*
