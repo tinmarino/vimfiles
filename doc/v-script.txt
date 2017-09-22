@@ -55,6 +55,10 @@ call feedkeys("i\<C-V>\<C-X>")
 	q/:%y
 	:oldfiles
 	:browse oldfiles
+
+
+   :unlet g:max  	"delete unlet a variable 
+   :put =range(11,15)	"put 1 2 3 at the cursor place  rang is a funciton 
 <vim
 
 -------------------------------------------------------------------------------

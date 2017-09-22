@@ -4,54 +4,29 @@
 2. COMMAND 
 ===============================================================================
 Function ~
->
-  :help functions 
-  :help function-list
-<
+:help functions 
+:help function-list
 >vim
-   :echo expand('<cword>')   "return the word under cursor 
-   :echo expand('%:p:h')
-    sfrtime
-   :let s=input('where to jump?')
+:echo expand('<cword>')                     "return the word under cursor 
+:echo expand('%:p:h')
+sfrtime
+:let s=input('where to jump?')
 <vim
 EXEC ~
->
-  function Func()
-    : command1
-    : command2
-  endfunction
-  exec Func() 
-<
-
-*v#function2command* 
-command! -nargs=1 MyCommand call s:MyFunc(<f-args>) " transform a function to user-command
-
-
-
-Command ~
 >vim
-   :unlet g:max  	"delete unlet a variable 
-   :put =range(11,15)	"put 1 2 3 at the cursor place  rang is a funciton 
+function Func()
+    command1
+    command2
+endfunction
+exec Func() 
+call Func()
+echo Func()
 <vim
 
+Function2Command ~
 
-
-
-q/ 
-q: to see history command or search 
-his /  "history of search 
-
-The |v#help| command 
-  http://vim.wikia.com/wiki/Learn_to_use_help
->
-  :help E872
-<
-  :helptags ~/.vim/doc
-  Ctrl-] 		| Follow the link (jump to the quickref topic). 
-  Ctrl-T 		| Go back to the previous topic.
-  Ctrl-O 		| Jump to older locations
-  Ctrl-I 		| Jump to newer 
-
+                                                          *v#function2command* 
+command! -nargs=1 MyCommand call s:MyFunc(<f-args>) " transform a function to user-command
 
 
 vim: ft=myhelp
