@@ -1,38 +1,36 @@
-*v#map.txt*         Maps
+*v#map.txt*         Maps I don't wanna put in my vimrc
 
 
-  :nmap - Display normal mode maps
-  :imap - Display insert mode maps
-  :vmap - Display visual and select mode maps
-  :smap - Display select mode maps
-  :xmap - Display visual mode maps
-  :cmap - Display command-line mode maps
-  :omap - Display operator pending mode maps
+>vim
+:nmap               Display normal mode maps
+:imap               Display insert mode maps
+:vmap               Display visual and select mode maps
+:smap               Display select mode maps
+:xmap               Display visual mode maps
+:cmap               Display command-line mode maps
+:omap               Display operator pending mode maps
+:nmapclear          Clear all normal mode maps
 <vim
 
-  nmapclear - Clear all normal mode maps
-  "insert the directory name of the current buffer:
-  :inoremap <F2> <C-R>=expand('%:p:h')<CR>
 
+"insert the directory name of the current buffer:
+:inoremap <F2> <C-R>=expand('%:p:h')<CR>
 
+" For when you forget to sudo.. Really Write the file.
+cmap w!! w !sudo tee % >/dev/null
 
+" visual shifting (does not exit Visual mode)
+vnoremap < <gv
+vnoremap > >gv
 
-
-	" For when you forget to sudo.. Really Write the file.
-	cmap w!! w !sudo tee % >/dev/null
-	" visual shifting (does not exit Visual mode)
-	vnoremap < <gv
-	vnoremap > >gv
-	" Window mappings
-	map <C-j> <C-W>j
-	map <C-k> <C-W>k
-	map <C-h> <C-W>h
-	map <C-l> <C-W>l
-	" Window minimize
-	map <Leader>- <C-W>_<C-W><Bar>
-	map <Leader>_ <C-W>_<C-W><Bar>
-	" Adjust viewports to the same size
-	map <Leader>= <C-w>=
+" Window mappings
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+map <Leader>- <C-W>_<C-W><Bar>
+map <Leader>_ <C-W>_<C-W><Bar>
+map <Leader>= <C-w>=
 
  
 vim: ft=myhelp
