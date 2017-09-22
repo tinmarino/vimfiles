@@ -1,51 +1,54 @@
 *v#help.txt*        How to add custom help
 
 
+1. Add              |v#help-add|
+2. Syntax           |v#help-syntax|
+3. Browse           |v#help-browse|
 
 
+===============================================================================
+                                                                  *v#help-add*
+Add Help ~
 
-Dont forget to run helptags ./ "in the current dir 
-Or just :Helptags
+In my runtime folder (ex ~/.vim/), in a doc folder I have many help files with
+documentation. They must be in a runtimepath/doc and not in a nested directory
+there.
+
+The Filename must start with the type and the tags are in separated with '#'
+
+The first line of the file can contains a tag and it will then be added to the
+local-addtions help file (see :h local-addtions)
+
+Dont forget to run helptags ./ in the current dir (doc) or just :Helptags for
+all pathogen stuff for the tags to be generated. Then the command :h will
+search them in a runtimepath/doc folder
+
+
+===============================================================================
+                                                                  *v#help-syntax*
+Help Syntax ~
+
+You can read /usr/share/vim/vim74/syntax/help.vim to get more info. You can
+get the vim path with :scriptnames because some of those stuff will be sourced
+
+
+===============================================================================
+                                                               *v#help-browse*
+Browse help ~
+:h help
+
 You can see everything I made with :h local-addtions
-Note the name of each file and the first line (and the last)
 
 >vim
-:tag v#help
-:h v#help
-<vim
-
-
->vim
-
 command -nargs=* -complete=help Help vertical belowright help <args>
 :vert help
 :vert bo help
 <vim
 
-===============================================================================
-                                                                      *v#fast*
-Fast ~
-
-the runtime! debian was making pathogen not working 
-
-
-unicode 
-  :digraph 
-  in insert mode <C-v> u aaaa or <C-v> U bbbbbbbb where aaaa and bbbb are
-  hexadecimal values (use <C-q> if <C-v> paste) 
-  startinsert function 
-  feedkeys 
-
-===============================================================================
-                                                                        *v#os*
-Os ~
-  
-ftype code="C:\gvim.exe" --remote-tab-silent "%1"
-assoc .py code 
-# if you don't know to what python is asso type "assoc .py"
-
-
-
+>vim
+:tag v#help
+:h v#help
+<vim
 
 
 vim: ft=myhelp

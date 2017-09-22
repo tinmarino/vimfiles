@@ -5,6 +5,14 @@ Stack ~
 
 
 
+===============================================================================
+                                                                        *v#os*
+Os ~
+  
+ftype code="C:\gvim.exe" --remote-tab-silent "%1"
+assoc .py code 
+# if you don't know to what python is asso type "assoc .py"
+
 :oldfiles
 :browse oldfiles
 
