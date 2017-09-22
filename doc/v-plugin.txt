@@ -1,4 +1,61 @@
-*v#plugin.txt*      Pluggin list
+*v#plugin.txt*      Pluggin list: Community matters
+
+Pluggins are the most important stuff for a true text editor as one person
+cannot implement alll the languages.
+Even thought most of Vim functionality is enought with small coding.
+Some big pluggins bundle exists but you should known and clone these one by
+one. (Otherwise how can you use its)
+
+0. Pathogen         |v#plugin#pathogen|                 Pluggin manager
+1. Fugitive         |v#plugin#fugitive|                 Git              
+2. Ipython          |v#plugin#ipython|                  Ipython
+3. Python-mode      |v#plugin#python-mode|              Python
+4. Eclim            |v#plugin#eclim|                    Java
+5. Colorscheme      |v#plugin#colorscheme-switcher|     More Colors
+
+
+===============================================================================
+                                                           *v#plugin#pathogen*
+Pathogen ~
+Is a pluggin manager. It basically extends your runtimepath dynamically.
+You just have to git clone the  desired pluggin in ~/.vim/bundle/ for it to be
+loaded as if it was in the root folder (~/.vim)
+
+===============================================================================
+                                                           *v#plugin#fugitive*
+Fugitive ~
+Get git functionality in current file folder with the `:Git` command.
+Very well coded
+
+===============================================================================
+                                                            *v#plugin#ipython*
+Ipython ~
+The functionality `vim-server` and `python-zmq` (zero-message-query: to
+install) plus this small plugin, allow you to execute lines of code from here
+to a remote ipython/jupyter kernel
+
+===============================================================================
+                                                        *v#plugin#python-mode*
+python-mode ~
+A HUGE collection of python plugins taht are up to date because they are
+written in python. Thanks to the +python feature of vim that is now embeded
+with a python interpreter.
+    PEP8
+    Pyflakes
+    And much much more.
+NB: Community pluggin as dirty as python
+
+===============================================================================
+                                                              *v#plugin#eclim*
+Eclim ~
+Java users: Eclipse (free) is used as a server and vim as a client. So I can
+get completion, jump to code and error checking.
+
+===============================================================================
+                                               *v#plugin#colorscheme-switcher*
+Colorscheme Switcher ~
+Lot of colorschemes and 2 maps to switch: <F8> and <S-F8>
+May be included in the Main vim disti (at least neovim)
 
 
 
