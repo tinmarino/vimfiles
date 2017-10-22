@@ -48,9 +48,9 @@
   source $MYVIM/scripts/cfunctions.vim
 
 
-let g:pymode_lint_ignore =  "E701" 	" Multiple statement on one line
-let g:pymode_lint_ignore .= ",E501" " Line too long > 80 
-let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
+" let g:pymode_lint_ignore =  "E701" 	" Multiple statement on one line
+" let g:pymode_lint_ignore .= ",E501" " Line too long > 80 
+" let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
 
 let g:pymode_options_colorcolumn = 0 " Remove the red line
 
@@ -332,3 +332,15 @@ let g:pymode_options_colorcolumn = 0 " Remove the red line
 let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
 let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
 let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly 
+
+" CtrlP
+" E like edit and closer to ctrl + <c-p> used to paste
+let g:ctrlp_map = '<c-e>'
+" Mixed to search in MRU, FIles, Buffers
+let g:ctrlp_cmd = 'CtrlPMixed'
+
+" Vim Translator
+  ".vimrc
+" language code iso 639-1
+"? define key in visual-mode (optional)
+let g:goog_user_conf = { 'langpair': 'en|ru', 'cmd': 'node', 'v_key': 'T' }

@@ -12,6 +12,17 @@ one. (Otherwise how can you use its)
 3. Python-mode      |v#plugin#python-mode|              Python
 4. Eclim            |v#plugin#eclim|                    Java
 5. Colorscheme      |v#plugin#colorscheme-switcher|     More Colors
+6. CtrlP            |v#plugin#ctlp|                     Fuzzy Browse  
+7. Surround         |v#plugin#surround|                 Around text-objects
+8. Vimtex           |v#plugin#vimtex|                   Latex
+
+
+===============================================================================
+BUNDLE                                                               *v#bundle*
+
+https://github.com/kien/ctrlp.vim
+https://github.com/tpope/vim-surround
+https://github.com/altercation/vim-colors-solarized
 
 
 ===============================================================================
@@ -46,16 +57,55 @@ with a python interpreter.
 NB: Community pluggin as dirty as python
 
 ===============================================================================
-                                                              *v#plugin#eclim*
-Eclim ~
+ECLIM                                                          *v#plugin#eclim*
+
 Java users: Eclipse (free) is used as a server and vim as a client. So I can
 get completion, jump to code and error checking.
 
 ===============================================================================
-                                               *v#plugin#colorscheme-switcher*
-Colorscheme Switcher ~
+COLORSCHEME SWITCHER                            *v#plugin#colorscheme-switcher*
+
 Lot of colorschemes and 2 maps to switch: <F8> and <S-F8>
 May be included in the Main vim disti (at least neovim)
+
+
+===============================================================================
+CTRLP                                                          *v#plugin#ctrlp*
+
+Fuzzy file browsing with some regexp of the path (type scGam for
+s.*c.*G.*a.*m).
+Can browse in:
+1. Files (above the pwd)
+2. Most Recently Updated (MRU)
+3. Buffers
+My settings are: 
+>vim
+" E like edit and closer to ctrl + <c-p> used to paste
+let g:ctrlp_map = '<c-e>'
+" Mixed to search in MRU, FIles, Buffers
+let g:ctrlp_cmd = 'CtrlPMixed'
+<vim
+
+
+===============================================================================
+SURROUND                                                    *v#plugin#surround*
+
+
+===============================================================================
+SOLARIZED                                                  *v#plugin#solarized*
+
+Make a noise nothing: I prefer dante colorscheme!
+
+
+===============================================================================
+VIMTEX                                                        *v#plugin#vimtex*
+
+Help Writting compiling Tex, LaTex files.
+Huge doc: 2000 lines.
+Many commands, options the vim way.
+Continous build mode
+Works
+
 
 
 
