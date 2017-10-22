@@ -28,3 +28,6 @@
 [submodule "bundle/vis"]
 	path = bundle/vis
 	url = C:\\Users\\tourneboeuf\\Desktop\\VimMaison02_2016\\bundle\\vis
+[submodule "pack/bundle/start/fugitive"]
+	path = pack/bundle/start/fugitive
+	url = https://github.com/tpope/vim-fugitive

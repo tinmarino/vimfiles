@@ -17,6 +17,15 @@ one. (Otherwise how can you use its)
 8. Vimtex           |v#plugin#vimtex|                   Latex
 
 
+On local machine ~
+git submodule add https://github.com/tpope/vim-fugitive /pack/bundle/start
+
+On remote machine ~
+git submodule init
+git submodule update
+
+
+
 ===============================================================================
 BUNDLE                                                               *v#bundle*
 
