@@ -31,3 +31,6 @@
 [submodule "pack/bundle/start/fugitive"]
 	path = pack/bundle/start/fugitive
 	url = https://github.com/tpope/vim-fugitive
+[submodule "pack/bundle/start/python-mode"]
+	path = pack/bundle/start/python-mode
+	url = https://github.com/python-mode/python-mode
