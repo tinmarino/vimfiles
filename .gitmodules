@@ -55,3 +55,6 @@
 [submodule "pack/bundle/start/ipython"]
 	path = pack/bundle/start/ipython
 	url = https://github.com/ivanov/vim-ipython
+[submodule "pack/bundle/start/conque-gdb"]
+	path = pack/bundle/start/conque-gdb
+	url = https://github.com/vim-scripts/Conque-GDB
