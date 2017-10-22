@@ -52,3 +52,6 @@
 [submodule "pack/bundle/start/misc"]
 	path = pack/bundle/start/misc
 	url = https://github.com/xolox/vim-misc
+[submodule "pack/bundle/start/ipython"]
+	path = pack/bundle/start/ipython
+	url = https://github.com/ivanov/vim-ipython
