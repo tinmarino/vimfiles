@@ -40,3 +40,6 @@
 [submodule "pack/bundle/start/colorscheme-switcher"]
 	path = pack/bundle/start/colorscheme-switcher
 	url = https://github.com/xolox/vim-colorscheme-switcher
+[submodule "pack/bundle/start/surround"]
+	path = pack/bundle/start/surround
+	url = https://github.com/tpope/vim-surround
