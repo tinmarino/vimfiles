@@ -37,3 +37,6 @@
 [submodule "pack/bundle/start/vimtex"]
 	path = pack/bundle/start/vimtex
 	url = https://github.com/lervag/vimtex
+[submodule "pack/bundle/start/colorscheme-switcher"]
+	path = pack/bundle/start/colorscheme-switcher
+	url = https://github.com/xolox/vim-colorscheme-switcher
