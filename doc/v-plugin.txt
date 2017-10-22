@@ -16,6 +16,9 @@ one. (Otherwise how can you use its)
 7. Surround         |v#plugin#surround|                 Around text-objects
 8. Vimtex           |v#plugin#vimtex|                   Latex
 9. NErdtree         TODO
+10. Conque-GDB         TODO
+11. Misc            TODO                                used for
+colorscheme-witcher
 
 
 On local machine ~
