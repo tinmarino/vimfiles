@@ -59,7 +59,6 @@ let g:pymode_options_colorcolumn = 0 " Remove the red line
 " BEFORE VUNDLE 
   set nocompatible
   let mapleader=','
-  call pathogen#infect()
   filetype on 
   syntax on
 
