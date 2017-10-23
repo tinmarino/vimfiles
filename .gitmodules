@@ -58,3 +58,6 @@
 [submodule "pack/bundle/start/conque-gdb"]
 	path = pack/bundle/start/conque-gdb
 	url = https://github.com/vim-scripts/Conque-GDB
+[submodule "pack/bundle/start/airline"]
+	path = pack/bundle/start/airline
+	url = https://github.com/vim-airline/vim-airline
