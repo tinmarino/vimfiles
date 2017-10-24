@@ -61,3 +61,6 @@
 [submodule "pack/bundle/start/airline"]
 	path = pack/bundle/start/airline
 	url = https://github.com/vim-airline/vim-airline
+[submodule "pack/bundle/start/ultisnips"]
+	path = pack/bundle/start/ultisnips
+	url = https://github.com/SirVer/ultisnips
