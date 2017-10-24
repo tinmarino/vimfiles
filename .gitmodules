@@ -64,3 +64,6 @@
 [submodule "pack/bundle/start/ultisnips"]
 	path = pack/bundle/start/ultisnips
 	url = https://github.com/SirVer/ultisnips
+[submodule "pack/bundle/start/snippets"]
+	path = pack/bundle/start/snippets
+	url = https://github.com/honza/vim-snippets
