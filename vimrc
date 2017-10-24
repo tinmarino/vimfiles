@@ -141,10 +141,6 @@ let g:pymode_options_colorcolumn = 0 " Remove the red line
   "%% to expand path in command mode  
   cnoremap %% <C-R>=expand('%:p:h')<CR>|  
   """""""""""""""
-  "Save with Crtl + S, need to disable something in bashrc  
-  "noremap  <C-S>    :update<CR>   
-  "vnoremap  <C-S>         <C-C>:update<CR> 
-  "inoremap <C-S>         <C-O>:update<CR>
 
   imap jk <Esc>
   imap kj <Esc>
@@ -189,7 +185,7 @@ let g:pymode_options_colorcolumn = 0 " Remove the red line
   vnoremap < <gv 
 
   " Use CTRL-S for saving, also in Insert mode
-  noremap <C-S>		:update<CR>
+  noremap <C-S>			:update<CR>
   vnoremap <C-S>		<C-C>:update<CR>
   inoremap <C-S>		<C-O>:update<CR>
 

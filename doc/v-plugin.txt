@@ -19,10 +19,15 @@ one. (Otherwise how can you use its)
 10. Conque-GDB         TODO
 11. Misc            TODO                                used for
 colorscheme-witcher
+12. Ultisnips
+13. Vim-snippets
+14. Airline
 
 
 On local machine ~
-git submodule add https://github.com/tpope/vim-fugitive /pack/bundle/start
+git submodule add https://github.com/tpope/vim-fugitive
+/pack/bundle/start/fugitive
+:Helptags ALL
 
 On remote machine ~
 git submodule init
