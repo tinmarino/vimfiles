@@ -67,3 +67,6 @@
 [submodule "pack/bundle/start/snippets"]
 	path = pack/bundle/start/snippets
 	url = https://github.com/honza/vim-snippets
+[submodule "doc"]
+	path = doc
+	url = https://github.com/tinmarino/Vimdoc
