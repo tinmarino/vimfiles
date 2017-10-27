@@ -42,4 +42,4 @@
 	url = https://github.com/tinmarino/Vimdoc
 [submodule "cheatsheet"]
 	path = cheatsheet
-	url = https://github.com/tinmarino/Vimcheat.git
+	url = https://github.com/tinmarino/Vimcheat
