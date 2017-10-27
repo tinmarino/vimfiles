@@ -28,8 +28,12 @@ syn match helpSectionDelim	"^=.*_"
 " For cheatography
 " a ... means anything
 syn match helpMeta              "\.\.\."
-" my keywords to be replaced
-syn keyword helpMeta            statement statements expression var value key key: ...
+" my keywords to be replaced (from Python)
+syn keyword helpMeta            statement statements expression var value key key: collection expr old new num  arg1 arg2 arg3 op start end item delim lst name prompt index seq
+syn keyword helpMeta            s x t n e i d
+" TODO remove
+hi helpMeta ctermfg=blue cterm=italic guifg=blue gui=italic
+" TODO True False
 
 
 if has("conceal")
