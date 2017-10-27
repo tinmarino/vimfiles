@@ -1,6 +1,6 @@
 " Tinamrino help syntax file
 
-runtime! syntax/help.vim
+
 
 syn keyword arrow -> 
 "hi arrow term=reverse ctermfg=gray ctermbg=red guifg=gray guibg=red3
@@ -17,7 +17,7 @@ syn match helpMeta              "\.\.\."
 syn keyword helpMeta            statement statements expression var value key key: collection expr old new num  arg1 arg2 arg3 op start end item delim lst name prompt index seq
 syn keyword helpMeta            s x t n e i d
 " TODO remove
-hi helpMeta ctermfg=blue cterm=italic guifg=lightblue gui=italic
+hi helpMeta ctermfg=lightgreen cterm=italic guifg=lightgreen gui=italic
 " TODO True False
 
 
@@ -43,6 +43,7 @@ hi helpMeta ctermfg=blue cterm=italic guifg=lightblue gui=italic
 
 
 " WITH VIM SYNTAX 
+let b:current_syntax = ""
 unlet b:current_syntax
 syntax include @MYVIM syntax/vim.vim
 if has("conceal")
@@ -53,6 +54,7 @@ else
 endif
 
 "WITH BASH SYNTAX 
+let b:current_syntax = ""
 unlet b:current_syntax
 syntax include @MYBASH syntax/sh.vim
 if has("conceal")
@@ -64,6 +66,7 @@ endif
 
 
 "WITH PYTHON SYNTAX
+let b:current_syntax = ""
 unlet b:current_syntax
 syntax include @MYPYTHON syntax/python.vim
 if has("conceal")
@@ -75,10 +78,12 @@ endif
 
 
 
+
+
+
+
+unlet b:current_syntax
+runtime! syntax/help.vim
+
 let b:current_syntax = "myhelp"
-
-
-
-
-
 " vim: ts=8 sw=2
