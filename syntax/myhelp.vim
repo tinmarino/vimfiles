@@ -15,11 +15,21 @@ set cpo&vim
 
 syn keyword arrow -> 
 "hi arrow term=reverse ctermfg=gray ctermbg=red guifg=gray guibg=red3
-hi arrow	term=underline ctermfg=green guifg=firebrick3
+hi arrow	term=underline ctermfg=green guifg=green
 
 syn match helpHeadline		"^[-A-Z .][-A-Z0-9 .()]*[ \t]\+\*"me=e-1
 syn match helpSectionDelim	"^===.*===$"
 syn match helpSectionDelim	"^---.*--$"
+
+" Tin
+syn match helpSectionDelim	"^=.*$"
+syn match helpSectionDelim	"^=.*_"
+
+" For cheatography
+" a ... means anything
+syn match helpMeta              "\.\.\."
+" my keywords to be replaced
+syn keyword helpMeta            statement statements expression var value key key: ...
 
 
 if has("conceal")
@@ -196,10 +206,18 @@ else
   syntax region bashSnip matchgroup=Snip start=">bash"  end="<bash" contains=@MYBASH 
 endif
 
+"WITH PYTHON SYNTAX
+syntax include @MYPYTHON syntax/python.vim
+if has("conceal")
+  set conceallevel=2
+  syntax region pythonSnip matchgroup=Snip start=">python"  end="<python" concealends  contains=@MYPYTHON
+else
+  syntax region pythonSnip matchgroup=Snip start=">python"  end="<python" contains=@MYPYTHON
+endif
 
 
 
-"hi link Snip SpecialComment
+hi link Snip SpecialComment
 "hi def link vimComment	Comment
 "hi def link vimFuncName		Function
 "hi def link vimCommand 		Statement
