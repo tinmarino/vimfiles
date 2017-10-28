@@ -43,3 +43,6 @@
 [submodule "cheatsheet"]
 	path = cheatsheet
 	url = https://github.com/tinmarino/Vimcheat
+[submodule "pack/bundle/start/ansiesc"]
+	path = pack/bundle/start/ansiesc
+	url = https://github.com/powerman/vim-plugin-AnsiEsc
