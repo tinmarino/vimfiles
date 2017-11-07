@@ -37,12 +37,12 @@
 [submodule "pack/bundle/start/snippets"]
 	path = pack/bundle/start/snippets
 	url = https://github.com/honza/vim-snippets
-[submodule "doc"]
-	path = doc
-	url = https://github.com/tinmarino/Vimdoc
-[submodule "cheatsheet"]
-	path = cheatsheet
-	url = https://github.com/tinmarino/Vimcheat
 [submodule "pack/bundle/start/ansiesc"]
 	path = pack/bundle/start/ansiesc
 	url = https://github.com/powerman/vim-plugin-AnsiEsc
+[submodule "txt/tindoc"]
+	path = txt/tindoc
+	url = https://github.com/tinmarino/Vimdoc
+[submodule "txt/cheatdoc"]
+	path = txt/cheatdoc
+	url = https://github.com/tinmarino/Vimcheat
