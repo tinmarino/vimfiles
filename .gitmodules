@@ -1,48 +1,64 @@
 [submodule "pack/bundle/start/fugitive"]
 	path = pack/bundle/start/fugitive
 	url = https://github.com/tpope/vim-fugitive
+    ignore = all
 [submodule "pack/bundle/start/python-mode"]
 	path = pack/bundle/start/python-mode
 	url = https://github.com/python-mode/python-mode
+    ignore = all
 [submodule "pack/bundle/start/vimtex"]
 	path = pack/bundle/start/vimtex
 	url = https://github.com/lervag/vimtex
+    ignore = all
 [submodule "pack/bundle/start/colorscheme-switcher"]
 	path = pack/bundle/start/colorscheme-switcher
 	url = https://github.com/xolox/vim-colorscheme-switcher
+    ignore = all
 [submodule "pack/bundle/start/surround"]
 	path = pack/bundle/start/surround
 	url = https://github.com/tpope/vim-surround
+    ignore = all
 [submodule "pack/bundle/start/ctrlp"]
 	path = pack/bundle/start/ctrlp
 	url = https://github.com/kien/ctrlp.vim
+    ignore = all
 [submodule "pack/bundle/start/nerdtree"]
 	path = pack/bundle/start/nerdtree
 	url = https://github.com/scrooloose/nerdtree
+    ignore = all
 [submodule "pack/bundle/start/misc"]
 	path = pack/bundle/start/misc
 	url = https://github.com/xolox/vim-misc
+    ignore = all
 [submodule "pack/bundle/start/ipython"]
 	path = pack/bundle/start/ipython
 	url = https://github.com/ivanov/vim-ipython
+    ignore = all
 [submodule "pack/bundle/start/conque-gdb"]
 	path = pack/bundle/start/conque-gdb
 	url = https://github.com/vim-scripts/Conque-GDB
+    ignore = all
 [submodule "pack/bundle/start/airline"]
 	path = pack/bundle/start/airline
 	url = https://github.com/vim-airline/vim-airline
+    ignore = all
 [submodule "pack/bundle/start/ultisnips"]
 	path = pack/bundle/start/ultisnips
 	url = https://github.com/SirVer/ultisnips
+    ignore = all
 [submodule "pack/bundle/start/snippets"]
 	path = pack/bundle/start/snippets
 	url = https://github.com/honza/vim-snippets
+    ignore = all
 [submodule "pack/bundle/start/ansiesc"]
 	path = pack/bundle/start/ansiesc
 	url = https://github.com/powerman/vim-plugin-AnsiEsc
+    ignore = all
 [submodule "txt/tindoc"]
 	path = doc/tindoc
 	url = https://github.com/tinmarino/Vimdoc
+    ignore = all
 [submodule "txt/cheatdoc"]
 	path = doc/cheatdoc
 	url = https://github.com/tinmarino/Vimcheat
+    ignore = all
