@@ -75,6 +75,9 @@ let g:pymode_options_colorcolumn = 0 " Remove the red line
 
 
 "MAP = SHORTCUTS 
+  map n nzz
+  map j gj
+  map k gk
   nnoremap H :set cursorline! cursorcolumn!<CR> 
   "move one line 
   map <Leader>c :s,^\(\s*\)[^# \t]\@=,\1// ,<CR>gv
