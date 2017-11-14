@@ -62,3 +62,7 @@
 	path = doc/cheatdoc
 	url = https://github.com/tinmarino/Vimcheat
     ignore = all
+[submodule "pack/bundle/start/emacscommandline"]
+	path = pack/bundle/start/emacscommandline
+	url = https://github.com/houtsnip/vim-emacscommandline
+    ignore = all
