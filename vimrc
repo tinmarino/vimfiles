@@ -298,3 +298,8 @@ let g:ctrlp_cmd = 'CtrlPMixed'
 " language code iso 639-1
 "? define key in visual-mode (optional)
 let g:goog_user_conf = { 'langpair': 'en|ru', 'cmd': 'node', 'v_key': 'T' }
+
+set wrap
+"au BufWinEnter *.a.txt AnsiEsc
+"au BufWinEnter *.a.txt set nowrap | echom "I saw an ansi file"
+"au ColorScheme * AnsiEsc!
