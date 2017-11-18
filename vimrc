@@ -312,3 +312,11 @@ set wrap
 for s:dir in split(globpath("$MYVIM/rtp", '*'), '\n')
   execute 'set rtp+=' . s:dir
 endfor
+
+" Emacs Command line
+let g:EmacsCommandLineSearchCommandLineDisable = 1
+
+
+
+
+
