@@ -77,7 +77,16 @@ else
 endif
 
 
+" Good and bad background (Gstyle)
+syntax match Good  '\cGood:'
+syntax match Bad   '\cBad:'
+"syntax region Bold matchgroup=Snip start='\*\*' end='\*\*' concealends
 
+" Green1
+hi Good cterm=underline ctermfg=darkgreen guifg=darkgreen
+" Red1
+hi Bad cterm=underline ctermfg=darkred guifg=darkred  
+hi Bold cterm=bold
 
 
 
