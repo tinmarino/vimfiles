@@ -100,6 +100,11 @@ let g:pymode_options_colorcolumn = 0 " Remove the red line
   cnoremap %% <C-R>=expand('%:p:h')<CR>|  
   """""""""""""""
 
+  " Insert mode shotcuts from gnome
+  inoremap <C-A> <C-O>^
+  inoremap <C-E> <C-O>g_
+  inoremap <C-K> <C-O>D 
+
   imap jk <Esc>
   imap kj <Esc>
 
@@ -302,3 +307,8 @@ set wrap
 "au BufWinEnter *.a.txt AnsiEsc
 "au BufWinEnter *.a.txt set nowrap | echom "I saw an ansi file"
 "au ColorScheme * AnsiEsc!
+
+" Extend rtp for doc
+for s:dir in split(globpath("$MYVIM/rtp", '*'), '\n')
+  execute 'set rtp+=' . s:dir
+endfor

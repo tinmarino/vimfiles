@@ -55,11 +55,11 @@
 	url = https://github.com/powerman/vim-plugin-AnsiEsc
     ignore = all
 [submodule "txt/tindoc"]
-	path = doc/tindoc
+	path = txt/tindoc
 	url = https://github.com/tinmarino/Vimdoc
     ignore = all
 [submodule "txt/cheatdoc"]
-	path = doc/cheatdoc
+	path = txt/cheatdoc
 	url = https://github.com/tinmarino/Vimcheat
     ignore = all
 [submodule "pack/bundle/start/emacscommandline"]
