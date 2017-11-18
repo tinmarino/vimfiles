@@ -316,6 +316,9 @@ endfor
 " Emacs Command line
 let g:EmacsCommandLineSearchCommandLineDisable = 1
 
+" Ctrlp Plugin Buffer with ctrl-b
+map <C-b> :CtrlPBuffer<CR>
+
 
 
 
