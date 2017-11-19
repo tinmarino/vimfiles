@@ -319,6 +319,13 @@ let g:EmacsCommandLineSearchCommandLineDisable = 1
 " Ctrlp Plugin Buffer with ctrl-b
 map <C-b> :CtrlPBuffer<CR>
 
+" Vimtex
+" Disable overfull/underfull \hbox
+let g:vimtex_quickfix_latexlog = {
+	  \ 'overfull' : 0,
+	  \ 'underfull' : 0,
+	  \}
+
 
 
 
