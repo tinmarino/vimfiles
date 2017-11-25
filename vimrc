@@ -327,6 +327,9 @@ let g:vimtex_quickfix_latexlog = {
 	  \}
 
 
-
-
-
+" Ctrl-z to go to same dir. bashrc must have PROMPT_COMMAND
+function! s:CtrlZ()
+	call writefile([getcwd(),''], '/tmp/cd_vim', 'b')
+    return "\<C-z>"
+endfunction
+nnoremap <expr> <C-z> <SID>CtrlZ()
