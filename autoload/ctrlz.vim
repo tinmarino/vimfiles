@@ -1,21 +1,15 @@
 function! s:CtrlZ()
-	call writefile([getcwd(),''], '/tmp/cd_vim', 'b')
-    return "\<C-z>"
+  " Add that to my bashrc
+  " PROMPT_COMMAND='read -r line 2>/dev/null </tmp/cd_vim'\
+  " '&& > /tmp/vim_cd && cd ${line##\r};'$PROMPT_COMMAND
+  call writefile([getcwd(),''], '/tmp/vim_cd', 'b')
+  return "\<C-z>"
 endfunction
 
-
-" TODO cursor postion not moving
-set nosecure
-function! ShellRead(cmd)
-  echom 'executing: ' . a:cmd
-  execute 'r! ' . a:cmd
-  delete c	
-  return @c[:-2]
-endfunction
 
 function! ShellTmp(cmd)
   execute '!' . a:cmd . '> /tmp/vim_cmd'
-  let res = readfile('/tmp/vim_cmd')
+  return readfile('/tmp/vim_cmd')[0]
   return res[0]
 endfunction
 
