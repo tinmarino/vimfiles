@@ -14,7 +14,6 @@ let g:pymode_options_colorcolumn = 0 " Remove the red line
 
 " BEFORE VUNDLE 
   set nocompatible
-  let mapleader=','
   filetype on 
   syntax on
 
@@ -75,6 +74,12 @@ let g:pymode_options_colorcolumn = 0 " Remove the red line
 
 
 "MAP = SHORTCUTS 
+  let mapleader=','
+
+  " Ctrlz
+  nnoremap <silent> <expr> <leader>d ctrlz#dadcd()
+  nnoremap <expr> <c-z> ctrlz#ctrlz()
+
   map j gj
   map k gk
   nnoremap H :set cursorline! cursorcolumn!<CR> 
@@ -325,11 +330,3 @@ let g:vimtex_quickfix_latexlog = {
 	  \ 'overfull' : 0,
 	  \ 'underfull' : 0,
 	  \}
-
-
-" Ctrl-z to go to same dir. bashrc must have PROMPT_COMMAND
-function! s:CtrlZ()
-	call writefile([getcwd(),''], '/tmp/cd_vim', 'b')
-    return "\<C-z>"
-endfunction
-nnoremap <expr> <C-z> <SID>CtrlZ()
