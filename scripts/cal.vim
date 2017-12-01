@@ -17,6 +17,7 @@ let s:d = 0
 
 function! CalStart()
   enew!
+  setlocal nowrap
   set hidden
   for i in range(g:l_cal[1] - 1)
     call append(0, [''])
@@ -27,8 +28,22 @@ function! CalStart()
   let s:array = readfile($MYVIM . '/scripts/cal.txt')
 endfunction
 
+function! DeleteFirst()
+  let l:cmd = "normal 1G0\<C-v>"
+  for i in range(g:l_cal[1] - 2) | let l:cmd .= 'j' | endfor
+  for j in range(g:l_cal[2]) | let l:cmd .= 'l' | endfor
+  let l:cmd .= 'd'
+  execute l:cmd
+endfunction
+
 function! AppendChar(x, y, char)
-  if ('d' == a:char) | let g:operation = [:-2] | return | endif
+  " Delete
+  if ('d' == a:char)
+	let g:operation = g:operation[:-2]
+	let s:d -= 1
+	call DeleteFirst()
+	return
+  endif
   if ('=' == a:char)
     let l:result = eval(g:operation)
 	let g:operation = ''
@@ -36,6 +51,12 @@ function! AppendChar(x, y, char)
 	  AppendChar(l:r)
 	endfor
     return
+  endif
+
+  if (s:d > 3)
+	call DeleteFirst()
+  else
+  	let s:d += 1
   endif
 
   let g:operation .=  '' . a:char
