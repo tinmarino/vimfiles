@@ -1,8 +1,7 @@
-"let l_cal =  ["123", "456", "789", 0]
+7"
 "call append(line('$'), l_cal)
 "1r ./ca	
 " noremap <LeftMouse> <LeftMouse>:call CalRun()<CR>
-noremap <RightMouse> <LeftMouse>:call CalRun()<CR>
 
 " filename, line col (of one char plus one 
 " cause with non touchable spaces between lines)
@@ -14,14 +13,21 @@ let g:operation = ''
 " Get winwidth 
 echom winwidth("%")
 
+
 function! CalStart()
-  new
-  only
-  call append(0, ["", "", "", "", ""])
-  r .vim/scripts/cal_small.txt
+  enew!
+  set hidden
+  for i in range(g:l_cal[1])
+    call append(0, [''])
+  endfor
+  execute 'r ' . $MYVIM . '/scripts/' . g:l_cal[0]
+  nnoremap <LeftMouse> <LeftMouse>:call CalRun()<CR>
+
+  let s:array = readfile($MYVIM . '/scripts/cal.txt')
 endfunction
 
 function! AppendChar(char)
+  if ('d' == a:char) | let g:operation = [:-2] | endif
 endfunction
 
 function! CalRun()
@@ -31,81 +37,22 @@ function! CalRun()
 	let i_col = l_cur[2]
 
 	" convert to number
-	let y = (i_line - 1) / g:l_cal[1]
+	let y = (i_line - g:l_cal[1]) / g:l_cal[1]
 	let x = i_col / g:l_cal[2]
+    let num = s:array[y][x]
 
-	if y == 0
-	  if x == 0
-		let num = "("
-      elseif x == 1
-		let num =  ")"
- 	  elseif x == 2
-		let num = ""
-      elseif x == 3
-		let g:operation = [:-2]
-	  endif
-
-	elseif y == 1
-	  if x == 0
-		let num = 7
-      elseif x == 1
-		let num = 8
- 	  elseif x == 2
-		let num = 9
-      elseif x == 3
-		let num = '/'
-	  endif
-
-	elseif y == 2
-	  if x == 0
-		let num = 4
-      elseif x == 1
-		let num = 5
- 	  elseif x == 2
-		let num = 6
-      elseif x == 3
-		let num = '*'
-	  endif
-
-	elseif y == 3
-	  if x == 0
-		let num = 1
-      elseif x == 1
-		let num = 2
- 	  elseif x == 2
-		let num = 3
-      elseif x == 3
-		let num = '-'
-	  endif
-
-	elseif y == 4
-	  if x == 0
-		let num = '.'
-      elseif x == 1
-		let num = 0
- 	  elseif x == 2
-		let num = '='
-      elseif x == 3
-		let num = '+'
-	  endif
-
-	endif
-	
+    "
 	if exists('num')
 		let g:operation .=  "" . num
+        echom 'touching ' . num
 	endif
 
 	call AppendChar(num)
-	try
-		"silent echom "I touched " . i_line . ", " . i_col . " x,y = " . x . "," . y 
-		" echom "For num: " . num
-		echom "Current operation: " . g:operation 
-		call eval(g:operation)
-		echom "I evaluated"
-		let g:result = eval(g:operation)
-		echom "Result: " . g:result 
-	catch 
-	endtry
+
+    " Dbg
+    echom "Current operation: " . g:operation 
+    let g:result = eval(g:operation)
+    echom "Result: " . g:result 
 
 	call PrintEquation("", g:result)
 
