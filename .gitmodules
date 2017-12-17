@@ -66,3 +66,9 @@
 	path = pack/bundle/start/emacscommandline
 	url = https://github.com/houtsnip/vim-emacscommandline
     ignore = all
+[submodule "pack/bundle/start/indent-object"]
+	path = pack/bundle/start/indent-object
+	url = https://github.com/michaeljsmith/vim-indent-object
+[submodule "pack/bundle/start/argtextobject"]
+	path = pack/bundle/start/argtextobject
+	url = https://github.com/vim-scripts/argtextobj.vim
