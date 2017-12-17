@@ -9,7 +9,8 @@
 " let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
 
 let g:pymode_options_colorcolumn = 0 " Remove the red line
-
+" Auto open cwindow (quickfix) if any errors have been found
+let g:pymode_lint_cwindow = 0
 
 
 " BEFORE VUNDLE 
