@@ -2,8 +2,6 @@
 "
 " so % | Isearch > 450.20
 " 
-"
-"
 
 function! search#char_range(char, dir)
   " Get string with range or '' if < 0 or > 9
