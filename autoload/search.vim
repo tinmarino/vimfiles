@@ -1,4 +1,9 @@
-
+" Search for all numbers in a range
+"
+" so % | Isearch > 450.20
+" 
+"
+"
 
 function! search#char_range(char, dir)
   " Get string with range or '' if < 0 or > 9
@@ -43,12 +48,19 @@ function! search#isearch(num, dir, inc)
   for l:c in split(l:high, '\zs')
 	" Get the higher range [-]
 	let l:range = search#char_range(l:c, a:dir)
-	if (l:range == '') | break | endif
-	let l:pat = l:pat_list[0] . l:range
-	if (a:dir == 0 && l:pat_list[0] == l:start_of_number) 
-	  let l:pat .= '\?'
+	if (l:range != '')
+	  let l:pat = l:pat_list[0] . l:range
+	  if (a:dir == 0 && l:pat_list[0] == l:start_of_number) 
+		let l:pat .= '\?'
+	  endif
+	  call add(l:pat_list, l:pat)
+	else
+	  if (a:dir)
+		break
+	  else
+		let l:pat_list[-1] .= '\d\?'
+	  endif
 	endif
-	call add(l:pat_list, l:pat)
 
 	" Add \d to previous guys
 	for i in range(1, len(l:pat_list) - 2)
@@ -67,6 +79,10 @@ function! search#isearch(num, dir, inc)
 
   " 1.3/ indlude rest (after .)
   for i in range(1, len(l:pat_list) - 1)
+	" The last digit is non optional (otherwise can match all)
+	if l:pat_list[i][-4:] == '\d\?'
+	  let l:pat_list[i] = l:pat_list[i][:-3]
+	endif
 	let l:pat_list[i] .= '\%(\.\d*\)\?\%(\ze\D\|$\)'
   endfor
 
@@ -87,6 +103,10 @@ function! search#isearch(num, dir, inc)
 	" Add to initial pattern
 	let l:pat_list[0] .= l:c
   endfor
+
+  " 2.2/ A very little drop
+  let l:pat = l:pat_list[0] . '\d*\(\d\&[^0]\)\d*'
+  call add(l:pat_list, l:pat)
 
   " 3/ Add the number itself
   if a:inc
