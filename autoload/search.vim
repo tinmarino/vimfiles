@@ -1,7 +1,9 @@
 " Search for all numbers in a range
 "
-" so % | Isearch > 450.20
-" 
+" Source me then (better put the last command defintion in your vimrc, then
+"
+" :Isearch > 450.20
+" :Isearch > 1000 < 1000000
 
 function! search#char_range(char, dir)
   " Get string with range or '' if < 0 or > 9
