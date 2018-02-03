@@ -138,8 +138,7 @@ function! search#wrapper(...)
 	endif
   endfor
 
-  echo l:pat
-  execute "normal! /" . l:pat . "\<CR>"
+  let @/ = l:pat
 endfunction
 
-command! -nargs=* Isearch call search#wrapper(<f-args>)
+command! -nargs=* Isearch call search#wrapper(<f-args>) | normal n
