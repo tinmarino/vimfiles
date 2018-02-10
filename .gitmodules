@@ -72,3 +72,9 @@
 [submodule "pack/bundle/start/argtextobject"]
 	path = pack/bundle/start/argtextobject
 	url = https://github.com/vim-scripts/argtextobj.vim
+[submodule "pack/bundle/start/emoji"]
+	path = pack/bundle/start/emoji
+	url = https://github.com/junegunn/vim-emoji
+[submodule "pack/bundle/start/unimpaired"]
+	path = pack/bundle/start/unimpaired
+	url = https://github.com/tpope/vim-unimpaired

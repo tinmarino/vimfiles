@@ -18,8 +18,6 @@ let g:pymode_lint_cwindow = 0
   filetype on 
   syntax on
 
-
-
 " FROM VIM DEBIAN TEAM                
   if filereadable("/etc/vim/vimrc.local")
     source /etc/vim/vimrc.local
