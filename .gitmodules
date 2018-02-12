@@ -78,3 +78,6 @@
 [submodule "pack/bundle/start/unimpaired"]
 	path = pack/bundle/start/unimpaired
 	url = https://github.com/tpope/vim-unimpaired
+[submodule "pack/bundle/start/YouCompleteMe"]
+	path = pack/bundle/start/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe

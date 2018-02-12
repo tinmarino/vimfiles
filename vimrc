@@ -329,3 +329,6 @@ let g:vimtex_quickfix_latexlog = {
 	  \ 'overfull' : 0,
 	  \ 'underfull' : 0,
 	  \}
+
+" YouCompleteMe
+let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/start/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
