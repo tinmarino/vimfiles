@@ -63,6 +63,7 @@ set nocompatible | filetype on | syntax on
 
   set autoindent  " to have auto indentation when return line 
   colorscheme dante
+  set laststatus=2 " for airline
   " No auto comment
   set formatoptions-=cro
   " WINDOWS 
@@ -103,6 +104,8 @@ set nocompatible | filetype on | syntax on
 
 
 " Map
+  noremap > >>
+  noremap < <<
   let mapleader=','
 
   " Ctrlz
@@ -323,6 +326,8 @@ set nocompatible | filetype on | syntax on
     let g:ctrlp_map = '<c-e>'
     " Mixed to search in MRU, FIles, Buffers
     let g:ctrlp_cmd = 'CtrlPMixed'
+    " Ctrlp Plugin Buffer with ctrl-b
+    map <C-b> :CtrlPBuffer<CR>
 
   " Vim Translator
     ".vimrc
@@ -337,9 +342,6 @@ set nocompatible | filetype on | syntax on
 
   " Emacs Command line
     let g:EmacsCommandLineSearchCommandLineDisable = 1
-
-  " Ctrlp Plugin Buffer with ctrl-b
-    map <C-b> :CtrlPBuffer<CR>
 
   " Eclim 
     filetype plugin indent on
@@ -359,12 +361,12 @@ set nocompatible | filetype on | syntax on
     let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/start/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
 
   " Vimwiki
-  let g:vimwiki_list = [{
-    \ 'syntax': 'markdown',
-    \ 'ext': '.md',
-    \ 'custom_wiki2html': '~/vimwiki/wiki2html.sh',
-    \'path': '~/vimwiki'
-    \ }]
+    let g:vimwiki_list = [{
+      \ 'syntax': 'markdown',
+      \ 'ext': '.md',
+      \ 'custom_wiki2html': '~/vimwiki/wiki2html.sh',
+      \'path': '~/vimwiki'
+      \ }]
 
   " Termux
     if 'termux' == $os
