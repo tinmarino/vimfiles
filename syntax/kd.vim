@@ -18,13 +18,13 @@ syn match       kdComment "$$.*$"
 syn keyword kdBuiltin ENTER 	a 	ad 	ah 	al 	as aS 	ba 	bc 	bd 	be 	bl 	bp bu bm 	br 	bs 	c 	d da db dc dd dD df dp dq du dw 	dda ddp ddu dpa dpp dpu dqa dqp dqu 	dg 	dl 	ds dS 	dt 	dv 	dx 	e ea eb ed eD ef ep eq eu ew eza 	f fp 	g 	gh 	gn gN 	gu 	ib iw id 	j 	k kb kc kd kp kP kv 	l+ l- 	ld 	lm 	ln 	ls lsa 	lsc 	le lsf lsf- 	lsp 	m 	n 	ob ow od 	p 	pa 	pc 	pct 	ph 	pt 	q qq 	qd 	r 	rdmsr 	rm 	s 	so 	sq 	ss 	sx sxd sxe sxi sxn sxr sx- 	t 	ta 	tb 	tc 	tct 	th 	tt 	u ub uu 	up 	ur 	ux 	vercommand 	version 	vertarget 	wrmsr 	wt 	x 	z 	
 syn match kdBuiltin "\(\$<\|\$><\|\$\$<\|\$\$><\|\$\$>a<\)"
 syn match kdBuiltin "\(?\|\#\|||\|||s\||\||s\|\~e\|\~f\|\~u\|\~n\|\~m\|\~s\|\~s\)" 	
+syn keyword kdBuiltin poi
 
-" TOKEN TODO those stuff
-"; 
-"{ }
-"$$
-"*
-syn match kdVariable "\${.*}"
+syn match kdVariable "\${\w\+}"
+syn match kdVariable "\$\w\+"
+
+syn match kdOperator "+\|>>\|<<\|\*"
+
 
 
 syn match kdToken "\(\.block\|\.break\|\.catch\|\.continue\|\.do\|\.else\|\.elsif\|\.for\|\.foreach\|\.if\|\.leave\|\.printf\|\.while\)"
@@ -41,3 +41,4 @@ hi def link kdComment       Comment
 hi def link kdToken         Statement
 hi def link kdFunction      Number
 hi def link kdVariable      Function
+hi def link kdOperator      Operator
