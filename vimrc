@@ -78,6 +78,9 @@ set nocompatible | filetype on | syntax on
     set shiftwidth=4
     set tabstop=4
     set wrapscan
+  " Viminfo rememebr last 10000 opened files
+  let s:viminfo=join(map(split(&viminfo, ","), {arg -> (v:val[0] == "'" ? "'10000" : v:val)}), ",")
+  exe("set viminfo=" . s:viminfo)
 
 
 " Backup
@@ -315,6 +318,7 @@ set nocompatible | filetype on | syntax on
     let g:pymode_options_colorcolumn = 0 " Remove the red line
     " Auto open cwindow (quickfix) if any errors have been found
     let g:pymode_lint_cwindow = 0
+    let g:pymode_rope_goto_definition_cmd = 'e'
 
   " ConqueDbg, a gdb plugging
     let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
