@@ -61,12 +61,15 @@
 [submodule "pack/bundle/start/indent-object"]
 	path = pack/bundle/start/indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object
+    ignore = all
 [submodule "pack/bundle/start/argtextobject"]
 	path = pack/bundle/start/argtextobject
 	url = https://github.com/vim-scripts/argtextobj.vim
+    ignore = all
 [submodule "pack/bundle/start/emoji"]
 	path = pack/bundle/start/emoji
 	url = https://github.com/junegunn/vim-emoji
+    ignore = all
 [submodule "pack/bundle/start/unimpaired"]
 	path = pack/bundle/start/unimpaired
 	url = https://github.com/tpope/vim-unimpaired
@@ -91,3 +94,8 @@
 [submodule "pack/bundle/start/vim-indent-object"]
 	path = pack/bundle/start/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object
+    ignore = all
+[submodule "pack/bundle/start/YouCompleteMe"]
+	path = pack/bundle/start/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe
+    ignore = all
