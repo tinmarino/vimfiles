@@ -81,3 +81,12 @@
 [submodule "pack/bundle/start/YouCompleteMe"]
 	path = pack/bundle/start/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe
+[submodule "pack/bundle/start/calendar-vim"]
+	path = pack/bundle/start/calendar-vim
+	url = https://github.com/mattn/calendar-vim
+[submodule "pack/bundle/start/vimwiki"]
+	path = pack/bundle/start/vimwiki
+	url = https://github.com/vimwiki/vimwiki
+[submodule "pack/bundle/start/vim-instant-markdown"]
+	path = pack/bundle/start/vim-instant-markdown
+	url = https://github.com/suan/vim-instant-markdown
