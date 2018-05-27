@@ -2,6 +2,7 @@
   let $MYVIM = expand('<sfile>:p:h')
   source $MYVIM/scripts/myfunctions.vim
   source $MYVIM/scripts/cfunctions.vim
+  " source $MYVIM/scripts/fontsize.vim
 
 
 " let g:pymode_lint_ignore =  "E701" 	" Multiple statement on one line
@@ -138,15 +139,6 @@ let g:pymode_lint_cwindow = 0
   vnoremap <space> zf
   "map <2-LeftMouse> zA
   "
-  "zr zm with ctrl + direction, never used ....
-  nnoremap <silent> <C-Right> zr
-  vnoremap <silent> <C-Right> zr
-  nnoremap <silent> <C-Left> zm
-  vnoremap <silent> <C-Left> zm
-  nnoremap <silent> <C-Up> zR
-  vnoremap <silent> <C-Up> zR
-  nnoremap <silent> <C-Down> zM
-  vnoremap <silent> <C-Down> zM
 
   vnoremap > >gv 
   vnoremap < <gv 
@@ -330,5 +322,19 @@ let g:vimtex_quickfix_latexlog = {
 	  \ 'underfull' : 0,
 	  \}
 
+" Ultisnip
+let g:UltiSnipsExpandTrigger="<c-j>"
+
 " YouCompleteMe
 let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/start/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
+
+" Vimwiki instant_markdown
+let g:vimwiki_list = [{
+  \ 'syntax': 'markdown',
+  \ 'ext': '.md',
+  \ 'custom_wiki2html': '~/vimwiki/wiki2html.sh'
+  \ }]
+
+
+" No auto comment
+set formatoptions-=cro
