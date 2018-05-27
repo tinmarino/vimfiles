@@ -28,6 +28,7 @@ let g:pymode_lint_cwindow = 0
 
 
 " APPEARANCE , COLOR, search, set staff
+  set encoding=utf-8
   set nu
   set tabstop=4 
   "SEARCH 
@@ -328,13 +329,22 @@ let g:UltiSnipsExpandTrigger="<c-j>"
 " YouCompleteMe
 let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/start/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
 
+
+" No auto comment
+set formatoptions-=cro
+
+
+" Vimwiki
 " Vimwiki instant_markdown
 let g:vimwiki_list = [{
   \ 'syntax': 'markdown',
   \ 'ext': '.md',
-  \ 'custom_wiki2html': '~/vimwiki/wiki2html.sh'
+  \ 'custom_wiki2html': '~/vimwiki/wiki2html.sh',
+  \'path': '~/vimwiki'
+  \ },{ 
+  \ 'path': '~/.vim/txt/tindoc', 'path_html': '~/html/tindoc'
   \ }]
 
 
-" No auto comment
-set formatoptions-=cro
+" Termux
+autocmd CursorHold,CursorHoldI * update
