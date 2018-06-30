@@ -79,3 +79,6 @@
 [submodule "pack/bundle/start/vim-instant-markdown"]
 	path = pack/bundle/start/vim-instant-markdown
 	url = https://github.com/suan/vim-instant-markdown
+[submodule "pack/bundle/opt/DrawIt"]
+	path = pack/bundle/opt/DrawIt
+	url = https://github.com/vim-scripts/DrawIt
