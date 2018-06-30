@@ -54,14 +54,6 @@
 	path = pack/bundle/start/ansiesc
 	url = https://github.com/powerman/vim-plugin-AnsiEsc
     ignore = all
-[submodule "txt/tindoc"]
-	path = txt/tindoc
-	url = https://github.com/tinmarino/Vimdoc
-    ignore = all
-[submodule "txt/cheatdoc"]
-	path = txt/cheatdoc
-	url = https://github.com/tinmarino/Vimcheat
-    ignore = all
 [submodule "pack/bundle/start/emacscommandline"]
 	path = pack/bundle/start/emacscommandline
 	url = https://github.com/houtsnip/vim-emacscommandline
@@ -78,9 +70,6 @@
 [submodule "pack/bundle/start/unimpaired"]
 	path = pack/bundle/start/unimpaired
 	url = https://github.com/tpope/vim-unimpaired
-[submodule "pack/bundle/start/YouCompleteMe"]
-	path = pack/bundle/start/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe
 [submodule "pack/bundle/start/calendar-vim"]
 	path = pack/bundle/start/calendar-vim
 	url = https://github.com/mattn/calendar-vim

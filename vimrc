@@ -1,5 +1,14 @@
-" SOURCE , VARIABLE  WITH $
+
+" VARIABLE
   let $MYVIM = expand('<sfile>:p:h')
+  let $vim = $MYVIM
+  let $v = $MYVIM
+  let $start = $vim/pack/bundle/start
+  let $opt = $vim/pack/bundle/opt
+
+
+
+" SOURCE
   source $MYVIM/scripts/myfunctions.vim
   source $MYVIM/scripts/cfunctions.vim
   " source $MYVIM/scripts/fontsize.vim
