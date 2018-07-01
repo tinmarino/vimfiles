@@ -82,3 +82,6 @@
 [submodule "pack/bundle/opt/DrawIt"]
 	path = pack/bundle/opt/DrawIt
 	url = https://github.com/vim-scripts/DrawIt
+[submodule "pack/bundle/opt/Mines"]
+	path = pack/bundle/opt/Mines
+	url = https://github.com/vim-scripts/Mines
