@@ -334,8 +334,6 @@ set nocompatible | filetype on | syntax on
     \ 'ext': '.md',
     \ 'custom_wiki2html': '~/vimwiki/wiki2html.sh',
     \'path': '~/vimwiki'
-    \ },{ 
-    \ 'path': '~/.vim/txt/tindoc', 'path_html': '~/html/tindoc'
     \ }]
 
 
