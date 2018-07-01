@@ -266,6 +266,19 @@ function! Align()
 endfunction
 
 
+"""" LARGE FILE 
+"  " Protect large files from sourcing and other overhead.
+"  " Files become read only
+"  if !exists("my_auto_commands_loaded")
+"    let my_auto_commands_loaded = 1
+"
+"    let g:LargeFile = 1024 * 1024 * 20
+"    augroup LargeFile
+"      autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload | syntax off | setlocal foldmethod=manual | else | set eventignore-=FileType | endif
+"    augroup END
+"  endif
+
+
   "normal! G to go to the end 
 command! -nargs=* -complete=command GetIndex call GetIndex(<f-args>)
 command! -nargs=* -complete=command Chapter call Chapter(<f-args>)

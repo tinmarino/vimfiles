@@ -1,56 +1,42 @@
+set nocompatible | filetype on | syntax on
 
-" VARIABLE
+
+" Variable
   let $MYVIM = expand('<sfile>:p:h')
   let $vim = $MYVIM
   let $v = $MYVIM
   let $s = expand("$v/scripts")
+  let $ft = expand("$v/ftplugin")
   let $start = expand("$vim/pack/bundle/start")
   let $opt = expand("$vim/pack/bundle/opt")
 
   " OS
   let $os = 'unknown'
   if has('unix')
-	let $os = 'unix'
-	let s:tmp = system('uname -a')
-	if -1 != match(s:tmp, '\candroid')
-	  let $os = 'termux'
-	endif
+  let $os = 'unix'
+  let s:tmp = system('uname -a')
+  if -1 != match(s:tmp, '\candroid')
+    let $os = 'termux'
+  endif
   elseif has('win32') || has('win64')
-	let $os = 'windows'
+  let $os = 'windows'
   endif
 
 
-
-
-" SOURCE
-  source $MYVIM/scripts/myfunctions.vim
-  source $MYVIM/scripts/cfunctions.vim
-  " source $MYVIM/scripts/fontsize.vim
-
-
-" let g:pymode_lint_ignore =  "E701" 	" Multiple statement on one line
-" let g:pymode_lint_ignore .= ",E501" " Line too long > 80 
-" let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
-
-let g:pymode_options_colorcolumn = 0 " Remove the red line
-" Auto open cwindow (quickfix) if any errors have been found
-let g:pymode_lint_cwindow = 0
-
-
-" BEFORE VUNDLE 
-  set nocompatible
-  filetype on 
-  syntax on
-
-" FROM VIM DEBIAN TEAM                
+" From vim debian team (better at start)
   if filereadable("/etc/vim/vimrc.local")
     source /etc/vim/vimrc.local
   endif
 
 
+" Source (my broters)
+  source $MYVIM/scripts/myfunctions.vim
+  source $MYVIM/scripts/cfunctions.vim
+  " TODO if gvim
+  " source $MYVIM/scripts/fontsize.vim
 
 
-" APPEARANCE , COLOR, search, set staff
+" Appearance , Color, Search, Set staff
   set encoding=utf-8
   set nu
   set tabstop=4 
@@ -72,16 +58,22 @@ let g:pymode_lint_cwindow = 0
 
   set autoindent  " to have auto indentation when return line 
   colorscheme dante
+  " No auto comment
+  set formatoptions-=cro
+  " Windows 
+    set ruler 
+    set backspace=2 
+    set foldlevelstart=30 "the folding at opening
 
 
-" BACKUP SLOW SOMETIMES  
+" Backup
   set nobackup                  " I may change that 
   set noswapfile                " I will this if this is harmfull
   set nowritebackup
   set backupdir=~/.vim/backup// " the double // will put the backup with the full directory  
   set directory=~/.vim/backup// " for the swap files 
   set undolevels=10000         " use many levels of undo
-  set history=10000		" After nocompatible 
+  set history=10000    " After nocompatible 
   set autoread                  " when reopening a file, go to the position as when you quit it +  This will disable read-only to writeable warnings
  
   if has('persistent_undo')
@@ -90,14 +82,14 @@ let g:pymode_lint_cwindow = 0
   endif 
 
 
-"MOUSE INTEGRATION 
+" Mouse Integration
   " Send more characters for redraws
   set mouse=a " Enable mouse use in all modes
   set ttyfast
   set ttymouse=xterm2
 
 
-"MAP = SHORTCUTS 
+" Map
   let mapleader=','
 
   " Ctrlz
@@ -168,9 +160,9 @@ let g:pymode_lint_cwindow = 0
   vnoremap < <gv 
 
   " Use CTRL-S for saving, also in Insert mode
-  noremap <C-S>			:update<CR>
-  vnoremap <C-S>		<C-C>:update<CR>
-  inoremap <C-S>		<C-O>:update<CR>
+  noremap <C-S>      :update<CR>
+  vnoremap <C-S>    <C-C>:update<CR>
+  inoremap <C-S>    <C-O>:update<CR>
 
 
   " Commenting blocks of code.
@@ -198,9 +190,13 @@ let g:pymode_lint_cwindow = 0
 
 
   nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+  map <Leader>v :e ~/.vim/vimrc<CR>
+  map <Leader>x :w<CR>:so %<CR>
+  "Todo create backup dir
+  map <leader>s :up \| saveas! %:p:r-<C-R>=strftime("%y%m%d")<CR>-bak.txt \| 3sleep \| e #<CR> 
 
 
-"FOLDING 
+" Folding
   highlight Folded ctermfg=DarkGreen ctermbg=Black
   set foldmethod=expr
   set foldexpr=FoldMethod(v:lnum)
@@ -239,7 +235,7 @@ let g:pymode_lint_cwindow = 0
   set foldlevelstart=30 "the folding at opening
 
 
-" BUFFER MANAGEMENT  and it maps 
+" Buffer Management (and it maps)
   "map <Tab> :bnext<cr>
   "map <S-Tab> :bprevious<cr>
   noremap <C-Tab> :BufExplorer<CR>
@@ -253,7 +249,7 @@ let g:pymode_lint_cwindow = 0
   " " \b \f \g : go back/forward/last-used
   " " \1 \2 \3 : go to buffer 1/2/3 etc
   map <Leader>l :ls<CR>
-  map <Leader>b :bp<CR>	
+  map <Leader>b :bp<CR>  
   "overwriten by GDB
   map <Leader>f :bn<CR>
   map <Leader>1 :1b<CR>
@@ -268,109 +264,83 @@ let g:pymode_lint_cwindow = 0
   map <Leader>0 :10b<CR>
 
 
+" Filetype
+  au BufNewFile,BufRead *.masm      setf masm
+  au BufNewFile,BufRead *.asm       setf masm
+  au BufNewFile,BufRead *.disarm    setf disarm
 
 
-"ECLIM 
-  "set nocompatible 
-  filetype plugin indent on
-  let g:EclimCompletionMethod = 'omnifunc'
+" Plugin
+  " Pymode
+  let g:pymode_options_colorcolumn = 0 " Remove the red line
+  " Auto open cwindow (quickfix) if any errors have been found
+  let g:pymode_lint_cwindow = 0
+  " let g:pymode_lint_ignore =  "E701"   " Multiple statement on one line
+  " let g:pymode_lint_ignore .= ",E501" " Line too long > 80 
+  " let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
 
+  " ConqueDbg, a gdb plugging
+  let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
+  let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
+  let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly 
 
-"""" LARGE FILE 
-"  " Protect large files from sourcing and other overhead.
-"  " Files become read only
-"  if !exists("my_auto_commands_loaded")
-"    let my_auto_commands_loaded = 1
-"
-"    let g:LargeFile = 1024 * 1024 * 20
-"    augroup LargeFile
-"      autocmd BufReadPre * let f=expand("<afile>") | if getfsize(f) > g:LargeFile | set eventignore+=FileType | setlocal noswapfile bufhidden=unload | syntax off | setlocal foldmethod=manual | else | set eventignore-=FileType | endif
-"    augroup END
-"  endif
+  " CtrlP
+  " E like edit and closer to ctrl + <c-p> used to paste
+  let g:ctrlp_map = '<c-e>'
+  " Mixed to search in MRU, FIles, Buffers
+  let g:ctrlp_cmd = 'CtrlPMixed'
 
-" WINDOWS 
-  set ruler 
-  set backspace=2 
-  set foldlevelstart=30 "the folding at opening
-
-
-
-" FILETYPE 
-  au BufNewFile,BufRead *.masm			setf masm 
-  au BufNewFile,BufRead *.asm			setf masm 
-  au BufNewFile,BufRead *.disarm		setf disarm
-
-
-  map <Leader>v :e ~/.vim/vimrc<CR>
-  map <Leader>x :w<CR>:so %<CR>
-  "Todo create backup dir
-  map <leader>s :up \| saveas! %:p:r-<C-R>=strftime("%y%m%d")<CR>-bak.txt \| 3sleep \| e #<CR> 
-
-
-
-
-" ConqueDbg, a gdb plugging
-let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
-let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
-let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly 
-
-" CtrlP
-" E like edit and closer to ctrl + <c-p> used to paste
-let g:ctrlp_map = '<c-e>'
-" Mixed to search in MRU, FIles, Buffers
-let g:ctrlp_cmd = 'CtrlPMixed'
-
-" Vim Translator
+  " Vim Translator
   ".vimrc
-" language code iso 639-1
-"? define key in visual-mode (optional)
-let g:goog_user_conf = { 'langpair': 'en|ru', 'cmd': 'node', 'v_key': 'T' }
+  " language code iso 639-1
+  "? define key in visual-mode (optional)
+  let g:goog_user_conf = { 'langpair': 'en|ru', 'cmd': 'node', 'v_key': 'T' }
 
-set wrap
-"au BufWinEnter *.a.txt AnsiEsc
-"au BufWinEnter *.a.txt set nowrap | echom "I saw an ansi file"
-"au ColorScheme * AnsiEsc!
+  " AnsiEsc
+  "au BufWinEnter *.a.txt AnsiEsc
+  "au BufWinEnter *.a.txt set nowrap | echom "I saw an ansi file"
+  "au ColorScheme * AnsiEsc!
 
-" Extend rtp for doc
-for s:dir in split(globpath("$MYVIM/rtp", '*'), '\n')
-  execute 'set rtp+=' . s:dir
-endfor
+  " Emacs Command line
+    let g:EmacsCommandLineSearchCommandLineDisable = 1
 
-" Emacs Command line
-let g:EmacsCommandLineSearchCommandLineDisable = 1
+  " Ctrlp Plugin Buffer with ctrl-b
+    map <C-b> :CtrlPBuffer<CR>
 
-" Ctrlp Plugin Buffer with ctrl-b
-map <C-b> :CtrlPBuffer<CR>
+  "ECLIM 
+    filetype plugin indent on
+    let g:EclimCompletionMethod = 'omnifunc'
 
-" Vimtex
-" Disable overfull/underfull \hbox
-let g:vimtex_quickfix_latexlog = {
-	  \ 'overfull' : 0,
-	  \ 'underfull' : 0,
-	  \}
+  " Vimtex
+    " Disable overfull/underfull \hbox
+    let g:vimtex_quickfix_latexlog = {
+        \ 'overfull' : 0,
+        \ 'underfull' : 0,
+        \}
 
-" Ultisnip
-let g:UltiSnipsExpandTrigger="<c-j>"
+  " Ultisnip
+    let g:UltiSnipsExpandTrigger="<c-j>"
 
-" YouCompleteMe
-let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/start/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
-
-
-" No auto comment
-set formatoptions-=cro
+  " YouCompleteMe
+    let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/start/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
 
 
-" Vimwiki
-" Vimwiki instant_markdown
-let g:vimwiki_list = [{
-  \ 'syntax': 'markdown',
-  \ 'ext': '.md',
-  \ 'custom_wiki2html': '~/vimwiki/wiki2html.sh',
-  \'path': '~/vimwiki'
-  \ },{ 
-  \ 'path': '~/.vim/txt/tindoc', 'path_html': '~/html/tindoc'
-  \ }]
+  " Vimwiki
+  let g:vimwiki_list = [{
+    \ 'syntax': 'markdown',
+    \ 'ext': '.md',
+    \ 'custom_wiki2html': '~/vimwiki/wiki2html.sh',
+    \'path': '~/vimwiki'
+    \ },{ 
+    \ 'path': '~/.vim/txt/tindoc', 'path_html': '~/html/tindoc'
+    \ }]
 
 
-" Termux
-autocmd CursorHold,CursorHoldI *  silent update
+
+  " Termux
+    if 'termux' == $os
+      autocmd CursorHold,CursorHoldI *  silent update
+    endif
+
+
+" Fastly (added)

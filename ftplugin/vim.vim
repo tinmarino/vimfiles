@@ -3,6 +3,8 @@
   set shiftwidth=2
   set foldmethod=indent
   set foldexpr=FoldVimMethod(v:lnum)
+  set tabstop=2
+  set expandtab
 
   function! FoldVimMethod(lnum)
     " check if endfunction or endif endfo for vim syntax 
