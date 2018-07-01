@@ -288,7 +288,10 @@ let g:pymode_lint_cwindow = 0
 
 
   map <Leader>v :e ~/.vim/vimrc<CR>
-  map <Leader>s :w<CR>:so %<CR>
+  map <Leader>x :w<CR>:so %<CR>
+  "Todo create backup dir
+  map <leader>s :up \| saveas! %:p:r-<C-R>=strftime("%y%m%d")<CR>-bak.txt \| 3sleep \| e #<CR> 
+
 
 
 
@@ -356,4 +359,4 @@ let g:vimwiki_list = [{
 
 
 " Termux
-autocmd CursorHold,CursorHoldI * update
+autocmd CursorHold,CursorHoldI *  silent update
