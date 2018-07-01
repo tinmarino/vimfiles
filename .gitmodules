@@ -85,3 +85,6 @@
 [submodule "pack/bundle/opt/Mines"]
 	path = pack/bundle/opt/Mines
 	url = https://github.com/vim-scripts/Mines
+[submodule "pack/bundle/opt/Mines"]
+	path = pack/bundle/opt/Align
+	url = https://github.com/vim-scripts/Align
