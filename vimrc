@@ -2,14 +2,6 @@ set nocompatible | filetype on | syntax on
 
 
 " Variable
-  let $MYVIM = expand('<sfile>:p:h')
-  let $vim = $MYVIM
-  let $v = $MYVIM
-  let $s = expand("$v/scripts")
-  let $ft = expand("$v/ftplugin")
-  let $start = expand("$vim/pack/bundle/start")
-  let $opt = expand("$vim/pack/bundle/opt")
-
   " OS
   let $os = 'unknown'
   if has('unix')
@@ -21,6 +13,17 @@ set nocompatible | filetype on | syntax on
   elseif has('win32') || has('win64')
   let $os = 'windows'
   endif
+
+  " Vim
+  let $MYVIM = expand('<sfile>:p:h')
+  let $vim = $MYVIM
+  let $v = $MYVIM
+  let $s = expand("$v/scripts")
+  let $ft = expand("$v/ftplugin")
+  let $start = expand("$vim/pack/bundle/start")
+  let $opt = expand("$vim/pack/bundle/opt")
+  let $dump = expand("$vim/undo/dump")
+
 
 
 " From vim debian team (better at start)
@@ -193,7 +196,7 @@ set nocompatible | filetype on | syntax on
   map <Leader>v :e ~/.vim/vimrc<CR>
   map <Leader>x :w<CR>:so %<CR>
   "Todo create backup dir
-  map <leader>s :up \| saveas! %:p:r-<C-R>=strftime("%y%m%d")<CR>-bak.txt \| 3sleep \| e #<CR> 
+  map <leader>s :write! $dump/%:t-<C-R>=strftime("%y%m%d")<CR>-bak.txt<CR>
 
 
 " Folding
