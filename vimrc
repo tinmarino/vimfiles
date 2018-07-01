@@ -3,8 +3,9 @@
   let $MYVIM = expand('<sfile>:p:h')
   let $vim = $MYVIM
   let $v = $MYVIM
-  let $start = $vim/pack/bundle/start
-  let $opt = $vim/pack/bundle/opt
+  let $s = expand("$v/scripts")
+  let $start = expand("$vim/pack/bundle/start")
+  let $opt = expand("$vim/pack/bundle/opt")
 
 
 
