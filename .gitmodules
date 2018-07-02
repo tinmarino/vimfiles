@@ -1,101 +1,108 @@
 [submodule "pack/bundle/start/fugitive"]
 	path = pack/bundle/start/fugitive
 	url = https://github.com/tpope/vim-fugitive
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/python-mode"]
 	path = pack/bundle/start/python-mode
 	url = https://github.com/python-mode/python-mode
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/vimtex"]
 	path = pack/bundle/start/vimtex
 	url = https://github.com/lervag/vimtex
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/colorscheme-switcher"]
 	path = pack/bundle/start/colorscheme-switcher
 	url = https://github.com/xolox/vim-colorscheme-switcher
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/surround"]
 	path = pack/bundle/start/surround
 	url = https://github.com/tpope/vim-surround
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/ctrlp"]
 	path = pack/bundle/start/ctrlp
 	url = https://github.com/kien/ctrlp.vim
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/nerdtree"]
 	path = pack/bundle/start/nerdtree
 	url = https://github.com/scrooloose/nerdtree
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/misc"]
 	path = pack/bundle/start/misc
 	url = https://github.com/xolox/vim-misc
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/ipython"]
 	path = pack/bundle/start/ipython
 	url = https://github.com/ivanov/vim-ipython
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/conque-gdb"]
 	path = pack/bundle/start/conque-gdb
 	url = https://github.com/vim-scripts/Conque-GDB
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/airline"]
 	path = pack/bundle/start/airline
 	url = https://github.com/vim-airline/vim-airline
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/ultisnips"]
 	path = pack/bundle/start/ultisnips
 	url = https://github.com/SirVer/ultisnips
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/snippets"]
 	path = pack/bundle/start/snippets
 	url = https://github.com/honza/vim-snippets
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/ansiesc"]
 	path = pack/bundle/start/ansiesc
 	url = https://github.com/powerman/vim-plugin-AnsiEsc
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/emacscommandline"]
 	path = pack/bundle/start/emacscommandline
 	url = https://github.com/houtsnip/vim-emacscommandline
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/indent-object"]
 	path = pack/bundle/start/indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/argtextobject"]
 	path = pack/bundle/start/argtextobject
 	url = https://github.com/vim-scripts/argtextobj.vim
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/emoji"]
 	path = pack/bundle/start/emoji
 	url = https://github.com/junegunn/vim-emoji
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/unimpaired"]
 	path = pack/bundle/start/unimpaired
 	url = https://github.com/tpope/vim-unimpaired
+  ignore = all
 [submodule "pack/bundle/start/calendar-vim"]
 	path = pack/bundle/start/calendar-vim
 	url = https://github.com/mattn/calendar-vim
+  ignore = all
 [submodule "pack/bundle/start/vimwiki"]
 	path = pack/bundle/start/vimwiki
 	url = https://github.com/vimwiki/vimwiki
+  ignore = all
 [submodule "pack/bundle/start/vim-instant-markdown"]
 	path = pack/bundle/start/vim-instant-markdown
 	url = https://github.com/suan/vim-instant-markdown
+  ignore = all
 [submodule "pack/bundle/opt/DrawIt"]
 	path = pack/bundle/opt/DrawIt
 	url = https://github.com/vim-scripts/DrawIt
+  ignore = all
 [submodule "pack/bundle/opt/Mines"]
 	path = pack/bundle/opt/Mines
 	url = https://github.com/vim-scripts/Mines
-[submodule "pack/bundle/opt/Mines"]
+  ignore = all
+[submodule "pack/bundle/opt/Align"]
 	path = pack/bundle/opt/Align
 	url = https://github.com/vim-scripts/Align
+  ignore = all
 [submodule "pack/bundle/start/vim-indent-object"]
 	path = pack/bundle/start/vim-indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object
-    ignore = all
+  ignore = all
 [submodule "pack/bundle/start/YouCompleteMe"]
 	path = pack/bundle/start/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe
-    ignore = all
+  ignore = all
