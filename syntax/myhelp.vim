@@ -53,6 +53,7 @@ else
   syn region vimSnip 	matchgroup=Snip start=">vim"  end="<vim" contains=@MYVIM
 endif
 
+"
 "WITH BASH SYNTAX 
 let b:current_syntax = ""
 unlet b:current_syntax
@@ -74,6 +75,18 @@ if has("conceal")
   syntax region pythonSnip matchgroup=Snip start=">python"  end="<python" concealends  contains=@MYPYTHON
 else
   syntax region pythonSnip matchgroup=Snip start=">python"  end="<python" contains=@MYPYTHON
+endif
+
+
+"WITH C SYNTAX
+let b:current_syntax = ""
+unlet b:current_syntax
+syntax include @C syntax/c.vim
+if has("conceal")
+  set conceallevel=2
+  syntax region pythonSnip matchgroup=Snip start=">c"  end="<c" concealends  contains=@C
+else
+  syntax region pythonSnip matchgroup=Snip start=">c"  end="<c" contains=@C
 endif
 
 
