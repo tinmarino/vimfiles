@@ -88,3 +88,6 @@
 [submodule "pack/bundle/opt/Mines"]
 	path = pack/bundle/opt/Align
 	url = https://github.com/vim-scripts/Align
+[submodule "pack/bundle/start/vim-indent-object"]
+	path = pack/bundle/start/vim-indent-object
+	url = https://github.com/michaeljsmith/vim-indent-object
