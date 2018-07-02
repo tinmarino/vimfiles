@@ -5,20 +5,20 @@ set nocompatible | filetype on | syntax on
   " OS
   let $os = 'unknown'
   if has('unix')
-  let $os = 'unix'
-  let s:tmp = system('uname -a')
-  if -1 != match(s:tmp, '\candroid')
-    let $os = 'termux'
-  endif
+    let $os = 'unix'
+    let s:tmp = system('uname -a')
+    if -1 != match(s:tmp, '\candroid')
+      let $os = 'termux'
+    endif
   elseif has('win32') || has('win64')
-  let $os = 'windows'
+    let $os = 'windows'
   endif
 
   " Vim
   let $MYVIM = expand('<sfile>:p:h')
   let $vim = $MYVIM
   let $v = $MYVIM
-  let $vimrc = $MYVIM . "/vimrc"
+  let $vimrc = $v . "/vimrc"
   let $s = expand("$v/scripts")
   let $ft = expand("$v/ftplugin")
   let $start = expand("$vim/pack/bundle/start")
@@ -211,7 +211,7 @@ set nocompatible | filetype on | syntax on
 
 
   nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-  map <Leader>v :e ~/.vim/vimrc<CR>
+  map <Leader>v :e $vimrc<CR>
   map <Leader>x :w<CR>:so %<CR>
   "Todo create backup dir
   map <leader>s :write! $dump/%:t-<C-R>=strftime("%y%m%d")<CR>-bak.txt<CR>
