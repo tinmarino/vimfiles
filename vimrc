@@ -16,7 +16,6 @@ set nocompatible | filetype on | syntax on
 
   " Vim
   let $MYVIM = expand('<sfile>:p:h')
-  let $MYVIM = expand('<sfile>:p:h')
   let $vim = $MYVIM
   let $v = $MYVIM
   let $vimrc = $MYVIM . "/vimrc"
