@@ -300,6 +300,7 @@ set nocompatible | filetype on | syntax on
   au BufNewFile,BufRead *.masm      setf masm
   au BufNewFile,BufRead *.asm       setf masm
   au BufNewFile,BufRead *.disarm    setf disarm
+  au BufNewFile,BufRead *.kd        setf kd
 
 
 " Plugin
