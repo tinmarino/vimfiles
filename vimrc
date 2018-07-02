@@ -316,7 +316,6 @@ set nocompatible | filetype on | syntax on
     let g:pymode_lint_ignore="E221,E303,E302,E501,E202,E222, E201"
     autocmd FileType python set colorcolumn=120
     let g:pymode_options_max_line_length=120
-    let $PYTHONHOME='C:\Python27_x64'
     let g:pymode_options_colorcolumn = 0 " Remove the red line
     " Auto open cwindow (quickfix) if any errors have been found
     let g:pymode_lint_cwindow = 0
@@ -363,6 +362,7 @@ set nocompatible | filetype on | syntax on
 
   " Ultisnip
     let g:UltiSnipsExpandTrigger="<c-j>"
+    let g:UltiSnipsUsePythonVersion = 3
 
   " YouCompleteMe
     let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/start/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
