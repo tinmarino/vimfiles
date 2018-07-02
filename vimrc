@@ -42,6 +42,8 @@ set nocompatible | filetype on | syntax on
 
 
 " Appearance , Color, Search, Set staff
+  set guioptions-=T                  " Toolbar
+  set guioptions-=m                  " Menumbar
   set encoding=utf-8
   set nu
   "SEARCH 
@@ -92,6 +94,7 @@ set nocompatible | filetype on | syntax on
   set undolevels=10000         " use many levels of undo
   set history=10000    " After nocompatible 
   set autoread                  " when reopening a file, go to the position as when you quit it +  This will disable read-only to writeable warnings
+  set formatoptions-=cro
  
   if has('persistent_undo')
     set undodir=$MYVIM/undo
@@ -324,6 +327,7 @@ set nocompatible | filetype on | syntax on
     let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
     let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
     let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly 
+    let g:ConqueTerm_PyVersion = 3
 
   " CtrlP
     " E like edit and closer to ctrl + <c-p> used to paste
