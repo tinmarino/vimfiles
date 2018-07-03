@@ -24,6 +24,11 @@ set nocompatible | filetype on | syntax on
   let $start = expand("$vim/pack/bundle/start")
   let $opt = expand("$vim/pack/bundle/opt")
   let $dump = expand("$vim/undo/dump")
+  if 'windows' == $os
+    let $home = "C:/Users/tbf"
+  else
+    let $home = "~"
+  endif
 
 
 
@@ -372,8 +377,8 @@ set nocompatible | filetype on | syntax on
     let g:vimwiki_list = [{
       \ 'syntax': 'markdown',
       \ 'ext': '.md',
-      \ 'custom_wiki2html': '~/vimwiki/wiki2html.sh',
-      \'path': '~/vimwiki'
+      \ 'custom_wiki2html': $home . "/vimwiki/wiki2html.sh",
+      \ 'path': '~/vimwiki'
       \ }]
 
   " Termux
