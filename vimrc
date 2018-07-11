@@ -223,6 +223,14 @@ set nocompatible | filetype on | syntax on
   map <leader>s :write! $dump/%:t-<C-R>=strftime("%y%m%d")<CR>-bak.txt<CR>
 
 
+" Command
+  if exists(":Man") != 2
+    com! -nargs=+ -complete=shellcmd M ru! ftplugin/man.vim | Man <args>
+  else
+    com! -nargs=+ -complete=shellcmd M Man <args>
+  endif
+
+
 " Folding
   highlight Folded ctermfg=DarkGreen ctermbg=Black
   set foldmethod=expr
@@ -389,3 +397,4 @@ set nocompatible | filetype on | syntax on
 
 
 " Fastly (added)
+
