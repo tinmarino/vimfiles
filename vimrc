@@ -24,8 +24,11 @@ set nocompatible | filetype on | syntax on
   let $start = expand("$vim/pack/bundle/start")
   let $opt = expand("$vim/pack/bundle/opt")
   let $dump = expand("$vim/undo/dump")
+
+  " Os dependant
   if 'windows' == $os
-    let $home = "C:/Users/tbf"
+    let $home = expand("C:/Users/tbf")
+    let $alias = expand("H:/Program/Cmder/config/user-aliases.cmd")
   else
     let $home = "~"
   endif
@@ -122,8 +125,6 @@ set nocompatible | filetype on | syntax on
   nnoremap <silent> <expr> <leader>d ctrlz#dadcd()
   nnoremap <expr> <c-z> ctrlz#ctrlz()
 
-  map j gj
-  map k gk
   nnoremap H :set cursorline! cursorcolumn!<CR> 
   "move one line 
   map <Leader>c :s,^\(\s*\)[^# \t]\@=,\1// ,<CR>gv
