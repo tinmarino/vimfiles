@@ -4,7 +4,7 @@
 
 let s:temp_path = '/tmp'
 if "termux" == $os
-  let s:temp_path = '~/../tmp'
+  let s:temp_path = '~/../usr/tmp'
 endif
 
 function! ctrlz#ctrlz()
