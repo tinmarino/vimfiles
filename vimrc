@@ -129,6 +129,7 @@ set nocompatible | filetype on | syntax on
   nnoremap <expr> <c-z> ctrlz#ctrlz()
 
   nnoremap H :set cursorline! cursorcolumn!<CR> 
+
   "move one line 
   map <Leader>c :s,^\(\s*\)[^# \t]\@=,\1// ,<CR>gv
   map <Leader>u :s,^\(\s*\)[^# \t]\@=// ,\1,<CR>gv
@@ -220,10 +221,10 @@ set nocompatible | filetype on | syntax on
 
 
   nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-  map <Leader>v :try \| b $vimrc \| catch \| e $vimrc \| endtry <CR>
-  map <leader>s :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
+  nnoremap <Leader>v :try \| b $vimrc \| catch \| e $vimrc \| endtry <CR>
+  nnoremap <leader>s :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
   "Todo create backup dir
-  map <leader>b :write! $dump/%:t-<C-R>=strftime("%y%m%d")<CR>-bak.txt<CR>
+  nnoremap <leader>b :write! $dump/%:t-<C-R>=strftime("%y%m%d")<CR>-bak.txt<CR>
 
 
 " Command
@@ -339,6 +340,7 @@ set nocompatible | filetype on | syntax on
     let g:pymode_rope_goto_definition_cmd = 'e'
 
   " ConqueDbg, a gdb plugging
+    let g:ConqueGdb_Disable = 1 
     let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
     let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
     let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly 
@@ -385,12 +387,25 @@ set nocompatible | filetype on | syntax on
     let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/start/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
 
   " Vimwiki
+    " Wiki
     let g:vimwiki_list = [{
       \ 'syntax': 'markdown',
       \ 'ext': '.md',
-      \ 'custom_wiki2html': $home . "/vimwiki/wiki2html.sh",
-      \ 'path': '~/vimwiki'
+      \ 'custom_wiki2html': $home . "/wiki/wiki/wiki2html.sh",
+      \ 'path': $home . '/wiki/wiki',
+      \ 'path_html': $home . '/wiki/htmlwiki'
       \ }]
+    " Todo
+    let g:vimwiki_list += [{
+      \ 'syntax': 'markdown',
+      \ 'ext': '.md',
+      \ 'custom_wiki2html': $home . "/wiki/wiki/wiki2html.sh",
+      \ 'path': $home . '/wiki/todo',
+      \ 'path_html': $home . '/wiki/todo_html'
+      \ }]
+    map ,t 2,w
+    map ,tt 2,ww
+    map ,t,t 2,w,w
 
   " Termux
     if 'termux' == $os
