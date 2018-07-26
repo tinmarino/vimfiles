@@ -19,7 +19,9 @@ set nocompatible | filetype on | syntax on
   let $vim = $MYVIM
   let $v = $MYVIM
   let $vimrc = $v . "/vimrc"
-  let $s = expand("$v/scripts")
+  let $script = expand("$v/scripts")
+  let $s = $script
+  let $auto = expand("$v/autoload")
   let $ft = expand("$v/ftplugin")
   let $start = expand("$vim/pack/bundle/start")
   let $opt = expand("$vim/pack/bundle/opt")
@@ -52,6 +54,7 @@ set nocompatible | filetype on | syntax on
   set guioptions-=T                  " Toolbar
   set guioptions-=m                  " Menumbar
   set encoding=utf-8
+  set formatoptions-=cro
   set nu
   "SEARCH 
   set ignorecase
@@ -220,7 +223,7 @@ set nocompatible | filetype on | syntax on
   map <Leader>v :try \| b $vimrc \| catch \| e $vimrc \| endtry <CR>
   map <leader>s :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
   "Todo create backup dir
-  map <leader>s :write! $dump/%:t-<C-R>=strftime("%y%m%d")<CR>-bak.txt<CR>
+  map <leader>b :write! $dump/%:t-<C-R>=strftime("%y%m%d")<CR>-bak.txt<CR>
 
 
 " Command
