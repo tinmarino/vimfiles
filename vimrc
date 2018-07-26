@@ -217,8 +217,8 @@ set nocompatible | filetype on | syntax on
 
 
   nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-  map <Leader>v :e $vimrc<CR>
-  map <Leader>x :w<CR>:so %<CR>
+  map <Leader>v :try \| b $vimrc \| catch \| e $vimrc \| endtry <CR>
+  map <leader>s :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
   "Todo create backup dir
   map <leader>s :write! $dump/%:t-<C-R>=strftime("%y%m%d")<CR>-bak.txt<CR>
 
@@ -307,7 +307,6 @@ set nocompatible | filetype on | syntax on
   map z6 :set foldlevel=6<CR>
   map z7 :set foldlevel=7<CR>
 
-  nmap <c-z> :echom "Warning do not use <c-z><CR>u
 
 
 " Filetype
