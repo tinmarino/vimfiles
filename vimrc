@@ -406,6 +406,7 @@ set nocompatible | filetype on | syntax on
     map ,t 2,w
     map ,tt 2,ww
     map ,t,t 2,w,w
+    let g:vimwiki_table_reduce_last_col = 1
 
   " Termux
     if 'termux' == $os
