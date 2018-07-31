@@ -393,7 +393,7 @@ set nocompatible | filetype on | syntax on
       \ 'ext': '.md',
       \ 'custom_wiki2html': $home . "/wiki/wiki/wiki2html.sh",
       \ 'path': $home . '/wiki/wiki',
-      \ 'path_html': $home . '/wiki/htmlwiki'
+      \ 'path_html': $home . '/wiki/wiki_html'
       \ }]
     " Todo
     let g:vimwiki_list += [{
