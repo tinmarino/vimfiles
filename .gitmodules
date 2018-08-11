@@ -109,3 +109,6 @@
 [submodule "pack/bundle/opt/viewdoc"]
 	path = pack/bundle/opt/viewdoc
 	url = https://github.com/powerman/vim-plugin-viewdoc
+[submodule "pack/bundle/opt/YouCompleteMe"]
+	path = pack/bundle/opt/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe
