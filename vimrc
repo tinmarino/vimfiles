@@ -384,6 +384,14 @@ set nocompatible | filetype on | syntax on
     let g:UltiSnipsExpandTrigger="<c-j>"
     let g:UltiSnipsUsePythonVersion = 3
 
+  " Fugitive
+    map <leader>gd :Gdiff<CR>
+    map <leader>gb :Gblame<CR>
+    map <leader>gs :Gstatus<CR>
+    map <leader>gl :Glog<CR>
+    map <leader>gc :Gcommit -m ""<C-b>
+    map <leader>ga :Git add 
+
   " YouCompleteMe
     let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/start/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
 
