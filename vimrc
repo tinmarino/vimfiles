@@ -416,10 +416,18 @@ set nocompatible | filetype on | syntax on
     map ,t,t 2,w,w
     let g:vimwiki_table_reduce_last_col = 1
 
-  " Termux
+    " Termux
     if 'termux' == $os
       autocmd CursorHold,CursorHoldI *  silent update
     endif
+
+
+  " Ack to use ag
+  let g:ackprg = 'ag --vimgrep --smart-case'
+  cnoreabbrev ag Ack
+  cnoreabbrev aG Ack
+  cnoreabbrev Ag Ack
+  cnoreabbrev AG Ack
 
 
 " Fastly (added)

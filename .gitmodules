@@ -124,3 +124,6 @@
 [submodule "pack/bundle/opt/vim-transpose"]
 	path = pack/bundle/opt/transpose
 	url = https://github.com/salsifis/vim-transpose
+[submodule "pack/bundle/opt/ack"]
+	path = pack/bundle/opt/ack
+	url = https://github.com/mileszs/ack.vim
