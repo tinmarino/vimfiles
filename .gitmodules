@@ -3,11 +3,11 @@
 	url = https://github.com/tpope/vim-fugitive
   ignore = all
 [submodule "pack/bundle/start/python-mode"]
-	path = pack/bundle/start/python-mode
+	path = pack/bundle/opt/python-mode/python-mode
 	url = https://github.com/python-mode/python-mode
   ignore = all
 [submodule "pack/bundle/start/vimtex"]
-	path = pack/bundle/start/vimtex
+	path = pack/bundle/opt/vimtex
 	url = https://github.com/lervag/vimtex
   ignore = all
 [submodule "pack/bundle/start/colorscheme-switcher"]
@@ -31,7 +31,7 @@
 	url = https://github.com/xolox/vim-misc
   ignore = all
 [submodule "pack/bundle/start/ipython"]
-	path = pack/bundle/start/ipython
+	path = pack/bundle/opt/ipyton
 	url = https://github.com/ivanov/vim-ipython
   ignore = all
 [submodule "pack/bundle/start/conque-gdb"]
