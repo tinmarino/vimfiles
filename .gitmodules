@@ -118,9 +118,9 @@
 [submodule "pack/bundle/opt/ipython"]
 	path = pack/bundle/opt/ipython
 	url = https://github.com/ivanov/vim-ipython
-[submodule "pack/bundle/opt/vim-transpose"]
-	path = pack/bundle/opt/vim-transpose/
-  url = pack/bundle/opt/vim-transpose
 [submodule "pack/bundle/opt/python-mode"]
 	path = pack/bundle/opt/python-mode
 	url = https://github.com/python-mode/python-mode
+[submodule "pack/bundle/opt/vim-transpose"]
+	path = pack/bundle/opt/transpose
+	url = https://github.com/salsifis/vim-transpose
