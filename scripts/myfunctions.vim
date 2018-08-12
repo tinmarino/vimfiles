@@ -1,10 +1,11 @@
-
 " 	If your script is using functions, then this quote from :help
 " 	function-search-undo is relevant:
 "
 " 	    The last used search pattern and the redo command "." will not be
 " 	    changed by the function. This also implies that the effect of
 " 	    :nohlsearch is undone when the function returns.
+
+
 
 function! WithWithoutFunc(word1,word2)
   " Marks line without the word1 but without word2

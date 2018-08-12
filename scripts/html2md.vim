@@ -19,7 +19,7 @@ function! s:Download(page)
 
   " Remove the footer
 
-  " Keep me line 1
+  " Keep me line 2
   1
 endfunction
 

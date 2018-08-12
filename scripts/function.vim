@@ -1,5 +1,48 @@
 
 
+function! TabTest()
+  let res = ''
+
+  for i in range(tabpagenr('$'))
+    let i += 1
+    " Get open buffer
+    let i_window = tabpagewinnr(i)
+	  let l_buffer = tabpagebuflist(i)
+    let i_buffer = l_buffer[i_window - 1]
+
+    " Get type
+    let s_type = getbufvar(i_buffer, '&filetype')
+
+    " Set color according to filetype
+    let s_color = ''
+    if i == tabpagenr()
+      let res .= '%#TabLine#'
+    elseif 'javascript' == s_type
+      let res .= '%#String#'
+    elseif 'html' == s_type
+      let res .= '%#Comment#'
+    else 
+      let res .= '%#Normal#'
+    endif
+
+    " set the tab page number (for mouse clicks)
+    let res .= '%' . (i + 1) . 'T'
+
+    " Set label text
+	  let s_buffer = bufname(i_buffer)
+    try
+      let s_file = split(s_buffer, '/')[-1]
+    catch
+      let s_file = '[No Name]'
+    endtry
+	  let res .= ' ' . s_file
+  endfor
+
+  return res
+endfunction
+
+set tabline=%!TabTest()
+
 
 function! Status2()
 
