@@ -67,7 +67,7 @@
 	url = https://github.com/vim-scripts/argtextobj.vim
   ignore = all
 [submodule "pack/bundle/start/emoji"]
-	path = pack/bundle/start/emoji
+	path = pack/bundle/opt/emoji
 	url = https://github.com/junegunn/vim-emoji
   ignore = all
 [submodule "pack/bundle/start/unimpaired"]
