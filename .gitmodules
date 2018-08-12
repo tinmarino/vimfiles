@@ -112,3 +112,6 @@
 [submodule "pack/bundle/opt/YouCompleteMe"]
 	path = pack/bundle/opt/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe
+[submodule "pack/bundle/opt/vdebug"]
+	path = pack/bundle/opt/vdebug
+	url = https://github.com/vim-vdebug/vdebug

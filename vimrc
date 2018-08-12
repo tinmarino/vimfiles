@@ -54,7 +54,10 @@ set nocompatible | filetype on | syntax on
   set guioptions-=T                  " Toolbar
   set guioptions-=m                  " Menumbar
   set encoding=utf-8
-  set formatoptions-=cro
+  " No auto comment
+  set formatoptions-=c
+  set formatoptions-=r
+  set formatoptions-=o
   set nu
   "SEARCH 
   set ignorecase
@@ -76,8 +79,6 @@ set nocompatible | filetype on | syntax on
   set autoindent  " to have auto indentation when return line 
   colorscheme dante
   set laststatus=2 " for airline
-  " No auto comment
-  set formatoptions-=cro
   " WINDOWS 
     set ruler 
     set backspace=2 
@@ -87,8 +88,8 @@ set nocompatible | filetype on | syntax on
     " set shell=H:/Program/cmder-1.2.9/Cmder.exe
   " TAB
     set expandtab
-    set shiftwidth=4
-    set tabstop=4
+    set shiftwidth=2
+    set tabstop=2
     set wrapscan
   " Viminfo rememebr last 10000 opened files
   let s:viminfo=join(map(split(&viminfo, ","), {arg -> (v:val[0] == "'" ? "'10000" : v:val)}), ",")
@@ -104,7 +105,6 @@ set nocompatible | filetype on | syntax on
   set undolevels=10000         " use many levels of undo
   set history=10000    " After nocompatible 
   set autoread                  " when reopening a file, go to the position as when you quit it +  This will disable read-only to writeable warnings
-  set formatoptions-=cro
  
   if has('persistent_undo')
     set undodir=$MYVIM/undo
@@ -241,7 +241,6 @@ set nocompatible | filetype on | syntax on
   set foldmethod=expr
   set foldexpr=FoldMethod(v:lnum)
   "autocmd FileType vim set foldmethod=indent " I don't need to fold comments in vim files 
-  set shiftwidth=4  " the number of column taken into account for aa fold, IMPORTANT
   
   function! FoldMethod(lnum)
     let crLine=getline(a:lnum)
@@ -393,7 +392,7 @@ set nocompatible | filetype on | syntax on
     map <leader>ga :Git add 
 
   " YouCompleteMe
-    let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/start/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
+    " let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/opt/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
 
   " Vimwiki
     " Wiki
