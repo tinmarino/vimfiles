@@ -127,3 +127,6 @@
 [submodule "pack/bundle/opt/ack"]
 	path = pack/bundle/opt/ack
 	url = https://github.com/mileszs/ack.vim
+[submodule "template/gitignore"]
+	path = template/gitignore
+	url = https://github.com/github/gitignore

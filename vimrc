@@ -318,6 +318,7 @@ set nocompatible | filetype on | syntax on
   au BufNewFile,BufRead *.asm       setf masm
   au BufNewFile,BufRead *.disarm    setf disarm
   au BufNewFile,BufRead *.kd        setf kd
+  au BufNewFile,BufRead */todo      setf vimwiki
 
 
 " Plugin
