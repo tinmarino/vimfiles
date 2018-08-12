@@ -115,3 +115,6 @@
 [submodule "pack/bundle/opt/vdebug"]
 	path = pack/bundle/opt/vdebug
 	url = https://github.com/vim-vdebug/vdebug
+[submodule "pack/bundle/opt/ipython"]
+	path = pack/bundle/opt/ipython
+	url = https://github.com/ivanov/vim-ipython
