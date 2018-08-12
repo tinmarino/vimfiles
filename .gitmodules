@@ -121,3 +121,6 @@
 [submodule "pack/bundle/opt/vim-transpose"]
 	path = pack/bundle/opt/vim-transpose/
   url = pack/bundle/opt/vim-transpose
+[submodule "pack/bundle/opt/python-mode"]
+	path = pack/bundle/opt/python-mode
+	url = https://github.com/python-mode/python-mode
