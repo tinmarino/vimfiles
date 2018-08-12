@@ -120,6 +120,7 @@ set nocompatible | filetype on | syntax on
 
 
 " Map
+  tnoremap <Esc> <C-W>N
   noremap > >>
   noremap < <<
   let mapleader=','
