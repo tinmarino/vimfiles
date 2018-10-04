@@ -107,7 +107,7 @@
 	url = https://github.com/Valloric/YouCompleteMe
   ignore = all
 [submodule "pack/bundle/opt/viewdoc"]
-	path = pack/bundle/opt/viewdoc
+	path = pack/bundle/start/viewdoc
 	url = https://github.com/powerman/vim-plugin-viewdoc
 [submodule "pack/bundle/opt/YouCompleteMe"]
 	path = pack/bundle/opt/YouCompleteMe
