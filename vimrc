@@ -26,6 +26,8 @@ set nocompatible | filetype on | syntax on
   let $start = expand("$vim/pack/bundle/start")
   let $opt = expand("$vim/pack/bundle/opt")
   let $dump = expand("$vim/undo/dump")
+  let $wiki = expand("~/wiki/wiki")
+  let $w = $wiki
 
   " Os dependant
   if 'windows' == $os
@@ -51,6 +53,7 @@ set nocompatible | filetype on | syntax on
 
 
 " Appearance , Color, Search, Set staff
+  set diffopt+=vertical
   set guioptions-=T                  " Toolbar
   set guioptions-=m                  " Menumbar
   set encoding=utf-8
@@ -150,7 +153,7 @@ set nocompatible | filetype on | syntax on
   nnoremap <C-p> "+p
   vnoremap <C-p> "+p
   "%% to expand path in command mode  
-  cnoremap %% <C-R>=expand('%:p:h')<CR>|  
+  cnoremap %% <C-R>=expand('%:p:h').'/'<CR>|  
   """""""""""""""
 
   " Insert mode shotcuts from gnome
@@ -192,9 +195,9 @@ set nocompatible | filetype on | syntax on
   vnoremap < <gv 
 
   " Use CTRL-S for saving, also in Insert mode
-  noremap <C-S>      :update<CR>
-  vnoremap <C-S>    <C-C>:update<CR>
-  inoremap <C-S>    <C-O>:update<CR>
+  noremap <C-S>      :update!<CR>
+  vnoremap <C-S>    <C-C>:update!<CR>
+  inoremap <C-S>    <C-O>:update!<CR>
 
 
   " Commenting blocks of code.
