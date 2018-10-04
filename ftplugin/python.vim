@@ -4,9 +4,9 @@
 	"let g:pymode_lint_ignore="E221,E303,E302,E501,E202,E222, E201"
 
 " Better ?
-    set tabstop=2
-    set softtabstop=2
-    set shiftwidth=2
+    set tabstop=4
+    set softtabstop=4
+    set shiftwidth=4
 
 " PEP 8
     set textwidth=79
