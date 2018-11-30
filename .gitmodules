@@ -130,3 +130,6 @@
 [submodule "template/gitignore"]
 	path = template/gitignore
 	url = https://github.com/github/gitignore
+[submodule "pack/bundle/opt/table-mode"]
+	path = pack/bundle/opt/table-mode
+	url = https://github.com/dhruvasagar/vim-table-mode

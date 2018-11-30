@@ -398,6 +398,9 @@ set nocompatible | filetype on | syntax on
   " YouCompleteMe
     " let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/opt/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
 
+  " Viewdoc
+    let g:no_viewdoc_abbrev = 1
+
   " Vimwiki
     " Wiki
     let g:vimwiki_list = [{
@@ -419,6 +422,9 @@ set nocompatible | filetype on | syntax on
     map ,tt 2,ww
     map ,t,t 2,w,w
     let g:vimwiki_table_reduce_last_col = 1
+    let g:vimwiki_table_mappings = 0
+    let g:vimwiki_table_auto_fmt = 0
+
 
     " Termux
     if 'termux' == $os
