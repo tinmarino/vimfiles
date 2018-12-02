@@ -1,7 +1,8 @@
 
 
 " PYTHON MODE 
-	"let g:pymode_lint_ignore="E221,E303,E302,E501,E202,E222, E201"
+  packadd python-mode
+  packadd ipython
 
 " Better ?
     set tabstop=4

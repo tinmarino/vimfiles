@@ -35,7 +35,7 @@
 	url = https://github.com/ivanov/vim-ipython
   ignore = all
 [submodule "pack/bundle/start/conque-gdb"]
-	path = pack/bundle/start/conque-gdb
+	path = pack/bundle/opt/conque-gdb
 	url = https://github.com/vim-scripts/Conque-GDB
   ignore = all
 [submodule "pack/bundle/start/airline"]
@@ -105,7 +105,7 @@
 [submodule "pack/bundle/start/YouCompleteMe"]
 	path = pack/bundle/start/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe
-  ignore = all
+  ignore = dirty
 [submodule "pack/bundle/opt/viewdoc"]
 	path = pack/bundle/start/viewdoc
 	url = https://github.com/powerman/vim-plugin-viewdoc

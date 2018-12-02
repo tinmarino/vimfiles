@@ -326,22 +326,20 @@ set nocompatible | filetype on | syntax on
 
 " Plugin
   " Pymode
-    let g:pymode_options_colorcolumn = 0 " Remove the red line
-    " Auto open cwindow (quickfix) if any errors have been found
-    let g:pymode_lint_cwindow = 0
-    " let g:pymode_lint_ignore =  "E701"   " Multiple statement on one line
-    " let g:pymode_lint_ignore .= ",E501" " Line too long > 80 
-    " let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
-    " let g:pymode_lint_ignore =  "E701" 	" Multiple statement on one line
-    " let g:pymode_lint_ignore .= ",E501" " Line too long > 80 
-    " let g:pymode_lint_ignore .= ",E221" " Multiple spaces before operator
-    let g:pymode_lint_ignore="E221,E303,E302,E501,E202,E222, E201"
+    let g:pymode_python = 'python3'
+    " Column at 120
     autocmd FileType python set colorcolumn=120
-    let g:pymode_options_max_line_length=120
     let g:pymode_options_colorcolumn = 0 " Remove the red line
+    let g:pymode_rope_goto_definition_cmd = 'e'
     " Auto open cwindow (quickfix) if any errors have been found
     let g:pymode_lint_cwindow = 0
-    let g:pymode_rope_goto_definition_cmd = 'e'
+    
+    " Pylint ignore 
+    let s = ""
+    let s .= ",E303"  " Too many blank lines
+    let s .= ",E501"  " Line too long > 80 
+    let s =  ",E701"   " Multiple statement on one line
+
 
   " ConqueDbg, a gdb plugging
     let g:ConqueGdb_Disable = 1 
@@ -349,6 +347,21 @@ set nocompatible | filetype on | syntax on
     let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
     let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly 
     let g:ConqueTerm_PyVersion = 3
+
+  " Vdebug
+    let g:vdebug_keymap = {
+    \    "run" : "<F5>",
+    \    "run_to_cursor" : "<F9>",
+    \    "close" : "<F6>",
+    \    "detach" : "<F7>",
+    \    "set_breakpoint" : "<F9>",
+    \    "step_over" : "<F10>",
+    \    "step_into" : "<F11>",
+    \    "step_out" : "<F12>",
+    \    "get_context" : "<F2>",
+    \    "eval_under_cursor" : "<F3>",
+    \    "eval_visual" : "<Leader>e",
+    \}
 
   " CtrlP
     " E like edit and closer to ctrl + <c-p> used to paste
@@ -441,4 +454,4 @@ set nocompatible | filetype on | syntax on
 
 
 " Fastly (added)
-
+command! -nargs=0 -bar Helptags for p in glob('~/.vim/pack/bundle/opt/*', 1, 1) | exe 'packadd '.fnamemodify(p, ':t') | endfor | helptags ALL
