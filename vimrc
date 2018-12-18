@@ -413,6 +413,7 @@ set nocompatible | filetype on | syntax on
 
   " Viewdoc
     let g:no_viewdoc_abbrev = 1
+    let g:viewdoc_open = "e"
 
   " Vimwiki
     " Wiki
