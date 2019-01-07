@@ -248,6 +248,10 @@ set nocompatible | filetype on | syntax on
     com! -nargs=+ -complete=shellcmd M Man <args>
   endif
 
+  " Yank all buffer to system clipboard
+  map <leader>y mtgg"+yG`t
+  map <leader>p ggdG"+p
+
 
 " Folding
   highlight Folded ctermfg=DarkGreen ctermbg=Black
@@ -312,12 +316,14 @@ set nocompatible | filetype on | syntax on
     let g:pymode_rope_goto_definition_cmd = 'e'
     " Auto open cwindow (quickfix) if any errors have been found
     let g:pymode_lint_cwindow = 0
-    
     " Pylint ignore 
     let s = ""
     let s .= ",E303"  " Too many blank lines
     let s .= ",E501"  " Line too long > 80 
     let s =  ",E701"   " Multiple statement on one line
+    let g:pymode_rope_goto_definition_cmd = 'e'
+    " Do not perform mapping in ipython (it removes my previous <c-s>
+    let g:ipy_perform_mappings = 0
 
   " ConqueDbg, a gdb plugging
     let g:ConqueGdb_Disable = 1 
@@ -439,3 +445,4 @@ set nocompatible | filetype on | syntax on
 " Fastly (added)
   command! -nargs=0 -bar Helptags for p in glob('~/.vim/pack/bundle/opt/*', 1, 1) | exe 'packadd '.fnamemodify(p, ':t') | endfor | helptags ALL
   packadd perlomni
+  set wrapscan
