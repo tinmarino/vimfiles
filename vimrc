@@ -123,6 +123,7 @@ set nocompatible | filetype on | syntax on
 
 
 " Map
+  
   tnoremap <Esc> <C-W>N
   noremap > >>
   noremap < <<
@@ -179,7 +180,7 @@ set nocompatible | filetype on | syntax on
 
 
   " autocompletion with space
-  inoremap <Nul> <C-n>
+  " inoremap <Nul> <C-n>
 
   " change x and y, but take care, this is changing the x of max sometinmes you dont want that   
   map xy :s/x/y/g<CR>
@@ -351,9 +352,9 @@ set nocompatible | filetype on | syntax on
   " Vdebug
     let g:vdebug_keymap = {
     \    "run" : "<F5>",
-    \    "run_to_cursor" : "<F9>",
     \    "close" : "<F6>",
     \    "detach" : "<F7>",
+    \    "run_to_cursor" : "<F8>",
     \    "set_breakpoint" : "<F9>",
     \    "step_over" : "<F10>",
     \    "step_into" : "<F11>",
@@ -456,3 +457,4 @@ set nocompatible | filetype on | syntax on
 
 " Fastly (added)
 command! -nargs=0 -bar Helptags for p in glob('~/.vim/pack/bundle/opt/*', 1, 1) | exe 'packadd '.fnamemodify(p, ':t') | endfor | helptags ALL
+packadd perlomni
