@@ -437,7 +437,7 @@ set nocompatible | filetype on | syntax on
     map ,t,t 2,w,w
     let g:vimwiki_table_reduce_last_col = 1
     let g:vimwiki_table_mappings = 0
-    let g:vimwiki_table_auto_fmt = 0
+    let g:vimwiki_table_auto_fmt = 1
 
 
     " Termux
