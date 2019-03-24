@@ -133,3 +133,6 @@
 [submodule "pack/bundle/opt/table-mode"]
 	path = pack/bundle/opt/table-mode
 	url = https://github.com/dhruvasagar/vim-table-mode
+[submodule "pack/bundle/opt/perlomni"]
+	path = pack/bundle/opt/perlomni
+	url = https://github.com/c9s/perlomni.vim
