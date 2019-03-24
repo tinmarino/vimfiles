@@ -136,3 +136,4 @@
 [submodule "pack/bundle/opt/perlomni"]
 	path = pack/bundle/opt/perlomni
 	url = https://github.com/c9s/perlomni.vim
+  ignore = all
