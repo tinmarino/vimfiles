@@ -90,4 +90,8 @@ for (@simple_aliases) {
     $str .= 'chomp $res;';
     $str .= 'return $res;}';
     say $str;
-    eval $str; }
+    eval $str;
+}
+
+1;
+
