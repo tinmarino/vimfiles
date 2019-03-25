@@ -1,0 +1,20 @@
+script_file = /home2/tourneboeuf/.perlrc.pl
+
+[Interrupt]
+[FancyPrompt]
+[DataDumper]
+[Colors]
+[ReadLine]
+[Hints]
+[Packages]
+[LexicalPersistence]
+[ResultCache]
+[Autocomplete::Packages]
+[Autocomplete::Lexicals]
+[Autocomplete::Functions]
+[Autocomplete::Globals]
+[Autocomplete::Methods]
+[Autocomplete::Commands]
+
+[Editor]
+editor=vi

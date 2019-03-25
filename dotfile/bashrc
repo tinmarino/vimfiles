@@ -1,0 +1,145 @@
+# Init
+  # goto home 
+  if [ $PWD == / ] ; then cd ~ ; fi 
+
+  # If not running interactively, don't do anything
+  [ -z "$PS1" ] && return
+
+
+# Preferences
+  stty -ixon
+  # avoid c-s freezing
+  # Under UNIX/Linux, in a console or terminal, CTRL-S sends the signal SIGSTOP, which stops the process in foreground until SIGCONT is sent; this is done by CTRL-Q
+
+  # Vi as default `git commit` 
+  EDITOR='vim'
+  # check the window size after each command and, if necessary,
+  # update the values of LINES and COLUMNS.
+  shopt -s checkwinsize
+
+  # French characters
+  stty cs8 -istrip -parenb
+  bind 'set convert-meta off'
+  bind 'set meta-flag on'
+  bind 'set output-meta on'
+
+
+# Prompt
+  # Text
+  export PROMPT_COMMAND='echo -ne "\033]0;${PWD}\007";'
+
+  # Command : Put in history each ex line 
+  export PROMPT_COMMAND+='history -a;'
+
+  #   # set variable identifying the chroot you work in (used in the prompt below)
+  #   if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+  #       debian_chroot=$(cat /etc/debian_chroot)
+  #   fi
+
+  #   # Check color
+  #   # set a fancy prompt (non-color, unless we know we "want" color)
+  #   case "$TERM" in
+  #       xterm-color) color_prompt=yes;;
+  #   esac
+  #   if [ -n "$force_color_prompt" ]; then
+  #       if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+  #     # We have color support; assume it's compliant with Ecma-48
+  #     # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+  #     # a case would tend to support setf rather than setaf.)
+  #     color_prompt=yes
+  #       else
+  #     color_prompt=
+  #       fi
+  #   fi
+  #   if [ "$color_prompt" = yes ]; then
+  #       PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$(parse_git_branch)\[\033[00m\]'
+  #   else
+  #       PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$(parse_git_branch)\[\033[00m\]'
+  #   fi
+  #   unset color_prompt force_color_prompt
+
+  #   # If this is an xterm set the title to user@host:dir
+  #   case "$TERM" in
+  #   xterm*|rxvt*)
+  #       PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+  #       ;;
+  #   *)
+  #       ;;
+  #   esac
+  #PS1='`echo "${PWD%/*}" | sed -e "s;\(/.\)[^/]*;\1;g"`/${PWD##*/} \$ '
+  #export PS1='$(echo $(dirname \w)|sed -e "s;\(/.\)[^/]*;\1;g")/$(basename \w) $ '
+
+  # PS1 : 
+  parse_git_branch() {
+       git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+  }
+  # Tourny
+  export PS1="\[\e[93m\]\h \[\033[32m\]"
+  # CD
+  export PS1=$PS1"\w\[\033[33m\]"
+  # Git Branch
+  export PS1=$PS1"\$(parse_git_branch)\[\033[00m\]"
+  # New line
+  export PS1+='\n$ '
+
+
+# History
+  # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+  HISTSIZE=100000
+  HISTFILESIZE=100000
+  HISTCONTROL=ignoredups:ignorespace
+  # don't put duplicate lines in the history. See bash(1) for more options
+  export HISTCONTROL=ignoredups
+  
+  # append instead of overwrite 
+  shopt -s histappend
+
+
+# Head
+  echo '                           \  |  /        '
+  echo '                            \_|_/         '  
+  echo '                /|\     ____/   \____     '
+  echo '               / | \        \___/         '
+  echo '              /  |  \       / | \         '
+  echo '             /___|___\     /  |  \        '
+  echo '            _____|_____                   '
+  echo '            \_________/                   '
+  echo ' ~~^^~~^~^~~^^~^^^^~~~~^~^~^~^^^^^^^      '
+  echo '                                          '
+  echo '      |\   \\\\__     o                   '
+  echo '      | \_/    o_\    o                   '
+  echo '      >  _  (( <_  oo                     '
+  echo '      | / \__+___/                        '
+  echo '      |/     |/                           '
+
+
+# Include 
+  if [ -f ~/.bash_aliases.sh ]; then
+      . ~/.bash_aliases.sh
+  fi
+
+  if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+      . /etc/bash_completion
+  fi
+
+
+# Path
+  export PATH="/home2/tourneboeuf/Software/Android/SDK/android-sdk-linux/platform-tools:"$PATH
+  export PATH="/home2/tourneboeuf/Software/Android/SDK/android-sdk-linux/tools:"$PATH
+  export PATH="/home2/tourneboeuf/Bin:"$PATH
+  export PATH="/home2/tourneboeuf/Program/Eclipse/eclipse:"$PATH
+  export PATH=$PATH:/usr/local/cuda-10.0/bin
+  export PATH=$PATH:~/Program/Metapixel/metapixel
+  export PYTHONSTARTUP='/home2/tourneboeuf/.ipython/profile_tourneboeuf/ipython.py'
+
+
+# Perl
+  export PERL5LIB=~/Software/Perl/Lib:~/Program/Komodo/Komodo-PerlRemoteDebugging-8.0.2-78971-linux-x86_64
+  export PERL5DB="BEGIN { require q($PERL5LIB/perl5db.pl)}"
+  export PERLDB_OPTS="RemotePort=localhost:9000"
+  export DBGP_IDEKEY="whatever"
+
+
+# Fast 
+  complete -W "pull tex make pdf push update" ./my.sh
+  export style="nice -n 20 perl  '/home2/tourneboeuf/Program/Mxnet/mxnet/perl-package/AI-MXNet/examples/gluon/style_transfer/style_transfer.pl'  --model '/home2/tourneboeuf/Program/Mxnet/mxnet/perl-package/AI-MXNet/examples/gluon/style_transfer/data/msgnet_21styles-2cb88353.params'"
