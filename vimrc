@@ -242,6 +242,7 @@ set nocompatible | filetype on | syntax on
 
 " Folding
   highlight Folded ctermfg=DarkGreen ctermbg=Black
+  set foldignore=
   set foldmethod=expr
   set foldexpr=FoldMethod(v:lnum)
   "autocmd FileType vim set foldmethod=indent " I don't need to fold comments in vim files 
