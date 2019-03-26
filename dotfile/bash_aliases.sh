@@ -16,8 +16,8 @@
   alias f="find . |grep "
 
   # Safe RM
-  export TRASH='/home2/tourneboeuf/.Trash'
-  alias rm='/bin/mv -f -t $TRASH'
+  export TRASH="$HOME/.Trash"
+  alias rm="/bin/mv -f -t $TRASH"
   alias rmv='/bin/rm'
 
   # CD
