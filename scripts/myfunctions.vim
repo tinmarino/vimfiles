@@ -5,6 +5,28 @@
 " 	    changed by the function. This also implies that the effect of
 " 	    :nohlsearch is undone when the function returns.
 
+function! FoldMethod(lnum)
+  let crLine=getline(a:lnum)
+
+  " check if empty line 
+  if crLine =~ '^\s*$' || crLine[0]== "#" "Empty line or end comment 
+    return '=' " so same indent level as line before
+  endif 
+
+
+  " check if comment  in syntax
+  let l:data =  join( map(synstack(a:lnum, 1), 'synIDattr(v:val, "name")') )
+  if l:data =~ ".*omment.*"
+    "return max([FoldMethod(a:lnum+1), FoldMethod(a:lnum-1) ]) 
+    return '-1'
+
+  endif
+
+  "Otherwise return foldlevel equal to ident /shiftwidth (like if
+  "foldmethod=indent)
+      "return indent base fold
+  return indent(a:lnum)/&shiftwidth
+endfunction
 
 
 function! WithWithoutFunc(word1,word2)
