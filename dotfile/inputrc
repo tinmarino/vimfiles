@@ -1,8 +1,17 @@
+# Include system wide settings which are ignored by default if one has their own .inputrc  
+$include /etc/inputrc
 
+# Inteligent previous command
+"\e[B": history-search-forward
+"\e[A": history-search-backward 
+"\C-p": history-search-backward 
+"\C-n": history-search-forward
 
-# "\e[<0;": 'cd && . ~/Test/track_mouse.sh; mouse_cb'
-"\C-h": "echo tottott"
-"\C-j": redraw-current-line
+# TODO Ctrl up : move to line up
 # Ctrl arrow key
 "\e[1;5D": backward-word
 "\e[1;5C": forward-word
+
+"\C-h": "echo tottott"
+# "\e[<0;": 'cd && . ~/Test/track_mouse.sh; mouse_cb'
+"\C-j": redraw-current-line

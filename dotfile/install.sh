@@ -9,3 +9,4 @@ ln -s ~/.vim/dotfile/Tool.pm ~/Software/Perl/Lib/Tool.pm
 # Bash
 ln -s ~/.vim/dotfile/bash_aliases.sh ~/.bash_aliases.sh
 ln -s ~/.vim/dotfile/bashrc ~/.bashrc
+ln -s ~/.vim/dotfile/inputrc ~/.inputrc
