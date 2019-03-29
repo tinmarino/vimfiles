@@ -1,0 +1,8 @@
+
+
+# "\e[<0;": 'cd && . ~/Test/track_mouse.sh; mouse_cb'
+"\C-h": "echo tottott"
+"\C-j": redraw-current-line
+# Ctrl arrow key
+"\e[1;5D": backward-word
+"\e[1;5C": forward-word
