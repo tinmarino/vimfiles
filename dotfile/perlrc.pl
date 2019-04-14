@@ -2,7 +2,8 @@ use v5.26;
 no strict;
 use warnings;
 
-use Cwd qw/cwd/;            # Currernt Working directory
+use Cwd qw/cwd/;                # Current Working directory
+use File::Slurp qw/read_file/;  # Slurp file
 
 # Welcome
 say "Interactive Perl Starting";

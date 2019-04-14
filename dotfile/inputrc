@@ -12,6 +12,7 @@ $include /etc/inputrc
 "\e[1;5D": backward-word
 "\e[1;5C": forward-word
 
-"\C-h": "echo tottott"
-# "\e[<0;": 'cd && . ~/Test/track_mouse.sh; mouse_cb'
-"\C-j": redraw-current-line
+# Fast
+"\C-h": "ctrlh-test"
+"\C-o": shell-expand-line
+"\C-p": "$(date) \e\C-e\ef\ef\ef\ef\ef"
