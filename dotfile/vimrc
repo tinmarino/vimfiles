@@ -27,6 +27,7 @@ set nocompatible | filetype on | syntax on
   let $vim = $MYVIM
   let $v = $MYVIM
   let $vimrc = $v . "/dotfile/vimrc"
+  let $vimrc = $v . "/dotfile/bashrc"
   let $script = expand("$v/scripts")
   let $s = $script
   let $auto = expand("$v/autoload")
@@ -235,8 +236,9 @@ set nocompatible | filetype on | syntax on
   " Edit special files ,v
     nnoremap <Leader>v :try \| b $vimrc \| catch \| e $vimrc \| endtry <CR>
     nnoremap <leader>s :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
-    "Todo create backup dir
-    nnoremap <leader>b :write! $dump/%:t-<C-R>=strftime("%y%m%d")<CR>-bak.txt<CR>
+    nnoremap <Leader>b :try \| b $bashrc \| catch \| e $bashrc \| endtry <CR>
+    " Todo create backup dir
+    " nnoremap <leader>b :write! $dump/%:t-<C-R>=strftime("%y%m%d")<CR>-bak.txt<CR>
 
 
 " Command
