@@ -1,6 +1,9 @@
 # Tmux
 ln -s ~/.vim/dotfile/tmux.conf  ~/.tmux.conf  # Tmux
 
+# Vim
+ln -s ~/.vim/dotfile/vimrc ~/.vimrc           # Vim
+
 # Perl
 ln -s ~/.vim/dotfile/replyrc ~/.replyrc       # Reply (iperl) (load perlrc)
 ln -s ~/.vim/dotfile/perlrc.pl ~/.perlrc.pl   # Perl (run command)

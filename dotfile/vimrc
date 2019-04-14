@@ -14,11 +14,19 @@ set nocompatible | filetype on | syntax on
     let $os = 'windows'
   endif
 
+  " Os dependant
+  if 'windows' == $os
+    let $home = expand("C:/Users/tbf")
+    let $alias = expand("H:/Program/Cmder/config/user-aliases.cmd")
+  else
+    let $home = "~"
+  endif
+
   " Vim
-  let $MYVIM = expand('<sfile>:p:h')
+  let $MYVIM = expand($home . '/.vim')
   let $vim = $MYVIM
   let $v = $MYVIM
-  let $vimrc = $v . "/vimrc"
+  let $vimrc = $v . "/dotfile/vimrc"
   let $script = expand("$v/scripts")
   let $s = $script
   let $auto = expand("$v/autoload")
@@ -29,13 +37,6 @@ set nocompatible | filetype on | syntax on
   let $wiki = expand("~/wiki/wiki")
   let $w = $wiki
 
-  " Os dependant
-  if 'windows' == $os
-    let $home = expand("C:/Users/tbf")
-    let $alias = expand("H:/Program/Cmder/config/user-aliases.cmd")
-  else
-    let $home = "~"
-  endif
 
 
 " From vim debian team (better at start)
