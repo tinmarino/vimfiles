@@ -55,6 +55,7 @@ set nocompatible | filetype on | syntax on
 
 " Appearance , Color, Search, Set staff
   set diffopt+=vertical
+  set guifont=Consolas:h14:cANSI:qDRAFT
   set guioptions-=T                  " Toolbar
   set guioptions-=m                  " Menumbar
   set encoding=utf-8
@@ -259,6 +260,34 @@ set nocompatible | filetype on | syntax on
   set foldmethod=indent
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0 
   set foldlevelstart=30 "the folding at opening
+  set foldexpr=FoldMethod(v:lnum)
+  "autocmd FileType vim set foldmethod=indent " I don't need to fold comments in vim files 
+  set shiftwidth=4  " the number of column taken into account for aa fold, IMPORTANT
+  
+  function! FoldMethod(lnum)
+    let crLine=getline(a:lnum)
+ 
+    " check if empty line 
+    if crLine =~ '^\s*$' || crLine[0]== "#" "Empty line or end comment 
+      return '=' " so same indent level as line before
+    endif 
+
+
+    " check if comment  in syntax
+    let l:data =  join( map(synstack(a:lnum, 1), 'synIDattr(v:val, "name")') )
+    if l:data =~ ".*omment.*"
+      "return max([FoldMethod(a:lnum+1), FoldMethod(a:lnum-1) ]) 
+      return '-1'
+
+    endif
+
+
+  "Otherwise return foldlevel equal to ident /shiftwidth (like if
+  "foldmethod=indent)
+      "return indent base fold
+    return indent(a:lnum)/&shiftwidth
+
+  endfunction
 
 
 " Buffer Management (and it maps)
@@ -446,3 +475,4 @@ set nocompatible | filetype on | syntax on
   command! -nargs=0 -bar Helptags for p in glob('~/.vim/pack/bundle/opt/*', 1, 1) | exe 'packadd '.fnamemodify(p, ':t') | endfor | helptags ALL
   packadd perlomni
   set wrapscan
+  map s <c-s>
