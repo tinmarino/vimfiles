@@ -11,7 +11,7 @@
 	url = https://github.com/lervag/vimtex
   ignore = all
 [submodule "pack/bundle/start/colorscheme-switcher"]
-	path = pack/bundle/start/colorscheme-switcher
+	path = pack/bundle/opt/colorscheme-switcher
 	url = https://github.com/xolox/vim-colorscheme-switcher
   ignore = all
 [submodule "pack/bundle/start/surround"]
@@ -50,7 +50,7 @@
 	path = pack/bundle/start/snippets
 	url = https://github.com/honza/vim-snippets
   ignore = all
-[submodule "pack/bundle/start/ansiesc"]
+[submodule "pack/bundle/opt/ansiesc"]
 	path = pack/bundle/opt/ansiesc
 	url = https://github.com/powerman/vim-plugin-AnsiEsc
   ignore = all
@@ -74,7 +74,7 @@
 	path = pack/bundle/start/unimpaired
 	url = https://github.com/tpope/vim-unimpaired
   ignore = all
-[submodule "pack/bundle/start/calendar-vim"]
+[submodule "pack/bundle/opt/calendar-vim"]
 	path = pack/bundle/opt/calendar
 	url = https://github.com/mattn/calendar-vim
   ignore = all

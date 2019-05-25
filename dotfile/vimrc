@@ -1,5 +1,9 @@
 set nocompatible | filetype on | syntax on
 
+" Package : On demand load
+  " F8 : Colorscheme-switcher
+  map <F8> :packadd colorscheme-switcher<CR><F8>
+  map <ESC>[19;2~ <S-F8>
 
 " Variable
   " OS
