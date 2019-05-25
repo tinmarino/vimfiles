@@ -130,3 +130,9 @@
 	path = pack/bundle/opt/perlomni
 	url = https://github.com/c9s/perlomni.vim
   ignore = all
+[submodule "pack/bundle/opt/viewdoc"]
+	path = pack/bundle/opt/viewdoc
+	url = https://github.com/powerman/vim-plugin-viewdoc
+[submodule "pack/bundle/opt/calendar"]
+	path = pack/bundle/opt/calendar
+	url = https://github.com/mattn/calendar-vim
