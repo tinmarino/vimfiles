@@ -8,6 +8,7 @@ set nocompatible | filetype on | syntax on
   map <ESC>[19;2~ <S-F8>
   " :NERDTree 
   command! NERDTree :packadd nerdtree <BAR> NERDTree
+  command! NERDTreeToggle :packadd nerdtree <BAR> NERDTreeToggle
 
 
 
@@ -135,6 +136,7 @@ set nocompatible | filetype on | syntax on
 
 " Map
   let mapleader=','
+  map <leader>n :NERDTreeToggle<CR>
   tnoremap <Esc> <C-W>N
 
   " Indent < and >
