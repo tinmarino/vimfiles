@@ -6,6 +6,9 @@ set nocompatible | filetype on | syntax on
   " F8 : Colorscheme-switcher
   map <F8> :packadd colorscheme-switcher<CR><F8>
   map <ESC>[19;2~ <S-F8>
+  " :NERDTree 
+  command! NERDTree :packadd nerdtree <BAR> NERDTree
+
 
 
 " Variable
@@ -435,7 +438,7 @@ set nocompatible | filetype on | syntax on
     let g:viewdoc_open = "e"
 
   " Table mode
-    let g:table_mode_tableize_map = 'i'
+    let g:table_mode_tableize_map = ',i'
 
   " Vimwiki
     " Wiki

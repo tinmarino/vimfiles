@@ -23,7 +23,7 @@
 	url = https://github.com/kien/ctrlp.vim
   ignore = all
 [submodule "pack/bundle/start/nerdtree"]
-	path = pack/bundle/start/nerdtree
+	path = pack/bundle/opt/nerdtree
 	url = https://github.com/scrooloose/nerdtree
   ignore = all
 [submodule "pack/bundle/start/misc"]
