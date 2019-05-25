@@ -313,7 +313,6 @@ set nocompatible | filetype on | syntax on
   " " \b \f \g : go back/forward/last-used
   " " \1 \2 \3 : go to buffer 1/2/3 etc
   map <Leader>l :ls<CR>
-  map <Leader>b :bp<CR>  
   "overwriten by GDB
   map <Leader>f :bn<CR>
   map <Leader>1 :1b<CR>
