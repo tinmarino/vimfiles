@@ -101,10 +101,11 @@
 [submodule "pack/bundle/start/YouCompleteMe"]
 	path = pack/bundle/start/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe
-  ignore = dirty
+  ignore = all
 [submodule "pack/bundle/opt/YouCompleteMe"]
 	path = pack/bundle/opt/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe
+  ignore = all
 [submodule "pack/bundle/opt/vdebug"]
 	path = pack/bundle/opt/vdebug
 	url = https://github.com/vim-vdebug/vdebug
@@ -114,6 +115,7 @@
 [submodule "pack/bundle/opt/python-mode"]
 	path = pack/bundle/opt/python-mode
 	url = https://github.com/python-mode/python-mode
+  ignore = all
 [submodule "pack/bundle/opt/vim-transpose"]
 	path = pack/bundle/opt/transpose
 	url = https://github.com/salsifis/vim-transpose
@@ -133,6 +135,8 @@
 [submodule "pack/bundle/opt/viewdoc"]
 	path = pack/bundle/opt/viewdoc
 	url = https://github.com/powerman/vim-plugin-viewdoc
+  ignore = all
 [submodule "pack/bundle/opt/calendar"]
 	path = pack/bundle/opt/calendar
 	url = https://github.com/mattn/calendar-vim
+  ignore = all

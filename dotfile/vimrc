@@ -1,9 +1,12 @@
+" The base
 set nocompatible | filetype on | syntax on
+
 
 " Package : On demand load
   " F8 : Colorscheme-switcher
   map <F8> :packadd colorscheme-switcher<CR><F8>
   map <ESC>[19;2~ <S-F8>
+
 
 " Variable
   " OS
@@ -41,7 +44,6 @@ set nocompatible | filetype on | syntax on
   let $dump = expand("$vim/undo/dump")
   let $wiki = expand("~/wiki/wiki")
   let $w = $wiki
-
 
 
 " From vim debian team (better at start)

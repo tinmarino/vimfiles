@@ -1,8 +1,10 @@
 
 
-" PYTHON MODE 
+" Plugin
+  let s:pymode=exists('g:pymode')
   packadd python-mode
   packadd ipython
+  if !s:pymode | edit | endif
 
 " Better ?
     set tabstop=4
@@ -18,3 +20,4 @@
 
 
     set foldmethod=indent
+
