@@ -23,7 +23,7 @@
   # CD
   alias p='cd ..'
   alias pp='cd ../..'
-  alias pp='cd ../../..'
+  alias ppp='cd ../../..'
 
 
 # Color improve (ls, grep)
