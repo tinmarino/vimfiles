@@ -17,8 +17,8 @@
 
   # Safe RM
   export TRASH="$HOME/.Trash"
-  alias rm="/bin/mv -f -t $TRASH"
-  alias rmv='/bin/rm'
+  alias rm="mv -f -t $TRASH"
+  alias rmv='rm'
 
   # CD
   alias p='cd ..'
