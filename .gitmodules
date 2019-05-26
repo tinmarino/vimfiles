@@ -109,9 +109,11 @@
 [submodule "pack/bundle/opt/vdebug"]
 	path = pack/bundle/opt/vdebug
 	url = https://github.com/vim-vdebug/vdebug
+  ignore = all
 [submodule "pack/bundle/opt/ipython"]
 	path = pack/bundle/opt/ipython
 	url = https://github.com/ivanov/vim-ipython
+  ignore = all
 [submodule "pack/bundle/opt/python-mode"]
 	path = pack/bundle/opt/python-mode
 	url = https://github.com/python-mode/python-mode
@@ -119,15 +121,19 @@
 [submodule "pack/bundle/opt/vim-transpose"]
 	path = pack/bundle/opt/transpose
 	url = https://github.com/salsifis/vim-transpose
+  ignore = all
 [submodule "pack/bundle/opt/ack"]
 	path = pack/bundle/opt/ack
 	url = https://github.com/mileszs/ack.vim
+  ignore = all
 [submodule "template/gitignore"]
 	path = template/gitignore
 	url = https://github.com/github/gitignore
+  ignore = all
 [submodule "pack/bundle/opt/table-mode"]
 	path = pack/bundle/opt/table-mode
 	url = https://github.com/dhruvasagar/vim-table-mode
+  ignore = all
 [submodule "pack/bundle/opt/perlomni"]
 	path = pack/bundle/opt/perlomni
 	url = https://github.com/c9s/perlomni.vim
