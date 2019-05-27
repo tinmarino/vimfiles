@@ -2,7 +2,7 @@
 ln -s ~/.vim/dotfile/tmux.conf  ~/.tmux.conf  # Tmux
 
 # Termux
-mkdir ~/termux
+mkdir ~/.termux
 ln -s ~/.vim/dotfile/termux.properties ~/.termux/termux.properties
 
 # Vim
