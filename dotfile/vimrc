@@ -155,8 +155,11 @@ set nocompatible | filetype on | syntax on
     map yx :s/y/x/g<CR>
 
   " Copy paste to from clipboard <- ctrl+p  
-    nnoremap <C-y> "+y
-    vnoremap <C-y> "+y
+    if $os != 'termux'
+      " Disabled in termux for wheel
+      nnoremap <C-y> "+y
+      vnoremap <C-y> "+y
+    endif
     nnoremap <C-p> "+p
     vnoremap <C-p> "+p
 
@@ -388,11 +391,13 @@ set nocompatible | filetype on | syntax on
 
   " CtrlP
     " E like edit and closer to ctrl + <c-p> used to paste
-    let g:ctrlp_map = '<c-e>'
+    if $os != 'termux'
+      let g:ctrlp_map = '<C-E>'
+    else
+      let g:ctrlp_map = '<leader>e'
+    endif
     " Mixed to search in MRU, FIles, Buffers
     let g:ctrlp_cmd = 'CtrlPMixed'
-    " Ctrlp Plugin Buffer with ctrl-b
-    map <C-b> :CtrlPBuffer<CR>
 
   " Vim Translator
     ".vimrc
