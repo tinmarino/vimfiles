@@ -427,6 +427,7 @@ set nocompatible | filetype on | syntax on
         \}
 
   " Ultisnip
+    let g:UltiSnipsSnippetDirectories = ['scripts/snippet', 'Ultisnips']
     let g:UltiSnipsExpandTrigger="<c-j>"
     let g:UltiSnipsUsePythonVersion = 3
 
