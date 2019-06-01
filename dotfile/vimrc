@@ -136,6 +136,8 @@ set nocompatible | filetype on | syntax on
 
 " Map
   let mapleader=','
+  map <leader>gt :VimwikiGoto 
+  map <leader>wg :VimwikiGoto 
   map <leader>n :NERDTreeToggle<CR>
   tnoremap <Esc> <C-W>N
 

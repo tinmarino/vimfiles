@@ -130,6 +130,7 @@
 
 
 # Path
+  export PATH="$HOME/.vim/bin:$PATH"
   export PATH="$HOME/Bin:$PATH"
   export PATH="$PATH:$HOME/perl5/bin"
   export PATH="$PATH:$HOME/Software/Android/SDK/android-sdk-linux/platform-tools"
