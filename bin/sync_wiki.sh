@@ -7,7 +7,7 @@ function ssync(){
     title=$(basename -- "$1")
     title=${title^^}
     echo "--->  $title  ================================================="
-    mkdir $1
+    mkdir $1 2> /dev/null && echo "Created directory $1"
     pushd $1 > /dev/null
     git add .
     git commit -m "___ <- sync_git.sh"
