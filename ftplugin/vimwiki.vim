@@ -13,13 +13,16 @@ set shiftwidth=2
 
 
 " Syntax
-
 function! s:syntax_helper(alias, language, syntax_file)
   let b:current_syntax = ""
   unlet b:current_syntax
   execute('syntax include ' . a:alias . ' ' . a:syntax_file)
   execute('syntax region ' . a:language . 'Snip matchgroup=Snip start="```' . a:language . '" end="```" contains=' . a:alias)
 endfunction
+
+" Text
+syntax region White start=+```+   end=+```+
+hi White ctermfg=White  guifg=White
 
 " Compiled
 call s:syntax_helper('@MYC', 'c', 'syntax/c.vim')
@@ -33,4 +36,4 @@ call s:syntax_helper('@MYPERL', 'perl', 'syntax/perl.vim')
 
 " Markdown
 call s:syntax_helper('@MYHTML', 'html', 'syntax/html.vim')
-call s:syntax_helper('@MYTEX', 'tex', 'syntax/tex.vim')
+call s:syntax_helper('@MYTEX', 'latex', 'syntax/tex.vim')
