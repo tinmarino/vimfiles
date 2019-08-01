@@ -1,6 +1,5 @@
 " The base
-set nocompatible | filetype on | syntax on
-
+set nocompatible | filetype plugin indent on | syntax on
 
 " Package : On demand load
   " F8 : Colorscheme-switcher
@@ -416,7 +415,6 @@ set nocompatible | filetype on | syntax on
     let g:EmacsCommandLineSearchCommandLineDisable = 1
 
   " Eclim 
-    filetype plugin indent on
     let g:EclimCompletionMethod = 'omnifunc'
 
   " Vimtex
@@ -475,17 +473,18 @@ set nocompatible | filetype on | syntax on
     let g:vimwiki_table_auto_fmt = 1
 
 
-    " Termux
-    if 'termux' == $os
-      autocmd CursorHold,CursorHoldI *  silent update
-    endif
-
   " Ack to use ag
     let g:ackprg = 'ag --vimgrep --smart-case'
     cnoreabbrev ag Ack
     cnoreabbrev aG Ack
     cnoreabbrev Ag Ack
     cnoreabbrev AG Ack
+
+
+" Termux
+  if 'termux' == $os
+    autocmd CursorHold,CursorHoldI *  silent update
+  endif
 
 
 " Fastly (added)
