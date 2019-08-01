@@ -1,6 +1,6 @@
 
 " FOLD
-  set foldmethod=expr
+  set foldmethod=indent
   set foldexpr=FoldCMethod(v:lnum)
 
   function! FoldCMethod(lnum)
