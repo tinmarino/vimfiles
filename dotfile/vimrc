@@ -91,7 +91,7 @@ set nocompatible | filetype plugin indent on | syntax on
   autocmd InsertLeave * highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
 
   set autoindent  " to have auto indentation when return line 
-  colorscheme dante
+  colorscheme candycode
   set laststatus=2 " for airline
   " WINDOWS 
     set ruler 
@@ -279,7 +279,7 @@ set nocompatible | filetype plugin indent on | syntax on
   set foldmethod=indent
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0 
   set foldlevelstart=30 "the folding at opening
-  set foldexpr=FoldMethod(v:lnum)
+  "set foldexpr=FoldMethod(v:lnum)
   "autocmd FileType vim set foldmethod=indent " I don't need to fold comments in vim files 
   set shiftwidth=4  " the number of column taken into account for aa fold, IMPORTANT
   
@@ -395,6 +395,17 @@ set nocompatible | filetype plugin indent on | syntax on
     \}
 
   " CtrlP
+    " Cache
+    let g:ctrlp_cache_dir = $home . '/.cache/ctrlp'
+    " Use ag <- grep
+    if executable('ag')
+      let g:ctrl_user_command = 'ag %s -l --nocolor -g ""'
+    endif
+    " Ignore
+    let g:ctrlp_cutom_ignore = {
+      \ 'dir': '\.git$',
+      \ 'file': ''
+    \ }
     " E like edit and closer to ctrl + <c-p> used to paste
     if $os != 'termux'
       let g:ctrlp_map = '<C-E>'
@@ -495,4 +506,3 @@ set nocompatible | filetype plugin indent on | syntax on
   command! -nargs=0 -bar Helptags for p in glob('~/.vim/pack/bundle/opt/*', 1, 1) | exe 'packadd '.fnamemodify(p, ':t') | endfor | helptags ALL
   packadd perlomni
   set wrapscan
-  map s <c-s>
