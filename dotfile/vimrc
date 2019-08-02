@@ -354,6 +354,20 @@ set nocompatible | filetype plugin indent on | syntax on
 
 
 " Plugin
+  " Add them
+    packadd fugitive
+    packadd vimwiki
+    packadd surround
+    packadd airline " TODO configure it
+    packadd argtextobject " TODO read the doc
+    packadd ctrlp " TODO change remote origin
+    packadd emacscommandline
+    packadd indent-object " TODO read the script
+    packadd misc " TODO for who ?
+    packadd ultisnips " TODO remove one
+    packadd snippets " TODO test some docstring py and c
+    packadd unimpaired  " TODO read the doc
+
   " Pymode
     let g:pymode_python = 'python3'
     let pymode_lint_checkers = ['pylint', 'pep8', 'pyflakes']
