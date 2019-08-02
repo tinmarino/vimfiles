@@ -74,8 +74,8 @@
 	path = pack/bundle/opt/vimwiki
 	url = https://github.com/vimwiki/vimwiki
   ignore = all
-[submodule "pack/bundle/start/vim-instant-markdown"]
-	path = pack/bundle/start/vim-instant-markdown
+[submodule "pack/bundle/opt/vim-instant-markdown"]
+	path = pack/bundle/opt/vim-instant-markdown
 	url = https://github.com/suan/vim-instant-markdown
   ignore = all
 [submodule "pack/bundle/opt/DrawIt"]
@@ -90,17 +90,9 @@
 	path = pack/bundle/opt/Align
 	url = https://github.com/vim-scripts/Align
   ignore = all
-[submodule "pack/bundle/start/vim-indent-object"]
+[submodule "pack/bundle/opt/vim-indent-object"]
 	path = pack/bundle/opt/indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object
-  ignore = all
-[submodule "pack/bundle/start/YouCompleteMe"]
-	path = pack/bundle/start/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe
-  ignore = all
-[submodule "pack/bundle/opt/YouCompleteMe"]
-	path = pack/bundle/opt/YouCompleteMe
-	url = https://github.com/Valloric/YouCompleteMe
   ignore = all
 [submodule "pack/bundle/opt/vdebug"]
 	path = pack/bundle/opt/vdebug
