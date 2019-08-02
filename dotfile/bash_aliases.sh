@@ -20,10 +20,13 @@
   alias rm="mv -f -t $TRASH"
   alias rmv='rm'
 
-  # CD
+  # CD ..
   alias p='cd ..'
   alias pp='cd ../..'
   alias ppp='cd ../../..'
+  alias pppp='cd ../../../..'
+  alias ppppp='cd ../../../../..'
+  alias pppppp='cd ../../../../../..'
 
 
 # Color improve (ls, grep)
