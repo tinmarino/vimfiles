@@ -1,81 +1,77 @@
-[submodule "pack/bundle/start/fugitive"]
+[submodule "pack/bundle/opt/fugitive"]
 	path = pack/bundle/opt/fugitive
 	url = https://github.com/tpope/vim-fugitive
   ignore = all
-[submodule "pack/bundle/start/python-mode"]
+[submodule "pack/bundle/opt/python-mode"]
 	path = pack/bundle/opt/python-mode/python-mode
 	url = https://github.com/python-mode/python-mode
   ignore = all
-[submodule "pack/bundle/start/vimtex"]
+[submodule "pack/bundle/opt/vimtex"]
 	path = pack/bundle/opt/vimtex
 	url = https://github.com/lervag/vimtex
   ignore = all
-[submodule "pack/bundle/start/colorscheme-switcher"]
+[submodule "pack/bundle/opt/colorscheme-switcher"]
 	path = pack/bundle/opt/colorscheme-switcher
 	url = https://github.com/xolox/vim-colorscheme-switcher
   ignore = all
-[submodule "pack/bundle/start/surround"]
+[submodule "pack/bundle/opt/surround"]
 	path = pack/bundle/opt/surround
 	url = https://github.com/tpope/vim-surround
   ignore = all
-[submodule "pack/bundle/start/ctrlp"]
+[submodule "pack/bundle/opt/ctrlp"]
 	path = pack/bundle/opt/ctrlp
 	url = https://github.com/ctrlpvim/ctrlp.vim
   ignore = all
-[submodule "pack/bundle/start/nerdtree"]
+[submodule "pack/bundle/opt/nerdtree"]
 	path = pack/bundle/opt/nerdtree
 	url = https://github.com/scrooloose/nerdtree
   ignore = all
-[submodule "pack/bundle/start/misc"]
+[submodule "pack/bundle/opt/misc"]
 	path = pack/bundle/opt/misc
 	url = https://github.com/xolox/vim-misc
   ignore = all
-[submodule "pack/bundle/start/ipython"]
+[submodule "pack/bundle/opt/ipython"]
 	path = pack/bundle/opt/ipyton
 	url = https://github.com/ivanov/vim-ipython
   ignore = all
-[submodule "pack/bundle/start/conque-gdb"]
+[submodule "pack/bundle/opt/conque-gdb"]
 	path = pack/bundle/opt/conque-gdb
 	url = https://github.com/vim-scripts/Conque-GDB
   ignore = all
-[submodule "pack/bundle/start/airline"]
+[submodule "pack/bundle/opt/airline"]
 	path = pack/bundle/opt/airline
 	url = https://github.com/vim-airline/vim-airline
   ignore = all
-[submodule "pack/bundle/start/ultisnips"]
+[submodule "pack/bundle/opt/ultisnips"]
 	path = pack/bundle/opt/ultisnips
 	url = https://github.com/SirVer/ultisnips
-  ignore = all
-[submodule "pack/bundle/start/snippets"]
-	path = pack/bundle/opt/snippets
-	url = https://github.com/honza/vim-snippets
   ignore = all
 [submodule "pack/bundle/opt/ansiesc"]
 	path = pack/bundle/opt/ansiesc
 	url = https://github.com/powerman/vim-plugin-AnsiEsc
   ignore = all
-[submodule "pack/bundle/start/emacscommandline"]
+[submodule "pack/bundle/opt/emacscommandline"]
 	path = pack/bundle/opt/emacscommandline
 	url = https://github.com/houtsnip/vim-emacscommandline
   ignore = all
-[submodule "pack/bundle/start/indent-object"]
-	path = pack/bundle/start/indent-object
+[submodule "pack/bundle/opt/indent-object"]
+	path = pack/bundle/opt/indent-object
 	url = https://github.com/michaeljsmith/vim-indent-object
   ignore = all
-[submodule "pack/bundle/start/argtextobject"]
+[submodule "pack/bundle/opt/argtextobject"]
 	path = pack/bundle/opt/argtextobject
 	url = https://github.com/vim-scripts/argtextobj.vim
   ignore = all
-[submodule "pack/bundle/start/emoji"]
+[submodule "pack/bundle/opt/emoji"]
 	path = pack/bundle/opt/emoji
 	url = https://github.com/junegunn/vim-emoji
   ignore = all
-[submodule "pack/bundle/start/unimpaired"]
+[submodule "pack/bundle/opt/unimpaired"]
 	path = pack/bundle/opt/unimpaired
 	url = https://github.com/tpope/vim-unimpaired
   ignore = all
-[submodule "pack/bundle/start/vimwiki"]
-	path = pack/bundle/start/vimwiki
+[submodule "pack/bundle/opt/vimwiki"]
+	path = pack/bundle/opt/vimwiki
 	url = https://github.com/vimwiki/vimwiki
   ignore = all
 [submodule "pack/bundle/start/vim-instant-markdown"]
