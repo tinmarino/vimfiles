@@ -1,15 +1,6 @@
 " The base
 set nocompatible | filetype plugin indent on | syntax on
 
-" Package : On demand load
-  " F8 : Colorscheme-switcher
-  map <F8> :packadd colorscheme-switcher<CR><F8>
-  map <ESC>[19;2~ <S-F8>
-  " :NERDTree 
-  command! NERDTree :packadd nerdtree <BAR> NERDTree
-  command! NERDTreeToggle :packadd nerdtree <BAR> NERDTreeToggle
-
-
 
 " Variable
   " OS
@@ -37,6 +28,7 @@ set nocompatible | filetype plugin indent on | syntax on
   " Vim
   let $vimrc = $v . "/dotfile/vimrc"
   let $bashrc = $v . "/dotfile/bashrc"
+  let $alias = $v . "/dotfile/bash_aliases.sh"
   let $script = expand("$v/scripts")
   let $s = $script
   let $auto = expand("$v/autoload")
@@ -62,23 +54,33 @@ set nocompatible | filetype plugin indent on | syntax on
 
 
 " Appearance , Color, Search, Set staff
+  set t_Co=256  " For airline and nice colors
   set diffopt+=vertical
   set guifont=Consolas:h14:cANSI:qDRAFT
   set guioptions-=T                  " Toolbar
   set guioptions-=m                  " Menumbar
   set encoding=utf-8
+  " Wildignore : Ignore these filenames during enhanced command line completion.
+  set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz  " LaTeX intermediate files
+  set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images
+  set wildignore+=*.luac  " Lua byte code
+  set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
+  set wildignore+=*.pyc  " Python byte code
+  set wildignore+=*.spl  " compiled spelling word lists
+  set wildignore+=*.sw?  " Vim swap files
+  set wildignore+=.git/*  " Git shit
   " No auto comment
   set formatoptions-=c
   set formatoptions-=r
   set formatoptions-=o
   set nu
-  "SEARCH 
+  "SEARCH
   set ignorecase
   set smartcase
   set ignorecase
   set hlsearch      " highlight search terms
   set incsearch     " show search matches as you type
-  " Title and color 
+  " Title and color
   set title                    " change the terminal's title, may not work
   " Enable CursorLine
   set cursorline
@@ -89,12 +91,12 @@ set nocompatible | filetype plugin indent on | syntax on
   " Revert Color to default when leaving Insert Mode
   autocmd InsertLeave * highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
 
-  set autoindent  " to have auto indentation when return line 
-  colorscheme candycode
+  set autoindent  " to have auto indentation when return line
+  colorscheme dante
   set laststatus=2 " for airline
-  " WINDOWS 
-    set ruler 
-    set backspace=2 
+  " WINDOWS
+    set ruler
+    set backspace=2
     set foldlevelstart=30 "the folding at opening
     set wrap
     set fileformat=unix
@@ -110,15 +112,15 @@ set nocompatible | filetype plugin indent on | syntax on
 
 
 " Backup
-  set nobackup                  " I may change that 
+  set nobackup                  " I may change that
   set noswapfile                " I will this if this is harmfull
   set nowritebackup
-  set backupdir=~/.vim/backup// " the double // will put the backup with the full directory  
-  set directory=~/.vim/backup// " for the swap files 
+  set backupdir=~/.vim/backup// " the double // will put the backup with the full directory
+  set directory=~/.vim/backup// " for the swap files
   set undolevels=10000         " use many levels of undo
-  set history=10000    " After nocompatible 
+  set history=10000    " After nocompatible
   set autoread                  " when reopening a file, go to the position as when you quit it +  This will disable read-only to writeable warnings
- 
+
   if has('persistent_undo')
     set undodir=$v/undo
     set undofile 
@@ -134,27 +136,27 @@ set nocompatible | filetype plugin indent on | syntax on
 
 " Map
   let mapleader=','
-  map <leader>gt :VimwikiGoto 
-  map <leader>wg :VimwikiGoto 
-  map <leader>n :NERDTreeToggle<CR>
   tnoremap <Esc> <C-W>N
 
   " Indent < and >
     noremap > >>
     noremap < <<
-    vnoremap > >gv 
-    vnoremap < <gv 
+    vnoremap > >gv
+    vnoremap < <gv
+
+  " select last paste in visual mode
+    nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
 
   " Ctrlz
     nnoremap <silent> <expr> <leader>d ctrlz#dadcd()
     nnoremap <expr> <c-z> ctrlz#ctrlz()
 
   " Perso maps normal
-    nnoremap H :set cursorline! cursorcolumn!<CR> 
+    nnoremap H :set cursorline! cursorcolumn!<CR>
     map xy :s/x/y/g<CR>
     map yx :s/y/x/g<CR>
 
-  " Copy paste to from clipboard <- ctrl+p  
+  " Copy paste to from clipboard <- ctrl+p
     if $os != 'termux'
       " Disabled in termux for wheel
       nnoremap <C-y> "+y
@@ -163,20 +165,20 @@ set nocompatible | filetype plugin indent on | syntax on
     nnoremap <C-p> "+p
     vnoremap <C-p> "+p
 
-  " Command : %% to expand path in command mode  
-    cnoremap %% <C-R>=expand('%:p:h').'/'<CR>|  
+  " Command : %% to expand path in command mode
+    cnoremap %% <C-R>=expand('%:p:h').'/'<CR>|
 
   " Insert mode begin, end <- c-a c-e shotcuts from gnome
     inoremap <C-A> <C-O>^
     inoremap <C-E> <C-O>g_
-    inoremap <C-K> <C-O>D 
+    "inoremap <C-K> <C-O>D
 
   " Esc <- jk or kj
     imap jk <Esc>
     imap kj <Esc>
 
-  " C-Arrow on Ubuntu 
-    "Get Ctrl + ARROW KEYS,because if you don't do that, the <C-Up>  (ie crtl + up ) key is notreckognise 
+  " C-Arrow on Ubuntu
+    "Get Ctrl + ARROW KEYS,because if you don't do that, the <C-Up>  (ie crtl + up ) key is notreckognise
     map [1;5A <C-Up>
     map [1;5B <C-Down>
     map [1;5D <C-Left>
@@ -203,7 +205,7 @@ set nocompatible | filetype plugin indent on | syntax on
     noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
     noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 
-  " Fold 
+  " Fold
     nnoremap <space> za
     vnoremap <space> zf
     map z0  :set foldlevel=0<CR><Esc>
@@ -226,7 +228,7 @@ set nocompatible | filetype plugin indent on | syntax on
     map zè z7
     map z_ z8
     map zç z9
-  
+
   " Tab
     map g1 :1tabnext<CR><Esc>
     map g2 :2tabnext<CR><Esc>
@@ -250,6 +252,7 @@ set nocompatible | filetype plugin indent on | syntax on
 
   " Edit special files ,v
     nnoremap <Leader>v :try \| b $vimrc \| catch \| e $vimrc \| endtry <CR>
+    nnoremap <Leader>a :try \| b $alias \| catch \| e $alias \| endtry <CR>
     nnoremap <leader>s :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
     nnoremap <Leader>b :try \| b $bashrc \| catch \| e $bashrc \| endtry <CR>
     " Todo create backup dir
@@ -276,25 +279,23 @@ set nocompatible | filetype plugin indent on | syntax on
   highlight Folded ctermfg=DarkGreen ctermbg=Black
   set foldignore=
   set foldmethod=indent
-  set foldcolumn=0  "the number of columns on the left to show the tree, default =0 
+  set foldcolumn=0  "the number of columns on the left to show the tree, default =0
   set foldlevelstart=30 "the folding at opening
-  "set foldexpr=FoldMethod(v:lnum)
-  "autocmd FileType vim set foldmethod=indent " I don't need to fold comments in vim files 
   set shiftwidth=4  " the number of column taken into account for aa fold, IMPORTANT
-  
+
   function! FoldMethod(lnum)
     let crLine=getline(a:lnum)
- 
-    " check if empty line 
-    if crLine =~ '^\s*$' || crLine[0]== "#" "Empty line or end comment 
+
+    " check if empty line
+    if crLine =~ '^\s*$' || crLine[0]== "#" "Empty line or end comment
       return '=' " so same indent level as line before
-    endif 
+    endif
 
 
     " check if comment  in syntax
     let l:data =  join( map(synstack(a:lnum, 1), 'synIDattr(v:val, "name")') )
     if l:data =~ ".*omment.*"
-      "return max([FoldMethod(a:lnum+1), FoldMethod(a:lnum-1) ]) 
+      "return max([FoldMethod(a:lnum+1), FoldMethod(a:lnum-1) ])
       return '-1'
 
     endif
@@ -363,19 +364,19 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:pymode_rope_goto_definition_cmd = 'e'
     " Auto open cwindow (quickfix) if any errors have been found
     let g:pymode_lint_cwindow = 0
-    " Pylint ignore 
+    " Pylint ignore
       let s = ""
       let s .= ",E303"  " Too many blank lines
-      let s .= ",E501"  " Line too long > 80 
+      let s .= ",E501"  " Line too long > 80
       let s =  ",E701"  " Multiple statement on one line
     " Do not perform mapping in ipython (it removes my previous <c-s>
     let g:ipy_perform_mappings = 0
 
   " ConqueDbg, a gdb plugging
-    let g:ConqueGdb_Disable = 1 
+    let g:ConqueGdb_Disable = 1
     let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
     let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
-    let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly 
+    let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly
     let g:ConqueTerm_PyVersion = 3
 
   " Vdebug
@@ -411,6 +412,8 @@ set nocompatible | filetype plugin indent on | syntax on
     else
       let g:ctrlp_map = '<leader>e'
     endif
+    " Keep cache
+    let g:ctrlp_clear_cache_on_exit = 0
     " Mixed to search in MRU, FIles, Buffers
     let g:ctrlp_cmd = 'CtrlPMixed'
 
@@ -428,7 +431,7 @@ set nocompatible | filetype plugin indent on | syntax on
   " Emacs Command line
     let g:EmacsCommandLineSearchCommandLineDisable = 1
 
-  " Eclim 
+  " Eclim
     let g:EclimCompletionMethod = 'omnifunc'
 
   " Vimtex
@@ -449,7 +452,7 @@ set nocompatible | filetype plugin indent on | syntax on
     map <leader>gs :Gstatus<CR>
     map <leader>gl :Glog<CR>
     map <leader>gc :Gcommit -m ""<C-b>
-    map <leader>ga :Git add 
+    map <leader>ga :Git add
 
   " YouCompleteMe
     " let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/opt/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
@@ -494,11 +497,59 @@ set nocompatible | filetype plugin indent on | syntax on
     cnoreabbrev Ag Ack
     cnoreabbrev AG Ack
 
+  " Airline
+    let g:airline#extensions#wordcount#enabled = 0
+    let g:airline_section_a = ''
+    let g:airline_section_b = ''
+    let g:airline_section_x = ''
+    let g:airline_section_y = ''
+    let airline_section_z = '%3p%% %l/%L:%v'
+
+    let g:airline_powerline_fonts = 1
+
+    if !exists('g:airline_symbols')
+        let g:airline_symbols = {}
+    endif
+
+    " unicode symbols
+    let g:airline_left_sep = '»'
+    let g:airline_left_sep = '▶'
+    let g:airline_right_sep = '«'
+    let g:airline_right_sep = '◀'
+    let g:airline_symbols.linenr = '␊'
+    let g:airline_symbols.linenr = '␤'
+    let g:airline_symbols.linenr = '¶'
+    let g:airline_symbols.branch = '⎇'
+    let g:airline_symbols.paste = 'ρ'
+    let g:airline_symbols.paste = 'Þ'
+    let g:airline_symbols.paste = '∥'
+    let g:airline_symbols.whitespace = 'Ξ'
+
+    " airline symbols
+    let g:airline_left_sep = ''
+    let g:airline_left_alt_sep = ''
+    let g:airline_right_sep = ''
+    let g:airline_right_alt_sep = ''
+    let g:airline_symbols.branch = ''
+    let g:airline_symbols.readonly = ''
+    let g:airline_symbols.linenr = ''
 
 " Termux
   if 'termux' == $os
     autocmd CursorHold,CursorHoldI *  silent update
   endif
+
+
+" Package : On demand load
+  " F8 : Colorscheme-switcher
+  map <F8> :packadd colorscheme-switcher<CR><F8>
+  map <ESC>[19;2~ <S-F8>
+  " :NERDTree
+  command! NERDTree :packadd nerdtree <BAR> NERDTree
+  command! NERDTreeToggle :packadd nerdtree <BAR> NERDTreeToggle
+  map <leader>n :NERDTreeToggle<CR>
+  " Vimwiki
+  map <leader>wg :VimwikiGoto
 
 
 " PackAdd
@@ -511,10 +562,8 @@ set nocompatible | filetype plugin indent on | syntax on
   packadd emacscommandline
   packadd indent-object " TODO read the script
   packadd misc " TODO for who ?
-  packadd ultisnips " TODO remove one
+  packadd ultisnips
   packadd unimpaired  " TODO read the doc
-
-
 
 
 " Fastly (added)
