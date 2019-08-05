@@ -151,5 +151,7 @@
 
 # Fast 
   complete -W "pull tex make pdf push update" ./my.sh
+  #tmux completion
+  source ~/.vim/dotfile/tmux_completion.sh
   export style="nice -n 20 perl  '$HOME/Program/Mxnet/mxnet/perl-package/AI-MXNet/examples/gluon/style_transfer/style_transfer.pl'  --model '$HOME/Program/Mxnet/mxnet/perl-package/AI-MXNet/examples/gluon/style_transfer/data/msgnet_21styles-2cb88353.params'"
   alias pltags="pltags.pl /home2/tourneboeuf/Program/Komodo/Komodo-PerlRemoteDebugging-8.0.2-78971-linux-x86_64/* /etc/perl/* /usr/local/lib/x86_64-linux-gnu/perl/5.26.2/* /usr/local/share/perl/5.26.2/* /usr/lib/x86_64-linux-gnu/perl5/5.26/* /usr/share/perl5/* /usr/lib/x86_64-linux-gnu/perl/5.26/* /usr/share/perl/5.26/* /usr/local/lib/site_perl/* /usr/lib/x86_64-linux-gnu/perl-base/*"
