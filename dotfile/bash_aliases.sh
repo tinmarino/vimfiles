@@ -15,6 +15,9 @@
   alias h="history|grep "
   alias f="find . |grep "
 
+  # Utils
+  alias clean_tex='rm *.aux *.log *.fls *.fdb_latexmk *.out *synctex.gz'
+
   # Safe RM
   export TRASH="$HOME/.Trash"
   alias rm="mv -f -t $TRASH"
@@ -91,3 +94,5 @@
   alias m="mark"
   alias ms="marks"
   alias j="jump"
+
+
