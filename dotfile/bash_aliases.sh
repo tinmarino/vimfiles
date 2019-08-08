@@ -31,6 +31,9 @@
   alias ppppp='cd ../../../../..'
   alias pppppp='cd ../../../../../..'
 
+  # Tipo
+  alias gerp='grep'
+  alias grpe='grep'
 
 # Color improve (ls, grep)
   if [ -x /usr/bin/dircolors ]; then
