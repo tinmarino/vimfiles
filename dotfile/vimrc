@@ -136,6 +136,17 @@ set nocompatible | filetype plugin indent on | syntax on
   let mapleader=','
   tnoremap <Esc> <C-W>N
 
+  " Maps for Package : On demand load
+    " F8 : Colorscheme-switcher
+    map <F8> :packadd colorscheme-switcher<CR><F8>
+    map <ESC>[19;2~ <S-F8>
+    " :NERDTree
+    command! NERDTree :packadd nerdtree <BAR> NERDTree
+    command! NERDTreeToggle :packadd nerdtree <BAR> NERDTreeToggle
+    noremap <leader>n :NERDTreeToggle<CR>
+    " Vimwiki
+    noremap <leader>wg :VimwikiIndex<CR>:VimwikiGoto 
+
   " Indent < and >
     noremap > >>
     noremap < <<
@@ -228,15 +239,16 @@ set nocompatible | filetype plugin indent on | syntax on
     map zç z9
 
   " Tab
-    map g1 :1tabnext<CR><Esc>
-    map g2 :2tabnext<CR><Esc>
-    map g3 :3tabnext<CR><Esc>
-    map g4 :4tabnext<CR><Esc>
-    map g5 :5tabnext<CR><Esc>
-    map g6 :6tabnext<CR><Esc>
-    map g7 :7tabnext<CR><Esc>
-    map g8 :8tabnext<CR><Esc>
-    map g9 :9tabnext<CR><Esc>
+    noremap <C-n> :tabnew<CR>
+    noremap g1 :1tabnext<CR><Esc>
+    noremap g2 :2tabnext<CR><Esc>
+    noremap g3 :3tabnext<CR><Esc>
+    noremap g4 :4tabnext<CR><Esc>
+    noremap g5 :5tabnext<CR><Esc>
+    noremap g6 :6tabnext<CR><Esc>
+    noremap g7 :7tabnext<CR><Esc>
+    noremap g8 :8tabnext<CR><Esc>
+    noremap g9 :9tabnext<CR><Esc>
     " And for azery
     map g& g1
     map gé g2
@@ -545,18 +557,6 @@ set nocompatible | filetype plugin indent on | syntax on
   if 'termux' == $os
     autocmd CursorHold,CursorHoldI *  silent update
   endif
-
-
-" Package : On demand load
-  " F8 : Colorscheme-switcher
-  map <F8> :packadd colorscheme-switcher<CR><F8>
-  map <ESC>[19;2~ <S-F8>
-  " :NERDTree
-  command! NERDTree :packadd nerdtree <BAR> NERDTree
-  command! NERDTreeToggle :packadd nerdtree <BAR> NERDTreeToggle
-  map <leader>n :NERDTreeToggle<CR>
-  " Vimwiki
-  map <leader>wg :VimwikiGoto
 
 
 " PackAdd
