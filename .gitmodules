@@ -1,136 +1,137 @@
 [submodule "pack/bundle/opt/fugitive"]
-	path = pack/bundle/opt/fugitive
-	url = https://github.com/tpope/vim-fugitive
-  ignore = all
+    path = pack/bundle/opt/fugitive
+    url = https://github.com/tpope/vim-fugitive
+    ignore = all
 [submodule "pack/bundle/opt/python-mode"]
-	path = pack/bundle/opt/python-mode/python-mode
-	url = https://github.com/python-mode/python-mode
-  ignore = all
+    path = pack/bundle/opt/python-mode/python-mode
+    url = https://github.com/python-mode/python-mode
+    ignore = all
+    branch = develop
 [submodule "pack/bundle/opt/vimtex"]
-	path = pack/bundle/opt/vimtex
-	url = https://github.com/lervag/vimtex
-  ignore = all
+    path = pack/bundle/opt/vimtex
+    url = https://github.com/lervag/vimtex
+    ignore = all
 [submodule "pack/bundle/opt/colorscheme-switcher"]
-	path = pack/bundle/opt/colorscheme-switcher
-	url = https://github.com/xolox/vim-colorscheme-switcher
-  ignore = all
+    path = pack/bundle/opt/colorscheme-switcher
+    url = https://github.com/xolox/vim-colorscheme-switcher
+    ignore = all
 [submodule "pack/bundle/opt/surround"]
-	path = pack/bundle/opt/surround
-	url = https://github.com/tpope/vim-surround
-  ignore = all
+    path = pack/bundle/opt/surround
+    url = https://github.com/tpope/vim-surround
+    ignore = all
 [submodule "pack/bundle/opt/ctrlp"]
-	path = pack/bundle/opt/ctrlp
-	url = https://github.com/ctrlpvim/ctrlp.vim
-  ignore = all
+    path = pack/bundle/opt/ctrlp
+    url = https://github.com/ctrlpvim/ctrlp.vim
+    ignore = all
 [submodule "pack/bundle/opt/nerdtree"]
-	path = pack/bundle/opt/nerdtree
-	url = https://github.com/scrooloose/nerdtree
-  ignore = all
+    path = pack/bundle/opt/nerdtree
+    url = https://github.com/scrooloose/nerdtree
+    ignore = all
 [submodule "pack/bundle/opt/misc"]
-	path = pack/bundle/opt/misc
-	url = https://github.com/xolox/vim-misc
-  ignore = all
+    path = pack/bundle/opt/misc
+    url = https://github.com/xolox/vim-misc
+    ignore = all
 [submodule "pack/bundle/opt/ipython"]
-	path = pack/bundle/opt/ipyton
-	url = https://github.com/ivanov/vim-ipython
-  ignore = all
+    path = pack/bundle/opt/ipyton
+    url = https://github.com/ivanov/vim-ipython
+    ignore = all
 [submodule "pack/bundle/opt/conque-gdb"]
-	path = pack/bundle/opt/conque-gdb
-	url = https://github.com/vim-scripts/Conque-GDB
-  ignore = all
+    path = pack/bundle/opt/conque-gdb
+    url = https://github.com/vim-scripts/Conque-GDB
+    ignore = all
 [submodule "pack/bundle/opt/airline"]
-	path = pack/bundle/opt/airline
-	url = https://github.com/vim-airline/vim-airline
-  ignore = all
+    path = pack/bundle/opt/airline
+    url = https://github.com/vim-airline/vim-airline
+    ignore = all
 [submodule "pack/bundle/opt/ultisnips"]
-	path = pack/bundle/opt/ultisnips
-	url = https://github.com/SirVer/ultisnips
-  ignore = all
+    path = pack/bundle/opt/ultisnips
+    url = https://github.com/SirVer/ultisnips
+    ignore = all
 [submodule "pack/bundle/opt/ansiesc"]
-	path = pack/bundle/opt/ansiesc
-	url = https://github.com/powerman/vim-plugin-AnsiEsc
-  ignore = all
+    path = pack/bundle/opt/ansiesc
+    url = https://github.com/powerman/vim-plugin-AnsiEsc
+    ignore = all
 [submodule "pack/bundle/opt/emacscommandline"]
-	path = pack/bundle/opt/emacscommandline
-	url = https://github.com/houtsnip/vim-emacscommandline
-  ignore = all
+    path = pack/bundle/opt/emacscommandline
+    url = https://github.com/houtsnip/vim-emacscommandline
+    ignore = all
 [submodule "pack/bundle/opt/indent-object"]
-	path = pack/bundle/opt/indent-object
-	url = https://github.com/michaeljsmith/vim-indent-object
-  ignore = all
+    path = pack/bundle/opt/indent-object
+    url = https://github.com/michaeljsmith/vim-indent-object
+    ignore = all
 [submodule "pack/bundle/opt/argtextobject"]
-	path = pack/bundle/opt/argtextobject
-	url = https://github.com/vim-scripts/argtextobj.vim
-  ignore = all
+    path = pack/bundle/opt/argtextobject
+    url = https://github.com/vim-scripts/argtextobj.vim
+    ignore = all
 [submodule "pack/bundle/opt/emoji"]
-	path = pack/bundle/opt/emoji
-	url = https://github.com/junegunn/vim-emoji
-  ignore = all
+    path = pack/bundle/opt/emoji
+    url = https://github.com/junegunn/vim-emoji
+    ignore = all
 [submodule "pack/bundle/opt/unimpaired"]
-	path = pack/bundle/opt/unimpaired
-	url = https://github.com/tpope/vim-unimpaired
-  ignore = all
+    path = pack/bundle/opt/unimpaired
+    url = https://github.com/tpope/vim-unimpaired
+    ignore = all
 [submodule "pack/bundle/opt/vimwiki"]
-	path = pack/bundle/opt/vimwiki
-	url = https://github.com/vimwiki/vimwiki
-  ignore = all
+    path = pack/bundle/opt/vimwiki
+    url = https://github.com/vimwiki/vimwiki
+    ignore = all
 [submodule "pack/bundle/opt/vim-instant-markdown"]
-	path = pack/bundle/opt/vim-instant-markdown
-	url = https://github.com/suan/vim-instant-markdown
-  ignore = all
+    path = pack/bundle/opt/vim-instant-markdown
+    url = https://github.com/suan/vim-instant-markdown
+    ignore = all
 [submodule "pack/bundle/opt/DrawIt"]
-	path = pack/bundle/opt/DrawIt
-	url = https://github.com/vim-scripts/DrawIt
-  ignore = all
+    path = pack/bundle/opt/DrawIt
+    url = https://github.com/vim-scripts/DrawIt
+    ignore = all
 [submodule "pack/bundle/opt/Mines"]
-	path = pack/bundle/opt/Mines
-	url = https://github.com/vim-scripts/Mines
-  ignore = all
+    path = pack/bundle/opt/Mines
+    url = https://github.com/vim-scripts/Mines
+    ignore = all
 [submodule "pack/bundle/opt/Align"]
-	path = pack/bundle/opt/Align
-	url = https://github.com/vim-scripts/Align
-  ignore = all
+    path = pack/bundle/opt/Align
+    url = https://github.com/vim-scripts/Align
+    ignore = all
 [submodule "pack/bundle/opt/vim-indent-object"]
-	path = pack/bundle/opt/indent-object
-	url = https://github.com/michaeljsmith/vim-indent-object
-  ignore = all
+    path = pack/bundle/opt/indent-object
+    url = https://github.com/michaeljsmith/vim-indent-object
+    ignore = all
 [submodule "pack/bundle/opt/vdebug"]
-	path = pack/bundle/opt/vdebug
-	url = https://github.com/vim-vdebug/vdebug
-  ignore = all
+    path = pack/bundle/opt/vdebug
+    url = https://github.com/vim-vdebug/vdebug
+    ignore = all
 [submodule "pack/bundle/opt/ipython"]
-	path = pack/bundle/opt/ipython
-	url = https://github.com/ivanov/vim-ipython
-  ignore = all
+    path = pack/bundle/opt/ipython
+    url = https://github.com/ivanov/vim-ipython
+    ignore = all
 [submodule "pack/bundle/opt/python-mode"]
-	path = pack/bundle/opt/python-mode
-	url = https://github.com/python-mode/python-mode
-  ignore = all
+    path = pack/bundle/opt/python-mode
+    url = https://github.com/python-mode/python-mode
+    ignore = all
 [submodule "pack/bundle/opt/vim-transpose"]
-	path = pack/bundle/opt/transpose
-	url = https://github.com/salsifis/vim-transpose
-  ignore = all
+    path = pack/bundle/opt/transpose
+    url = https://github.com/salsifis/vim-transpose
+    ignore = all
 [submodule "pack/bundle/opt/ack"]
-	path = pack/bundle/opt/ack
-	url = https://github.com/mileszs/ack.vim
-  ignore = all
+    path = pack/bundle/opt/ack
+    url = https://github.com/mileszs/ack.vim
+    ignore = all
 [submodule "template/gitignore"]
-	path = template/gitignore
-	url = https://github.com/github/gitignore
-  ignore = all
+    path = template/gitignore
+    url = https://github.com/github/gitignore
+    ignore = all
 [submodule "pack/bundle/opt/table-mode"]
-	path = pack/bundle/opt/table-mode
-	url = https://github.com/dhruvasagar/vim-table-mode
-  ignore = all
+    path = pack/bundle/opt/table-mode
+    url = https://github.com/dhruvasagar/vim-table-mode
+    ignore = all
 [submodule "pack/bundle/opt/perlomni"]
-	path = pack/bundle/opt/perlomni
-	url = https://github.com/c9s/perlomni.vim
-  ignore = all
+    path = pack/bundle/opt/perlomni
+    url = https://github.com/c9s/perlomni.vim
+    ignore = all
 [submodule "pack/bundle/opt/viewdoc"]
-	path = pack/bundle/opt/viewdoc
-	url = https://github.com/powerman/vim-plugin-viewdoc
-  ignore = all
+    path = pack/bundle/opt/viewdoc
+    url = https://github.com/powerman/vim-plugin-viewdoc
+    ignore = all
 [submodule "pack/bundle/opt/calendar"]
-	path = pack/bundle/opt/calendar
-	url = https://github.com/mattn/calendar-vim
-  ignore = all
+    path = pack/bundle/opt/calendar
+    url = https://github.com/mattn/calendar-vim
+    ignore = all
