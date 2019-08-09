@@ -53,8 +53,9 @@ function! s:textyankpost(dict)
   if expand('%:$') == $done | return | endif
 
   " Append to done
-  let l:new_line = strftime(">%Y/%M/%d at %X : ") . string(a:dict['regcontents'])
-  call writefile(a:dict['regcontents'], $done, 'a')
+  let l:new_line = a:dict['regcontents']
+  let l:new_line[0] = strftime(">%Y/%M/%d at %X : ") . l:new_line[0]
+  call writefile(l:new_line, $done, 'a')
 endfunction
 
 
