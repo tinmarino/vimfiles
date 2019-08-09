@@ -11,7 +11,7 @@
   alias clip="xclip -selection c"
   alias c="clip"
   alias disas='objdump -drwC -Mintel'
-  alias ll='ls -l'
+  alias ll='ls -lh'
   alias h="history|grep "
   alias f="find . |grep "
 
