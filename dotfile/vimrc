@@ -25,19 +25,19 @@ set nocompatible | filetype plugin indent on | syntax on
     let $v = expand("$HOME/.vim")
   endif
 
-  " Vim
+  " Alias
+  "   Bash
+  let $h = expand($HOME)
   let $vimrc = expand($v . "/dotfile/vimrc")
   let $bashrc = expand($v . "/dotfile/bashrc")
   let $alias = expand($v . "/dotfile/bash_aliases.sh")
-  let $script = expand("$v/scripts")
-  let $s = $script
+  "   Vim
+  let $s = expand("$v/scripts") | let $script = $s
   let $auto = expand("$v/autoload")
   let $ft = expand("$v/ftplugin")
-  let $start = expand("$vim/pack/bundle/start")
-  let $opt = expand("$vim/pack/bundle/opt")
-  let $dump = expand("$vim/undo/dump")
-  let $wiki = expand("~/wiki/wiki")
-  let $w = $wiki
+  let $pack = expand("$v/pack/bundle/opt")
+  let $dump = expand("$v/undo/dump")
+  let $w = expand("$h/wiki/wiki") | let $wiki = $w
 
 
 " From vim debian team (better at start)
