@@ -40,70 +40,56 @@ set nocompatible | filetype plugin indent on | syntax on
   let $w = expand("$h/wiki/wiki") | let $wiki = $w
 
 
-" From vim debian team (better at start)
-  if filereadable("/etc/vim/vimrc.local")
-    source /etc/vim/vimrc.local
-  endif
-
-
-" Source (my broters)
-  source $v/scripts/myfunctions.vim
-  source $v/scripts/cfunctions.vim
-  " TODO if gvim
-  " source $v/scripts/fontsize.vim
-
-  set t_Co=256  " For airline and nice colors
-  set diffopt+=vertical
-  set guifont=Consolas:h14:cANSI:qDRAFT
-  set guioptions-=T                  " Toolbar
-  set guioptions-=m                  " Menumbar
-  set encoding=utf-8
+" Appearance
+  " Preferences
+    colorscheme dawn
+    set t_Co=256  " For airline and nice colors
+    set formatoptions-=cro  " No auto comment
+    set diffopt+=vertical
+    set title                    " change the terminal's title, may not work
+    set autoindent  " to have auto indentation when return line
+    set laststatus=2 " for airline
+    set wrapscan
+    set nu
+  " File format
+    set encoding=utf-8
+    set foldlevelstart=30 "the folding at opening
+    set fileformat=unix
+    set wrap
+    set expandtab
+    set shiftwidth=4
+    set tabstop=4
+  " Gui
+    set guifont=Consolas:h14:cANSI:qDRAFT
+    set guioptions-=T                  " Toolbar
+    set guioptions-=m                  " Menumbar
   " Wildignore : Ignore these filenames during enhanced command line completion.
-  set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz  " LaTeX intermediate files
-  set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images
-  set wildignore+=*.luac  " Lua byte code
-  set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
-  set wildignore+=*.pyc  " Python byte code
-  set wildignore+=*.spl  " compiled spelling word lists
-  set wildignore+=*.sw?  " Vim swap files
-  set wildignore+=.git/*  " Git shit
-  " No auto comment
-  set formatoptions-=c
-  set formatoptions-=r
-  set formatoptions-=o
-  set nu
-  "SEARCH
-  set ignorecase
-  set smartcase
-  set ignorecase
-  set hlsearch      " highlight search terms
-  set incsearch     " show search matches as you type
-  " Title and color
-  set title                    " change the terminal's title, may not work
-  " Enable CursorLine
-  set cursorline
-  " Default Colors for CursorLine
-  highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
-  "Change Color when entering Insert Mode
-  autocmd InsertEnter * highlight  CursorLine term=None cterm=None
-  " Revert Color to default when leaving Insert Mode
-  autocmd InsertLeave * highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
+    set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz  " LaTeX intermediate files
+    set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images
+    set wildignore+=*.luac  " Lua byte code
+    set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
+    set wildignore+=*.pyc  " Python byte code
+    set wildignore+=*.spl  " compiled spelling word lists
+    set wildignore+=*.sw?  " Vim swap files
+    set wildignore+=.git/*  " Git shit
+  " Search
+    set ignorecase
+    set smartcase
+    set hlsearch      " highlight search terms
+    set incsearch     " show search matches as you type
+  " Cursor
+    set cursorline  " Enable CursorLine
+    " Default Colors for CursorLine
+    highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
+    "Change Color when entering Insert Mode
+    autocmd InsertEnter * highlight  CursorLine term=None cterm=None
+    " Revert Color to default when leaving Insert Mode
+    autocmd InsertLeave * highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
 
-  set autoindent  " to have auto indentation when return line
-  colorscheme dawn
-  set laststatus=2 " for airline
-  " WINDOWS
+  " Window
     set ruler
     set backspace=2
-    set foldlevelstart=30 "the folding at opening
-    set wrap
-    set fileformat=unix
     " set shell=H:/Program/cmder-1.2.9/Cmder.exe
-  " TAB
-    set expandtab
-    set shiftwidth=2
-    set tabstop=2
-    set wrapscan
   " Viminfo rememebr last 10000 opened files
   let s:viminfo=join(map(split(&viminfo, ","), {arg -> (v:val[0] == "'" ? "'10000" : v:val)}), ",")
   exe("set viminfo=" . s:viminfo)
@@ -117,7 +103,6 @@ set nocompatible | filetype plugin indent on | syntax on
   set directory=~/.vim/backup// " for the swap files
   set undolevels=10000         " use many levels of undo
   set history=10000    " After nocompatible
-  set autoread                  " when reopening a file, go to the position as when you quit it +  This will disable read-only to writeable warnings
 
   if has('persistent_undo')
     set undodir=$v/undo
@@ -145,7 +130,11 @@ set nocompatible | filetype plugin indent on | syntax on
     command! NERDTreeToggle :packadd nerdtree <BAR> NERDTreeToggle
     noremap <leader>n :NERDTreeToggle<CR>
     " Vimwiki
-    noremap <leader>wg :VimwikiIndex<CR>:VimwikiGoto 
+    noremap <leader>wg :if &ft!='vimwiki' <bar> execute 'VimwikiIndex' <bar> endif<CR>:VimwikiGoto 
+
+  " Yank all buffer to system clipboard
+    map <leader>y mtgg"+yG`t
+    map <leader>p ggdG"+p
 
   " Indent < and >
     noremap > >>
@@ -258,39 +247,23 @@ set nocompatible | filetype plugin indent on | syntax on
     map gè g7
     map g_ g8
     map gç g9
-    " map <C-&> g1
-    " map <C-é> g2
-    " map <C-"> g3
-    " map <C-'> g4
-    " map <C-(> g5
-    " map <C--> g6
-    " map <C-è> g7
-    " map <C-_> g8
-    " map <C-ç> g9
 
-  " Edit special files ,v
+  " Edit special files
     nnoremap <Leader>v :try \| b $vimrc \| catch \| e $vimrc \| endtry <CR>
     nnoremap <Leader>a :try \| b $alias \| catch \| e $alias \| endtry <CR>
-    nnoremap <leader>s :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
     nnoremap <Leader>b :try \| b $bashrc \| catch \| e $bashrc \| endtry <CR>
+    nnoremap <leader>s :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
     " Todo create backup dir
     " nnoremap <leader>b :write! $dump/%:t-<C-R>=strftime("%y%m%d")<CR>-bak.txt<CR>
 
 
-" Command
+" Command Man
   if exists(":Man") != 2
     com! -nargs=+ -complete=shellcmd M ru! ftplugin/man.vim | Man <args>
   else
     com! -nargs=+ -complete=shellcmd M Man <args>
   endif
 
-  " Yank all buffer to system clipboard
-  map <leader>y mtgg"+yG`t
-  map <leader>p ggdG"+p
-
-  " Yank all buffer to system clipboard
-  map <leader>y mtgg"+yG`t
-  map <leader>p ggdG"+p
 
 
 " Folding
@@ -300,31 +273,6 @@ set nocompatible | filetype plugin indent on | syntax on
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0
   set foldlevelstart=30 "the folding at opening
   set shiftwidth=4  " the number of column taken into account for aa fold, IMPORTANT
-
-  function! FoldMethod(lnum)
-    let crLine=getline(a:lnum)
-
-    " check if empty line
-    if crLine =~ '^\s*$' || crLine[0]== "#" "Empty line or end comment
-      return '=' " so same indent level as line before
-    endif
-
-
-    " check if comment  in syntax
-    let l:data =  join( map(synstack(a:lnum, 1), 'synIDattr(v:val, "name")') )
-    if l:data =~ ".*omment.*"
-      "return max([FoldMethod(a:lnum+1), FoldMethod(a:lnum-1) ])
-      return '-1'
-
-    endif
-
-
-  "Otherwise return foldlevel equal to ident /shiftwidth (like if
-  "foldmethod=indent)
-      "return indent base fold
-    return indent(a:lnum)/&shiftwidth
-
-  endfunction
 
 
 " Buffer Management (and it maps)
@@ -354,14 +302,6 @@ set nocompatible | filetype plugin indent on | syntax on
   map <Leader>9 :9b<CR>
   map <Leader>0 :10b<CR>
 
-  map z0 :set foldlevel=0<CR>
-  map z1 :set foldlevel=1<CR>
-  map z2 :set foldlevel=2<CR>
-  map z3 :set foldlevel=3<CR>
-  map z4 :set foldlevel=4<CR>
-  map z5 :set foldlevel=5<CR>
-  map z6 :set foldlevel=6<CR>
-  map z7 :set foldlevel=7<CR>
 
 
 " Filetype
@@ -507,7 +447,6 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:vimwiki_table_mappings = 0
     let g:vimwiki_table_auto_fmt = 1
 
-
   " Ack to use ag
     let g:ackprg = 'ag --vimgrep --smart-case'
     cnoreabbrev ag Ack
@@ -574,4 +513,3 @@ set nocompatible | filetype plugin indent on | syntax on
 " Fastly (added)
   command! -nargs=0 -bar Helptags for p in glob('~/.vim/pack/bundle/opt/*', 1, 1) | exe 'packadd '.fnamemodify(p, ':t') | endfor | helptags ALL
   packadd perlomni
-  set wrapscan
