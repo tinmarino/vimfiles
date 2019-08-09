@@ -90,7 +90,7 @@ set nocompatible | filetype plugin indent on | syntax on
   autocmd InsertLeave * highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
 
   set autoindent  " to have auto indentation when return line
-  colorscheme dante
+  colorscheme dawn
   set laststatus=2 " for airline
   " WINDOWS
     set ruler
@@ -138,7 +138,7 @@ set nocompatible | filetype plugin indent on | syntax on
 
   " Maps for Package : On demand load
     " F8 : Colorscheme-switcher
-    map <F8> :packadd colorscheme-switcher<CR><F8>
+    noremap <F8> :packadd misc<CR>:packadd colorscheme-switcher<CR><F8>
     map <ESC>[19;2~ <S-F8>
     " :NERDTree
     command! NERDTree :packadd nerdtree <BAR> NERDTree
@@ -562,14 +562,13 @@ set nocompatible | filetype plugin indent on | syntax on
   packadd vimwiki
   packadd fugitive
   packadd surround
-  packadd airline " TODO configure it
-  packadd argtextobject " TODO read the doc
-  packadd ctrlp " TODO change remote origin
+  packadd airline
+  packadd argtextobject " daa
+  packadd ctrlp
   packadd emacscommandline
-  packadd indent-object " TODO read the script
-  packadd misc " TODO for who ?
+  packadd indent-object " dai 
   packadd ultisnips
-  packadd unimpaired  " TODO read the doc
+  packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines), 
 
 
 " Fastly (added)
