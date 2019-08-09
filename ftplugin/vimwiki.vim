@@ -37,3 +37,24 @@ call s:syntax_helper('@MYPERL', 'perl', 'syntax/perl.vim')
 " Markdown
 call s:syntax_helper('@MYHTML', 'html', 'syntax/html.vim')
 call s:syntax_helper('@MYTEX', 'latex', 'syntax/tex.vim')
+
+
+" Autobackup deleted lines if todo
+augroup done_textyankpost
+  autocmd!
+  autocmd TextYankPost $HOME/wiki/todo/*.md  call s:textyankpost(v:event)
+augroup END
+
+" Callback : autobackup
+function! s:textyankpost(dict)
+  " Check
+  if v:event['operator'] != 'd' | return | endif
+  let $done = expand($h . '/wiki/todo/done.md')
+  if expand('%:$') == $done | return | endif
+
+  " Append to done
+  let l:new_line = strftime(">%Y/%M/%d at %X : ") . string(a:dict['regcontents'])
+  call writefile(a:dict['regcontents'], $done, 'a')
+endfunction
+
+
