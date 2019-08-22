@@ -28,21 +28,21 @@ set nocompatible | filetype plugin indent on | syntax on
   " Alias
   "   Bash
   let $h = expand($HOME)
+  let $s = expand("$v/scripts") | let $script = $s
+  let $w = expand("$h/wiki/wiki") | let $wiki = $w
+  let $p = expand("$v/pack/bundle/opt") | let $pack = $p | let $opt = $p
+  let $d = expand("$v/undo/dump") | let $dump = $d
   let $vimrc = expand($v . "/dotfile/vimrc")
   let $bashrc = expand($v . "/dotfile/bashrc")
   let $alias = expand($v . "/dotfile/bash_aliases.sh")
   "   Vim
-  let $s = expand("$v/scripts") | let $script = $s
   let $auto = expand("$v/autoload")
   let $ft = expand("$v/ftplugin")
-  let $pack = expand("$v/pack/bundle/opt")
-  let $dump = expand("$v/undo/dump")
-  let $w = expand("$h/wiki/wiki") | let $wiki = $w
 
 
 " Appearance
   " Preferences
-    colorscheme dawn
+    colorscheme dante
     set t_Co=256  " For airline and nice colors
     set formatoptions-=cro  " No auto comment
     set diffopt+=vertical
@@ -400,7 +400,7 @@ set nocompatible | filetype plugin indent on | syntax on
         \}
 
   " Ultisnip
-    let g:UltiSnipsSnippetDirectories = ['scripts/snippet', 'Ultisnips']
+    let g:UltiSnipsSnippetDirectories = ['template/my_snippets']
     let g:UltiSnipsExpandTrigger="<c-j>"
     let g:UltiSnipsUsePythonVersion = 3
 
@@ -498,16 +498,20 @@ set nocompatible | filetype plugin indent on | syntax on
 
 
 " PackAdd
+  " Interface
   packadd vimwiki
   packadd fugitive
-  packadd surround
   packadd airline
-  packadd argtextobject " daa
   packadd ctrlp
+  " Map
   packadd emacscommandline
+  packadd surround
+  packadd argtextobject " daa
   packadd indent-object " dai 
-  packadd ultisnips
   packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines), 
+  " Snip
+  packadd ultisnips
+  packadd snippets
 
 
 " Fastly (added)
