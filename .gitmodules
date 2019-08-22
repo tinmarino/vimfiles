@@ -116,7 +116,7 @@
     url = https://github.com/mileszs/ack.vim
     ignore = all
 [submodule "template/gitignore"]
-    path = template/gitignore
+	path = template/gitignore
     url = https://github.com/github/gitignore
     ignore = all
 [submodule "pack/bundle/opt/table-mode"]
@@ -135,3 +135,6 @@
     path = pack/bundle/opt/calendar
     url = https://github.com/mattn/calendar-vim
     ignore = all
+[submodule "template/snippets"]
+	path = pack/bundle/opt/snippets
+	url = git://github.com/honza/vim-snippets.git
