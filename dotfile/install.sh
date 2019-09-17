@@ -1,3 +1,6 @@
+# Git
+ln -s ~/.vim/dotfile/gitconfig  ~/.gitconfig
+
 # Tmux
 ln -s ~/.vim/dotfile/tmux.conf  ~/.tmux.conf  # Tmux
 

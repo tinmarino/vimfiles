@@ -6,8 +6,10 @@
   alias pl="perl"
 
   # Small as Huffman
-  alias open='xdg-open'
+  alias g='git'
+  alias v='vim'
   alias o='xdg-open'
+  alias open='xdg-open'
   alias clip="xclip -selection c"
   alias c="clip"
   alias disas='objdump -drwC -Mintel'
@@ -71,9 +73,9 @@
      fi
   }
   # Dropbox
-  alias dropbox='~/.dropbox-dist/dropboxd $' 
+  alias dropbox='~/.dropbox-dist/dropboxd $'
 
-  # Battery 
+  # Battery
   alias battery='upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep percentage'
 
   # Diskspace
@@ -82,13 +84,13 @@
 
 # Jump marks from http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
   export MARKPATH=$HOME/.marks
-  function jump { 
+  function jump {
     cd -P "$MARKPATH/$1" 2>/dev/null || echo "No such mark: $1"
   }
-  function mark { 
+  function mark {
     mkdir -p "$MARKPATH"; ln -s "$(pwd)" "$MARKPATH/$1"
   }
-  function unmark { 
+  function unmark {
     rm -i "$MARKPATH/$1"
   }
   function marks {

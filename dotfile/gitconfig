@@ -1,0 +1,5 @@
+[credential]
+	helper = cache
+[alias]
+    # C for Commit. Ex : g c "Commit message goes here"
+    c = "!git add -A && git commit -m "
