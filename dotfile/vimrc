@@ -118,7 +118,7 @@ set nocompatible | filetype plugin indent on | syntax on
 
 
 " Map
-  let mapleader=','
+  let mapleader = ','
   tnoremap <Esc> <C-W>N
 
   " Maps for Package : On demand load
@@ -129,8 +129,6 @@ set nocompatible | filetype plugin indent on | syntax on
     command! NERDTree :packadd nerdtree <BAR> NERDTree
     command! NERDTreeToggle :packadd nerdtree <BAR> NERDTreeToggle
     noremap <leader>n :NERDTreeToggle<CR>
-    " Vimwiki
-    noremap <leader>wg :if &ft!='vimwiki' <bar> execute 'VimwikiIndex' <bar> endif<CR>:VimwikiGoto 
 
   " Yank all buffer to system clipboard
     map <leader>y mtgg"+yG`t
@@ -309,7 +307,6 @@ set nocompatible | filetype plugin indent on | syntax on
   au BufNewFile,BufRead *.asm       setf masm
   au BufNewFile,BufRead *.disarm    setf disarm
   au BufNewFile,BufRead *.kd        setf kd
-  au BufNewFile,BufRead */todo      setf vimwiki
 
 
 " Plugin
@@ -400,7 +397,7 @@ set nocompatible | filetype plugin indent on | syntax on
         \}
 
   " Ultisnip
-    let g:UltiSnipsSnippetDirectories = ['template/my_snippets']
+    let g:UltiSnipsSnippetDirectories = [$v . '/template/my_snippets', $v . '/pack/bundle/opt/snippets/UltiSnips']
     let g:UltiSnipsExpandTrigger="<c-j>"
     let g:UltiSnipsUsePythonVersion = 3
 
@@ -440,12 +437,19 @@ set nocompatible | filetype plugin indent on | syntax on
       \ 'path': $home . '/wiki/todo',
       \ 'path_html': $home . '/wiki/todo_html'
       \ }]
-    map ,t 2,w
-    map ,tt 2,ww
-    map ,t,t 2,w,w
+    au BufNewFile,BufRead */todo      setf vimwiki
+    " Map
+    map <leader>t 2,w
+    map <leader>tt 2,ww
+    map <leader>t<leader>t 2,w,w
+    noremap <leader>wg :if &ft!='vimwiki' <bar> execute 'normal 1' . mapleader . 'ww' <bar> endif<CR>:VimwikiGoto 
+    noremap <leader>tg :if &ft!='vimwiki' <bar> execute 'normal 2' . mapleader . 'ww' <bar> endif<CR>:VimwikiGoto 
+    map <leader>k :packadd calendar <bar> Calendar<CR>
     let g:vimwiki_table_reduce_last_col = 1
     let g:vimwiki_table_mappings = 0
     let g:vimwiki_table_auto_fmt = 1
+    " Calendar
+    let g:calendar_monday = 1
 
   " Ack to use ag
     let g:ackprg = 'ag --vimgrep --smart-case'
