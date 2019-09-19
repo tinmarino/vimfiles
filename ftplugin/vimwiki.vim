@@ -1,16 +1,22 @@
+" Include
+so $v/pack/bundle/opt/vimwiki/ftplugin/vimwiki.vim
+
 " Plugin
 packadd table-mode
 
-set linebreak
+" Ultisnip
+UltiSnipsAddFiletypes markdown
 
-map <leader>c :VimwikiAll2HTML<CR><CR>:syntax on<CR>
-so $v/pack/bundle/opt/vimwiki/ftplugin/vimwiki.vim
+" Preference
+set linebreak
 set tw=0
 set expandtab
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
 
+" Alias
+map <leader>c :VimwikiAll2HTML<CR><CR>:syntax on<CR>
 
 " Syntax
 function! s:syntax_helper(alias, language, syntax_file)
@@ -42,7 +48,7 @@ call s:syntax_helper('@MYTEX', 'latex', 'syntax/tex.vim')
 " Autobackup deleted lines if todo
 augroup done_textyankpost
   autocmd!
-  autocmd TextYankPost $HOME/wiki/todo/*.md  call s:textyankpost(v:event)
+  autocmd TextYankPost */wiki/todo/*.md  call s:textyankpost(v:event)
 augroup END
 
 " Callback : autobackup
@@ -57,5 +63,3 @@ function! s:textyankpost(dict)
   let l:new_line[0] = strftime(">%Y/%M/%d at %X : ") . l:new_line[0]
   call writefile(l:new_line, $done, 'a')
 endfunction
-
-
