@@ -58,29 +58,28 @@
 
 # Head
   clear
-  # TODO cat a Heredoc so same commands
   # Nowrap
-  tput rmam
   printf '\033[?7l'
-  echo '                           \  |  /        '
-  echo '                            \_|_/         '
-  echo '                /|\     ____/   \____     '
-  echo '               / | \        \___/         '
-  echo '              /  |  \       / | \         '
-  echo '             /___|___\     /  |  \        '
-  echo '            _____|_____                   '
-  echo '            \_________/                   '
-  echo ' ~~^^~~^~^~~^^~^^^^~~~~^~^~^~^^^^^^^      '
-  echo '                                          '
-  echo '      |\   \\\\__     o                   '
-  echo '      | \_/    o_\    o                   '
-  echo '      >  _  (( <_  oo                     '
-  echo '      | / \__+___/                        '
-  echo '      |/     |/                           '
+  cat << '  EOF'
+                             \  |  /
+                              \_|_/
+                  /|\     ____/   \____
+                 / | \        \___/
+                /  |  \       / | \
+               /___|___\     /  |  \
+              _____|_____
+              \_________/
+   ~~^^~~^~^~~^^~^^^^~~~~^~^~^~^^^^^^^
+  
+        |\   \\\\__     o
+        | \_/    o_\    o
+        >  _  (( <_  oo
+        | / \__+___/
+        |/     |/
 
+  EOF
   # Reset wrap
   printf '\033[?7h'
-  tput smam
 
 
 # Include
