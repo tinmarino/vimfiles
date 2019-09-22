@@ -58,7 +58,10 @@
 
 # Head
   clear
+  # TODO cat a Heredoc so same commands
+  # Nowrap
   tput rmam
+  printf '\033[?7l'
   echo '                           \  |  /        '
   echo '                            \_|_/         '
   echo '                /|\     ____/   \____     '
@@ -74,6 +77,9 @@
   echo '      >  _  (( <_  oo                     '
   echo '      | / \__+___/                        '
   echo '      |/     |/                           '
+
+  # Reset wrap
+  printf '\033[?7h'
   tput smam
 
 
