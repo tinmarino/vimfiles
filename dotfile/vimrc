@@ -361,10 +361,11 @@ set nocompatible | filetype plugin indent on | syntax on
       \ 'dir': '\.git$',
       \ 'file': ''
     \ }
-    " E like edit and closer to ctrl + <c-p> used to paste
     if $os != 'termux'
+      " E like edit and closer to ctrl + <c-p> used to paste
       let g:ctrlp_map = '<C-E>'
     else
+      " Because move up gives c-e
       let g:ctrlp_map = '<leader>e'
     endif
     " Keep cache
@@ -439,6 +440,7 @@ set nocompatible | filetype plugin indent on | syntax on
       \ }]
     au BufNewFile,BufRead */todo      setf vimwiki
     " Map
+    packadd vimwiki " TODO remove and add autoload
     map <leader>t 2,w
     map <leader>tt 2,ww
     map <leader>t<leader>t 2,w,w
@@ -503,19 +505,18 @@ set nocompatible | filetype plugin indent on | syntax on
 
 " PackAdd
   " Interface
-  packadd vimwiki
   packadd fugitive
   packadd airline
-  packadd ctrlp
+  packadd ctrlp " 3ms
   " Map
-  packadd emacscommandline
   packadd surround
   packadd argtextobject " daa
   packadd indent-object " dai 
-  packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines), 
   " Snip
-  packadd ultisnips
-  packadd snippets
+  packadd ultisnips " 3ms
+  " Slow : reload on demand
+  " packadd emacscommandline
+  " packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines)
 
 
 " Fastly (added)
