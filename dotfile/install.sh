@@ -15,6 +15,7 @@ try_link ~/.vim/dotfile/tmux.conf  ~/.tmux.conf
 try_link ~/.vim/dotfile/termux.properties ~/.termux/termux.properties
 
 # Vim
+[ -d ~/.vim/undo ] || mkdir ~/.vim/undo
 try_link ~/.vim/dotfile/vimrc ~/.vimrc
 
 # Perl
