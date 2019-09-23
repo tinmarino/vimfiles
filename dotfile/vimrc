@@ -444,9 +444,16 @@ set nocompatible | filetype plugin indent on | syntax on
     map <leader>t 2,w
     map <leader>tt 2,ww
     map <leader>t<leader>t 2,w,w
-    noremap <leader>wg :if &ft!='vimwiki' <bar> execute 'normal 1' . mapleader . 'ww' <bar> endif<CR>:VimwikiGoto 
-    noremap <leader>tg :if &ft!='vimwiki' <bar> execute 'normal 2' . mapleader . 'ww' <bar> endif<CR>:VimwikiGoto 
+    function Windex(num)
+      let l:nr = 1 + vimwiki#vars#get_bufferlocal('wiki_nr')
+      if &ft!='vimwiki' || l:nr != a:num
+        execute 'VimwikiIndex ' . a:num
+      endif
+    endfunction
+    noremap <leader>wg :call Windex(1)<CR>:VimwikiGoto 
+    noremap <leader>tg :call Windex(2)<CR>:VimwikiGoto 
     map <leader>k :packadd calendar <bar> Calendar<CR>
+    " Option
     let g:vimwiki_table_reduce_last_col = 1
     let g:vimwiki_table_mappings = 0
     let g:vimwiki_table_auto_fmt = 1
