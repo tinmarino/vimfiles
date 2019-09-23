@@ -10,6 +10,16 @@
     && export OS="termux" \
     || export OS="unix"
 
+# Unknown command callback
+function command_not_found_handle {
+  # If starting with g : git
+  if [ ${1:0:1} == g ]; then
+    git ${1:1} $2
+  # If any shit, echo bash default errmsg
+  else
+    echo bash: $1: command not found
+  fi
+}
 
 # Preferences
   # Avoid c-s freezing
