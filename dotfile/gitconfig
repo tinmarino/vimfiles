@@ -3,20 +3,16 @@
 [alias]
 
     # One letter
-    s = status
+    a = add
+    c = commit -m
     d = diff
-    c = "!c() { git commit -m \"$1\"; }; c"  # C for commit
-    # L for Log.
-    l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
-    # H for pusH. Ex : g p
-    h = !git push origin $(git rev-parse --abbrev-ref HEAD)
-    # F for pull -r (Fetch and Rebase)
     f = !git fetch --all && git rebase origin/master
+    h = !git push origin $(git rev-parse --abbrev-ref HEAD)
+    l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+    s = status
 
     # LA for List Alias. Ex : g la
     la = "!git config -l | grep alias | cut -c 7-"
-    # QC for Quick Commit. Ex : g c "Commit message goes here"
-    qc = "!git add -A && git commit -m "
     ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
 
     # Quick
@@ -25,10 +21,12 @@
     qa = "!qstage() { git add `git qs | sed -n $1p | awk -F' ' '{ print $3 }'`; git qs; }; qstage"
     qu = "!qunstage() { git reset HEAD `git qs | sed -n $1p | awk -F' ' '{ print $3 }'`; git qs; }; qunstage"
     qd = "!qdiff() { git diff `git qs | sed -n $1p | awk -F' ' '{ print $3 }'`; git qs; }; qdiff"
-
+ 
     # Util
     dc = diff --cached
+    rc = rm --cached
     aa = add --all
+    ca = commit -a -m 
 
     # Rebase
     rb = rebase

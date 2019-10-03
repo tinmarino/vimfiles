@@ -8,14 +8,18 @@
   # Small as Huffman
   alias g='git'
   alias v='vim'
+  alias w='vi -c"normal ,ww"'
+  alias t='vi -c"normal ,tt"'
   alias o='xdg-open'
-  alias open='xdg-open'
-  alias clip="xclip -selection c"
   alias c="clip"
   alias disas='objdump -drwC -Mintel'
   alias ll='ls -lh'
   alias h="history|grep "
   alias f="find . |grep "
+  
+  # Bigger for memory
+  alias open='xdg-open'
+  alias clip="xclip -selection c"
 
   # Utils
   alias clean_tex='rm *.aux *.log *.fls *.fdb_latexmk *.out *synctex.gz'

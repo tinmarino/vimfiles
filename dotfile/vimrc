@@ -441,9 +441,9 @@ set nocompatible | filetype plugin indent on | syntax on
     au BufNewFile,BufRead */todo      setf vimwiki
     " Map
     packadd vimwiki " TODO remove and add autoload
-    map <leader>t 2,w
-    map <leader>tt 2,ww
-    map <leader>t<leader>t 2,w,w
+    noremap <leader>ww :VimwikiIndex 1<CR>
+    map <leader>tt :VimwikiIndex 2<CR>
+    map <leader>t<leader>t :VimwikiDiaryIndex 2<CR>
     function Windex(num)
       let l:nr = 1 + vimwiki#vars#get_bufferlocal('wiki_nr')
       if &ft!='vimwiki' || l:nr != a:num
