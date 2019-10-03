@@ -75,6 +75,7 @@
     path = pack/bundle/opt/vimwiki
     url = https://github.com/vimwiki/vimwiki
     ignore = all
+    branch = dev
 [submodule "pack/bundle/opt/vim-instant-markdown"]
     path = pack/bundle/opt/vim-instant-markdown
     url = https://github.com/suan/vim-instant-markdown
