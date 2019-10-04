@@ -20,10 +20,10 @@ echo "---> Synchronizing from internet"
 
 
 ssync ~/.vim
-ssync $current_dir
-ssync ../wiki_html
-ssync ../todo
-ssync ../html
+ssync ~/wiki/wiki
+ssync ~/wiki/wiki_html
+ssync ~/wiki/todo
+ssync ~/wiki/html
 
 
 echo "<--- Synchronization finihed"
