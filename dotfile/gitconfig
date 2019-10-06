@@ -21,9 +21,12 @@
     qa = "!qstage() { git add `git qs | sed -n $1p | awk -F' ' '{ print $3 }'`; git qs; }; qstage"
     qu = "!qunstage() { git reset HEAD `git qs | sed -n $1p | awk -F' ' '{ print $3 }'`; git qs; }; qunstage"
     qd = "!qdiff() { git diff `git qs | sed -n $1p | awk -F' ' '{ print $3 }'`; git qs; }; qdiff"
+    qe = "!qedit() { vim -c'Gdiffsplit' `git qs | sed -n $1p | awk -F' ' '{ print $3 }'`; git qs; }; qedit"
+    qv = qe
  
     # Util
     dc = diff --cached
+    ds = dc  # --Staged
     rc = rm --cached
     aa = add --all
     ca = commit -a -m 
