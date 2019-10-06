@@ -10,7 +10,13 @@
     && export OS="termux" \
     || export OS="unix"
 
-# Unknown command callback
+  # Execute tmux
+  if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+    exec tmux
+  fi
+
+
+# Unknown command callback (tip: install bash-completion on tmux)
 function command_not_found_handle {
   # If starting with g : git
   if [ ${1:0:1} == g ]; then
@@ -20,6 +26,7 @@ function command_not_found_handle {
     echo bash: $1: command not found
   fi
 }
+
 
 # Preferences
   # Avoid c-s freezing
@@ -45,15 +52,12 @@ function command_not_found_handle {
   parse_git_branch() {
        git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
   }
-  # Tourny
-  export PS1="";
-  export PS1="\[\e[93m\]\h \[\033[32m\]"
-  export PS1='\033]0;\w\007'
-  export PS1=$PS1"\[\033[32m\]"
-  # CD
-  export PS1=$PS1"\w\[\033[33m\]"
-  # Git Branch
-  export PS1=$PS1"\$(parse_git_branch)\[\033[00m\]"
+  # CD (in title)
+  export PS1="\033]0;\w\007"
+  # CD (green)
+  export PS1+="\[\033[32m\]\w"
+  # Git Branch (yellow)
+  export PS1+="\[\033[33m\]\$(parse_git_branch)\[\033[00m\]"
   # New line
   export PS1+='\n$ '
 
@@ -121,6 +125,7 @@ function command_not_found_handle {
   export PERLDB_OPTS="RemotePort=localhost:9000"
   export DBGP_IDEKEY="whatever"
 
+
 # Git
   # Samsung j6
   if [ $OS == 'termux' ] ; then
@@ -136,12 +141,5 @@ function command_not_found_handle {
 
 
 # Fast
-  complete -W "pull tex make pdf push update" ./my.sh
-  #tmux completion
+  # tmux completion
   source ~/.vim/dotfile/tmux_completion.sh
-  export style="nice -n 20 perl  '$HOME/Program/Mxnet/mxnet/perl-package/AI-MXNet/examples/gluon/style_transfer/style_transfer.pl'  --model '$HOME/Program/Mxnet/mxnet/perl-package/AI-MXNet/examples/gluon/style_transfer/data/msgnet_21styles-2cb88353.params'"
-  alias pltags="pltags.pl /home2/tourneboeuf/Program/Komodo/Komodo-PerlRemoteDebugging-8.0.2-78971-linux-x86_64/* /etc/perl/* /usr/local/lib/x86_64-linux-gnu/perl/5.26.2/* /usr/local/share/perl/5.26.2/* /usr/lib/x86_64-linux-gnu/perl5/5.26/* /usr/share/perl5/* /usr/lib/x86_64-linux-gnu/perl/5.26/* /usr/share/perl/5.26/* /usr/local/lib/site_perl/* /usr/lib/x86_64-linux-gnu/perl-base/*"
-  # Execute tmux
-  if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-    exec tmux
-  fi
