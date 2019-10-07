@@ -24,18 +24,21 @@ set nocompatible | filetype plugin indent on | syntax on
     let $home = "~"
     let $v = expand("$HOME/.vim")
   endif
+  let $vim = $v
 
   " Alias
-  "   Bash
+  " One letter
   let $h = expand($HOME)
   let $s = expand("$v/scripts") | let $script = $s
   let $w = expand("$h/wiki/wiki") | let $wiki = $w
   let $p = expand("$v/pack/bundle/opt") | let $pack = $p | let $opt = $p
   let $d = expand("$v/undo/dump") | let $dump = $d
-  let $vimrc = expand($v . "/dotfile/vimrc")
-  let $bashrc = expand($v . "/dotfile/bashrc")
+  " RC
   let $alias = expand($v . "/dotfile/bash_aliases.sh")
-  "   Vim
+  let $bashrc = expand($h . "/.bashrc")
+  let $gitrc = expand($h . "/.gitconfig")
+  let $vimrc = expand($h . "/.vimrc")
+  " Vim
   let $auto = expand("$v/autoload")
   let $ft = expand("$v/ftplugin")
 
@@ -143,8 +146,8 @@ set nocompatible | filetype plugin indent on | syntax on
   " select last paste in visual mode
     nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
 
-  " Ctrlz
-    nnoremap <silent> <expr> <leader>d ctrlz#dadcd()
+  " Ctrlz (my plugin)
+    nnoremap <silent> <expr> <leader>cd ctrlz#dadcd()
     nnoremap <expr> <c-z> ctrlz#ctrlz()
 
   " Perso maps normal
@@ -247,12 +250,17 @@ set nocompatible | filetype plugin indent on | syntax on
     map gç g9
 
   " Edit special files
-    nnoremap <Leader>v :try \| b $vimrc \| catch \| e $vimrc \| endtry <CR>
-    nnoremap <Leader>a :try \| b $alias \| catch \| e $alias \| endtry <CR>
-    nnoremap <Leader>b :try \| b $bashrc \| catch \| e $bashrc \| endtry <CR>
+    function! Edit(file)
+      try | execute 'buffer ' . a:file
+      catch | execute 'edit ' . a:file
+      endtry
+    endfunction
+    nnoremap <Leader>ea :call Edit($alias)<CR>
+    nnoremap <Leader>eb :call Edit($bashrc)<CR>
+    nnoremap <Leader>eg :call Edit($gitrc)<CR>
+    nnoremap <Leader>ev :call Edit($vimrc)<CR>
     nnoremap <leader>s :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
-    " Todo create backup dir
-    " nnoremap <leader>b :write! $dump/%:t-<C-R>=strftime("%y%m%d")<CR>-bak.txt<CR>
+    nnoremap <leader>b :write! $v/undo/<C-R>=strftime("%y-%m-%d")<CR>-%:t-bak.txt<CR>
 
 
 " Command Man
@@ -263,7 +271,6 @@ set nocompatible | filetype plugin indent on | syntax on
   endif
 
 
-
 " Folding
   highlight Folded ctermfg=DarkGreen ctermbg=Black
   set foldignore=
@@ -271,35 +278,6 @@ set nocompatible | filetype plugin indent on | syntax on
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0
   set foldlevelstart=30 "the folding at opening
   set shiftwidth=4  " the number of column taken into account for aa fold, IMPORTANT
-
-
-" Buffer Management (and it maps)
-  "map <Tab> :bnext<cr>
-  "map <S-Tab> :bprevious<cr>
-  noremap <C-Tab> :BufExplorer<CR>
-  " from http://vim.wikia.com/wiki/Easier_buffer_switching
-  set wildchar=<Tab> wildmenu wildmode=full
-  set wildcharm=<C-Z>
-  nnoremap <F10> :b <C-Z>
-  " Mappings to access buffers (don't use "\p" because a
-  " " delay before pressing "p" would accidentally paste).
-  " " \l       : list buffers
-  " " \b \f \g : go back/forward/last-used
-  " " \1 \2 \3 : go to buffer 1/2/3 etc
-  map <Leader>l :ls<CR>
-  "overwriten by GDB
-  map <Leader>f :bn<CR>
-  map <Leader>1 :1b<CR>
-  map <Leader>2 :2b<CR>
-  map <Leader>3 :3b<CR>
-  map <Leader>4 :4b<CR>
-  map <Leader>5 :5b<CR>
-  map <Leader>6 :6b<CR>
-  map <Leader>7 :7b<CR>
-  map <Leader>8 :8b<CR>
-  map <Leader>9 :9b<CR>
-  map <Leader>0 :10b<CR>
-
 
 
 " Filetype
@@ -366,7 +344,7 @@ set nocompatible | filetype plugin indent on | syntax on
       let g:ctrlp_map = '<C-E>'
     else
       " Because move up gives c-e
-      let g:ctrlp_map = '<leader>e'
+      let g:ctrlp_map = '<leader>ee'
     endif
     " Keep cache
     let g:ctrlp_clear_cache_on_exit = 0
@@ -440,11 +418,10 @@ set nocompatible | filetype plugin indent on | syntax on
       \ }]
     au BufNewFile,BufRead */todo      setf vimwiki
     " Map
-    packadd vimwiki " TODO remove and add autoload
     noremap <leader>ww :VimwikiIndex 1<CR>
     map <leader>tt :VimwikiIndex 2<CR>
     map <leader>t<leader>t :VimwikiDiaryIndex 2<CR>
-    function Windex(num)
+    function! Windex(num)
       let l:nr = 1 + vimwiki#vars#get_bufferlocal('wiki_nr')
       if &ft!='vimwiki' || l:nr != a:num
         execute 'VimwikiIndex ' . a:num
@@ -457,6 +434,9 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:vimwiki_table_reduce_last_col = 1
     let g:vimwiki_table_mappings = 0
     let g:vimwiki_table_auto_fmt = 1
+    let g:vimwiki_automatic_nested_syntaxes = 1
+
+    packadd vimwiki " TODO remove and add autoload
     " Calendar
     let g:calendar_monday = 1
 
@@ -504,6 +484,7 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:airline_symbols.readonly = ''
     let g:airline_symbols.linenr = ''
 
+
 " Termux
   if 'termux' == $os
     autocmd CursorHold,CursorHoldI *  silent update
@@ -522,7 +503,7 @@ set nocompatible | filetype plugin indent on | syntax on
   " Snip
   packadd ultisnips " 3ms
   " Slow : reload on demand
-  " packadd emacscommandline
+  packadd emacscommandline
   " packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines)
 
 
