@@ -23,5 +23,5 @@ function make_clone {
 create_dir
 make_clone ~/wiki/wiki https://gitlab.com/tinmarino/vimwiki.git
 make_clone ~/wiki/wiki_html https://gitlab.com/tinmarino/Wiki_Html.git  
-make_clone ~/wiki/todo https://gitlab.com/tinmarino/todo 
+make_clone ~/wiki/todo https://gitlab.com/tinmarino/todo.git 
 make_clone ~/wiki/html https://gitlab.com/tinmarino/html.git
