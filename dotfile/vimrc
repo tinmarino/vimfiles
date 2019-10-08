@@ -38,6 +38,7 @@ set nocompatible | filetype plugin indent on | syntax on
   let $bashrc = expand($h . "/.bashrc")
   let $gitrc = expand($h . "/.gitconfig")
   let $vimrc = expand($h . "/.vimrc")
+  let $tmuxrc = expand($h . "/.tmux.conf")
   " Vim
   let $auto = expand("$v/autoload")
   let $ft = expand("$v/ftplugin")
@@ -257,7 +258,9 @@ set nocompatible | filetype plugin indent on | syntax on
     endfunction
     nnoremap <Leader>ea :call Edit($alias)<CR>
     nnoremap <Leader>eb :call Edit($bashrc)<CR>
+    nnoremap <Leader>ed :call Edit('$h/wiki/todo/done.md')<CR>
     nnoremap <Leader>eg :call Edit($gitrc)<CR>
+    nnoremap <Leader>et :call Edit($tmuxrc)<CR>
     nnoremap <Leader>ev :call Edit($vimrc)<CR>
     nnoremap <leader>s :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
     nnoremap <leader>b :write! $v/undo/<C-R>=strftime("%y-%m-%d")<CR>-%:t-bak.txt<CR>
