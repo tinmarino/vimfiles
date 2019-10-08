@@ -143,3 +143,5 @@ function command_not_found_handle {
 # Fast
   # tmux completion
   source ~/.vim/dotfile/tmux_completion.sh
+  # man
+  alias man=vman

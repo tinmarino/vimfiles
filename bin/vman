@@ -1,0 +1,10 @@
+#!/bin/sh
+# Pager <- Vim: https://vim.fandom.com/wiki/Using_vim_as_a_man-page_viewer_under_Unix
+
+if [ $# -eq 0 ]; then
+  command man
+elif whatis $* ; then
+  vim -c "M $*" -c "silent! only" -c 'nmap q :q<CR>'
+else
+  command man $*
+fi
