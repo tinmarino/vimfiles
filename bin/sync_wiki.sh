@@ -20,7 +20,6 @@ function ssync(){
       let ret=1
     fi
     popd > /dev/null
-    echo "ret is $ret"
     return $ret
 }
 
