@@ -30,7 +30,7 @@
     ds = dc  # --Staged
     rc = rm --cached
     aa = add --all
-    ca = commit -a -m 
+    ca = commit --amend -m 
 
     # Rebase
     ra = rebase --abort
