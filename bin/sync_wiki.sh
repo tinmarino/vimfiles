@@ -26,14 +26,14 @@ function ssync(){
 
 echo "---> Synchronizing from internet"
 
-let err=0
+let ok=0
 let n=0
 
-let n++ ; ssync ~/.vim           || let err++
-let n++ ; ssync ~/wiki/wiki      || let err++
-let n++ ; ssync ~/wiki/wiki_html || let err++
-let n++ ; ssync ~/wiki/todo      || let err++
-let n++ ; ssync ~/wiki/html      || let err++
+let n++ ; ssync ~/.vim           && let ok++
+let n++ ; ssync ~/wiki/wiki      && let ok++
+let n++ ; ssync ~/wiki/wiki_html && let ok++
+let n++ ; ssync ~/wiki/todo      && let ok++
+let n++ ; ssync ~/wiki/html      && let ok++
 
 
-echo "<--- Synchronization finihed with $err/$n failed"
+echo "<--- Synchronization finihed with $ok/$n success"
