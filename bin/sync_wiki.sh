@@ -29,11 +29,11 @@ echo "---> Synchronizing from internet"
 let err=0
 let n=0
 
-let n++ ;    ssync ~/.vim           || let err++
-let n++ ;    ssync ~/wiki/wiki      || let err++
-let n++ &&    ssync ~/wiki/wiki_html || let err++
-let n++ &&    ssync ~/wiki/todo      || let err++
-let n++ &&    ssync ~/wiki/html      || let err++
+let n++ ; ssync ~/.vim           || let err++
+let n++ ; ssync ~/wiki/wiki      || let err++
+let n++ ; ssync ~/wiki/wiki_html || let err++
+let n++ ; ssync ~/wiki/todo      || let err++
+let n++ ; ssync ~/wiki/html      || let err++
 
 
 echo "<--- Synchronization finihed with $err/$n failed"
