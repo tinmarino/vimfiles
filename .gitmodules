@@ -137,5 +137,6 @@
     url = https://github.com/mattn/calendar-vim
     ignore = all
 [submodule "template/snippets"]
-	path = pack/bundle/opt/snippets
-	url = git://github.com/honza/vim-snippets.git
+	  path = pack/bundle/opt/snippets
+	  url = git://github.com/honza/vim-snippets.git
+    ignore = all
