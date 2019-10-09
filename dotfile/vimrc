@@ -39,6 +39,7 @@ set nocompatible | filetype plugin indent on | syntax on
   let $gitrc = expand($h . "/.gitconfig")
   let $vimrc = expand($h . "/.vimrc")
   let $tmuxrc = expand($h . "/.tmux.conf")
+  let $done = expand($h . '/wiki/todo/done.md')
   " Vim
   let $auto = expand("$v/autoload")
   let $ft = expand("$v/ftplugin")
