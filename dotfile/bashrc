@@ -127,6 +127,9 @@ function command_not_found_handle {
 
 
 # Git
+  # Completion
+  source /usr/share/bash-completion/completions/git
+  __git_complete g __git_main
   # Samsung j6
   if [ $OS == 'termux' ] ; then
     export GIT_AUTHOR_NAME="tinmux"
