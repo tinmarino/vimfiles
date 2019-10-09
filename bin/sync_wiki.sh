@@ -37,7 +37,7 @@ echo "---> Synchronizing from internet"
 let ok=0
 let n=0
 
-let n++ ; ssync ~/.vim           && let ok++
+# let n++ ; ssync ~/.vim           && let ok++
 let n++ ; ssync ~/wiki/wiki      && let ok++
 let n++ ; ssync ~/wiki/wiki_html && let ok++
 let n++ ; ssync ~/wiki/todo      && let ok++
