@@ -1,17 +1,23 @@
 #!/bin/bash
 # This file serves for synchronosation
 
-current_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
 # Sychrnonize argument folder
 function ssync(){
+    # Set vars
     title=$(basename -- "$1")
     title=${title^^}
     let ret=0
+
+    # Log && Pushd
     echo "--->  $title  ================================================="
     mkdir $1 2> /dev/null && echo "Created directory $1"
     pushd $1 > /dev/null
+
+    # Git sync
     git add .
-    git commit -m "___ <- sync_git.sh"
+    message="___ <- sync_wiki.sh: Modified: $(git diff --name-only --cached | sed ':a;N;$!ba;s/\n/, /g')"
+    git commit -m "$message"
     git pull --rebase
     if git push ; then
       echo '[+] push OK'
@@ -19,9 +25,12 @@ function ssync(){
       echo '[-] push failed'
       let ret=1
     fi
+
+    # Popd && Ret
     popd > /dev/null
     return $ret
 }
+
 
 echo "---> Synchronizing from internet"
 
