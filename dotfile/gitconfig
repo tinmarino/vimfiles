@@ -28,6 +28,7 @@
     # Util
     aa = add --all
     ca = commit --amend -m 
+    ck = checkout
     dc = diff --cached
     ds = dc  # --Staged
     rc = rm --cached
