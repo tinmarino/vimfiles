@@ -23,7 +23,7 @@ function command_not_found_handle {
     git ${1:1} $2
   # If any shit, echo bash default errmsg
   else
-    echo bash: $1: command not found
+    echo "bash(rc): $1: command not found"
   fi
 }
 
@@ -101,9 +101,9 @@ function command_not_found_handle {
       . ~/.bash_aliases.sh
   fi
 
-  if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-      . /etc/bash_completion
-  fi
+  # if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+  #     . /etc/bash_completion
+  # fi
 
 
 # Path
@@ -128,7 +128,7 @@ function command_not_found_handle {
 
 # Git
   # Completion
-  source /usr/share/bash-completion/completions/git
+  # source /usr/share/bash-completion/completions/git
   __git_complete g __git_main
   # Samsung j6
   if [ $OS == 'termux' ] ; then
