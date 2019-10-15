@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-function create_dir {
+create_dir() {
   cd ~ && mkdir wiki \
     && echo '[+] ~/wiki created' \
     || echo '[-] ~/wiki not created already exists ?'
@@ -9,10 +9,10 @@ function create_dir {
     || echo '[-] some wiki dir not created already exists ?'
 }
 
-function make_clone {
+make_clone() {
   dir=$1
   url=$2
-  echo "[*] Working with $dir"
+  echo -e "\n[*] Working with $dir"
   [ -d $dir ] \
     && cd $dir \
     && git clone  $url . \
@@ -20,8 +20,13 @@ function make_clone {
     || echo "[-] $dir not cloned maybe create the dir with function create_dir in this file"
 }
 
+pushd ~
+mkdir .Trash
+
 create_dir
 make_clone ~/wiki/wiki https://gitlab.com/tinmarino/vimwiki.git
 make_clone ~/wiki/wiki_html https://gitlab.com/tinmarino/Wiki_Html.git  
 make_clone ~/wiki/todo https://gitlab.com/tinmarino/todo.git 
 make_clone ~/wiki/html https://gitlab.com/tinmarino/html.git
+
+popd
