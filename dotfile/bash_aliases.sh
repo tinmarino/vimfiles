@@ -1,3 +1,8 @@
+# Varaible
+  export v="$HOME/.vim"
+  export w="$HOME/wiki/wiki"
+  export t="$HOME/wiki/todo"
+
 # Shortcut
   # Languages
   alias py='python3'
@@ -16,7 +21,9 @@
   alias ll='ls -lh'
   alias h="history|grep "
   alias f="find . |grep "
-  
+
+
+# Shortcut largers
   # Bigger for memory
   alias open='xdg-open'
   alias clip="xclip -selection c"
