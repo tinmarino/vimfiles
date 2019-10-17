@@ -1,7 +1,8 @@
 # Varaible
+  export bin="$HOME/.vim/bin"
+  export t="$HOME/wiki/todo"
   export v="$HOME/.vim"
   export w="$HOME/wiki/wiki"
-  export t="$HOME/wiki/todo"
 
 # Shortcut
   # Languages

@@ -140,3 +140,6 @@
 	  path = pack/bundle/opt/snippets
 	  url = git://github.com/honza/vim-snippets.git
     ignore = all
+[submodule "pack/bundle/opt/colorizer"]
+	path = pack/bundle/opt/colorizer
+	url = https://github.com/chrisbra/Colorizer.git

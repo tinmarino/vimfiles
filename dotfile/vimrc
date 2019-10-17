@@ -437,7 +437,7 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:vimwiki_syntax = 'markdown'
     let g:vimwiki_ext = '.md'
     let g:vimwiki_custom_wiki2html = $home . "/wiki/wiki/wiki2html.sh"
-    let g:vimwiki_css_name = '/include.css'
+    let g:vimwiki_css_name = '/Css/include.css'
 
     packadd vimwiki " TODO remove and add autoload
     " Calendar

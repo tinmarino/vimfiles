@@ -128,7 +128,9 @@ function command_not_found_handle {
 
 # Git
   # Completion
-  # source /usr/share/bash-completion/completions/git
+  if [ $OS == 'unix' ] ; then 
+    source /usr/share/bash-completion/completions/git # On desktop
+  fi
   __git_complete g __git_main
   # Samsung j6
   if [ $OS == 'termux' ] ; then
