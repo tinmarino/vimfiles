@@ -336,6 +336,7 @@ set nocompatible | filetype plugin indent on | syntax on
   " CtrlP
     " Cache
     let g:ctrlp_cache_dir = $home . '/.cache/ctrlp'
+    let g:ctrlp_mruf_max = 50000
     " Use ag <- grep
     if executable('ag')
       let g:ctrl_user_command = 'ag %s -l --nocolor -g ""'
@@ -355,6 +356,7 @@ set nocompatible | filetype plugin indent on | syntax on
     " Keep cache
     let g:ctrlp_clear_cache_on_exit = 0
     " Mixed to search in MRU, FIles, Buffers
+    let g:ctrlp_extensions = ['mixed']
     let g:ctrlp_cmd = 'CtrlPMixed'
 
   " Vim Translator
