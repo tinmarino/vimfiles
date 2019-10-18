@@ -24,8 +24,8 @@ pushd ~
 mkdir .Trash
 
 create_dir
-make_clone ~/wiki/wiki https://gitlab.com/tinmarino/vimwiki.git
-make_clone ~/wiki/wiki_html https://gitlab.com/tinmarino/Wiki_Html.git  
+make_clone ~/wiki/wiki  https://github.com/tinmarino/wiki.git
+make_clone ~/wiki/wiki_html https://github.com/tinmarino/wiki_html.git
 make_clone ~/wiki/todo https://gitlab.com/tinmarino/todo.git 
 make_clone ~/wiki/html https://gitlab.com/tinmarino/html.git
 
