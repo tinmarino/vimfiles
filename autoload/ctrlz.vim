@@ -1,12 +1,16 @@
 " Add that to my bashrc
 " PROMPT_COMMAND='read -r line 2>/dev/null </tmp/vim_cd'\
 " '&& > /tmp/vim_cd && cd ${line##\r};'$PROMPT_COMMAND
+" And that to vimrc
+" nnoremap <expr> <c-z> ctrlz#ctrlz()
+" nnoremap <silent> <expr> <leader>cd ctrlz#dadcd()
 
 let s:temp_path = '/tmp'
 if "termux" == $os
   let s:temp_path = expand('~/../usr/tmp')
 endif
 
+" Main: mapped to <c-z> in vimrc
 function! ctrlz#ctrlz()
   call writefile([getcwd(),''], s:temp_path . '/vim_cd', 'b')
   return "\<C-z>"

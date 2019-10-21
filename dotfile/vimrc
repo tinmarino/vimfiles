@@ -150,10 +150,6 @@ set nocompatible | filetype plugin indent on | syntax on
   " select last paste in visual mode
     nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
 
-  " Ctrlz (my plugin)
-    nnoremap <silent> <expr> <leader>cd ctrlz#dadcd()
-    nnoremap <expr> <c-z> ctrlz#ctrlz()
-
   " Perso maps normal
     nnoremap H :set cursorline! cursorcolumn!<CR>
     map xy :s/x/y/g<CR>
