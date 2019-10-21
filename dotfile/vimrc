@@ -199,14 +199,15 @@ set nocompatible | filetype plugin indent on | syntax on
     map s <C-S>
 
   " Commenting blocks of code with ,cc ,cu
-    autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
-    autocmd FileType sh,ruby,python   let b:comment_leader = '# '
-    autocmd FileType conf,fstab       let b:comment_leader = '# '
-    autocmd FileType tex              let b:comment_leader = '% '
-    autocmd FileType mail             let b:comment_leader = '> '
-    autocmd FileType vim              let b:comment_leader = '" '
-    noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
-    noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
+    " TODO better map
+    " autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
+    " autocmd FileType sh,ruby,python   let b:comment_leader = '# '
+    " autocmd FileType conf,fstab       let b:comment_leader = '# '
+    " autocmd FileType tex              let b:comment_leader = '% '
+    " autocmd FileType mail             let b:comment_leader = '> '
+    " autocmd FileType vim              let b:comment_leader = '" '
+    " noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
+    " noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 
   " Fold
     nnoremap <space> za
@@ -297,8 +298,6 @@ set nocompatible | filetype plugin indent on | syntax on
   " Pymode
     let g:pymode_python = 'python3'
     let pymode_lint_checkers = ['pylint', 'pep8', 'pyflakes']
-    " Column at 120
-    autocmd FileType python set colorcolumn=120
     " let g:pymode_options_colorcolumn = 0 " Remove the red line
     let g:pymode_rope_goto_definition_cmd = 'e'
     " Auto open cwindow (quickfix) if any errors have been found
@@ -491,7 +490,7 @@ set nocompatible | filetype plugin indent on | syntax on
 
 
 " Termux
-  if 'termux' == $os
+  if 'termux' == $os && expand('%') != ''
     autocmd CursorHold,CursorHoldI *  silent update
   endif
 

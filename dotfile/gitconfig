@@ -1,7 +1,7 @@
 [credential]
 	helper = store
 [core]
-	pager = vim -c 'packadd ansiesc' -c 'AnsiEsc' -c 'map q :q!<CR>' - 
+    pager = vim -c 'set foldlevel=99' -c 'packadd ansiesc' -c 'AnsiEsc' -c 'map q :q!<CR>' - 
 [alias]
 
     # One letter
