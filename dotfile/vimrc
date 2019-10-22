@@ -71,6 +71,7 @@ set nocompatible | filetype plugin indent on | syntax on
     set guioptions-=T                  " Toolbar
     set guioptions-=m                  " Menumbar
   " Wildignore : Ignore these filenames during enhanced command line completion.
+    set wildmenu
     set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz  " LaTeX intermediate files
     set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images
     set wildignore+=*.luac  " Lua byte code
