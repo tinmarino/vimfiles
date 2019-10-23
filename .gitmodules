@@ -143,3 +143,6 @@
 [submodule "pack/bundle/opt/colorizer"]
 	path = pack/bundle/opt/colorizer
 	url = https://github.com/chrisbra/Colorizer.git
+[submodule "pack/bundle/opt/repeat"]
+	path = pack/bundle/opt/repeat
+	url = https://github.com/tpope/vim-repeat
