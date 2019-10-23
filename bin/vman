@@ -1,10 +1,85 @@
 #!/bin/sh
 # Pager <- Vim: https://vim.fandom.com/wiki/Using_vim_as_a_man-page_viewer_under_Unix
+# check size <- https://unix.stackexchange.com/questions/245064/what-is-the-best-way-to-pipe-the-output-of-a-command-through-a-pager-if-and-onl
 
-if [ $# -eq 0 ]; then
-  command man
-elif whatis $* ; then
-  vim -c "M $*" -c "silent! only" -c 'nmap q :q<CR>'
-else
-  command man $*
-fi
+unset PAGER
+
+man_print() {
+    while read line
+    do
+      echo "$line"
+    done 
+}
+man_cat() { cat -; }
+
+# man for manpages
+man_vim(){
+    #col -b -x |
+    vim -R \
+    -c 'set ft=man nomod nolist' -c 'map q :q<CR>' \
+    -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
+    -c 'set foldlevel=30'  \
+    -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' \
+    -c 'packadd ansiesc' -c 'AnsiEsc' \
+    -c 'set ft=man' \
+    -
+}
+
+# Man for git diff files
+man_git() {
+    vim -R \
+    -c 'map q :q<CR>' \
+    -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
+    -c 'set foldlevel=30' \
+    -c 'packadd ansiesc' -c 'AnsiEsc' \
+    -
+}
+
+man_select(){
+    buffer=$(mktemp)
+    rows="${LINES:=$(tput lines)}"
+    cols="${COLUMNS:=$(tput cols)}"
+    while true
+    do
+        # Read
+        IFS= read -r some_data
+        e=$?        # 1 if EOF, 0 if normal, successful read.
+
+        # Pie
+        printf "%s" "$some_data" >> "$buffer"
+        if [ "$e" = 0 ]
+        then
+            printf "\n" >> "$buffer"
+        fi
+
+        # Check if size of buffer fits
+        n_virt=$(fold -w"$cols" "$buffer" | wc -l)
+        if [ "$n_virt" -lt "$rows" ]
+        # Small
+        then
+            if [ "$e" != 0 ]
+            then
+                less "$buffer"
+            else
+                continue
+            fi
+        # Large
+        else
+            # But with EOF so cat
+            if [ "$e" != 0 ]
+            then
+                "${PAGER:="less"}" < "$buffer"
+                # The above is equivalent to
+                # cat "$buffer"   | "${PAGER:="less"}"
+                # … but that’s a UUOC.
+            # So work
+            else
+                less "$buffer" | "${PAGER:="man_vim"}"
+            fi
+        fi
+        break
+    done
+    rm "$buffer"
+}
+
+man_select
