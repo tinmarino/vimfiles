@@ -5,27 +5,35 @@
 
 unset PAGER
 
+
+# PAGER bash example
 man_print() {
     while read line
     do
       echo "$line"
     done 
 }
+
+
+# PAGER smallest
 man_cat() { cat -; }
 
-# man for manpages
-man_page(){
+
+# PAGER for manpages (prefix by col)
+man_col(){
     col -b -x |
     vim -R \
-    -c 'set ft=man nomod nolist' -c 'map q :q<CR>' \
+    -c 'set ft=man nomod nolist' \
+    -c 'map q :q<CR>' \
     -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
     -c 'set foldlevel=30'  \
     -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' \
     -
 }
 
-# Man for git diff files
-man_git() {
+
+# PAGER for git diff files (Ansi-Escaped)
+man_ansi() {
     vim -R \
     -c 'map q :q<CR>' \
     -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
@@ -33,6 +41,7 @@ man_git() {
     -c 'packadd ansiesc' -c 'AnsiEsc' \
     -
 }
+
 
 # Discrimintate size of stdin to pipe in (vim | less | cat)
 man_select(){
@@ -44,27 +53,24 @@ man_select(){
         IFS= read -r some_data
         eof=$?        # 1 if EOF, 0 if normal, successful read.
 
-        # Pie
-        printf "tin: print content\n" >> "$buffer"
+        # Write to buffer
         printf "%s" "$some_data" >> "$buffer"
         if [ "$eof" = 0 ]
         then
-            printf "tin: print newline\n" >> "$buffer"
             printf "\n" >> "$buffer"
         fi
 
         # Check if size of buffer fits
         n_virt=$(fold -w"$cols" "$buffer" | wc -l)
         if [ "$n_virt" -lt "$rows" ]
+
         # If Small
         then
             if [ "$eof" != 0 ]
             then
-                printf "tin: Cat\n" >> "$buffer"
                 cat "$buffer"
             else
                 # If not finished continue reading
-                printf "tin: Continue\n" >> "$buffer"
                 continue
             fi
 
@@ -73,21 +79,20 @@ man_select(){
             # But with EOF so cat
             if [ "$eof" != 0 ]
             then
-                printf "tin: printing with less\n" >> "$buffer"
                 "${PAGER:="less"}" < "$buffer"
                 # The above is equivalent to
                 # cat "$buffer"   | "${PAGER:="less"}"
                 # … but that’s a UUOC.
             # So work
             else
-                printf "tin: printing for big\n" >> "$buffer"
-
-                # Remove escape seq (IDEA can be improved, detect them and pass down)
-                perl -pe 's/\x1b\[[0-9;]*[mG]//g' |
+                # Choose PAGER accroding to AnsiEsc detection
+                man_cmd="man_col"
+                perl -ne 'exit 42 if m/\e\[[0-9;]*[mG]/' "$buffer"
+                [ $? = 42 ] && man_cmd="man_ansi"
                 # Concatenate buffer (size of the screen) and stdin (-)
                 cat "$buffer" - |
                 # Go in Vim
-                "${PAGER:="man_vim"}"
+                "${PAGER:="$man_cmd"}"
             fi
         fi
         break
