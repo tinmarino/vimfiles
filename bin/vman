@@ -1,7 +1,7 @@
 #!/bin/sh
 # Pager <- Vim: https://vim.fandom.com/wiki/Using_vim_as_a_man-page_viewer_under_Unix
 # check size <- https://unix.stackexchange.com/questions/245064/what-is-the-best-way-to-pipe-the-output-of-a-command-through-a-pager-if-and-onl
-# Require perl
+# Require perl, tput (in ncurses-utils)
 
 unset PAGER
 
