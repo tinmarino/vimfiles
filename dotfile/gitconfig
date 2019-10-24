@@ -1,9 +1,6 @@
 [credential]
 	helper = store
-[core]
-    pager = vim -c 'set foldlevel=99' -c 'packadd ansiesc' -c 'AnsiEsc' -c 'map q :q!<CR>' - 
 [alias]
-
     # One letter
     a = add
     c = commit -m
