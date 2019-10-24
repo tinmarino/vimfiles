@@ -264,7 +264,7 @@ set nocompatible | filetype plugin indent on | syntax on
     nnoremap <Leader>et :call Edit($tmuxrc)<CR>
     nnoremap <Leader>ev :call Edit($vimrc)<CR>
   " Backup file
-    nnoremap <leader>b :write! $v/undo/<C-R>="bck_" . strftime("%y-%m-%d-%H-%M") . "--" .   substitute(expand("%:p"), "/", "_", "g")<CR><CR>
+    nnoremap <leader>b :let $bck_file = "bck_" . strftime("%y-%m-%d-%H-%M") . "--" .   substitute(expand("%:p"), "/", "_", "g") <bar> silent write! $v/undo/$bck_file <CR>:echom "Bck: " . $bck_file . " has been written"<CR>
 
 
 " Command Man
