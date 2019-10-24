@@ -205,7 +205,7 @@ set nocompatible | filetype plugin indent on | syntax on
     " noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 
   " Fold
-    nnoremap <space> za
+    nnoremap <space> zA
     vnoremap <space> zf
     map z1  :set foldlevel=0<CR><Esc>
     map z2  :set foldlevel=1<CR><Esc>
@@ -248,6 +248,7 @@ set nocompatible | filetype plugin indent on | syntax on
     map gè g7
     map g_ g8
     map gç g9
+
 
 " Map Leadered
   " Edit special files
