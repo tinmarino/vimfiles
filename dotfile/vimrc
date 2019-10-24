@@ -189,11 +189,9 @@ set nocompatible | filetype plugin indent on | syntax on
     cmap [1;2D <S-Left>
     cmap [1;2C <S-Right>
 
-  " Save c-s and s
-    noremap <C-S>      :update!<CR>
-    vnoremap <C-S>    <C-C>:update!<CR>
-    inoremap <C-S>    <C-O>:update!<CR>
-    map s <C-S>
+  " Save with s
+    noremap s      :update!<CR>
+    vnoremap s    <C-C>:update!<CR>
 
   " Commenting blocks of code with ,cc ,cu
     " TODO better map
@@ -251,6 +249,7 @@ set nocompatible | filetype plugin indent on | syntax on
     map g_ g8
     map gç g9
 
+" Map Leadered
   " Edit special files
     function! Edit(file)
       try | execute 'buffer ' . a:file
@@ -263,8 +262,8 @@ set nocompatible | filetype plugin indent on | syntax on
     nnoremap <Leader>eg :call Edit($gitrc)<CR>
     nnoremap <Leader>et :call Edit($tmuxrc)<CR>
     nnoremap <Leader>ev :call Edit($vimrc)<CR>
-    nnoremap <leader>s :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
-    nnoremap <leader>b :write! $v/undo/<C-R>=strftime("%y-%m-%d")<CR>-%:t-bak.txt<CR>
+  " Backup file
+    nnoremap <leader>b :write! $v/undo/<C-R>="bck_" . strftime("%y-%m-%d-%H-%M") . "--" .   substitute(expand("%:p"), "/", "_", "g")<CR><CR>
 
 
 " Command Man
@@ -332,11 +331,13 @@ set nocompatible | filetype plugin indent on | syntax on
   " CtrlP
     " Cache
     let g:ctrlp_cache_dir = $home . '/.cache/ctrlp'
+    " replace $home by ~ in cache
+    let g:ctrlp_tilde_homedir = 1
     let g:ctrlp_mruf_max = 50000
     " Use ag <- grep
-    if executable('ag')
-      let g:ctrl_user_command = 'ag %s -l --nocolor -g ""'
-    endif
+    " if executable('ag')
+    "   let g:ctrl_user_command = 'ag %s -l --nocolor -g ""'
+    " endif
     " Ignore
     let g:ctrlp_cutom_ignore = {
       \ 'dir': '\.git$',
@@ -495,12 +496,13 @@ set nocompatible | filetype plugin indent on | syntax on
 " PackAdd
   " Interface
   packadd fugitive
-  packadd airline
+  packadd airline " 40ms ! the first to kill (autoload)
   packadd ctrlp " 3ms
   " Map
-  packadd surround
-  packadd argtextobject " daa
-  packadd indent-object " dai 
+  packadd surround  " ySS<div>
+  packadd repeat  " for surround
+  packadd argtextobject  " daa
+  packadd indent-object  " dai
   " Snip
   packadd ultisnips " 3ms
   " Slow : reload on demand
