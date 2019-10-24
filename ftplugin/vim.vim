@@ -1,3 +1,7 @@
+
+" Compile is sourcing
+nnoremap <leader>c :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
+
 set shiftwidth=2
 set foldmethod=indent
 set foldexpr=FoldVimMethod(v:lnum)
