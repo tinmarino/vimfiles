@@ -5,23 +5,27 @@
   export w="$HOME/wiki/wiki"
 
 # Shortcut
-  # Languages
-  alias py='python3'
-  alias ipy='ipython3'
-  alias vi="vim"
-  alias pl="perl"
-
   # Small as Huffman
   alias g='git'
   alias v='vim'
-  alias w='vi -c"normal ,ww"'
-  alias t='vi -c"normal ,tt"'
   alias o='xdg-open'
   alias c="clip"
   alias disas='objdump -drwC -Mintel'
   alias ll='ls -lh'
   alias h="history|grep "
   alias f="find . |grep "
+
+  # Languages
+  alias py='python3'
+  alias ipy='ipython3'
+  alias vi="vim"
+  alias pl="perl"
+
+  # Wiki
+  function w () { [ -z "$1" ] && vi -c"call Windex(1)" || vi -c"call Windex(1)" -c":VimwikiGoto $1"; }
+  function t () { [ -z "$1" ] && vi -c"call Windex(2)" || vi -c"call Windex(2)" -c":VimwikiGoto $1"; }
+  f="$HOME/wiki/todo/Src/links.txt" ; [ -f $f ] && complete -W "$(cat $f)" t
+  f="$HOME/wiki/wiki/Src/links.txt" ; [ -f $f ] && complete -W "$(cat $f)" w
 
 
 # Shortcut largers
