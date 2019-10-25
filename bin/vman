@@ -95,10 +95,10 @@ man_select(){
 man_main() {
     # See if argument commes from stdin (unix) or file (termux)
     if [ ! -z "$1" ] ; then
-        cat "$1" | man_cat_col "$1"
+        man_cat_col "$1"
     else
         man_select
     fi
 }
 
-man_main
+man_main "$1"
