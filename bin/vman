@@ -18,14 +18,6 @@ man_print() {
 # PAGER smallest
 man_cat() { cat -; }
 
-man_termux(){
-    vim -R \
-    -c 'set ft=man nomod nolist' \
-    -c 'map q :q<CR>' \
-    -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
-    -c 'set foldlevel=30'  \
-    -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>'
-}
 
 # PAGER for manpages (prefix by col)
 man_col(){
@@ -108,8 +100,4 @@ man_select(){
     rm "$buffer"
 }
 
-if [ "$os" = "termux" ] ; then
-    man_termux
-else
-    man_select
-fi
+man_select
