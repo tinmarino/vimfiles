@@ -108,7 +108,7 @@ man_select(){
     rm "$buffer"
 }
 
-if "$os" == "termux"; then
+if  [ "$os" == "termux" ] ; then
     man_termux
 else
     man_select
