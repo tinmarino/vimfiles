@@ -34,7 +34,7 @@ man_col(){
 
 # As before but with - -> $1
 man_arg(){
-    col -b -x |
+    cat "$1" | col -b -x |
     vim -R \
     --not-a-term \
     -c 'set ft=man nomod nolist' \
@@ -42,7 +42,7 @@ man_arg(){
     -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
     -c 'set foldlevel=30'  \
     -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' \
-    "$1"
+    -
 }
 
 # PAGER for git diff files (Ansi-Escaped)
