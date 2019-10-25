@@ -1,44 +1,36 @@
 #!/bin/sh
-# Pager <- Vim: https://vim.fandom.com/wiki/Using_vim_as_a_man-page_viewer_under_Unix
-# check size <- https://unix.stackexchange.com/questions/245064/what-is-the-best-way-to-pipe-the-output-of-a-command-through-a-pager-if-and-onl
+# <- Pager <- Vim: https://vim.fandom.com/wiki/Using_vim_as_a_man-page_viewer_under_Unix
+# <- Check size <- https://unix.stackexchange.com/questions/245064/what-is-the-best-way-to-pipe-the-output-of-a-command-through-a-pager-if-and-onl
+# <- Pass argument dynamically <- https://unix.stackexchange.com/questions/459367/using-shell-variables-for-command-options
 # Require perl, tput (in ncurses-utils)
 
 unset PAGER
 
-# PAGER for manpages (prefix by col)
-man_col(){
-    col -b -x |
+# Call vim with arguments
+call_vim(){
     vim -R \
     --not-a-term \
-    -c 'set ft=man nomod nolist' \
     -c 'map q :q<CR>' \
     -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
     -c 'set foldlevel=30'  \
-    -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' \
-    -
+    "$@"
 }
 
-# As before but with - -> $1
-man_arg(){
-    cat "$1" | col -b -x |
-    vim -R \
-    --not-a-term \
-    -c 'set ft=man nomod nolist' \
-    -c 'map q :q<CR>' \
-    -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
-    -c 'set foldlevel=30'  \
-    -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' \
-    -
+# PAGER for manpages (prefix by col)
+man_col(){
+    col -b -x | call_vim -c 'set ft=man nomod nolist' \
+        -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' \
+        -
+}
+
+# As before but with - -> $1 (i.e. STDIN -> ARG_1)
+man_cat_col(){
+    cat "$1" | man_col
 }
 
 # PAGER for git diff files (Ansi-Escaped)
 man_ansi() {
-    vim -R \
-    -c 'map q :q<CR>' \
-    -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
-    -c 'set foldlevel=30' \
-    -c 'packadd ansiesc' -c 'AnsiEsc' \
-    -
+    call_vim  -c 'packadd ansiesc' -c 'AnsiEsc' -
 }
 
 
@@ -100,9 +92,13 @@ man_select(){
 }
 
 
-# See if argument commes from stdin (unix) or file (termux)
-if [ ! -z "$1" ] ; then
-    cat "$1" | man_arg "$1"
-else
-    man_select
-fi
+man_main() {
+    # See if argument commes from stdin (unix) or file (termux)
+    if [ ! -z "$1" ] ; then
+        cat "$1" | man_cat_col "$1"
+    else
+        man_select
+    fi
+}
+
+man_main
