@@ -5,20 +5,6 @@
 
 unset PAGER
 
-
-# PAGER bash example
-man_print() {
-    while read line
-    do
-      echo "$line"
-    done 
-}
-
-
-# PAGER smallest
-man_cat() { cat -; }
-
-
 # PAGER for manpages (prefix by col)
 man_col(){
     col -b -x |
