@@ -23,6 +23,7 @@ man_cat() { cat -; }
 man_col(){
     col -b -x |
     vim -R \
+    --not-a-term \
     -c 'set ft=man nomod nolist' \
     -c 'map q :q<CR>' \
     -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
