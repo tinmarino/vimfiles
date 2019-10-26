@@ -2,11 +2,11 @@
 # <- Pager <- Vim: https://vim.fandom.com/wiki/Using_vim_as_a_man-page_viewer_under_Unix
 # <- Check size <- https://unix.stackexchange.com/questions/245064/what-is-the-best-way-to-pipe-the-output-of-a-command-through-a-pager-if-and-onl
 # <- Pass argument dynamically <- https://unix.stackexchange.com/questions/459367/using-shell-variables-for-command-options
-# Require perl, tput (in ncurses-utils)
+# Require perl, tput (in ncurses-utils), less
 
 unset PAGER
 
-# Call vim with arguments
+# Helper: Call vim with arguments
 call_vim(){
     vim -R \
     --not-a-term \
@@ -18,19 +18,21 @@ call_vim(){
 
 # PAGER for manpages (prefix by col)
 man_col(){
-    col -b -x | call_vim -c 'set ft=man nomod nolist' \
+    col -b -x | call_vim \
+        -c 'set ft=man nomod nolist' \
         -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' \
         -
 }
 
 # As before but with - -> $1 (i.e. STDIN -> ARG_1)
 man_cat_col(){
-    cat "$1" | man_col
+    less "$1" | man_col
 }
 
 # PAGER for git diff files (Ansi-Escaped)
 man_ansi() {
-    call_vim  -c 'packadd ansiesc' -c 'AnsiEsc' -
+    call_vim \
+        -c 'packadd ansiesc' -c 'AnsiEsc' -
 }
 
 
@@ -46,20 +48,15 @@ man_select(){
 
         # Write to buffer
         printf "%s" "$some_data" >> "$buffer"
-        if [ "$eof" = 0 ]
-        then
+        if [ "$eof" = 0 ]; then
             printf "\n" >> "$buffer"
         fi
 
-        # Check if size of buffer fits
-        n_virt=$(fold -w"$cols" "$buffer" | wc -l)
-        if [ "$n_virt" -lt "$rows" ]
-
         # If Small
-        then
-            if [ "$eof" != 0 ]
-            then
-                cat "$buffer"
+        n_virt=$(fold -w"$cols" "$buffer" | wc -l)
+        if [ "$n_virt" -lt "$rows" ]; then
+            if [ "$eof" != 0 ]; then
+                less "$buffer"
             else
                 # If not finished continue reading
                 continue
@@ -68,20 +65,16 @@ man_select(){
         # Elif Large
         else
             # But with EOF so cat
-            if [ "$eof" != 0 ]
-            then
+            if [ "$eof" != 0 ]; then
                 "${PAGER:="less"}" < "$buffer"
-                # The above is equivalent to
-                # cat "$buffer"   | "${PAGER:="less"}"
-                # … but that’s a UUOC.
             # So work
             else
-                # Choose PAGER accroding to AnsiEsc detection
+                # Choose PAGER according to AnsiEsc detection
                 man_cmd="man_col"
                 perl -ne 'exit 42 if m/\e\[[0-9;]*[mG]/' "$buffer"
                 [ $? = 42 ] && man_cmd="man_ansi"
                 # Concatenate buffer (size of the screen) and stdin (-)
-                cat "$buffer" - |
+                less "$buffer" - |
                 # Go in Vim
                 "${PAGER:="$man_cmd"}"
             fi
@@ -93,7 +86,7 @@ man_select(){
 
 
 man_main() {
-    # See if argument commes from stdin (unix) or file (termux)
+    # See if argument commes from stdin (unix) or file first argument (man on termux)
     if [ ! -z "$1" ] ; then
         man_cat_col "$1"
     else
