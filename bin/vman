@@ -8,12 +8,12 @@ unset PAGER
 
 # Helper: Call vim with arguments
 call_vim(){
-    vim -R \
+    vim \
+	-R \
     --not-a-term \
     -c 'map q :q!<CR>' \
     -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
     -c 'set foldlevel=30'  \
-    -c 'autocmd! VimEnter * echom "Welcome to .vim/bin/vman" | silent redraw!' \
     "$@"
 }
 
