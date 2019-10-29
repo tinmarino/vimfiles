@@ -1,15 +1,10 @@
-# Varaible
-  export bin="$HOME/.vim/bin"
-  export t="$HOME/wiki/todo"
-  export v="$HOME/.vim"
-  export w="$HOME/wiki/wiki"
-
 # Shortcut
   # Small as Huffman
   alias g='git'
   alias v='vim'
   alias o='xdg-open'
   alias c="clip"
+  alias m='man' ; complete -F m _man
   alias disas='objdump -drwC -Mintel'
   alias ll='ls -lh'
   alias h="history|grep "
@@ -26,6 +21,7 @@
   function t () { [ -z "$1" ] && vi -c"call Windex(2)" || vi -c"call Windex(2)" -c":VimwikiGoto $1"; }
   f="$HOME/wiki/todo/Src/links.txt" ; [ -f $f ] && complete -W "$(cat $f)" t
   f="$HOME/wiki/wiki/Src/links.txt" ; [ -f $f ] && complete -W "$(cat $f)" w
+
 
 
 # Shortcut largers

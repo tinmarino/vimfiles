@@ -7,13 +7,20 @@
 
   # Set OS
   [ ! -z "$(uname -a | grep -i android)" ] \
-    && export OS="termux" \
-    || export OS="unix"
+    && export os="termux" \
+    || export os="unix"
 
   # Execute tmux
   if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
     exec tmux
   fi
+
+# Variable
+  export b="$HOME/.vim/bin" ; export bin="$b"
+  export p="$HOME/.vim/pack/bundle/opt/" ; export pack="$p"
+  export t="$HOME/wiki/todo"
+  export v="$HOME/.vim"
+  export w="$HOME/wiki/wiki"
 
 
 # Unknown command callback (tip: install bash-completion on tmux)
