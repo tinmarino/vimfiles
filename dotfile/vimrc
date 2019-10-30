@@ -59,7 +59,9 @@ set nocompatible | filetype plugin indent on | syntax on
     set nu
   " Statusline
     set laststatus=2        " alwaus show statusline
-    set statusline=%t       " tail of the filename
+    set statusline=         " init void
+    set statusline+=%m      " gflag modified
+    set statusline+=%t      " tail of the filename
     set statusline+=%=      " left/right separator
     set statusline+=%P\ \   " percent through file
     set statusline+=%c,     " cursor column
