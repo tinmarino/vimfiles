@@ -12,7 +12,6 @@ call_vim(){
 	-R \
     --not-a-term \
     -c 'map q :q!<CR>' \
-    -c 'map <SPACE> <C-D>' -c 'map b <C-U>' \
     -c 'set foldlevel=30'  \
     "$@"
 }
@@ -21,6 +20,7 @@ call_vim(){
 man_col(){
     col -b -x | call_vim \
         -c 'set ft=man nomod nolist' \
+        -c 'set sw=3' -c 'set foldmethod=indent' \
         -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' \
         -
 }
