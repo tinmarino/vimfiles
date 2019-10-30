@@ -54,10 +54,16 @@ set nocompatible | filetype plugin indent on | syntax on
     set diffopt+=vertical
     set title                    " change the terminal's title, may not work
     set autoindent  " to have auto indentation when return line
-    set laststatus=2 " for airline
     set wrapscan
     set conceallevel=3
     set nu
+  " Statusline
+    set laststatus=2        " alwaus show statusline
+    set statusline=%t       " tail of the filename
+    set statusline+=%=      " left/right separator
+    set statusline+=%P\ \   " percent through file
+    set statusline+=%c,     " cursor column
+    set statusline+=%l/%L   " cursor line/total lines
   " File format
     set encoding=utf-8
     set foldlevelstart=30 "the folding at opening
@@ -265,7 +271,7 @@ set nocompatible | filetype plugin indent on | syntax on
     nnoremap <Leader>et :call Edit($tmuxrc)<CR>
     nnoremap <Leader>ev :call Edit($vimrc)<CR>
   " Backup file
-    nnoremap <leader>b :let $bck_file = "bck_" . strftime("%y-%m-%d-%H-%M") . "--" .   substitute(expand("%:p"), "/", "_", "g") <bar> silent write! $v/undo/$bck_file <CR>:echom "Bck: " . $bck_file . " has been written"<CR>
+    nnoremap <leader>b :let $bck_file = expand("$v/undo/bck_") . strftime("%y-%m-%d-%H-%M-%S") . "--" .   substitute(expand("%:p"), "/", "_", "g") <bar> silent write! $bck_file <CR>:echom "Bck: " . $bck_file . " has been written"<CR>
 
 
 " Command Man
@@ -451,43 +457,6 @@ set nocompatible | filetype plugin indent on | syntax on
     cnoreabbrev Ag Ack
     cnoreabbrev AG Ack
 
-  " Airline
-    let g:airline#extensions#wordcount#enabled = 0
-    let g:airline_section_a = ''
-    let g:airline_section_b = ''
-    let g:airline_section_x = ''
-    let g:airline_section_y = ''
-    let airline_section_z = '%3p%% %l/%L:%v'
-
-    let g:airline_powerline_fonts = 1
-
-    if !exists('g:airline_symbols')
-        let g:airline_symbols = {}
-    endif
-
-    " unicode symbols
-    let g:airline_left_sep = '»'
-    let g:airline_left_sep = '▶'
-    let g:airline_right_sep = '«'
-    let g:airline_right_sep = '◀'
-    let g:airline_symbols.linenr = '␊'
-    let g:airline_symbols.linenr = '␤'
-    let g:airline_symbols.linenr = '¶'
-    let g:airline_symbols.branch = '⎇'
-    let g:airline_symbols.paste = 'ρ'
-    let g:airline_symbols.paste = 'Þ'
-    let g:airline_symbols.paste = '∥'
-    let g:airline_symbols.whitespace = 'Ξ'
-
-    " airline symbols
-    let g:airline_left_sep = ''
-    let g:airline_left_alt_sep = ''
-    let g:airline_right_sep = ''
-    let g:airline_right_alt_sep = ''
-    let g:airline_symbols.branch = ''
-    let g:airline_symbols.readonly = ''
-    let g:airline_symbols.linenr = ''
-
 
 " Termux
   if 'termux' == $os && expand('%') != ''
@@ -498,7 +467,6 @@ set nocompatible | filetype plugin indent on | syntax on
 " PackAdd
   " Interface
   packadd fugitive
-  packadd airline " 40ms ! the first to kill (autoload)
   packadd ctrlp " 3ms
   " Map
   packadd surround  " ySS<div>
