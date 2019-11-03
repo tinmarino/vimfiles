@@ -39,7 +39,8 @@ function try_link {
         if [ "$os" = "windows" ] ; then
             target=$(convert_path_to_windows "$target")
             link=$(convert_path_to_windows "$link")
-            cmd <<< "mklink $link $target && echo \"[+] $link created\" || echo \"[-] $link failed to create, ARE YOU ADMIN ?\""
+            cmd <<< "mklink $link $target" > /dev/null
+            echo "[?] $link may be created, ARE YOU ADMIN"
         else
             ln -s $target $link && echo "[+] $link created"
         fi
