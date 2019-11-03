@@ -6,9 +6,16 @@
   if [ $PWD == / ] ; then cd ~ ; fi
 
   # Set OS
-  [ ! -z "$(uname -a | grep -i android)" ] \
-    && export os="termux" \
-    || export os="unix"
+  uname=$(uname -a)
+  uname=${uname,,}
+  case $uname in
+    *"android"*)
+      export os="termux";;
+    *"mingw"*)
+      export os="windows";;
+    *"unix"*)
+      export os="unix";;
+  esac
 
   # Execute tmux
   if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
