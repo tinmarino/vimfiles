@@ -1,11 +1,11 @@
-scriptpath=$(dirname "$0")
+scriptpath="$( cd "$(dirname "$0")" ; pwd -P )"
 echo "[*] Dotfile path is $scriptpath"
 
 function try_link {
     if [ -f $2 ] ; then
-        echo "[-] : $2 exists"
+        echo "[-] $2 already exists"
     else
-        ln -s $1 $2 && echo "[+] : $2 created"
+        ln -s $1 $2 && echo "[+] $2 created"
     fi
 }
 
@@ -26,13 +26,13 @@ if [ -d $HOME/.vim ] ; then  # I am on gnunix
     vimfile_path=$HOME/.vim
 else  # I may be on windows
     vimfile_path=$(which gvim)  # Returns : /c/Users/chio/Work/Program/Gvim/vim81/gvim
-    vimfile_path=$(dirname $gvim_path)
-    vimfile_path=$(dirname $gvim_path)
+    vimfile_path=$(dirname $vimfile_path)
+    vimfile_path=$(dirname $vimfile_path)
     vimfile_path="$gvim_path/vimfiles"
 fi
 undo_path=$vimfile_path/undo
 if [ -d $undo_path ] ; then
-    echo "[*] $undo_path already exists"
+    echo "[-] $undo_path already exists"
 else
     mkdir ~/.vim/undo
     echo "[+] $undo_path created"
