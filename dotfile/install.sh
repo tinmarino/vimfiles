@@ -22,7 +22,7 @@ function try_link {
         echo "[-] $2 already exists"
     else
         if [ "$os" = "windows" ] ; then
-            mklink /D $2 $1 && echo "[+] $2 created"
+            echo mklink $2 $1  # && echo "[+] $2 created"
         else
             ln -s $1 $2 && echo "[+] $2 created"
         fi
