@@ -1,13 +1,34 @@
+# Get script path
 scriptpath="$( cd "$(dirname "$0")" ; pwd -P )"
 echo "[*] Dotfile path is $scriptpath"
 
+# Get OS
+uname=$(uname -a)
+uname=${uname,,}
+case $uname in
+  *"android"*)
+    export os="termux";;
+  *"linux"*)
+    export os="unix";;
+  *"mingw"*)
+    export os="windows";;
+esac
+echo "[*] OS is $os"
+
+
+# Helper: Make symbolic link
 function try_link {
     if [ -f $2 ] ; then
         echo "[-] $2 already exists"
     else
-        ln -s $1 $2 && echo "[+] $2 created"
+        if [ "$os" = "windows" ] ; then
+            mklink /D $2 $1 && echo "[+] $2 created"
+        else
+            ln -s $1 $2 && echo "[+] $2 created"
+        fi
     fi
 }
+
 
 # Git
 try_link $scriptpath/gitconfig  ~/.gitconfig
