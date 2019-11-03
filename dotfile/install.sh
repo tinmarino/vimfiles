@@ -1,29 +1,49 @@
+scriptpath=$(dirname "$0")
+echo "[*] Dotfile path is $scriptpath"
+
 function try_link {
-    [ -f $2 ] \
-        && echo "FF : $2 exists" \
-        || ( ln -s $1 $2 && echo "OK : $2 created" )
+    if [ -f $2 ] ; then
+        echo "[-] : $2 exists"
+    else
+        ln -s $1 $2 && echo "[+] : $2 created"
+    fi
 }
 
 # Git
-try_link ~/.vim/dotfile/gitconfig  ~/.gitconfig
+try_link $scriptpath/gitconfig  ~/.gitconfig
 
 # Tmux
-try_link ~/.vim/dotfile/tmux.conf  ~/.tmux.conf
+try_link $scriptpath/tmux.conf  ~/.tmux.conf
 
 # Termux
 [ -d ~/.termux ] || mkdir ~/.termux
-try_link ~/.vim/dotfile/termux.properties ~/.termux/termux.properties
+try_link $scriptpath/termux.properties ~/.termux/termux.properties
 
 # Vim
-[ -d ~/.vim/undo ] || mkdir ~/.vim/undo
-try_link ~/.vim/dotfile/vimrc ~/.vimrc
+try_link $scriptpath/vimrc ~/.vimrc
+# # Create undodir
+if [ -d $HOME/.vim ] ; then  # I am on gnunix
+    vimfile_path=$HOME/.vim
+else  # I may be on windows
+    vimfile_path=$(which gvim)  # Returns : /c/Users/chio/Work/Program/Gvim/vim81/gvim
+    vimfile_path=$(dirname $gvim_path)
+    vimfile_path=$(dirname $gvim_path)
+    vimfile_path="$gvim_path/vimfiles"
+fi
+undo_path=$vimfile_path/undo
+if [ -d $undo_path ] ; then
+    echo "[*] $undo_path already exists"
+else
+    mkdir ~/.vim/undo
+    echo "[+] $undo_path created"
+fi
 
 # Perl
-try_link ~/.vim/dotfile/replyrc ~/.replyrc
-try_link ~/.vim/dotfile/perlrc.pl ~/.perlrc.pl
-try_link ~/.vim/dotfile/Tool.pm ~/Software/Perl/Lib/Tool.pm
+try_link $scriptpath/replyrc ~/.replyrc
+try_link $scriptpath/perlrc.pl ~/.perlrc.pl
+try_link $scriptpath/Tool.pm ~/Software/Perl/Lib/Tool.pm
 
 # Bash
-try_link ~/.vim/dotfile/bash_aliases.sh ~/.bash_aliases.sh
-try_link ~/.vim/dotfile/bashrc ~/.bashrc
-try_link ~/.vim/dotfile/inputrc ~/.inputrc
+try_link $scriptpath/bash_aliases.sh ~/.bash_aliases.sh
+try_link $scriptpath/bashrc ~/.bashrc
+try_link $scriptpath/inputrc ~/.inputrc
