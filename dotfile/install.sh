@@ -40,7 +40,7 @@ function try_link {
             target=$(convert_path_to_windows "$target")
             link=$(convert_path_to_windows "$link")
             cmd <<< "mklink $link $target" > /dev/null
-            echo "[?] $link may be created, ARE YOU ADMIN"
+            echo "[?] $link may be created, ARE YOU ADMIN ?"
         else
             ln -s $target $link && echo "[+] $link created"
         fi
