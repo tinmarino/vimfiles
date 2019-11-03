@@ -18,7 +18,7 @@
       v=$(which gvim)  # Returns : /c/Users/chio/Work/Program/Gvim/vim81/gvim
       v=$(dirname $v)
       v=$(dirname $v)
-      export v="$gvim_path/vimfiles"
+      export v="$v/vimfiles"
       ;;
     *"linux"*)
       export os="unix"
