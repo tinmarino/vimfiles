@@ -61,7 +61,7 @@ undo_path=$(dirname $scriptpath)/undo
 if [ -d $undo_path ] ; then
     echo "[-] $undo_path already exists"
 else
-    mkdir ~/.vim/undo
+    mkdir $undo_path
     echo "[+] $undo_path created"
 fi
 
