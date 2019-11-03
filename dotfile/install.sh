@@ -1,3 +1,6 @@
+# Run windows cmd: https://stackoverflow.com/questions/18641864/git-bash-shell-fails-to-create-symbolic-links
+
+
 # Get script path
 scriptpath="$( cd "$(dirname "$0")" ; pwd -P )"
 echo "[*] Dotfile path is $scriptpath"
@@ -36,7 +39,9 @@ function try_link {
         if [ "$os" = "windows" ] ; then
             target=$(convert_path_to_windows "$target")
             link=$(convert_path_to_windows "$link")
-            echo mklink $link $target  # && echo "[+] $2 created"
+            cmd <<< "mklink $link $target" > /dev/null \
+                && echo "[+] $link created" \
+                || echo "[-] $link failed to create, ARE YOU ADMIN ?"
         else
             ln -s $target $link && echo "[+] $link created"
         fi
