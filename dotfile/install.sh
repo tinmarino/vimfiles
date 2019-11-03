@@ -22,15 +22,7 @@ try_link $scriptpath/termux.properties ~/.termux/termux.properties
 # Vim
 try_link $scriptpath/vimrc ~/.vimrc
 # # Create undodir
-if [ -d $HOME/.vim ] ; then  # I am on gnunix
-    vimfile_path=$HOME/.vim
-else  # I may be on windows
-    vimfile_path=$(which gvim)  # Returns : /c/Users/chio/Work/Program/Gvim/vim81/gvim
-    vimfile_path=$(dirname $vimfile_path)
-    vimfile_path=$(dirname $vimfile_path)
-    vimfile_path="$gvim_path/vimfiles"
-fi
-undo_path=$vimfile_path/undo
+undo_path=$(dirname $scriptpath)/undo
 if [ -d $undo_path ] ; then
     echo "[-] $undo_path already exists"
 else
