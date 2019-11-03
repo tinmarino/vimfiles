@@ -16,15 +16,29 @@ esac
 echo "[*] OS is $os"
 
 
+# Helper: 
+function convert_path_to_windows {
+  echo "$1" | sed 's/^\///' | sed 's/\//\\/g' | sed 's/^./\0:/'
+}
+
+# Helper: https://stackoverflow.com/questions/13701218/windows-path-to-posix-path-conversion-in-bash
+function convert_path_to_unix {
+  echo "/$1" | sed -e 's/\\/\//g' -e 's/://'
+}
+
 # Helper: Make symbolic link
 function try_link {
-    if [ -f $2 ] ; then
-        echo "[-] $2 already exists"
+    target="$1"
+    link="$2"
+    if [ -f "$target" ] ; then
+        echo "[-] $target already exists"
     else
         if [ "$os" = "windows" ] ; then
-            echo mklink $2 $1  # && echo "[+] $2 created"
+            target=$(convert_path_to_windows "$target")
+            link=$(convert_path_to_windows "$link")
+            echo mklink $link $target  # && echo "[+] $2 created"
         else
-            ln -s $1 $2 && echo "[+] $2 created"
+            ln -s $target $link && echo "[+] $link created"
         fi
     fi
 }
