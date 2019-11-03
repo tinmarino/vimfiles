@@ -10,11 +10,19 @@
   uname=${uname,,}
   case $uname in
     *"android"*)
-      export os="termux";;
+      export os="termux"
+      export v="$HOME/.vim"
+      ;;
     *"mingw"*)
-      export os="windows";;
+      export os="windows"
+      v=$(which gvim)  # Returns : /c/Users/chio/Work/Program/Gvim/vim81/gvim
+      v=$(dirname $vimfile_path)
+      v=$(dirname $vimfile_path)
+      v="$gvim_path/vimfiles"
+      ;;
     *"unix"*)
-      export os="unix";;
+      export os="unix"
+      ;;
   esac
 
   # Execute tmux
@@ -23,10 +31,9 @@
   fi
 
 # Variable
-  export b="$HOME/.vim/bin" ; export bin="$b"
-  export p="$HOME/.vim/pack/bundle/opt/" ; export pack="$p"
+  export b="$v/bin" ; export bin="$b"
+  export p="$v/pack/bundle/opt/" ; export pack="$p"
   export t="$HOME/wiki/todo"
-  export v="$HOME/.vim"
   export w="$HOME/wiki/wiki"
 
 
