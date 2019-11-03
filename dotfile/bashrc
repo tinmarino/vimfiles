@@ -16,12 +16,13 @@
     *"mingw"*)
       export os="windows"
       v=$(which gvim)  # Returns : /c/Users/chio/Work/Program/Gvim/vim81/gvim
-      v=$(dirname $vimfile_path)
-      v=$(dirname $vimfile_path)
-      v="$gvim_path/vimfiles"
+      v=$(dirname $v)
+      v=$(dirname $v)
+      export v="$gvim_path/vimfiles"
       ;;
-    *"unix"*)
+    *"linux"*)
       export os="unix"
+      export v="$HOME/.vim"
       ;;
   esac
 
@@ -118,8 +119,8 @@ function command_not_found_handle {
 
 
 # Include
-  if [ -f ~/.bash_aliases.sh ]; then
-      . ~/.bash_aliases.sh
+  if [ -f $HOME/.bash_aliases.sh ]; then
+      . $HOME/.bash_aliases.sh
   fi
 
   # if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
@@ -168,6 +169,6 @@ function command_not_found_handle {
 
 # Fast
   # tmux completion
-  source ~/.vim/dotfile/tmux_completion.sh
+  source $v/dotfile/tmux_completion.sh
   # man
   export PAGER="vman"
