@@ -18,3 +18,9 @@ bash dotfile/install.sh
 # Install wikis
 bash bin/deploy_wiki.sh
 ```
+
+# Must install (Windows)
+
+* Cmder
+* Python3
+* Gvim
