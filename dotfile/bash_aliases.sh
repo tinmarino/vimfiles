@@ -15,7 +15,8 @@
   function malias {
     alias $1="$2"
     [ ! "$os" = "windows" ] && _completion_loader $2
-    complete -F $(mcomplete_cmd $2) $1 > /dev/null 2>&1
+    fct=$(mcomplete_cmd $2)
+    [ -n "$fct" ] && complete -F $fct $1 > /dev/null 2>&1
   }
 
 
