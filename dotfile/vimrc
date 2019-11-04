@@ -5,6 +5,11 @@ set nocompatible | filetype plugin indent on | syntax on
 " Variable
   let $PAGER = ''
 
+  " Set v: windows gvim do NOT read .bashrc
+  if 'windows' == $os
+    let $v = expand("$VIM/vimfiles")
+  endif
+
   " Alias
   " One letter
   let $h = expand($HOME)
@@ -22,6 +27,7 @@ set nocompatible | filetype plugin indent on | syntax on
   " Vim
   let $auto = expand("$v/autoload")
   let $ft = expand("$v/ftplugin")
+  let $vim = $v
 
 
 " Appearance
