@@ -1,7 +1,20 @@
 # Vimfiles and dotfiles
 
-```
-cd
+
+In vimfiles directory (`~/vim`):
+
+```sh
+# Get me
 git clone --recurse-submodules -j8 https://github.com/tinmarino/vimfiles .vim
-bash .vim/dotfile/install.sh
+
+# Sync submodules
+git submodule update --recursive --remote --jobs 8
+git submodule foreach "git reset HEAD ."
+git submodule foreach "git checkout -- ."
+
+# Install dotfiles
+bash dotfile/install.sh
+
+# Install wikis
+bash bin/deploy_wiki.sh
 ```
