@@ -79,7 +79,9 @@ function command_not_found_handle {
   # CD (green)
   PS1+='\[\033[32m\]\w'
   # Git Branch (yellow)
-  PS1+='\[\033[33m\]\$(parse_git_branch)\[\033[00m\]'
+  PS1+='\[\033[33m\]'
+  PS1+="$(parse_git_branch)"
+  PS1+='\[\033[00m\]'
   # New line
   PS1+='\n$ '
   export PS1
