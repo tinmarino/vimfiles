@@ -4,13 +4,6 @@ set nocompatible | filetype plugin indent on | syntax on
 
 " Variable
   let $PAGER = ''
-  " Os dependant
-  if 'windows' == $os
-    let $v = expand("$VIM/vimfiles")
-  else
-    let $v = expand("$HOME/.vim")
-  endif
-  let $vim = $v
 
   " Alias
   " One letter
@@ -21,10 +14,10 @@ set nocompatible | filetype plugin indent on | syntax on
   let $d = expand("$v/undo/dump") | let $dump = $d
   " RC
   let $alias = expand($v . "/dotfile/bash_aliases.sh")
-  let $bashrc = expand($h . "/.bashrc")
-  let $gitrc = expand($h . "/.gitconfig")
-  let $vimrc = expand($h . "/.vimrc")
-  let $tmuxrc = expand($h . "/.tmux.conf")
+  let $bashrc = expand($v . "/dotfile/bashrc")
+  let $gitrc = expand($v . "/dotfile/gitconfig")
+  let $vimrc = expand($v . "/dotfile/vimrc")
+  let $tmuxrc = expand($v . "dotfile/tmux.conf")
   let $done = expand($h . '/wiki/todo/done.md')
   " Vim
   let $auto = expand("$v/autoload")
