@@ -10,6 +10,7 @@ set nocompatible | filetype plugin indent on | syntax on
     let $v = expand("$VIM/vimfiles")
     let $os = 'windows'
   endif
+  set runtimepath+=$v
 
   " Alias
   " One letter
@@ -452,6 +453,7 @@ set nocompatible | filetype plugin indent on | syntax on
 
 
 " PackAdd
+  set packpath+=$v
   " Interface
   packadd fugitive
   packadd ctrlp " 3ms
