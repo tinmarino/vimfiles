@@ -22,5 +22,5 @@ bash bin/deploy_wiki.sh
 # Must install (Windows)
 
 * Cmder
-* Python3
 * Gvim
+* Python3 (choose good version)
