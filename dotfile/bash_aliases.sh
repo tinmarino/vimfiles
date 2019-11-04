@@ -14,7 +14,7 @@
 
   function malias {
     alias $1="$2"
-    _completion_loader $2
+    [ ! "$os" = "windows" ] && _completion_loader $2
     complete -F $(mcomplete_cmd $2) $1
   }
 
