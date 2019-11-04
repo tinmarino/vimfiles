@@ -75,13 +75,13 @@ function command_not_found_handle {
        git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' ;
   }
   # CD (in title)
-  PS1='\033]0;\w\007'
+  PS1='\e]0;\w\007'
   # CD (green)
-  PS1+='\[\033[32m\]\w'
+  PS1+='\[\e[32m\]\w'
   # Git Branch (yellow)
-  PS1+='\[\033[33m\]'
+  PS1+='\[\e[33m\]'
   PS1+="$(parse_git_branch)"
-  PS1+='\[\033[00m\]'
+  PS1+='\[\e[00m\]'
   # New line
   PS1+='\n$ '
   export PS1
@@ -98,7 +98,7 @@ function command_not_found_handle {
 # Head
   clear
   # Nowrap
-  printf '\033[?7l'
+  printf '\e[?7l'
   cat << '  EOF'
                              \  |  /
                               \_|_/
@@ -118,7 +118,7 @@ function command_not_found_handle {
 
   EOF
   # Reset wrap
-  printf '\033[?7h'
+  printf '\e[?7h'
 
 
 # Include
