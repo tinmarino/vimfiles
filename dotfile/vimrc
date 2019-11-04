@@ -335,7 +335,7 @@ set nocompatible | filetype plugin indent on | syntax on
     " endif
     " Ignore
     let g:ctrlp_cutom_ignore = {
-      \ 'dir': '\.git$',
+      \ 'dir': '\.git$,undo',
       \ 'file': ''
     \ }
     if $os != 'termux'
