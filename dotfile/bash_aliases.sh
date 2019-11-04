@@ -5,7 +5,7 @@
     cmd=${cmd[0]}
 
     # Get complete function
-    line=( $(complete -p $cmd) ) > /dev/null 2>&1 || return 1
+    line=( $(complete -p $cmd 2> /dev/null ) ) || return 1
     fct=${line[-2]}
 
     # Return function
