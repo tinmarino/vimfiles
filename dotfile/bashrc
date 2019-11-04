@@ -150,11 +150,6 @@ function command_not_found_handle {
 
 
 # Git
-  # Completion
-  if [ $os == 'unix' ] ; then 
-    source /usr/share/bash-completion/completions/git # On desktop
-  fi
-  __git_complete g __git_main
   # Samsung j6
   if [ $os == 'termux' ] ; then
     export GIT_AUTHOR_NAME="tinmux"

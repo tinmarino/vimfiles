@@ -1,20 +1,42 @@
+# Helper
+  function mcomplete_cmd {
+    # Get cmd: first word
+    cmd=( $1 )
+    cmd=${cmd[0]}
+
+    # Get complete function
+    line=( $(complete -p $cmd) ) || return 1
+    fct=${line[-2]}
+
+    # Return function
+    echo $fct
+  }
+
+  function malias {
+    alias $1="$2"
+    _completion_loader $2
+    complete -F $(mcomplete_cmd $2) $1
+  }
+
+
+
 # Shortcut
   # Small as Huffman
-  alias g='git'
-  alias v='vim'
-  alias o='xdg-open'
-  alias c="clip"
-  alias m='man' ; complete -F m _man
-  alias disas='objdump -drwC -Mintel'
-  alias ll='ls -lh'
-  alias h="history|grep "
-  alias f="find . |grep "
+  malias g git
+  malias v vim
+  malias o xdg-open
+  malias c clip
+  malias m man
+  malias disas 'objdump -drwC -Mintel'
+  malias ll 'ls -lh'
+  alias h="history | grep "
+  alias f="find . | grep "
 
   # Languages
-  alias py='python3'
-  alias ipy='ipython3'
-  alias vi="vim"
-  alias pl="perl"
+  malias py python3
+  malias ipy ipython3
+  malias vi vim
+  malias pl perl
 
   # Wiki
   function w () { [ -z "$1" ] && vi -c"call Windex(1)" || vi -c"call Windex(1)" -c":VimwikiGoto $1"; }
