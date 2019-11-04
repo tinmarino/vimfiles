@@ -81,15 +81,15 @@
     url = https://github.com/suan/vim-instant-markdown
     ignore = all
 [submodule "pack/bundle/opt/DrawIt"]
-    path = pack/bundle/opt/DrawIt
+	path = pack/bundle/opt/drawit
     url = https://github.com/vim-scripts/DrawIt
     ignore = all
 [submodule "pack/bundle/opt/Mines"]
-    path = pack/bundle/opt/Mines
+	path = pack/bundle/opt/mines
     url = https://github.com/vim-scripts/Mines
     ignore = all
 [submodule "pack/bundle/opt/Align"]
-    path = pack/bundle/opt/Align
+	path = pack/bundle/opt/align
     url = https://github.com/vim-scripts/Align
     ignore = all
 [submodule "pack/bundle/opt/vim-indent-object"]
