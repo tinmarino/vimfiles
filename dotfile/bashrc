@@ -153,11 +153,11 @@ function command_not_found_handle {
 
 # Git
   # Android
-  if [ $os == 'termux' ] ; then
+  if [ $os = 'termux' ] ; then
     export GIT_AUTHOR_NAME="tinmux"
     export GIT_AUTHOR_EMAIL=tin@ter.mux
   # Windows
-  elif [ $os == 'windows' ] ; then
+  elif [ $os = 'windows' ] ; then
     export GIT_AUTHOR_NAME="tinwin"
     export GIT_AUTHOR_EMAIL=tin@win.dows
   # Linux
