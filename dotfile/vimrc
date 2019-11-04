@@ -6,8 +6,9 @@ set nocompatible | filetype plugin indent on | syntax on
   let $PAGER = ''
 
   " Set v: windows gvim do NOT read .bashrc
-  if 'windows' == $os
+  if has('win32') || has('win64')
     let $v = expand("$VIM/vimfiles")
+    let $os = 'windows'
   endif
 
   " Alias
