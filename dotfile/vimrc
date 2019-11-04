@@ -23,7 +23,7 @@ set nocompatible | filetype plugin indent on | syntax on
   let $bashrc = expand($v . "/dotfile/bashrc")
   let $gitrc = expand($v . "/dotfile/gitconfig")
   let $vimrc = expand($v . "/dotfile/vimrc")
-  let $tmuxrc = expand($v . "dotfile/tmux.conf")
+  let $tmuxrc = expand($v . "/dotfile/tmux.conf")
   let $done = expand($h . '/wiki/todo/done.md')
   " Vim
   let $auto = expand("$v/autoload")
