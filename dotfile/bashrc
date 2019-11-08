@@ -80,7 +80,7 @@ function command_not_found_handle {
   PS1+='\[\e[32m\]\w'
   # Git Branch (yellow)
   PS1+='\[\e[33m\]'
-  PS1+="$(parse_git_branch)"
+  PS1+='$(parse_git_branch)'
   PS1+='\[\e[00m\]'
   # New line
   PS1+='\n$ '
