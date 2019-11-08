@@ -32,6 +32,18 @@ set nocompatible | filetype plugin indent on | syntax on
   let $vim = $v
 
 
+" Os specific
+  " Termux
+  if 'termux' == $os
+    " Autosave
+    if expand('%') != ''
+      autocmd CursorHold,CursorHoldI *  silent update
+    endif
+  endif
+    " Hide file edition message
+    set shortmess+=F
+
+
 " Appearance
   " Preferences
     colorscheme dante
@@ -444,12 +456,6 @@ set nocompatible | filetype plugin indent on | syntax on
     cnoreabbrev aG Ack
     cnoreabbrev Ag Ack
     cnoreabbrev AG Ack
-
-
-" Termux
-  if 'termux' == $os && expand('%') != ''
-    autocmd CursorHold,CursorHoldI *  silent update
-  endif
 
 
 " PackAdd
