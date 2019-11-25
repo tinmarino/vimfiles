@@ -1,4 +1,5 @@
 set nu
+set shiftwidth=4
 
 " for gf with libgdx 
 " set path+=/home2/tourneboeuf/Software/Java/Libgdx/Jar/Git/gdx/src/**
