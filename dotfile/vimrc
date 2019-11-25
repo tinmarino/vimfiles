@@ -80,6 +80,7 @@ set nocompatible | filetype plugin indent on | syntax on
     set wildmenu
     set wildmode=list:full
     set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz  " LaTeX intermediate files
+    set wildignore+=*.tex.backup,*.lg,*.4ct,*.4tc,*.tmp,*.idv  " LaTeX html intermediate files
     set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images
     set wildignore+=*.luac  " Lua byte code
     set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
@@ -135,6 +136,11 @@ set nocompatible | filetype plugin indent on | syntax on
 " Map
   let mapleader = ','
   tnoremap <Esc> <C-W>N
+
+  " Window
+    noremap <C-W>- <C-W>s
+    noremap <C-W>_ <C-W>s
+    noremap <C-W><bar> <C-W>v
 
   " Maps for Package : On demand load
     " F8 : Colorscheme-switcher
@@ -212,7 +218,7 @@ set nocompatible | filetype plugin indent on | syntax on
     " noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
 
   " Fold
-    nnoremap <space> zA
+    nnoremap <space> za
     vnoremap <space> zf
     map z1  :set foldlevel=0<CR><Esc>
     map z2  :set foldlevel=1<CR><Esc>
