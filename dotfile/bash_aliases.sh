@@ -28,10 +28,13 @@
   malias o xdg-open
   malias c clip
   malias m man
-  malias disas 'objdump -drwC -Mintel'
-  malias ll 'ls -lh'
   alias h="history | grep "
   alias f="find . | grep "
+
+  # Little longer
+  malias disas 'objdump -drwC -Mintel'
+  malias ll 'ls -lh'
+  malias so source
 
   # Languages
   malias py python3
@@ -53,7 +56,7 @@
   alias clip="xclip -selection c"
 
   # Utils
-  alias clean_tex='rm *.aux *.log *.fls *.fdb_latexmk *.out *synctex.gz'
+  alias clean_tex='rm *.aux *.log *.fls *.fdb_latexmk *.out *synctex.gz *.tex.backup *.4ct *.4tc *.idv *.lg *.tmp *.xref *.xdv'
 
   # Safe RM
   export TRASH="$HOME/.Trash"
