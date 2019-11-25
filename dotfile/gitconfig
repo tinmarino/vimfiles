@@ -20,11 +20,12 @@
     # Status to stage by number and not name. Ex : g st; g a 1; g u 1
     qs = "!git -c color.ui=always status --short | perl -lane 'my $color1=substr(@F[0], 0, 5); my $flag=substr(@F[0], 5, -3); $flag= \" \" . $flag if not flag =~ m/\\e\\[3m/; $,=\" \"; printf \"%s %4s %3s %s\n\", $color1, ++$l, $flag, @F[1];'"
     funcstatusnocolor = "!git status --short | cat -n"
-    qa = "!qstage() { git add `git funcstatusnocolor | sed -n $1p | awk -F' ' '{ print $3 }'`; git qs; }; qstage"
-    qu = "!qunstage() { git reset HEAD `git funcstatusnocolor | sed -n $1p | awk -F' ' '{ print $3 }'`; git qs; }; qunstage"
-  qd = "!qdiff() { git diff --color=always `git funcstatusnocolor | sed -n $1p | awk -F' ' '{ print $3 }'`; git qs; }; qdiff"
-    qe = "!qedit() { vim -c'Gdiffsplit' `git funcstatusnocolor | sed -n $1p | awk -F' ' '{ print $3 }'`; git qs; }; qedit"
+    qa = "!qstage() { git add `git funcstatusnocolor | perl -ne \"no warnings; print if $. ~~ [ $* ]\"  | awk -F' ' '{ print $3 }'`; git qs; }; qstage"
+    qu = "!qunstage() { git reset HEAD `git funcstatusnocolor | perl -ne \"no warnings; print if $. ~~ [ $* ]\" | awk -F' ' '{ print $3 }'`; git qs; }; qunstage"
+  qd = "!qdiff() { git diff --color=always `git funcstatusnocolor | perl -ne \"no warnings; print if $. ~~ [ $* ]\" | awk -F' ' '{ print $3 }'`; git qs; }; qdiff"
+    qe = "!qedit() { vim -c'Gdiffsplit' `git funcstatusnocolor | perl -ne \"no warnings; print if $. ~~ [ $* ]\" | awk -F' ' '{ print $3 }'`; git qs; }; qedit"
     qv = qe
+    qp = "!qprint() { git funcstatusnocolor | perl -ne \"no warnings; print if $. ~~ [ $* ]\" | awk -F' ' '{ print $3 }'; }; qprint"
  
     # Util
     aa = add --all
@@ -47,3 +48,5 @@
 
     # Find text in any commit ever.
     grep-all = !"f() { git rev-list --all | xargs git grep \"$@\"; }; f"
+
+# vim:ft=sh
