@@ -6,17 +6,19 @@
 
 unset PAGER
 
-# Helper: Call vim with arguments
+# Helper:0 Final: Call vim with arguments
 call_vim(){
     vim \
-	-R \
-    --not-a-term \
-    -c 'map q :q!<CR>' \
-    -c 'set foldlevel=30'  \
-    "$@"
+        -R \
+        --not-a-term \
+        -c 'map q :q!<CR>' \
+        -c 'set foldlevel=30'  \
+        -c 'set nomodeline' -c 'set modelines=0' \
+        -c 'set t_te=' \
+        "$@"
 }
 
-# PAGER for manpages (prefix by col)
+# Helper:1 for manpages (prefix by col)
 man_col(){
     col -b -x | call_vim \
         -c 'set ft=man nomod nolist' \
@@ -25,12 +27,12 @@ man_col(){
         -
 }
 
-# As before but with - -> $1 (i.e. STDIN -> ARG_1)
+# Helper:2 As before but with - -> $1 (i.e. STDIN -> ARG_1)
 man_cat_col(){
     less "$1" | man_col
 }
 
-# PAGER for git diff files (Ansi-Escaped)
+# Helper:1 PAGER for git diff files (Ansi-Escaped)
 man_ansi() {
     call_vim \
         -c 'packadd ansiesc' -c 'AnsiEsc' -
