@@ -56,7 +56,7 @@
   alias clip="xclip -selection c"
 
   # Utils
-  alias clean_tex='rm *.aux *.log *.fls *.fdb_latexmk *.out *synctex.gz *.tex.backup *.4ct *.4tc *.idv *.lg *.tmp *.xref *.xdv'
+  alias clean_tex='rm *.aux *.log *.fls *.fdb_latexmk *.out *synctex.gz *.tex.backup *.4ct *.4tc *.idv *.lg *.tmp *.xref *.xdv *.dvi *.bak'
 
   # Safe RM
   export TRASH="$HOME/.Trash"
