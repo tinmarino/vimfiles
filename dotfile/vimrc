@@ -344,7 +344,7 @@ set nocompatible | filetype plugin indent on | syntax on
 
   " CtrlP
     " Cache
-    let g:ctrlp_cache_dir = $home . '/.cache/ctrlp'
+    let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
     " replace $home by ~ in cache
     let g:ctrlp_tilde_homedir = 1
     let g:ctrlp_mruf_max = 50000
@@ -354,7 +354,7 @@ set nocompatible | filetype plugin indent on | syntax on
     " endif
     " Ignore
     let g:ctrlp_cutom_ignore = {
-      \ 'dir': '\.git$,undo',
+      \ 'dir': '\.git$,undo/',
       \ 'file': ''
     \ }
     if $os != 'termux'
