@@ -41,7 +41,7 @@ let n=0
 let n++ ; ssync ~/wiki/wiki      && let ok++
 let n++ ; ssync ~/wiki/wiki_html && let ok++
 let n++ ; ssync ~/wiki/todo      && let ok++
-let n++ ; ssync ~/wiki/html      && let ok++
+# let n++ ; ssync ~/wiki/html      && let ok++
 
 
 echo "<--- Synchronization finihed with $ok/$n success"
