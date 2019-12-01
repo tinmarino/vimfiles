@@ -355,11 +355,13 @@ set nocompatible | filetype plugin indent on | syntax on
     " Ignore
     let g:ctrlp_cutom_ignore = {
       \ 'dir': '\.git$,undo/',
-      \ 'file': ''
+      \ 'file': 'log'
     \ }
     if $os != 'termux'
       " E like edit and closer to ctrl + <c-p> used to paste
       let g:ctrlp_map = '<C-E>'
+      vnoremap <C-E> :<C-u>CtrlPMixed<CR>
+      inoremap <C-E> <Esc>:CtrlPMixed<CR>
     else
       " Because move up gives c-e
       let g:ctrlp_map = '<leader>ee'
