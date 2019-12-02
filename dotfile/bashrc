@@ -196,3 +196,5 @@ _pip_completion()
 }
 complete -o default -F _pip_completion pip3
 # pip bash completion end
+
+  function myff() { ffmpeg -i "$1"  -f avi -c:v mpeg4 -b:v 4000k -c:a libmp3lame -b:a 320k  "$2" ; }
