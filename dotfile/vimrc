@@ -485,6 +485,7 @@ set nocompatible | filetype plugin indent on | syntax on
   packadd indent-object  " dai
   " Snip
   packadd ultisnips " 3ms
+  packadd snippets " for some ultisnips macro
   " Slow : reload on demand
   packadd emacscommandline
   " packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines)
