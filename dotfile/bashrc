@@ -154,20 +154,20 @@ function command_not_found_handle {
 # Git
   # Android
   if [ $os = 'termux' ] ; then
-    export GIT_AUTHOR_NAME="tinmux"
+    export GIT_AUTHOR_NAME=tinmux
     export GIT_AUTHOR_EMAIL=tin@ter.mux
   # Windows
   elif [ $os = 'windows' ] ; then
-    export GIT_AUTHOR_NAME="tinwin"
+    export GIT_AUTHOR_NAME=tinwin
     export GIT_AUTHOR_EMAIL=tin@win.dows
   # Linux
   else
-    if [ 'tourneboeuf' = $USER ]
-      export GIT_AUTHOR_NAME="tinmarino"
+    if [ $USER = 'tourneboeuf' ] ; then
+      export GIT_AUTHOR_NAME=tinmarino
       export GIT_AUTHOR_EMAIL=tinmarino@gmail.com
     else
-      export GIT_AUTHOR_NAME="$USER"
-      export GIT_AUTHOR_EMAIL="$USER@idk.com"
+      export GIT_AUTHOR_NAME=$USER
+      export GIT_AUTHOR_EMAIL="$USER@his.pc"
     fi
   fi
   export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
