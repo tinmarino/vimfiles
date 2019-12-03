@@ -241,7 +241,7 @@ set nocompatible | filetype plugin indent on | syntax on
     map zç z9
 
   " Tab
-    noremap <C-n> :tabnew<CR>
+    noremap gn :tabnew<CR>
     noremap g1 :1tabnext<CR><Esc>
     noremap g2 :2tabnext<CR><Esc>
     noremap g3 :3tabnext<CR><Esc>
