@@ -162,8 +162,13 @@ function command_not_found_handle {
     export GIT_AUTHOR_EMAIL=tin@win.dows
   # Linux
   else
-    export GIT_AUTHOR_NAME="tinmarino"
-    export GIT_AUTHOR_EMAIL=tinmarino@gmail.com
+    if [ 'tourneboeuf' = $USER ]
+      export GIT_AUTHOR_NAME="tinmarino"
+      export GIT_AUTHOR_EMAIL=tinmarino@gmail.com
+    else
+      export GIT_AUTHOR_NAME="$USER"
+      export GIT_AUTHOR_EMAIL="$USER@idk.com"
+    fi
   fi
   export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
   export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
