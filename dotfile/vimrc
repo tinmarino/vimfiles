@@ -319,6 +319,8 @@ set nocompatible | filetype plugin indent on | syntax on
       let s =  ",E701"  " Multiple statement on one line
     " Do not perform mapping in ipython (it removes my previous <c-s>
     let g:ipy_perform_mappings = 0
+    " Do not highlight spaces
+    let g:pymode_syntax_space_errors = 0
 
   " ConqueDbg, a gdb plugging
     let g:ConqueGdb_Disable = 1
