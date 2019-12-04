@@ -8,6 +8,7 @@ packadd table-mode
 UltiSnipsAddFiletypes markdown
 
 " Preference
+set nomodeline
 set linebreak
 set tw=0
 set expandtab
