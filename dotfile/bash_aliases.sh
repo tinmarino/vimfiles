@@ -49,6 +49,14 @@
   f="$HOME/wiki/wiki/Src/links.txt" ; [ -f $f ] && complete -W "$(cat $f)" w
 
 
+# Path variable
+  # shopt -s direxpand
+  export b="$v/bin" ; export bin="$b"
+  export p="$v/pack/bundle/opt/" ; export pack="$p"
+  export t="$HOME/wiki/todo"
+  export w="$HOME/wiki/wiki"
+
+
 
 # Shortcut largers
   # Bigger for memory
@@ -134,8 +142,8 @@
   function marks {
     ls -l "$MARKPATH" | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
   }
-  alias m="mark"
-  alias ms="marks"
-  alias j="jump"
+  # alias m="mark"
+  # alias ms="marks"
+  # alias j="jump"
 
 

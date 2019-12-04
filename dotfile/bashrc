@@ -31,12 +31,6 @@
     exec tmux
   fi
 
-# Variable
-  export b="$v/bin" ; export bin="$b"
-  export p="$v/pack/bundle/opt/" ; export pack="$p"
-  export t="$HOME/wiki/todo"
-  export w="$HOME/wiki/wiki"
-
 
 # Unknown command callback (tip: install bash-completion on tmux)
 function command_not_found_handle {
@@ -122,13 +116,14 @@ function command_not_found_handle {
 
 
 # Include
+  if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+      . /etc/bash_completion
+  fi
+
   if [ -f $HOME/.bash_aliases.sh ]; then
       . $HOME/.bash_aliases.sh
   fi
 
-  # if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-  #     . /etc/bash_completion
-  # fi
 
 
 # Path
