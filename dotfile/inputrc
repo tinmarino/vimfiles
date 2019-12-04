@@ -13,6 +13,6 @@ $include /etc/inputrc
 "\e[1;5C": forward-word
 
 # Fast
-"\C-h": "ctrlh-test"
+#"\C-h": "ctrlh-test"
 "\C-o": shell-expand-line
 "\C-p": "$(date) \e\C-e\ef\ef\ef\ef\ef"
