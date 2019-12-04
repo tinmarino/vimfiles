@@ -39,9 +39,9 @@ set nocompatible | filetype plugin indent on | syntax on
     if expand('%') != ''
       autocmd CursorHold,CursorHoldI *  silent update
     endif
-  endif
     " Hide file edition message
     set shortmess+=F
+  endif
 
 
 " Appearance
