@@ -144,6 +144,5 @@
   }
   # alias m="mark"
   # alias ms="marks"
-  # alias j="jump"
-
+  # alias mj="jump"
 
