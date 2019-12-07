@@ -49,6 +49,7 @@ set nocompatible | filetype plugin indent on | syntax on
     colorscheme dante
     set t_Co=256  " For airline and nice colors
     set formatoptions-=cro  " No auto comment
+    autocmd FileType * setlocal formatoptions-=cro
     set diffopt+=vertical
     set title                    " change the terminal's title, may not work
     set autoindent  " to have auto indentation when return line
@@ -87,7 +88,7 @@ set nocompatible | filetype plugin indent on | syntax on
     set wildignore+=*.pyc  " Python byte code
     set wildignore+=*.spl  " compiled spelling word lists
     set wildignore+=*.sw?  " Vim swap files
-    set wildignore+=.git/*  " Git shit
+    set wildignore+=.git/*,undo/*  " Git, Vim undo
   " Search
     set ignorecase
     set smartcase
@@ -371,13 +372,19 @@ set nocompatible | filetype plugin indent on | syntax on
       inoremap <C-E> <Esc>:CtrlPMixed<CR>
     else
       " Because move up gives c-e
-      let g:ctrlp_map = '<leader>ee'
+      let g:ctrlp_map = ',e'
     endif
     " Keep cache
     let g:ctrlp_clear_cache_on_exit = 0
     " Mixed to search in MRU, FIles, Buffers
     let g:ctrlp_extensions = ['mixed']
     let g:ctrlp_cmd = 'CtrlPMixed'
+    " Faster listing <- vim.globpath
+    if $os == 'windows'
+      let g:ctrlp_user_command = 'dir %s /-n /b /s /a-d'
+    else
+      let g:ctrlp_user_command = 'find %s -type f'
+    endif
 
   " Vim Translator
     ".vimrc
