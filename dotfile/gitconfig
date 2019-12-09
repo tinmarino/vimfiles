@@ -3,6 +3,7 @@
 [alias]
     # One letter
     a = add
+    b = branch
     c = commit -m
     d = diff
     f = pull --rebase
