@@ -68,8 +68,9 @@
 
   # Safe RM
   export TRASH="$HOME/.Trash"
-  alias rm="mv -f -t $TRASH"
+  alias rm="echo better use trash; mv -f -t $TRASH"
   alias rmv='command rm'
+  alias trash="trash-put"
 
   # CD ..
   alias p='cd ..'
