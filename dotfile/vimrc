@@ -56,6 +56,7 @@ set nocompatible | filetype plugin indent on | syntax on
     set wrapscan
     set conceallevel=3
     set nu
+    set iskeyword+=#,-
   " Statusline
     set laststatus=2        " alwaus show statusline
     set statusline=         " init void
@@ -67,7 +68,6 @@ set nocompatible | filetype plugin indent on | syntax on
     set statusline+=%l/%L   " cursor line/total lines
   " File format
     set encoding=utf-8
-    set foldlevelstart=30 "the folding at opening
     set fileformat=unix
     set wrap
     set expandtab
@@ -138,6 +138,12 @@ set nocompatible | filetype plugin indent on | syntax on
   let mapleader = ','
   tnoremap <Esc> <C-W>N
 
+  " Use <C-L> to clear the highlighting of :set hlsearch and also preserve the
+  " default behavior of redrawing the screen
+    if maparg('<C-L>', 'n') ==# ''
+        nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+    endif
+
   " Window
     noremap <C-W>- <C-W>s
     noremap <C-W>_ <C-W>s
@@ -147,10 +153,6 @@ set nocompatible | filetype plugin indent on | syntax on
     " F8 : Colorscheme-switcher
     noremap <F8> :packadd misc<CR>:packadd colorscheme-switcher<CR><F8>
     map <ESC>[19;2~ <S-F8>
-    " :NERDTree
-    command! NERDTree :packadd nerdtree <BAR> NERDTree
-    command! NERDTreeToggle :packadd nerdtree <BAR> NERDTreeToggle
-    noremap <leader>n :NERDTreeToggle<CR>
 
   " Yank all buffer to system clipboard
     map <leader>y mtgg"+yG`t
@@ -277,8 +279,15 @@ set nocompatible | filetype plugin indent on | syntax on
     nnoremap <Leader>eg :call Edit($gitrc)<CR>
     nnoremap <Leader>et :call Edit($tmuxrc)<CR>
     nnoremap <Leader>ev :call Edit($vimrc)<CR>
-  " Backup file
+  " b -> Backup file
     nnoremap <leader>b :let $bck_file = expand("$v/undo/bck_") . strftime("%y-%m-%d-%H-%M-%S") . "--" .   substitute(expand("%:p"), "/", "_", "g") <bar> silent write! $bck_file <CR>:echom "Bck: " . $bck_file . " has been written"<CR>
+  " n -> :NERDTree
+    command! NERDTree :packadd nerdtree <BAR> NERDTree
+    command! NERDTreeToggle :packadd nerdtree <BAR> NERDTreeToggle
+    noremap <leader>n :NERDTreeToggle<CR>
+  " a -> Ag the silver searcher <- ack
+    noremap <leader>a :silent packadd nerdtree<CR>:Ack 
+  
 
 
 " Command Man
@@ -291,7 +300,7 @@ set nocompatible | filetype plugin indent on | syntax on
 
 " Folding
   highlight Folded ctermfg=DarkGreen ctermbg=Black
-  set foldignore=
+  set foldlevelstart=30 "the folding at opening
   set foldmethod=indent
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0
   set foldlevelstart=30 "the folding at opening
@@ -307,6 +316,7 @@ set nocompatible | filetype plugin indent on | syntax on
 
 " Plugin
   " YouCompleteMe
+    let g:ycm_always_populate_location_list = 1 " use :lne and :lp to navigate
     let g:ycm_python_binary_path = 'python3'
     let g:ycm_autoclose_preview_window_after_completion = 1
     let g:ycm_min_num_of_chars_for_completion = 1
