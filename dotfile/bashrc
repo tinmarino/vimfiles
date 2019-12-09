@@ -174,3 +174,4 @@ function command_not_found_handle {
   source $v/dotfile/tmux_completion.sh
   # man
   export PAGER="vman"
+  complete -cf sudo
