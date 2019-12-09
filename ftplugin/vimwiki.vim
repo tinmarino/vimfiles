@@ -17,7 +17,7 @@ set softtabstop=2
 set shiftwidth=2
 
 " Alias
-map <leader>c :VimwikiAll2HTML<CR><CR>:syntax on<CR>
+map <leader>c :Vimwiki2HTML<CR><CR>:syntax on<CR>
 
 
 " Autobackup deleted lines if todo
