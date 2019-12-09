@@ -127,20 +127,20 @@ function command_not_found_handle {
 
 
 # Path
+  # My script
   export PATH="$HOME/.vim/bin:$PATH"
   export PATH="$HOME/Bin:$PATH"
-  export PATH="$PATH:$HOME/perl5/bin"
-  export PATH="$PATH:$HOME/Software/Android/SDK/android-sdk-linux/platform-tools"
-  export PATH="$PATH:$HOME/Software/Android/SDK/android-sdk-linux/tools"
+  # Android sdk
+  export PATH="$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools/bin"
   export PATH="$PATH:$HOME/Program/Eclipse/eclipse"
+  # Programs
   export PATH=$PATH:/usr/local/cuda-10.0/bin
-  export PATH=$PATH:~/Program/Metapixel/metapixel
+  export PATH=$PATH:$HOME/Program/Metapixel/metapixel
   export PYTHONSTARTUP="$HOME/.ipython/profile_default/ipython.py"
 
 
 # Perl
   export PERL5LIB="$HOME/Software/Perl/Lib:~/Program/Komodo/Komodo-PerlRemoteDebugging-8.0.2-78971-linux-x86_64"
-  export PERL5LIB="$HOME/perl5/lib/perl5:${PERL5LIB}}"
   export PERL5DB="BEGIN { require q($PERL5LIB/perl5db.pl)}"
   export PERLDB_OPTS="RemotePort=localhost:9000"
   export DBGP_IDEKEY="whatever"
@@ -175,3 +175,4 @@ function command_not_found_handle {
   # man
   export PAGER="vman"
   complete -cf sudo
+  export TEXMFHOME=$HOME/Software/LaTeX/CV/Class
