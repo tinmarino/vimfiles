@@ -8,12 +8,13 @@ unset PAGER
 
 # Helper:0 Final: Call vim with arguments
 call_vim(){
+    # Use --cmd because it is done before first file read
     vim \
         -R \
         --not-a-term \
         -c 'map q :q!<CR>' \
         -c 'set foldlevel=30'  \
-        -c 'set nomodeline' -c 'set modelines=0' \
+        --cmd 'autocmd StdinReadPre * set nomodeline' \
         -c 'set t_te=' \
         "$@"
 }
