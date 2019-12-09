@@ -8,7 +8,7 @@
     ignore = all
     branch = develop
 [submodule "pack/bundle/opt/vimtex"]
-    path = pack/bundle/opt/vimtex
+	path = pack/bundle/opt/tex
     url = https://github.com/lervag/vimtex
     ignore = all
 [submodule "pack/bundle/opt/colorscheme-switcher"]
@@ -72,7 +72,7 @@
     url = https://github.com/tpope/vim-unimpaired
     ignore = all
 [submodule "pack/bundle/opt/vimwiki"]
-    path = pack/bundle/opt/vimwiki
+	path = pack/bundle/opt/wiki
     url = https://github.com/vimwiki/vimwiki
     ignore = all
     branch = dev
@@ -146,3 +146,6 @@
 [submodule "pack/bundle/opt/repeat"]
 	path = pack/bundle/opt/repeat
 	url = https://github.com/tpope/vim-repeat
+[submodule "pack/bundle/opt/jupyter"]
+	path = pack/bundle/opt/jupyter
+	url = https://github.com/wmvanvliet/jupyter-vim
