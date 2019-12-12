@@ -71,7 +71,7 @@
     path = pack/bundle/opt/unimpaired
     url = https://github.com/tpope/vim-unimpaired
     ignore = all
-[submodule "pack/bundle/opt/vimwiki"]
+[submodule "pack/bundle/opt/wiki"]
 	path = pack/bundle/opt/wiki
     url = https://github.com/vimwiki/vimwiki
     ignore = all

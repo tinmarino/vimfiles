@@ -1,4 +1,5 @@
-" From https://github.com/plainfingers/black_is_the_color/blob/master/colors/black_is_the_color.vim
+" ---------------------------------------------------------------------------
+" black_is_the_color
 " originally based on tir_black
 " ---------------------------------------------------------------------------
 
