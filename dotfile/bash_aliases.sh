@@ -38,7 +38,7 @@
 
   # Languages
   malias py python3
-  malias ipy ipython3
+  malias ipy 'jupyter console'
   malias vi vim
   malias pl perl
 
