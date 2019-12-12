@@ -51,3 +51,5 @@
     grep-all = !"f() { git rev-list --all | xargs git grep \"$@\"; }; f"
 
 # vim:ft=sh
+[rerere]
+	enabled = true
