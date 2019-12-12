@@ -146,6 +146,3 @@
 [submodule "pack/bundle/opt/repeat"]
 	path = pack/bundle/opt/repeat
 	url = https://github.com/tpope/vim-repeat
-[submodule "pack/bundle/opt/jupyter"]
-	path = pack/bundle/opt/jupyter
-	url = https://github.com/wmvanvliet/jupyter-vim
