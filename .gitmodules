@@ -108,7 +108,7 @@
     path = pack/bundle/opt/python-mode
     url = https://github.com/python-mode/python-mode
     ignore = all
-[submodule "pack/bundle/opt/vim-transpose"]
+[submodule "pack/bundle/opt/transpose"]
     path = pack/bundle/opt/transpose
     url = https://github.com/salsifis/vim-transpose
     ignore = all
@@ -146,3 +146,6 @@
 [submodule "pack/bundle/opt/repeat"]
 	path = pack/bundle/opt/repeat
 	url = https://github.com/tpope/vim-repeat
+[submodule "pack/bundle/opt/undotree"]
+	path = pack/bundle/opt/undotree
+	url = https://github.com/mbbill/undotree
