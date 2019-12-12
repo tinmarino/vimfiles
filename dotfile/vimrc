@@ -132,9 +132,35 @@ set nocompatible | filetype plugin indent on | syntax on
   set ttymouse=xterm2
 
 
-" Map
+" Map Leadered
   let mapleader = ','
   let maplocalleader = ','
+  " Edit special files
+    function! Edit(file)
+      try | execute 'buffer ' . a:file
+      catch | execute 'edit ' . a:file
+      endtry
+    endfunction
+    nnoremap <Leader>ea :call Edit($alias)<CR>
+    nnoremap <Leader>eb :call Edit($bashrc)<CR>
+    nnoremap <Leader>ed :call Edit('$h/wiki/todo/done.md')<CR>
+    nnoremap <Leader>ef :e $v/ftplugin/<C-D>
+    nnoremap <Leader>eg :call Edit($gitrc)<CR>
+    nnoremap <Leader>et :call Edit($tmuxrc)<CR>
+    nnoremap <Leader>ev :call Edit($vimrc)<CR>
+  " b -> Backup file
+    nnoremap <leader>b :let $bck_file = expand("$v/undo/bck_") . strftime("%y-%m-%d-%H-%M-%S") . "--" .   substitute(expand("%:p"), "/", "_", "g") <bar> silent write! $bck_file <CR>:echom "Wrote backup: $bck_file = " . $bck_file<CR>
+  " n -> :NERDTree
+    command! NERDTree :packadd nerdtree <BAR> NERDTree
+    command! NERDTreeToggle :packadd nerdtree <BAR> NERDTreeToggle
+    noremap <leader>n :NERDTreeToggle<CR>
+  " a -> Ag the silver searcher <- ack
+    noremap <leader>a :silent packadd ack<CR>:Ack 
+  " u -> :UndotreeToggle
+    noremap <leader>u :silent packadd undotree<CR>:UndotreeToggle<CR>
+
+
+" Map
   tnoremap <Esc> <C-W>N
 
   " Use <C-L> to clear the highlighting of :set hlsearch and also preserve the
@@ -265,30 +291,6 @@ set nocompatible | filetype plugin indent on | syntax on
     map gç g9
 
 
-" Map Leadered
-  " Edit special files
-    function! Edit(file)
-      try | execute 'buffer ' . a:file
-      catch | execute 'edit ' . a:file
-      endtry
-    endfunction
-    nnoremap <Leader>ea :call Edit($alias)<CR>
-    nnoremap <Leader>eb :call Edit($bashrc)<CR>
-    nnoremap <Leader>ed :call Edit('$h/wiki/todo/done.md')<CR>
-    nnoremap <Leader>eg :call Edit($gitrc)<CR>
-    nnoremap <Leader>et :call Edit($tmuxrc)<CR>
-    nnoremap <Leader>ev :call Edit($vimrc)<CR>
-  " b -> Backup file
-    nnoremap <leader>b :let $bck_file = expand("$v/undo/bck_") . strftime("%y-%m-%d-%H-%M-%S") . "--" .   substitute(expand("%:p"), "/", "_", "g") <bar> silent write! $bck_file <CR>:echom "Bck: " . $bck_file . " has been written"<CR>
-  " n -> :NERDTree
-    command! NERDTree :packadd nerdtree <BAR> NERDTree
-    command! NERDTreeToggle :packadd nerdtree <BAR> NERDTreeToggle
-    noremap <leader>n :NERDTreeToggle<CR>
-  " a -> Ag the silver searcher <- ack
-    noremap <leader>a :silent packadd nerdtree<CR>:Ack 
-  
-
-
 " Command Man
   if exists(":Man") != 2
     com! -nargs=+ -complete=shellcmd M ru! ftplugin/man.vim | Man <args>
@@ -388,7 +390,7 @@ set nocompatible | filetype plugin indent on | syntax on
     " Keep cache
     let g:ctrlp_clear_cache_on_exit = 0
     " Mixed to search in MRU, FIles, Buffers
-    let g:ctrlp_extensions = ['mixed']
+    let g:ctrlp_types = ['buf', 'mru', 'fil']
     let g:ctrlp_cmd = 'CtrlPMixed'
     " Faster listing <- vim.globpath
     if $os == 'windows'
