@@ -3,10 +3,11 @@
 " Plugin
   let s:pymode=exists('g:pymode')
   packadd python-mode
-  packadd ipython
+  packadd jupyter
   if !s:pymode | edit | endif
 
 " Better ?
+    set wrap
     set colorcolumn=120
     set tabstop=4
     set softtabstop=4
