@@ -1,5 +1,5 @@
 " Include
-so $v/pack/bundle/opt/vimwiki/ftplugin/vimwiki.vim
+so $v/pack/bundle/opt/wiki/ftplugin/vimwiki.vim
 
 " Plugin
 packadd table-mode
