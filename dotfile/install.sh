@@ -69,6 +69,12 @@ else
     echo "[+] $undo_path created"
 fi
 
+# Python
+mkdir ~/.ipython
+mkdir ~/.ipython/profile_default
+try_link $scriptpath/ipython_config.py ~/.ipython/profile_default/ipython_config.py
+try_link $scriptpath/ipython_kernel_config.py ~/.ipython/profile_default/ipython_kernel_config.py
+
 # Perl
 try_link $scriptpath/replyrc ~/.replyrc
 try_link $scriptpath/perlrc.pl ~/.perlrc.pl
