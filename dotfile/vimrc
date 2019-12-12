@@ -113,13 +113,11 @@ set nocompatible | filetype plugin indent on | syntax on
 
 
 " Backup
-  set nobackup                  " I may change that
-  set noswapfile                " I will this if this is harmfull
+  set nobackup
+  set noswapfile
   set nowritebackup
-  set backupdir=~/.vim/backup// " the double // will put the backup with the full directory
-  set directory=~/.vim/backup// " for the swap files
-  set undolevels=10000         " use many levels of undo
-  set history=10000    " After nocompatible
+  set undolevels=10000
+  set history=10000
 
   if has('persistent_undo')
     set undodir=$v/undo
@@ -136,6 +134,7 @@ set nocompatible | filetype plugin indent on | syntax on
 
 " Map
   let mapleader = ','
+  let maplocalleader = ','
   tnoremap <Esc> <C-W>N
 
   " Use <C-L> to clear the highlighting of :set hlsearch and also preserve the
@@ -337,6 +336,8 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:ipy_perform_mappings = 0
     " Do not highlight spaces
     let g:pymode_syntax_space_errors = 0
+    " Do not overwrite my ,b map
+    let g:pymode_breakpoint = 1
 
   " ConqueDbg, a gdb plugging
     let g:ConqueGdb_Disable = 1
@@ -453,6 +454,11 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:vimwiki_list += [{
       \ 'path': $HOME . '/wiki/todo',
       \ 'path_html': $HOME . '/wiki/todo_html'
+      \ }]
+    " Test
+    let g:vimwiki_list += [{
+      \ 'path': $HOME . '/Test/Wiki',
+      \ 'path_html': $HOME . '/Tast/Wiki_html'
       \ }]
     au BufNewFile,BufRead */todo      setf vimwiki
     " Map
