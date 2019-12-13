@@ -322,18 +322,21 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:ycm_autoclose_preview_window_after_completion = 1
     let g:ycm_min_num_of_chars_for_completion = 1
 
-  " Pymode
+  " Pymode (package python-mode)
     let g:pymode_python = 'python3'
     let pymode_lint_checkers = ['pylint', 'pep8', 'pyflakes']
+    " Use rope
+    let g:pymode_rope = 1
     " let g:pymode_options_colorcolumn = 0 " Remove the red line
     let g:pymode_rope_goto_definition_cmd = 'e'
     " Auto open cwindow (quickfix) if any errors have been found
     let g:pymode_lint_cwindow = 0
     " Pylint ignore
-      let s = ""
-      let s .= ",E303"  " Too many blank lines
-      let s .= ",E501"  " Line too long > 80
-      let s =  ",E701"  " Multiple statement on one line
+      let s = []
+      call add(s, "E303")  " Too many blank lines
+      call add(s, "E501")  " Line too long > 80
+      call add(s, "E701")  " Multiple statement on one line
+      let pymode_lint_ignore = s
     " Do not perform mapping in ipython (it removes my previous <c-s>
     let g:ipy_perform_mappings = 0
     " Do not highlight spaces
