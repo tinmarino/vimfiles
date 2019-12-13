@@ -149,11 +149,24 @@ set nocompatible | filetype plugin indent on | syntax on
     nnoremap <Leader>et :call Edit($tmuxrc)<CR>
     nnoremap <Leader>ev :call Edit($vimrc)<CR>
   " b -> Backup file
-    nnoremap <leader>b :let $bck_file = expand("$v/undo/bck_") . strftime("%y-%m-%d-%H-%M-%S") . "--" .   substitute(expand("%:p"), "/", "_", "g") <bar> silent write! $bck_file <CR>:echom "Wrote backup: $bck_file = " . $bck_file<CR>
+    function! Backup(s)
+      " Backup path
+      let bck_file = expand("$v/undo/bck_") . strftime("%y-%m-%d-%H-%M-%S")
+      " File path
+      let bck_file .= "--" . substitute(expand("%:p:r"), "/", "_", "g")
+      " Extension
+      let bck_file .= '-' . a:s . "." . expand("%:e")
+      silent execute a:s . 'write! ' . bck_file
+      echom 'Backup lines ' . a:s . ' of file: $bck_file = ' . bck_file
+    endfunction
+    command! -range=% Backup call Backup('<line1>,<line2>')
+    " :BackView to feed backup path of the day in command line
+    command! -range=% BackupView call feedkeys(':e '
+                \ . expand("$v/undo/bck_") . strftime("%y-%m-%d"))
+    nnoremap <leader>b :Backup<CR>
+    vnoremap <leader>b :Backup<CR>
   " n -> :NERDTree
-    command! NERDTree :packadd nerdtree <BAR> NERDTree
-    command! NERDTreeToggle :packadd nerdtree <BAR> NERDTreeToggle
-    noremap <leader>n :NERDTreeToggle<CR>
+    noremap <leader>n :packadd nerdtree<CR>:NERDTreeToggle<CR>
   " a -> Ag the silver searcher <- ack
     noremap <leader>a :silent packadd ack<CR>:Ack 
   " u -> :UndotreeToggle
@@ -342,7 +355,7 @@ set nocompatible | filetype plugin indent on | syntax on
     " Do not highlight spaces
     let g:pymode_syntax_space_errors = 0
     " Do not overwrite my ,b map
-    let g:pymode_breakpoint = 1
+    let g:pymode_breakpoint = 0
 
   " ConqueDbg, a gdb plugging
     let g:ConqueGdb_Disable = 1
