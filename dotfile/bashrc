@@ -45,6 +45,8 @@ function command_not_found_handle {
 
 
 # Preferences
+  # Enable directory with $
+  shopt -s direxpand
   # Avoid c-s freezing
   stty -ixon
 
