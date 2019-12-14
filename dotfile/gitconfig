@@ -39,6 +39,7 @@
     plr = pull --rebase
     pr = pull --rebase
     ra = rebase --abort
+    rb = rebase
     rc = rebase --continue
 
     # Remove

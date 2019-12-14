@@ -339,7 +339,7 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:pymode_python = 'python3'
     let pymode_lint_checkers = ['pylint', 'pep8', 'pyflakes']
     " Use rope
-    let g:pymode_rope = 1
+    " let g:pymode_rope = 1
     " let g:pymode_options_colorcolumn = 0 " Remove the red line
     let g:pymode_rope_goto_definition_cmd = 'e'
     " Auto open cwindow (quickfix) if any errors have been found
@@ -356,6 +356,9 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:pymode_syntax_space_errors = 0
     " Do not overwrite my ,b map
     let g:pymode_breakpoint = 0
+    " Fast fix
+    sign define Pymode' text=1
+
 
   " ConqueDbg, a gdb plugging
     let g:ConqueGdb_Disable = 1
@@ -441,6 +444,9 @@ set nocompatible | filetype plugin indent on | syntax on
 
   " Ultisnip
     let g:UltiSnipsSnippetDirectories = [$v . '/template/my_snippets', $v . '/pack/bundle/opt/snippets/UltiSnips']
+    " Disable search in rtp because I already gave you the path
+    let g:UltiSnipsEnableSnipMate = 0
+
     let g:UltiSnipsExpandTrigger="<c-j>"
     let g:UltiSnipsUsePythonVersion = 3
 

@@ -8,13 +8,13 @@ packadd table-mode
 UltiSnipsAddFiletypes markdown
 
 " Preference
-set nomodeline
-set linebreak
-set tw=0
-set expandtab
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+setlocal nomodeline
+setlocal linebreak
+setlocal tw=0
+setlocal expandtab
+setlocal tabstop=2
+setlocal softtabstop=2
+setlocal shiftwidth=2
 
 " Alias
 map <leader>c :Vimwiki2HTML<CR><CR>:syntax on<CR>
