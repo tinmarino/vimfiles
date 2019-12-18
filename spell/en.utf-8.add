@@ -70,3 +70,6 @@ virtualenv
 args
 unicode
 dedent
+Javascript
+perl
+Rebase
