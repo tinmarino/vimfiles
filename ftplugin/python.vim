@@ -1,10 +1,12 @@
-
+" First py load
+if !exists('g:ftpy_reloaded')
+  let g:ftpy_reloaded = 0
+endif
 
 " Plugin
-  let s:pymode=exists('g:pymode')
-  packadd python-mode
   packadd jupyter
-  if !s:pymode | edit | endif
+  packadd python-mode
+
 
 " Better ?
     set wrap
@@ -20,3 +22,8 @@
     set fileformat=unix
     set foldmethod=indent
 
+" Reload
+if !g:ftpy_reloaded
+  let g:ftpy_reloaded = 1
+  edit
+endif
