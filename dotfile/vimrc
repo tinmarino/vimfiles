@@ -56,7 +56,7 @@ set nocompatible | filetype plugin indent on | syntax on
     set wrapscan
     set conceallevel=3
     set nu
-    set iskeyword+=#,-
+    set iskeyword+=#
   " Statusline
     set laststatus=2        " alwaus show statusline
     set statusline=         " init void
@@ -346,9 +346,17 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:pymode_lint_cwindow = 0
     " Pylint ignore
       let s = []
+      " Important
       call add(s, "E303")  " Too many blank lines
       call add(s, "E501")  " Line too long > 80
       call add(s, "E701")  " Multiple statement on one line
+      call add(s, "E702")  " Multiple statement on one line (colon)
+
+      " For dirty cats (jupyter-vim)
+      " call add(s, "E302")  " Expected 2 blank lines, found 1
+      " call add(s, 'E265')  " Block comment should start with '# '
+      " call add(s, "E305")  " Expected 2 blank lines after class or function definition, found 1
+
       let pymode_lint_ignore = s
     " Do not perform mapping in ipython (it removes my previous <c-s>
     let g:ipy_perform_mappings = 0
@@ -356,6 +364,8 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:pymode_syntax_space_errors = 0
     " Do not overwrite my ,b map
     let g:pymode_breakpoint = 0
+    " Stop harassing me
+    let g:pymode_options_max_line_length = 120
     " Fast fix
     sign define Pymode' text=1
 
@@ -541,3 +551,7 @@ set nocompatible | filetype plugin indent on | syntax on
 " Fastly (added)
   command! -nargs=0 -bar Helptags for p in glob('~/.vim/pack/bundle/opt/*', 1, 1) | exe 'packadd '.fnamemodify(p, ':t') | endfor | helptags ALL
   packadd perlomni
+  " let g:jupyter_monitor_console = 1
+  " let g:jupyter_verbose = 1
+  " let g:jupyter_auto_connect = 1
+  packadd jupyter
