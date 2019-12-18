@@ -21,9 +21,10 @@
     # Status to stage by number and not name. Ex : g st; g a 1; g u 1
     qs = "!git -c color.ui=always status --short | perl -lane 'my $color1=substr(@F[0], 0, 5); my $flag=substr(@F[0], 5, -3); $flag= \" \" . $flag if not flag =~ m/\\e\\[3m/; $,=\" \"; printf \"%s %4s %3s %s\n\", $color1, ++$l, $flag, @F[1];'"
     # Helper: Remove first arg: seems that ${@:1} not working
-    funcremovefirst = "!test() { a=false; for arg in $@; do $a && printf \" $arg\"; a=true; done; }; test"
+    funcremovenumber = "!fct() { echo $@ | perl -ane '$OFS=\" \"; print grep(!/^[\\d,\\.]*$/, @F)' -; }; fct"
+    funckeepnumber = "!fct() { echo $@ | perl -ane '$OFS=\" \"; print grep(/^[\\d,\\.]*$/, @F)' -; }; fct"
     # Helper: Quick PrintF: Grep file[s]
-    qp = "!qprint() { git status --short | cat -n | perl -ne \"no warnings; print if $. ~~ [ $1 ]\" | awk -v FS=' ' -v OFS=' ' '{printf $3}'; git funcremovefirst $@; }; qprint"
+    qp = "!qprint() { git funcremovenumber $@; r_num=$(git funckeepnumber $@); git status --short | cat -n | perl -ne \"no warnings;  print if $. ~~ [ $r_num ]\" | awk '{printf \" \" $3}'; }; qprint"
     qa = "!qstage() { git add `git qp $*` ; git qs; }; qstage"
     qu = "!qunstage() { git reset HEAD `git qp $1`; git qs; }; qunstage"
     qd = "!qdiff() { git diff --color=always `git qp $*`; git qs; }; qdiff"
