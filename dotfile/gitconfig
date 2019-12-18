@@ -4,7 +4,8 @@
     # One letter
     a = add
     b = branch
-    c = commit
+    c = commit -m
+    cc = commit
     d = diff
     f = pull --rebase
     h = push
