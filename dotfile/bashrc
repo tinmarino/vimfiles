@@ -137,15 +137,19 @@ function command_not_found_handle {
   # Python
   export PATH=$PATH:$HOME/.local/bin
   # Android sdk
+  export PATH=$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools
   export PATH=$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools/bin
   export PATH=$PATH:$HOME/Program/Eclipse/eclipse
+  export ANDROID_HOME=$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796
+  export ANDROID_SDK=$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796
   # Programs
   export PATH=$PATH:/usr/local/cuda-10.0/bin
   export PATH=$PATH:$HOME/Program/Metapixel/metapixel
 
 
 # Perl
-  export PERL5LIB="$HOME/Software/Perl/Lib:~/Program/Komodo/Komodo-PerlRemoteDebugging-8.0.2-78971-linux-x86_64"
+  export PERL5LIB="$HOME/Program/Perl/Lib/lib/perl5/x86_64-linux-gnu-thread-multi"
+  export PERL5LIB="$PERL5LIB:$HOME/Software/Perl/Lib:$HOME/Program/Komodo/Komodo-PerlRemoteDebugging-8.0.2-78971-linux-x86_64"
   export PERL5DB="BEGIN { require q($PERL5LIB/perl5db.pl)}"
   export PERLDB_OPTS="RemotePort=localhost:9000"
   export DBGP_IDEKEY="whatever"
