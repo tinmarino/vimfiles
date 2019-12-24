@@ -25,11 +25,18 @@
     funcremovenumber = "!fct() { echo $@ | perl -ane '$OFS=\" \"; print grep(!/^[\\d,\\.]*$/, @F)' -; }; fct"
     funckeepnumber = "!fct() { echo $@ | perl -ane '$OFS=\" \"; print grep(/^[\\d,\\.]*$/, @F)' -; }; fct"
     # Helper: Quick PrintF: Grep file[s]
-    qp = "!qprint() { git funcremovenumber $@; r_num=$(git funckeepnumber $@); git status --short | cat -n | perl -ane \"no warnings; print @F[2] . ' ' if $. ~~ [ $r_num ]\" | perl -pe 'chop'; }; qprint"
+    qp = "!qprint() { \
+        `# Print the non number parameters`; \
+        git funcremovenumber $@; \
+        `# Get the lines matching the number params`; \
+        r_num=$(git funckeepnumber $@); \
+        git status --short | cat -n | \
+        perl -ane \"no warnings; print @F[2] . ' ' if $. ~~ [ $r_num ]\" | \
+        perl -pe 'chop'; }; qprint"
     qa = "!qstage() { git add `git qp $*` ; git qs; }; qstage"
-    qu = "!qunstage() { git reset HEAD `git qp $1`; git qs; }; qunstage"
     qd = "!qdiff() { git diff --color=always `git qp $*`; git qs; }; qdiff"
     qe = "!qedit() { vim -c'Gdiffsplit' `git qp $1`; git qs; }; qedit"
+    qu = "!qunstage() { git reset HEAD `git qp $1`; git qs; }; qunstage"
     qv = qe
  
     # Util
