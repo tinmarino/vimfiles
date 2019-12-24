@@ -1,5 +1,7 @@
 " The base
-set nocompatible | filetype plugin indent on | syntax on
+set encoding=utf-8
+scriptencoding uft-8
+filetype plugin indent on | syntax on
 
 
 " Variable
@@ -7,7 +9,7 @@ set nocompatible | filetype plugin indent on | syntax on
 
   " Set v: windows gvim do NOT read .bashrc
   if has('win32') || has('win64')
-    let $v = expand("$VIM/vimfiles")
+    let $v = expand('$VIM/vimfiles')
     let $os = 'windows'
   endif
   set runtimepath+=$v
@@ -20,11 +22,11 @@ set nocompatible | filetype plugin indent on | syntax on
   let $p = expand("$v/pack/bundle/opt") | let $pack = $p | let $opt = $p
   let $d = expand("$v/undo/dump") | let $dump = $d
   " RC
-  let $alias = expand($v . "/dotfile/bash_aliases.sh")
-  let $bashrc = expand($v . "/dotfile/bashrc")
-  let $gitrc = expand($v . "/dotfile/gitconfig")
-  let $vimrc = expand($v . "/dotfile/vimrc")
-  let $tmuxrc = expand($v . "/dotfile/tmux.conf")
+  let $alias = expand($v . '/dotfile/bash_aliases.sh')
+  let $bashrc = expand($v . '/dotfile/bashrc')
+  let $gitrc = expand($v . '/dotfile/gitconfig')
+  let $vimrc = expand($v . '/dotfile/vimrc')
+  let $tmuxrc = expand($v . '/dotfile/tmux.conf')
   let $done = expand($h . '/wiki/todo/done.md')
   " Vim
   let $auto = expand("$v/autoload")
@@ -34,10 +36,12 @@ set nocompatible | filetype plugin indent on | syntax on
 
 " Os specific
   " Termux
-  if 'termux' == $os
+  if 'termux' ==? $os
     " Autosave
     if expand('%') != ''
-      autocmd CursorHold,CursorHoldI *  silent update
+      augroup Autosave
+        autocmd CursorHold,CursorHoldI *  silent update
+      augroup END
     endif
     " Hide file edition message
     set shortmess+=F
@@ -49,13 +53,15 @@ set nocompatible | filetype plugin indent on | syntax on
     colorscheme dante
     set t_Co=256  " For airline and nice colors
     set formatoptions-=cro  " No auto comment
-    autocmd FileType * setlocal formatoptions-=cro
+    augroup NoCommment
+      autocmd FileType * setlocal formatoptions-=cro
+    augroup END
     set diffopt+=vertical
     set title                    " change the terminal's title, may not work
     set autoindent  " to have auto indentation when return line
     set wrapscan
     set conceallevel=3
-    set nu
+    set number
     set iskeyword+=#
   " Statusline
     set laststatus=2        " alwaus show statusline
@@ -67,7 +73,6 @@ set nocompatible | filetype plugin indent on | syntax on
     set statusline+=%c,     " cursor column
     set statusline+=%l/%L   " cursor line/total lines
   " File format
-    set encoding=utf-8
     set fileformat=unix
     set wrap
     set expandtab
@@ -98,18 +103,20 @@ set nocompatible | filetype plugin indent on | syntax on
     set cursorline  " Enable CursorLine
     " Default Colors for CursorLine
     highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
-    "Change Color when entering Insert Mode
-    autocmd InsertEnter * highlight  CursorLine term=None cterm=None
-    " Revert Color to default when leaving Insert Mode
-    autocmd InsertLeave * highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
+    augroup Cursor
+      "Change Color when entering Insert Mode
+      autocmd InsertEnter * highlight  CursorLine term=None cterm=None
+      " Revert Color to default when leaving Insert Mode
+      autocmd InsertLeave * highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
+    augroup END
 
   " Window
     set ruler
     set backspace=2
     " set shell=H:/Program/cmder-1.2.9/Cmder.exe
   " Viminfo rememebr last 10000 opened files
-  let s:viminfo=join(map(split(&viminfo, ","), {arg -> (v:val[0] == "'" ? "'10000" : v:val)}), ",")
-  exe("set viminfo=" . s:viminfo)
+  let s:viminfo=join(map(split(&viminfo, ','), {arg -> (v:val[0] == "'" ? "'10000" : v:val)}), ',')
+  exe('set viminfo=' . s:viminfo)
 
 
 " Backup
@@ -121,8 +128,8 @@ set nocompatible | filetype plugin indent on | syntax on
 
   if has('persistent_undo')
     set undodir=$v/undo
-    set undofile 
-  endif 
+    set undofile
+  endif
 
 
 " Mouse Integration
@@ -151,18 +158,18 @@ set nocompatible | filetype plugin indent on | syntax on
   " b -> Backup file
     function! Backup(s)
       " Backup path
-      let bck_file = expand("$v/undo/bck_") . strftime("%y-%m-%d-%H-%M-%S")
+      let bck_file = expand("$v/undo/bck_") . strftime('%y-%m-%d-%H-%M-%S')
       " File path
-      let bck_file .= "--" . substitute(expand("%:p:r"), "/", "_", "g")
+      let bck_file .= '--' . substitute(expand('%:p:r'), '/', '_', 'g')
       " Extension
-      let bck_file .= '-' . a:s . "." . expand("%:e")
+      let bck_file .= '-' . a:s . '.' . expand('%:e')
       silent execute a:s . 'write! ' . bck_file
       echom 'Backup lines ' . a:s . ' of file: $bck_file = ' . bck_file
     endfunction
     command! -range=% Backup call Backup('<line1>,<line2>')
     " :BackView to feed backup path of the day in command line
     command! -range=% BackupView call feedkeys(':e '
-                \ . expand("$v/undo/bck_") . strftime("%y-%m-%d"))
+                \ . expand("$v/undo/bck_") . strftime('%y-%m-%d'))
     nnoremap <leader>b :Backup<CR>
     vnoremap <leader>b :Backup<CR>
   " n -> :NERDTree
@@ -211,7 +218,7 @@ set nocompatible | filetype plugin indent on | syntax on
     map yx :s/y/x/g<CR>
 
   " Copy paste to from clipboard <- ctrl+p
-    if $os != 'termux'
+    if $os !=? 'termux'
       " Disabled in termux for wheel
       nnoremap <C-y> "+y
       vnoremap <C-y> "+y
@@ -305,7 +312,7 @@ set nocompatible | filetype plugin indent on | syntax on
 
 
 " Command Man
-  if exists(":Man") != 2
+  if exists(':Man') != 2
     com! -nargs=+ -complete=shellcmd M ru! ftplugin/man.vim | Man <args>
   else
     com! -nargs=+ -complete=shellcmd M Man <args>
@@ -322,10 +329,12 @@ set nocompatible | filetype plugin indent on | syntax on
 
 
 " Filetype
-  au BufNewFile,BufRead *.masm      setf masm
-  au BufNewFile,BufRead *.asm       setf masm
-  au BufNewFile,BufRead *.disarm    setf disarm
-  au BufNewFile,BufRead *.kd        setf kd
+  augroup FtDetect
+    au BufNewFile,BufRead *.masm      setf masm
+    au BufNewFile,BufRead *.asm       setf masm
+    au BufNewFile,BufRead *.disarm    setf disarm
+    au BufNewFile,BufRead *.kd        setf kd
+  augroup END
 
 
 " Plugin
@@ -347,15 +356,15 @@ set nocompatible | filetype plugin indent on | syntax on
     " Pylint ignore
       let s = []
       " Important
-      call add(s, "E303")  " Too many blank lines
-      call add(s, "E501")  " Line too long > 80
-      call add(s, "E701")  " Multiple statement on one line
-      call add(s, "E702")  " Multiple statement on one line (colon)
+      call add(s, 'E303')  " Too many blank lines
+      call add(s, 'E501')  " Line too long > 80
+      call add(s, 'E701')  " Multiple statement on one line
+      call add(s, 'E702')  " Multiple statement on one line (colon)
 
       " For dirty cats (jupyter-vim)
-      " call add(s, "E302")  " Expected 2 blank lines, found 1
+      " call add(s, 'E302')  " Expected 2 blank lines, found 1
       " call add(s, 'E265')  " Block comment should start with '# '
-      " call add(s, "E305")  " Expected 2 blank lines after class or function definition, found 1
+      " call add(s, 'E305')  " Expected 2 blank lines after class or function definition, found 1
 
       let pymode_lint_ignore = s
     " Do not perform mapping in ipython (it removes my previous <c-s>
@@ -379,17 +388,17 @@ set nocompatible | filetype plugin indent on | syntax on
 
   " Vdebug
     let g:vdebug_keymap = {
-    \    "run" : "<F5>",
-    \    "close" : "<F6>",
-    \    "detach" : "<F7>",
-    \    "run_to_cursor" : "<F8>",
-    \    "set_breakpoint" : "<F9>",
-    \    "step_over" : "<F10>",
-    \    "step_into" : "<F11>",
-    \    "step_out" : "<F12>",
-    \    "get_context" : "<F2>",
-    \    "eval_under_cursor" : "<F3>",
-    \    "eval_visual" : "<Leader>e",
+    \    'run' : '<F5>',
+    \    'close' : '<F6>',
+    \    'detach' : '<F7>',
+    \    'run_to_cursor' : '<F8>',
+    \    'set_breakpoint' : '<F9>',
+    \    'step_over' : '<F10>',
+    \    'step_into' : '<F11>',
+    \    'step_out' : '<F12>',
+    \    'get_context' : '<F2>',
+    \    'eval_under_cursor' : '<F3>',
+    \    'eval_visual' : '<Leader>e',
     \}
 
   " CtrlP
@@ -407,7 +416,7 @@ set nocompatible | filetype plugin indent on | syntax on
       \ 'dir': '\.git$,undo/',
       \ 'file': 'log'
     \ }
-    if $os != 'termux'
+    if $os !=? 'termux'
       " E like edit and closer to ctrl + <c-p> used to paste
       let g:ctrlp_map = '<C-E>'
       vnoremap <C-E> :<C-u>CtrlPMixed<CR>
@@ -422,7 +431,7 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:ctrlp_types = ['buf', 'mru', 'fil']
     let g:ctrlp_cmd = 'CtrlPMixed'
     " Faster listing <- vim.globpath
-    if $os == 'windows'
+    if $os ==? 'windows'
       let g:ctrlp_user_command = 'dir %s /-n /b /s /a-d'
     else
       let g:ctrlp_user_command = 'find %s -type f'
@@ -457,7 +466,7 @@ set nocompatible | filetype plugin indent on | syntax on
     " Disable search in rtp because I already gave you the path
     let g:UltiSnipsEnableSnipMate = 0
 
-    let g:UltiSnipsExpandTrigger="<c-j>"
+    let g:UltiSnipsExpandTrigger='<c-j>'
     let g:UltiSnipsUsePythonVersion = 3
 
   " Fugitive
@@ -469,11 +478,11 @@ set nocompatible | filetype plugin indent on | syntax on
     map <leader>ga :Git add
 
   " YouCompleteMe
-    " let g:ycm_global_ycm_extra_conf = "~/.vim/pack/bundle/opt/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
+    " let g:ycm_global_ycm_extra_conf = "$HOME/.vim/pack/bundle/opt/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
 
   " Viewdoc
     let g:no_viewdoc_abbrev = 1
-    let g:viewdoc_open = "e"
+    let g:viewdoc_open = 'e'
 
   " Table mode
     let g:table_mode_tableize_map = ',i'
@@ -494,14 +503,16 @@ set nocompatible | filetype plugin indent on | syntax on
       \ 'path': $HOME . '/Test/Wiki',
       \ 'path_html': $HOME . '/Tast/Wiki_html'
       \ }]
-    au BufNewFile,BufRead */todo      setf vimwiki
+    augroup Wiki
+      au BufNewFile,BufRead */todo      setf vimwiki
+    augroup END
     " Map
     noremap <leader>ww :VimwikiIndex 1<CR>
     map <leader>tt :VimwikiIndex 2<CR>
     map <leader>t<leader>t :VimwikiDiaryIndex 2<CR>
     function! Windex(num)
       let l:nr = 1 + vimwiki#vars#get_bufferlocal('wiki_nr')
-      if &ft!='vimwiki' || l:nr != a:num
+      if &filetype !=# 'vimwiki' || l:nr != a:num
         execute 'VimwikiIndex ' . a:num
       endif
     endfunction
@@ -515,8 +526,12 @@ set nocompatible | filetype plugin indent on | syntax on
     let g:vimwiki_automatic_nested_syntaxes = 1
     let g:vimwiki_syntax = 'markdown'
     let g:vimwiki_ext = '.md'
-    let g:vimwiki_custom_wiki2html = $HOME . "/wiki/wiki/wiki2html.sh"
+    let g:vimwiki_custom_wiki2html = $HOME . '/wiki/wiki/wiki2html.sh'
     let g:vimwiki_css_name = '/Css/include.css'
+
+    augroup VimwikInit
+        autocmd FileType vimwiki set nomodeline
+    augroup END
 
     packadd wiki " TODO remove and add autoload
     " Calendar
@@ -538,8 +553,10 @@ set nocompatible | filetype plugin indent on | syntax on
   " Map
   packadd surround  " ySS<div>
   packadd repeat  " for surround
-  packadd argtextobject  " daa
-  packadd indent-object  " dai
+  packadd textobj-user  " for function
+  packadd textobj-arg  " daa
+  packadd textobj-indent  " dai
+  packadd textobj-function  " daf
   " Snip
   packadd ultisnips " 3ms
   packadd snippets " for some ultisnips macro
@@ -551,7 +568,10 @@ set nocompatible | filetype plugin indent on | syntax on
 " Fastly (added)
   command! -nargs=0 -bar Helptags for p in glob('~/.vim/pack/bundle/opt/*', 1, 1) | exe 'packadd '.fnamemodify(p, ':t') | endfor | helptags ALL
   packadd perlomni
+  packadd lexima " autoclose brackets
   " let g:jupyter_monitor_console = 1
   " let g:jupyter_verbose = 1
-  " let g:jupyter_auto_connect = 1
+  let g:jupyter_auto_connect = 1
   packadd jupyter
+
+" vim: sw=2
