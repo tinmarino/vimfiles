@@ -8,7 +8,6 @@ packadd table-mode
 UltiSnipsAddFiletypes markdown
 
 " Preference
-setlocal nomodeline
 setlocal linebreak
 setlocal tw=0
 setlocal expandtab
