@@ -60,7 +60,7 @@
     url = https://github.com/michaeljsmith/vim-indent-object
     ignore = all
 [submodule "pack/bundle/opt/argtextobject"]
-    path = pack/bundle/opt/argtextobject
+	path = pack/bundle/opt/textobj-arg
     url = https://github.com/vim-scripts/argtextobj.vim
     ignore = all
 [submodule "pack/bundle/opt/emoji"]
@@ -93,7 +93,7 @@
     url = https://github.com/vim-scripts/Align
     ignore = all
 [submodule "pack/bundle/opt/vim-indent-object"]
-    path = pack/bundle/opt/indent-object
+	path = pack/bundle/opt/textobj-indent
     url = https://github.com/michaeljsmith/vim-indent-object
     ignore = all
 [submodule "pack/bundle/opt/vdebug"]
@@ -156,3 +156,15 @@
 	path = pack/bundle/opt/ale
 	url = https://github.com/dense-analysis/ale
     ignore = all
+[submodule "pack/bundle/opt/lexima"]
+	path = pack/bundle/opt/lexima
+	url = https://github.com/cohama/lexima.vim
+[submodule "pack/bundle/opt/sleuth"]
+	path = pack/bundle/opt/sleuth
+	url = https://github.com/tpope/vim-sleuth
+[submodule "pack/bundle/opt/function-object"]
+	path = pack/bundle/opt/textobj-function
+	url = https://github.com/kana/vim-textobj-function
+[submodule "pack/bundle/opt/textobj-user"]
+	path = pack/bundle/opt/textobj-user
+	url = https://github.com/kana/vim-textobj-user
