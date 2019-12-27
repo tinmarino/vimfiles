@@ -567,11 +567,11 @@ filetype plugin indent on | syntax on
 
 " Fastly (added)
   command! -nargs=0 -bar Helptags for p in glob('~/.vim/pack/bundle/opt/*', 1, 1) | exe 'packadd '.fnamemodify(p, ':t') | endfor | helptags ALL
-  packadd perlomni
-  packadd lexima " autoclose brackets
-  " let g:jupyter_monitor_console = 1
-  " let g:jupyter_verbose = 1
-  let g:jupyter_auto_connect = 1
+  " packadd perlomni
+  " packadd lexima " autoclose brackets
+  "let g:jupyter_monitor_console = 1
+  "let g:jupyter_verbose = 1
+  "let g:jupyter_auto_connect = 1
   packadd jupyter
 
 " vim: sw=2
