@@ -31,10 +31,6 @@
     path = pack/bundle/opt/misc
     url = https://github.com/xolox/vim-misc
     ignore = all
-[submodule "pack/bundle/opt/ipython"]
-    path = pack/bundle/opt/ipyton
-    url = https://github.com/ivanov/vim-ipython
-    ignore = all
 [submodule "pack/bundle/opt/conque-gdb"]
     path = pack/bundle/opt/conque-gdb
     url = https://github.com/vim-scripts/Conque-GDB
@@ -99,10 +95,6 @@
 [submodule "pack/bundle/opt/vdebug"]
     path = pack/bundle/opt/vdebug
     url = https://github.com/vim-vdebug/vdebug
-    ignore = all
-[submodule "pack/bundle/opt/ipython"]
-    path = pack/bundle/opt/ipython
-    url = https://github.com/ivanov/vim-ipython
     ignore = all
 [submodule "pack/bundle/opt/python-mode"]
     path = pack/bundle/opt/python-mode
