@@ -3,6 +3,10 @@
 c = get_config()
 c.ZMQTerminalInteractiveShell.include_other_output  = True
 
+# History
+# c.ZMQTerminalInteractiveShell.history_load_length = 10000
+# c.Session.digest_history_size = 100000
+
 # Exit leaves kernel alone
 # seems I'll do that in ipython kernel
 

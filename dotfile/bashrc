@@ -135,6 +135,7 @@ function command_not_found_handle {
   # Node after npm config set prefix ~/.npm
   export PATH=$PATH:$HOME/.npm/bin
   # Python
+  export PATH=$PATH:$HOME/Program/Conda/bin
   export PATH=$PATH:$HOME/.local/bin
   # Android sdk
   export PATH=$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools
@@ -195,4 +196,3 @@ _pip_completion()
 }
 complete -o default -F _pip_completion pip3
 # pip bash completion end
-
