@@ -17,20 +17,20 @@ filetype plugin indent on | syntax on
   " Alias
   " One letter
   let $h = expand($HOME)
-  let $s = expand("$v/scripts") | let $script = $s
-  let $w = expand("$h/wiki/wiki") | let $wiki = $w
-  let $p = expand("$v/pack/bundle/opt") | let $pack = $p | let $opt = $p
-  let $d = expand("$v/undo/dump") | let $dump = $d
+  let $s = expand('$v/scripts') | let $script = $s
+  let $w = expand('$h/wiki/wiki') | let $wiki = $w
+  let $p = expand('$v/pack/bundle/opt') | let $pack = $p | let $opt = $p
+  let $d = expand('$v/undo/dump') | let $dump = $d
   " RC
-  let $alias = expand($v . '/dotfile/bash_aliases.sh')
-  let $bashrc = expand($v . '/dotfile/bashrc')
-  let $gitrc = expand($v . '/dotfile/gitconfig')
-  let $vimrc = expand($v . '/dotfile/vimrc')
-  let $tmuxrc = expand($v . '/dotfile/tmux.conf')
-  let $done = expand($h . '/wiki/todo/done.md')
+  let $alias = expand('$v/dotfile/bash_aliases.sh')
+  let $bashrc = expand('$v/dotfile/bashrc')
+  let $gitrc = expand('$v/dotfile/gitconfig')
+  let $vimrc = expand('$v/dotfile/vimrc')
+  let $tmuxrc = expand('$v/dotfile/tmux.conf')
+  let $done = expand('$h/wiki/todo/done.md')
   " Vim
-  let $auto = expand("$v/autoload")
-  let $ft = expand("$v/ftplugin")
+  let $auto = expand('$v/autoload')
+  let $ft = expand('$v/ftplugin')
   let $vim = $v
 
 
@@ -150,7 +150,7 @@ filetype plugin indent on | syntax on
     endfunction
     nnoremap <Leader>ea :call Edit($alias)<CR>
     nnoremap <Leader>eb :call Edit($bashrc)<CR>
-    nnoremap <Leader>ed :call Edit('$h/wiki/todo/done.md')<CR>
+    nnoremap <Leader>ed :call Edit($h/wiki/todo/done.md)<CR>
     nnoremap <Leader>ef :e $v/ftplugin/<C-D>
     nnoremap <Leader>eg :call Edit($gitrc)<CR>
     nnoremap <Leader>et :call Edit($tmuxrc)<CR>
@@ -158,7 +158,7 @@ filetype plugin indent on | syntax on
   " b -> Backup file
     function! Backup(s)
       " Backup path
-      let bck_file = expand("$v/undo/bck_") . strftime('%y-%m-%d-%H-%M-%S')
+      let bck_file = expand('$v/undo/bck_') . strftime('%y-%m-%d-%H-%M-%S')
       " File path
       let bck_file .= '--' . substitute(expand('%:p:r'), '/', '_', 'g')
       " Extension
@@ -169,7 +169,7 @@ filetype plugin indent on | syntax on
     command! -range=% Backup call Backup('<line1>,<line2>')
     " :BackView to feed backup path of the day in command line
     command! -range=% BackupView call feedkeys(':e '
-                \ . expand("$v/undo/bck_") . strftime('%y-%m-%d'))
+                \ . expand('$v/undo/bck_') . strftime('%y-%m-%d'))
     nnoremap <leader>b :Backup<CR>
     vnoremap <leader>b :Backup<CR>
   " n -> :NERDTree
@@ -349,7 +349,6 @@ filetype plugin indent on | syntax on
     let pymode_lint_checkers = ['pylint', 'pep8', 'pyflakes']
     " Use rope
     " let g:pymode_rope = 1
-    " let g:pymode_options_colorcolumn = 0 " Remove the red line
     let g:pymode_rope_goto_definition_cmd = 'e'
     " Auto open cwindow (quickfix) if any errors have been found
     let g:pymode_lint_cwindow = 0
@@ -403,7 +402,7 @@ filetype plugin indent on | syntax on
 
   " CtrlP
     " Cache
-    let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+    let g:ctrlp_cache_dir ='$h/.cache/ctrlp'
     " replace $home by ~ in cache
     let g:ctrlp_tilde_homedir = 1
     let g:ctrlp_mruf_max = 50000
@@ -462,7 +461,7 @@ filetype plugin indent on | syntax on
         \}
 
   " Ultisnip
-    let g:UltiSnipsSnippetDirectories = [$v . '/template/my_snippets', $v . '/pack/bundle/opt/snippets/UltiSnips']
+    let g:UltiSnipsSnippetDirectories = ['$v/template/my_snippets', '$v/pack/bundle/opt/snippets/UltiSnips']
     " Disable search in rtp because I already gave you the path
     let g:UltiSnipsEnableSnipMate = 0
 
@@ -490,18 +489,18 @@ filetype plugin indent on | syntax on
   " Vimwiki
     " Wiki
     let g:vimwiki_list = [{
-      \ 'path': $HOME . '/wiki/wiki',
-      \ 'path_html': $HOME . '/wiki/wiki_html'
+      \ 'path': '$h/wiki/wiki',
+      \ 'path_html': '$h/wiki/wiki_html'
       \ }]
     " Todo
     let g:vimwiki_list += [{
-      \ 'path': $HOME . '/wiki/todo',
-      \ 'path_html': $HOME . '/wiki/todo_html'
+      \ 'path': '$h/wiki/todo',
+      \ 'path_html': '$h/wiki/todo_html'
       \ }]
     " Test
     let g:vimwiki_list += [{
-      \ 'path': $HOME . '/Test/Wiki',
-      \ 'path_html': $HOME . '/Tast/Wiki_html'
+      \ 'path': '$h/Test/Wiki',
+      \ 'path_html': '$h/Tast/Wiki_html'
       \ }]
     augroup Wiki
       au BufNewFile,BufRead */todo      setf vimwiki
@@ -526,7 +525,7 @@ filetype plugin indent on | syntax on
     let g:vimwiki_automatic_nested_syntaxes = 1
     let g:vimwiki_syntax = 'markdown'
     let g:vimwiki_ext = '.md'
-    let g:vimwiki_custom_wiki2html = $HOME . '/wiki/wiki/wiki2html.sh'
+    let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
     let g:vimwiki_css_name = '/Css/include.css'
 
     augroup VimwikInit
