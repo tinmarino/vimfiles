@@ -1,7 +1,6 @@
 # Vimfiles and dotfiles
 
-
-In vimfiles directory (`~/vim`):
+Commands to run in vimfiles directory (`~/vim`):
 
 ```sh
 # Get me
