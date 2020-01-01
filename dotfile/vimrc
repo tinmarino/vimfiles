@@ -240,15 +240,19 @@ filetype plugin indent on | syntax on
 
   " C-Arrow on Ubuntu
     "Get Ctrl + ARROW KEYS,because if you don't do that, the <C-Up>  (ie crtl + up ) key is notreckognise
-    map [1;5A <C-Up>
-    map [1;5B <C-Down>
-    map [1;5D <C-Left>
-    map [1;5C <C-Right>
+    map  <Esc>[1;5A <C-Up>
+    map  <Esc>[1;5B <C-Down>
+    map  <Esc>[1;5D <C-Left>
+    map  <Esc>[1;5C <C-Right>
+    cmap <Esc>[1;5A <C-Up>
+    cmap <Esc>[1;5B <C-Down>
+    cmap <Esc>[1;5D <C-Left>
+    cmap <Esc>[1;5C <C-Right>
 
-    map [1;2D <S-Left>
-    map [1;2C <S-Right>
-    cmap [1;2D <S-Left>
-    cmap [1;2C <S-Right>
+    map  <Esc>[1;2D <S-Left>
+    map  <Esc>[1;2C <S-Right>
+    cmap <Esc>[1;2D <S-Left>
+    cmap <Esc>[1;2C <S-Right>
 
   " Save with s
     noremap s      :update!<CR>
