@@ -346,6 +346,8 @@ filetype plugin indent on | syntax on
 
   " Pymode (package python-mode)
     let g:pymode_python = 'python3'
+    " They `set nowrap` !!
+    let g:pymode_options = 0
     let pymode_lint_checkers = ['pylint', 'pep8', 'pyflakes']
     " Use rope
     " let g:pymode_rope = 1

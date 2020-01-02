@@ -7,7 +7,7 @@ Commands to run in vimfiles directory (`~/vim`):
 git clone --recurse-submodules -j8 https://github.com/tinmarino/vimfiles ~/.vim
 
 # Sync submodules
-git submodule update --recursive --remote --jobs 8
+git submodule update --init  --recursive --remote --jobs 8
 git submodule foreach "git reset HEAD ."
 git submodule foreach "git checkout -- ."
 
