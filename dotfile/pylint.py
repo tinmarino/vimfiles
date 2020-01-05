@@ -5,5 +5,5 @@ disable=invalid-name,
         fixme,
         broad-except,
         too-many-instance-attributes,
-
+        too-few-public-methods,
         
