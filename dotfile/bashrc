@@ -198,6 +198,6 @@ _pip_completion()
 complete -o default -F _pip_completion pip3
 # pip bash completion end
 
-  function myff() { ffmpeg -i "$1"  -f avi -c:v mpeg4 -b:v 4000k -c:a libmp3lame -b:a 320k  "$2" ; }
-
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+  function myff() { ffmpeg -i "$1"  -f avi -c:v mpeg4 -b:v 4000k -c:a libmp3lame -b:a 320k  "$2" ; }
+  function mygif() { ffmpeg  -i "$1" -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 "$2"; }
