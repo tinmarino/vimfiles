@@ -356,7 +356,7 @@ filetype plugin indent on | syntax on
     " Use rope
     let g:pymode_rope = 1
     let g:pymode_rope_completion = 1
-    let g:pymode_rope_complete_on_dot = 1
+    let g:pymode_rope_complete_on_dot = 0
     let g:pymode_rope_completion_bind = '<C-Space>'
     let g:pymode_rope_autoimport = 0
     let g:pymode_rope_autoimport_modules = ['os', 'shutil', 'datetime', 'numpy']
@@ -472,7 +472,7 @@ filetype plugin indent on | syntax on
         \}
 
   " Ultisnip
-    let g:UltiSnipsSnippetDirectories = ['$v/template/my_snippets', '$v/pack/bundle/opt/snippets/UltiSnips']
+    let g:UltiSnipsSnippetDirectories = [$v . '/template/my_snippets', $v . '/pack/bundle/opt/snippets/UltiSnips']
     " Disable search in rtp because I already gave you the path
     let g:UltiSnipsEnableSnipMate = 0
 

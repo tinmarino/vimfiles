@@ -138,6 +138,8 @@ function command_not_found_handle {
   export PATH=$PATH:$HOME/Program/Conda/bin
   export PATH=$PATH:$HOME/.local/bin
   export PATH=$PATH:$HOME/../usr/share/perl6/site/bin/
+  # Rust
+  export PATH=$PATH:$HOME/.cargo/bin
   # Android sdk
   export PATH=$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools
   export PATH=$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools/bin
