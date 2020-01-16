@@ -33,52 +33,52 @@ endif
 
 " Palette: {{{
 
-let g:dracula#palette           = {}
-let g:dracula#palette.fg        = ['#F8F8F2', 253]
+let g:dracula_palette           = {}
+let g:dracula_palette.fg        = ['#F8F8F2', 253]
 
-let g:dracula#palette.bglighter = ['#424450', 238]
-let g:dracula#palette.bglight   = ['#343746', 237]
-let g:dracula#palette.bg        = ['#282A36', 236]
-let g:dracula#palette.bgdark    = ['#21222C', 235]
-let g:dracula#palette.bgdarker  = ['#191A21', 234]
+let g:dracula_palette.bglighter = ['#424450', 238]
+let g:dracula_palette.bglight   = ['#343746', 237]
+let g:dracula_palette.bg        = ['#282A36', 236]
+let g:dracula_palette.bgdark    = ['#21222C', 235]
+let g:dracula_palette.bgdarker  = ['#191A21', 234]
 
-let g:dracula#palette.comment   = ['#6272A4',  61]
-let g:dracula#palette.selection = ['#44475A', 239]
-let g:dracula#palette.subtle    = ['#424450', 238]
+let g:dracula_palette.comment   = ['#6272A4',  61]
+let g:dracula_palette.selection = ['#44475A', 239]
+let g:dracula_palette.subtle    = ['#424450', 238]
 
-let g:dracula#palette.cyan      = ['#8BE9FD', 117]
-let g:dracula#palette.green     = ['#50FA7B',  84]
-let g:dracula#palette.orange    = ['#FFB86C', 215]
-let g:dracula#palette.pink      = ['#FF79C6', 212]
-let g:dracula#palette.purple    = ['#BD93F9', 141]
-let g:dracula#palette.red       = ['#FF5555', 203]
-let g:dracula#palette.yellow    = ['#F1FA8C', 228]
+let g:dracula_palette.cyan      = ['#8BE9FD', 117]
+let g:dracula_palette.green     = ['#50FA7B',  84]
+let g:dracula_palette.orange    = ['#FFB86C', 215]
+let g:dracula_palette.pink      = ['#FF79C6', 212]
+let g:dracula_palette.purple    = ['#BD93F9', 141]
+let g:dracula_palette.red       = ['#FF5555', 203]
+let g:dracula_palette.yellow    = ['#F1FA8C', 228]
 
 "
 " ANSI
 "
-let g:dracula#palette.color_0  = '#21222C'
-let g:dracula#palette.color_1  = '#FF5555'
-let g:dracula#palette.color_2  = '#50FA7B'
-let g:dracula#palette.color_3  = '#F1FA8C'
-let g:dracula#palette.color_4  = '#BD93F9'
-let g:dracula#palette.color_5  = '#FF79C6'
-let g:dracula#palette.color_6  = '#8BE9FD'
-let g:dracula#palette.color_7  = '#F8F8F2'
-let g:dracula#palette.color_8  = '#6272A4'
-let g:dracula#palette.color_9  = '#FF6E6E'
-let g:dracula#palette.color_10 = '#69FF94'
-let g:dracula#palette.color_11 = '#FFFFA5'
-let g:dracula#palette.color_12 = '#D6ACFF'
-let g:dracula#palette.color_13 = '#FF92DF'
-let g:dracula#palette.color_14 = '#A4FFFF'
-let g:dracula#palette.color_15 = '#FFFFFF'
+let g:dracula_palette.color_0  = '#21222C'
+let g:dracula_palette.color_1  = '#FF5555'
+let g:dracula_palette.color_2  = '#50FA7B'
+let g:dracula_palette.color_3  = '#F1FA8C'
+let g:dracula_palette.color_4  = '#BD93F9'
+let g:dracula_palette.color_5  = '#FF79C6'
+let g:dracula_palette.color_6  = '#8BE9FD'
+let g:dracula_palette.color_7  = '#F8F8F2'
+let g:dracula_palette.color_8  = '#6272A4'
+let g:dracula_palette.color_9  = '#FF6E6E'
+let g:dracula_palette.color_10 = '#69FF94'
+let g:dracula_palette.color_11 = '#FFFFA5'
+let g:dracula_palette.color_12 = '#D6ACFF'
+let g:dracula_palette.color_13 = '#FF92DF'
+let g:dracula_palette.color_14 = '#A4FFFF'
+let g:dracula_palette.color_15 = '#FFFFFF'
 
 " }}}
 
 " Helper function that takes a variadic list of filetypes as args and returns
 " whether or not the execution of the ftplugin should be aborted.
-func! dracula#should_abort(...)
+func! Dracula_should_abort(...)
     if ! exists('g:colors_name') || g:colors_name !=# 'dracula'
         return 1
     elseif a:0 > 0 && (! exists('b:current_syntax') || index(a:000, b:current_syntax) == -1)
@@ -92,38 +92,38 @@ endfunction
 
 " Palette: {{{2
 
-let s:fg        = g:dracula#palette.fg
+let s:fg        = g:dracula_palette.fg
 
-let s:bglighter = g:dracula#palette.bglighter
-let s:bglight   = g:dracula#palette.bglight
-let s:bg        = g:dracula#palette.bg
-let s:bgdark    = g:dracula#palette.bgdark
-let s:bgdarker  = g:dracula#palette.bgdarker
+let s:bglighter = g:dracula_palette.bglighter
+let s:bglight   = g:dracula_palette.bglight
+let s:bg        = g:dracula_palette.bg
+let s:bgdark    = g:dracula_palette.bgdark
+let s:bgdarker  = g:dracula_palette.bgdarker
 
-let s:comment   = g:dracula#palette.comment
-let s:selection = g:dracula#palette.selection
-let s:subtle    = g:dracula#palette.subtle
+let s:comment   = g:dracula_palette.comment
+let s:selection = g:dracula_palette.selection
+let s:subtle    = g:dracula_palette.subtle
 
-let s:cyan      = g:dracula#palette.cyan
-let s:green     = g:dracula#palette.green
-let s:orange    = g:dracula#palette.orange
-let s:pink      = g:dracula#palette.pink
-let s:purple    = g:dracula#palette.purple
-let s:red       = g:dracula#palette.red
-let s:yellow    = g:dracula#palette.yellow
+let s:cyan      = g:dracula_palette.cyan
+let s:green     = g:dracula_palette.green
+let s:orange    = g:dracula_palette.orange
+let s:pink      = g:dracula_palette.pink
+let s:purple    = g:dracula_palette.purple
+let s:red       = g:dracula_palette.red
+let s:yellow    = g:dracula_palette.yellow
 
 let s:none      = ['NONE', 'NONE']
 
 if has('nvim')
   for s:i in range(16)
-    let g:terminal_color_{s:i} = g:dracula#palette['color_' . s:i]
+    let g:terminal_color_{s:i} = g:dracula_palette['color_' . s:i]
   endfor
 endif
 
 if has('terminal')
   let g:terminal_ansi_colors = []
   for s:i in range(16)
-    call add(g:terminal_ansi_colors, g:dracula#palette['color_' . s:i])
+    call add(g:terminal_ansi_colors, g:dracula_palette['color_' . s:i])
   endfor
 endif
 

@@ -613,7 +613,7 @@ filetype plugin indent on | syntax on
   "let g:jupyter_verbose = 1
   " let g:jupyter_auto_connect = 1
   packadd jupyter
-  packadd spector
+  "packadd spector
   packadd youcompleteme
   packadd sleuth  " Auto indent
 
