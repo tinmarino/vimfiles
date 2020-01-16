@@ -10,4 +10,6 @@ disable=invalid-name,
         import-error,
         wrong-import-position,
         import-outside-toplevel,
+        bare-except,
+        too-many-ancestors,
         

@@ -1,5 +1,37 @@
+priority -50
+
 snippet test
-frol here $0 to here
+from here $0 to here
+endsnippet
+
+snippet `t "Code Text"
+\`\`\`text
+$1
+\`\`\`
+endsnippet
+
+snippet `p "Code Python"
+\`\`\`python
+$1
+\`\`\`
+endsnippet
+
+snippet `v "Code Vim"
+\`\`\`vim
+$1
+\`\`\`
+endsnippet
+
+snippet `js "Code Js"
+\`\`\`javascript
+$1
+\`\`\`
+endsnippet
+
+snippet `j "Code Java"
+\`\`\`java
+$1
+\`\`\`
 endsnippet
 
 snippet fmatter
@@ -10,4 +42,14 @@ tags: $3
 ---
 # $1
 $0
+endsnippet
+
+snippet title
+---
+title: ${1:`!v expand('%:t:r')`}
+category: $2
+wiki_css: Css/color_dark_solarized.css, Css/layout_toc.css
+header-includes: <script type="text/javascript" src="Css/js_masonry_desandro.js"></script>
+wiki_pandoc: --toc
+---
 endsnippet

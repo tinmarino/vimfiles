@@ -68,6 +68,7 @@ else
     mkdir $undo_path
     echo "[+] $undo_path created"
 fi
+try_link $scriptpath/vimspector.json ~/.vimspector.json
 
 # Python
 mkdir ~/.ipython

@@ -168,3 +168,6 @@
 	path = pack/bundle/opt/jupyter
 	url = https://github.com/tinmarino/jupyter-vim
     ignore = all
+[submodule "pack/bundle/opt/spector"]
+	path = pack/bundle/opt/spector
+	url = https://github.com/puremourning/vimspector
