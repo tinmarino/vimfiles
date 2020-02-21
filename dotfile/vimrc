@@ -50,7 +50,8 @@ filetype plugin indent on | syntax on
 
 " Appearance
   " Preferences
-    colorscheme dante
+    set background=dark
+    colorscheme gruvbox-material
     set t_Co=256  " For airline and nice colors
     set formatoptions-=cro  " No auto comment
     augroup NoCommment
@@ -174,8 +175,6 @@ filetype plugin indent on | syntax on
     vnoremap <leader>b :Backup<CR>
   " n -> :NERDTree
     noremap <leader>n :packadd nerdtree<CR>:NERDTreeToggle<CR>
-  " a -> Ag the silver searcher <- ack
-    noremap <leader>a :silent packadd ack<CR>:Ack 
   " u -> :UndotreeToggle
     noremap <leader>u :silent packadd undotree<CR>:UndotreeToggle<CR>
 
@@ -185,8 +184,8 @@ filetype plugin indent on | syntax on
 
   " Use <C-L> to clear the highlighting of :set hlsearch and also preserve the
   " default behavior of redrawing the screen
-    if maparg('<C-L>', 'n') ==# ''
-        nnoremap <silent> <C-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+    if maparg('<C-S-L>', 'n') ==# ''
+        nnoremap <silent> <C-S-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
     endif
 
   " Window
@@ -245,6 +244,8 @@ filetype plugin indent on | syntax on
     endif
     nnoremap <C-p> "+p
     vnoremap <C-p> "+p
+    " Note: `] goto end of paste
+    inoremap <C-p> <Esc>"+p`]a
 
   " Command : %% to expand path in command mode
     cnoremap %% <C-R>=expand('%:p:h').'/'<CR>|
@@ -374,12 +375,13 @@ filetype plugin indent on | syntax on
     let g:pymode_options = 0
     let pymode_lint_checkers = ['pylint', 'pep8', 'pyflakes']
     " Use rope
-    " let g:pymode_rope = 1
+    let g:pymode_rope = 1
     let g:pymode_rope_completion = 1
     let g:pymode_rope_complete_on_dot = 0
     let g:pymode_rope_completion_bind = '<C-Space>'
     let g:pymode_rope_autoimport = 0
     let g:pymode_rope_autoimport_modules = ['os', 'shutil', 'datetime', 'numpy']
+    let g:pymode_rope_goto_definition_bind = '<C-]>'
     let g:pymode_rope_goto_definition_cmd = 'e'
     " Auto open cwindow (quickfix) if any errors have been found
     let g:pymode_lint_cwindow = 0
@@ -440,6 +442,8 @@ filetype plugin indent on | syntax on
     \}
 
   " CtrlP
+    " Open buffer here
+    let g:ctrlp_switch_buffer = ''
     " Cache
     let g:ctrlp_cache_dir ='$h/.cache/ctrlp'
     " replace $home by ~ in cache
@@ -575,6 +579,9 @@ filetype plugin indent on | syntax on
     let g:calendar_monday = 1
 
   " Ack to use ag
+    let g:ack_qhandler='rightbelow vert copen 80'
+    " a -> Ag the silver searcher <- ack
+    noremap <leader>a :silent packadd ack<CR>:Ack! ''<LEFT>
     let g:ackprg = 'ag --vimgrep --smart-case'
     cnoreabbrev ag Ack
     cnoreabbrev aG Ack
@@ -611,10 +618,13 @@ filetype plugin indent on | syntax on
   " packadd lexima " autoclose brackets
   "let g:jupyter_monitor_console = 1
   "let g:jupyter_verbose = 1
-  " let g:jupyter_auto_connect = 1
-  packadd jupyter
-  "packadd spector
+  "let g:jupyter_auto_connect = 1
+  "packadd jupyter
+  "packadd python-mode
+  packadd spector
   packadd youcompleteme
-  packadd sleuth  " Auto indent
+  packadd ale
+  " packadd sleuth  " Auto indent
+  let g:ycm_confirm_extra_conf = 0
 
 " vim: sw=2

@@ -12,4 +12,7 @@ disable=invalid-name,
         import-outside-toplevel,
         bare-except,
         too-many-ancestors,
+
+        missing-function-docstring,
+        missing-module-docstring
         

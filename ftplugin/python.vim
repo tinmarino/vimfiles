@@ -5,7 +5,7 @@ endif
 
 " Plugin
   packadd jupyter
-  packadd python-mode
+  " packadd python-mode
 
 
 " Better ?
@@ -21,6 +21,7 @@ endif
     set autoindent
     set fileformat=unix
     set foldmethod=indent
+    set foldignore=
 
 " Reload
 if !g:ftpy_reloaded
