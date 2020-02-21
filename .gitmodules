@@ -172,3 +172,4 @@
 [submodule "pack/bundle/opt/spector"]
 	path = pack/bundle/opt/spector
 	url = https://github.com/puremourning/vimspector
+    ignore = all
