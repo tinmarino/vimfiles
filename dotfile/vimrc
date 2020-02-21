@@ -622,7 +622,9 @@ filetype plugin indent on | syntax on
   "packadd jupyter
   "packadd python-mode
   packadd spector
-  packadd youcompleteme
+  if $os == 'linux'
+    packadd youcompleteme
+  endif
   packadd ale
   " packadd sleuth  " Auto indent
   let g:ycm_confirm_extra_conf = 0
