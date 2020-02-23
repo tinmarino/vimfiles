@@ -173,3 +173,6 @@
 	path = pack/bundle/opt/spector
 	url = https://github.com/puremourning/vimspector
     ignore = all
+[submodule "pack/bundle/opt/raku"]
+	path = pack/bundle/opt/raku
+	url = https://github.com/Raku/vim-raku
