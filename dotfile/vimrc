@@ -55,7 +55,7 @@ filetype plugin indent on | syntax on
     set t_Co=256  " For airline and nice colors
     set formatoptions-=cro  " No auto comment
     augroup NoCommment
-      autocmd FileType * setlocal formatoptions-=cro
+      autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
     augroup END
     set diffopt+=vertical
     set title                    " change the terminal's title, may not work
@@ -570,9 +570,9 @@ filetype plugin indent on | syntax on
     let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
     let g:vimwiki_css_name = '/Css/include.css'
 
-    augroup VimwikInit
-        autocmd FileType vimwiki set nomodeline
-    augroup END
+    " augroup VimwikInit
+    "     autocmd FileType vimwiki set nomodeline
+    " augroup END
 
     packadd wiki " TODO remove and add autoload
     " Calendar
@@ -622,10 +622,9 @@ filetype plugin indent on | syntax on
   "packadd jupyter
   "packadd python-mode
   packadd spector
-  if $os == 'linux'
-    packadd youcompleteme
-  endif
+  " if $os == 'unix' packadd youcompleteme endif
   packadd ale
+  packadd raku
   " packadd sleuth  " Auto indent
   let g:ycm_confirm_extra_conf = 0
 

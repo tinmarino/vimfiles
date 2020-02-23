@@ -135,7 +135,8 @@ function command_not_found_handle {
   export PATH=$PATH:$HOME/.npm/bin
   # Perl6
   export PATH=$PATH:$HOME/.perl6/bin
-  export PATH=$PATH:$HOME/../usr/share/perl6/site/bin/
+  export PATH=$PATH:$HOME/../usr/share/perl6/site/bin
+  export PATH=$PATH:/usr/lib/perl6/site/bin
   # Python
   export PATH=$PATH:$HOME/Program/Conda/bin
   export PATH=$PATH:$HOME/.local/bin

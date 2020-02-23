@@ -4,11 +4,16 @@ from pygments.token import Token
 c = get_config()
 c.ZMQTerminalInteractiveShell.include_other_output = True
 
+c.ZMQTerminalInteractiveShell.highlighting_style = "fruity"
+
 c.ZMQTerminalInteractiveShell.highlighting_style_overrides = {
     Token.Prompt: '#2aa198',  # cyan
     Token.PromptNum: '#268bd2 bold',  #blue
     Token.OutPrompt: '#b58900',  # yellow
     Token.RemotePrompt: '#d33682',  # magenta
+    # Token.Name.Function: '#2aa198',  #blue
+    # Token.Name.Class: '#2aa198',  #blue
+    # Token.Name.Namespace: '#2aa198',  #blue
 }
 
 # History
