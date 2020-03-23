@@ -50,6 +50,7 @@ function try_link {
 
 # Git
 try_link $scriptpath/gitconfig  ~/.gitconfig
+try_link $scriptpath/gitignore  ~/.gitignore
 
 # Tmux
 try_link $scriptpath/tmux.conf  ~/.tmux.conf

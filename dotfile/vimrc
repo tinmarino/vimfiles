@@ -2,6 +2,7 @@
 set encoding=utf-8
 scriptencoding uft-8
 filetype plugin indent on | syntax on
+set pythonthreedll=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu/libpython3.7.so
 
 
 " Variable
@@ -63,7 +64,8 @@ filetype plugin indent on | syntax on
     set wrapscan
     set conceallevel=3
     set number
-    set iskeyword+=#
+    set iskeyword+=#,-
+    set iskeyword+=:
   " Statusline
     set laststatus=2        " alwaus show statusline
     set statusline=         " init void
@@ -418,7 +420,6 @@ filetype plugin indent on | syntax on
     " Fast fix
     sign define Pymode' text=1
 
-
   " ConqueDbg, a gdb plugging
     let g:ConqueGdb_Disable = 1
     let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
@@ -518,9 +519,6 @@ filetype plugin indent on | syntax on
     map <leader>gc :Gcommit -m ""<C-b>
     map <leader>ga :Git add
 
-  " YouCompleteMe
-    " let g:ycm_global_ycm_extra_conf = "$HOME/.vim/pack/bundle/opt/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py"
-
   " Viewdoc
     let g:no_viewdoc_abbrev = 1
     let g:viewdoc_open = 'e'
@@ -612,20 +610,31 @@ filetype plugin indent on | syntax on
   " packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines)
 
 
+
 " Fastly (added)
   command! -nargs=0 -bar Helptags for p in glob('~/.vim/pack/bundle/opt/*', 1, 1) | exe 'packadd '.fnamemodify(p, ':t') | endfor | helptags ALL
+
   " packadd perlomni
-  " packadd lexima " autoclose brackets
+  "packadd lexima " autoclose brackets
+  "packadd xmledit
+  "let xml_use_html = 1
+
+  imap   <C-k>   <plug>(emmet-expand-abbr)
+  packadd emmet
+  "imap   <C-k>   <plug>(emmet-expand-abbr)
   "let g:jupyter_monitor_console = 1
   "let g:jupyter_verbose = 1
   "let g:jupyter_auto_connect = 1
   "packadd jupyter
   "packadd python-mode
   packadd spector
+  packadd youcompleteme
   " if $os == 'unix' packadd youcompleteme endif
   packadd ale
   packadd raku
   " packadd sleuth  " Auto indent
   let g:ycm_confirm_extra_conf = 0
 
-" vim: sw=2
+  map K :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+" vim:sw=2:ts=2

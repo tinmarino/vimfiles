@@ -129,16 +129,22 @@ function command_not_found_handle {
 
 # Path
   # My script
+  export path_save=$PATH
+  export PATH=""
   export PATH=$PATH:$HOME/.vim/bin
   export PATH=$PATH:$HOME/Bin
   # Node after npm config set prefix ~/.npm
   export PATH=$PATH:$HOME/.npm/bin
   # Perl6
-  export PATH=$PATH:$HOME/.perl6/bin
-  export PATH=$PATH:$HOME/../usr/share/perl6/site/bin
-  export PATH=$PATH:/usr/lib/perl6/site/bin
+  #export RAKUDOLIB="/home2/tourneboeuf/Program/Raku/JupyterRaku/lib,inst#/home2/tourneboeuf/.perl6,/usr/lib/perl6/site,/usr/lib/perl6/vendor,/usr/lib/perl6"
+  export PATH=$PATH:$HOME/Program/Raku/Doc/bin
+  export PATH=$PATH:$HOME/Program/Raku/Repo/install/bin
+  export PATH=$PATH:$HOME/Program/Raku/Repo/install/share/perl6/site/bin
+  export PATH=$PATH:$HOME/Program/Raku/Z/bin
+  export PATH=$PATH:$HOME/.raku/share/perl6/site/bin
+  export PATH=$PATH:$HOME/.raku/bin
   # Python
-  export PATH=$PATH:$HOME/Program/Conda/bin
+  #export PATH=$PATH:$HOME/Program/Conda/bin
   export PATH=$PATH:$HOME/.local/bin
   # Rust
   export PATH=$PATH:$HOME/.cargo/bin
@@ -151,6 +157,12 @@ function command_not_found_handle {
   # Programs
   export PATH=$PATH:/usr/local/cuda-10.0/bin
   export PATH=$PATH:$HOME/Program/Metapixel/metapixel
+  # Readd
+  export PATH=$PATH:$path_save
+
+  # Lib
+  export LD_LIBRARY_PATH=$HOME/Program/Gecode:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu:$LD_LIBRARY_PATH
 
 
 # Perl
@@ -173,7 +185,7 @@ function command_not_found_handle {
   # Linux
   else
     if [ $USER = 'tourneboeuf' ] ; then
-      export GIT_AUTHOR_NAME=tinmarino
+      export GIT_AUTHOR_NAME=Tinmarino
       export GIT_AUTHOR_EMAIL=tinmarino@gmail.com
     else
       export GIT_AUTHOR_NAME=$USER
@@ -183,6 +195,8 @@ function command_not_found_handle {
   export GIT_COMMITTER_NAME="$GIT_AUTHOR_NAME"
   export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 
+# Vim
+  export VIMRUNTIME="$HOME/Program/Vim/Source/runtime"
 
 # Fast
   # tmux completion
@@ -199,7 +213,7 @@ _pip_completion()
                    COMP_CWORD=$COMP_CWORD \
                    PIP_AUTO_COMPLETE=1 $1 2>/dev/null ) )
 }
-complete -o default -F _pip_completion pip3
+complete -o default -F _pip_completion pip
 # pip bash completion end
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

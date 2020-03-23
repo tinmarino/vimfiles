@@ -41,6 +41,7 @@
       "logging": {
         "engineLogging": true
       },
+      "stopOnEntry": true,
       "stopAtEntry": true,
       "debugOptions": [],
       "MIMode": "gdb",
