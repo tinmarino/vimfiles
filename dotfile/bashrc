@@ -136,7 +136,7 @@ function command_not_found_handle {
   # Node after npm config set prefix ~/.npm
   export PATH=$PATH:$HOME/.npm/bin
   # Perl6
-  #export RAKUDOLIB="/home2/tourneboeuf/Program/Raku/JupyterRaku/lib,inst#/home2/tourneboeuf/.perl6,/usr/lib/perl6/site,/usr/lib/perl6/vendor,/usr/lib/perl6"
+  export RAKUDOLIB=$HOME/.raku
   export PATH=$PATH:$HOME/Program/Raku/Doc/bin
   export PATH=$PATH:$HOME/Program/Raku/Repo/install/bin
   export PATH=$PATH:$HOME/Program/Raku/Repo/install/share/perl6/site/bin
@@ -163,6 +163,7 @@ function command_not_found_handle {
   # Lib
   export LD_LIBRARY_PATH=$HOME/Program/Gecode:$LD_LIBRARY_PATH
   export LD_LIBRARY_PATH=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu:$LD_LIBRARY_PATH
+  export NDK=$HOME/Program/Ndk/Current
 
 
 # Perl
@@ -196,7 +197,8 @@ function command_not_found_handle {
   export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 
 # Vim
-  export VIMRUNTIME="$HOME/Program/Vim/Source/runtime"
+  # TODO not for terlux
+  # export VIMRUNTIME="$HOME/Program/Vim/Source/runtime"
 
 # Fast
   # tmux completion
