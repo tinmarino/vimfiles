@@ -65,7 +65,6 @@ set pythonthreedll=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu/libpython3.7.
     set conceallevel=3
     set number
     set iskeyword+=#,-
-    set iskeyword+=:
   " Statusline
     set laststatus=2        " alwaus show statusline
     set statusline=         " init void
@@ -176,7 +175,24 @@ set pythonthreedll=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu/libpython3.7.
     nnoremap <leader>b :Backup<CR>
     vnoremap <leader>b :Backup<CR>
   " n -> :NERDTree
-    noremap <leader>n :packadd nerdtree<CR>:NERDTreeToggle<CR>
+    function! NERDTreeExists()
+      let cr_tab = tabpagenr()
+      for i in range(1, tabpagenr('$'))
+        if i == cr_tab | continue | endif
+        if len(gettabvar(i, 'NERDTreeBufName')) | return 1 | endif
+      endfor
+      return 0
+    endfunction
+
+    function! NERDTreeToogleMirror()
+      packadd nerdtree
+      if g:NERDTree.IsOpen() || exists('t:NERDTreeBufName') || !NERDTreeExists()
+        NERDTreeToggle
+      else
+        NERDTreeMirror
+      endif
+    endfunction
+    noremap <leader>n :call NERDTreeToogleMirror()<CR>
   " u -> :UndotreeToggle
     noremap <leader>u :silent packadd undotree<CR>:UndotreeToggle<CR>
 
@@ -348,6 +364,7 @@ set pythonthreedll=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu/libpython3.7.
 
 " Folding
   highlight Folded ctermfg=DarkGreen ctermbg=Black
+  set foldignore=
   set foldlevelstart=30 "the folding at opening
   set foldmethod=indent
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0
@@ -621,11 +638,15 @@ set pythonthreedll=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu/libpython3.7.
 
   imap   <C-k>   <plug>(emmet-expand-abbr)
   " packadd emmet
+  " TODO emmet
   "imap   <C-k>   <plug>(emmet-expand-abbr)
-  "let g:jupyter_monitor_console = 1
+  "packadd emmet
+  "imap   <C-k>   <plug>(emmet-expand-abbr)
+  " let g:jupyter_monitor_console = 1
   "let g:jupyter_verbose = 1
-  "let g:jupyter_auto_connect = 1
-  "packadd jupyter
+  " let g:jupyter_auto_connect = 1
+  " let b:jupyter_exec_before = 'clear-screen'
+  packadd jupyter
   "packadd python-mode
   packadd spector
   " packadd youcompleteme
@@ -634,7 +655,8 @@ set pythonthreedll=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu/libpython3.7.
   packadd raku
   " packadd sleuth  " Auto indent
   let g:ycm_confirm_extra_conf = 0
+  " autocmd FileType python let b:jupyter_exec_before = 'clear-screen'
 
   map K :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
 
-" vim:sw=2:ts=2
+" vim: sw=2:ts=2
