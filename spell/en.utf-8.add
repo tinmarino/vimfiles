@@ -139,3 +139,9 @@ precompilation
 config
 inlines
 method
+Raku
+postcircumfix
+for
+Nogil
+nogil
+sigless
