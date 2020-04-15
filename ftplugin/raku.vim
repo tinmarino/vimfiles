@@ -1,2 +1,2 @@
-set foldignore=#
 set foldmethod=indent
+set iskeyword-=:
