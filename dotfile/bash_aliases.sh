@@ -66,9 +66,11 @@
   # Bigger for memory
   alias open='xdg-open'
   alias clip="xclip -selection c"
+  alias find="find -not -path '*/\.*'"
 
   # Utils
   alias clean_tex='rm *.aux *.log *.fls *.fdb_latexmk *.out *synctex.gz *.tex.backup *.4ct *.4tc *.idv *.lg *.tmp *.xref *.xdv *.dvi *.bak'
+  alias clip='xclip -selection c'
 
   # Safe RM
   export TRASH="$HOME/.Trash"

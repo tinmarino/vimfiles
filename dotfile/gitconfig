@@ -9,6 +9,7 @@
     cp = cherry-pick
     d = diff
     dw = diff --word-diff-regex=.
+    dww = diff --word-diff
     f = pull --rebase
     h = push
     k = "!gitk --all &"
@@ -42,6 +43,7 @@
     qdcw = "!qdiffcc() { git diff --word-diff-regex=. --cached --color=always `git qp $*`; git qs; }; qdiffcc"
     qe = "!qedit() { vim -c'Gdiffsplit' `git qp $1`; git qs; }; qedit"
     qk = "!qcheckout() { git checkout -- `git qp $1`; git qs; }; qcheckout"
+    qr = "!qreset() { git reset HEAD `git qp $1`; git qs; }; qreset"
     qu = "!qunstage() { git reset HEAD `git qp $1`; git qs; }; qunstage"
     qv = qe
  
@@ -75,5 +77,5 @@
 	enabled = true
 
 [core]
-    excludesfile = ~/.gitignore
+	excludesfile = ~/.gitignore
 # vim:ft=sh

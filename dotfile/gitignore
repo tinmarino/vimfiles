@@ -2,3 +2,23 @@
 jupyter.log
 tags
 .precomp
+diary/
+
+
+# LaTeX
+*.bak
+*.dvi
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.pdf
+*.out
+*.log
+*.aux
+*.tar
+.Trash-1000/
+*.png
+*.backup
+
+# Java
+.idea
