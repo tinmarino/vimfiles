@@ -11,7 +11,6 @@ diary/
 *.fdb_latexmk
 *.fls
 *.synctex.gz
-*.pdf
 *.out
 *.log
 *.aux

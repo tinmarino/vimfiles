@@ -2,7 +2,7 @@
 set encoding=utf-8
 scriptencoding uft-8
 filetype plugin indent on | syntax on
-set pythonthreedll=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu/libpython3.7.so
+set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.so
 
 
 " Variable
@@ -557,7 +557,7 @@ set pythonthreedll=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu/libpython3.7.
     " Test
     let g:vimwiki_list += [{
       \ 'path': '$h/Test/Wiki',
-      \ 'path_html': '$h/Tast/Wiki_html'
+      \ 'path_html': '$h/Test/Wiki_html'
       \ }]
     augroup Wiki
       au BufNewFile,BufRead */todo      setf vimwiki
@@ -646,6 +646,7 @@ set pythonthreedll=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu/libpython3.7.
   "let g:jupyter_verbose = 1
   " let g:jupyter_auto_connect = 1
   " let b:jupyter_exec_before = 'clear-screen'
+  packadd vader
   packadd jupyter
   "packadd python-mode
   packadd spector
@@ -658,5 +659,6 @@ set pythonthreedll=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu/libpython3.7.
   " autocmd FileType python let b:jupyter_exec_before = 'clear-screen'
 
   map K :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
 
 " vim: sw=2:ts=2
