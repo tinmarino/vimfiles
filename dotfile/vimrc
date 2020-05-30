@@ -647,7 +647,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   "let g:jupyter_verbose = 1
   " let g:jupyter_auto_connect = 1
   " let b:jupyter_exec_before = 'clear-screen'
-  packadd vader
+  "packadd vader
   packadd jupyter
   "packadd python-mode
   packadd spector
