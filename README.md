@@ -9,6 +9,7 @@ git clone --recurse-submodules -j8 https://github.com/tinmarino/vimfiles ~/.vim
 # Sync submodules
 pushd ~/.vim
 git submodule update --init  --recursive --remote --jobs 8
+git submodule foreach "git pull origin master"
 git submodule foreach "git reset HEAD ."
 git submodule foreach "git checkout -- ."
 popd

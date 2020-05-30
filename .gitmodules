@@ -176,3 +176,8 @@
 [submodule "pack/bundle/opt/raku"]
 	path = pack/bundle/opt/raku
 	url = https://github.com/Raku/vim-raku
+    ignore = all
+[submodule "pack/bundle/opt/vader"]
+	path = pack/bundle/opt/vader
+	url = https://github.com/junegunn/vader.vim
+    ignore = all
