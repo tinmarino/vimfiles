@@ -52,6 +52,12 @@
   f="$HOME/wiki/todo/Src/links.txt" ; [ -f $f ] && complete -W "$(cat $f)" t
   f="$HOME/wiki/wiki/Src/links.txt" ; [ -f $f ] && complete -W "$(cat $f)" w
 
+  # New terminal (without tmux)
+  alias tnew='TMUX=1 gnome-terminal'
+
+  # Alma
+  alias alma_docker='cd ~/Program/Alma/Docker && docker-compose run centos8 bash'
+
 
 # Path variable
   # shopt -s direxpand
@@ -69,7 +75,7 @@
   #alias find="find -not -path '*/\.*'"
 
   # Utils
-  alias clean_tex='rm *.aux *.log *.fls *.fdb_latexmk *.out *synctex.gz *.tex.backup *.4ct *.4tc *.idv *.lg *.tmp *.xref *.xdv *.dvi *.bak'
+  alias clean_tex='rm *.aux *.log *.fls *.fdb_latexmk *.out *synctex.gz *.tex.backup *.4ct *.4tc *.idv *.lg *.tmp *.xref *.xdv *.dvi *.bak *.toc'
   alias clip='xclip -selection c'
 
   # Safe RM

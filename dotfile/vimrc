@@ -210,6 +210,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     noremap <C-W>- <C-W>s
     noremap <C-W>_ <C-W>s
     noremap <C-W><bar> <C-W>v
+    noremap <C-W>z <C-W><bar>
     " Up
     noremap  <C-Up>    <C-W>k
     noremap  <C-k>     <C-W>k
@@ -636,7 +637,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   "packadd xmledit
   "let xml_use_html = 1
 
-  imap   <C-k>   <plug>(emmet-expand-abbr)
+  "imap   <C-k>   <plug>(emmet-expand-abbr)
   " packadd emmet
   " TODO emmet
   "imap   <C-k>   <plug>(emmet-expand-abbr)

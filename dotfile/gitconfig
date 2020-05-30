@@ -79,3 +79,5 @@
 [core]
 	excludesfile = ~/.gitignore
 # vim:ft=sh
+[http]
+	sslVerify = false
