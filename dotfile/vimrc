@@ -660,6 +660,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " autocmd FileType python let b:jupyter_exec_before = 'clear-screen'
 
   map K :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+  " Pb with gruvbox-material
+  hi Comment cterm=NONE
 
 
 " vim: sw=2:ts=2

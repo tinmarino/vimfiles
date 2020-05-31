@@ -70,11 +70,25 @@ function command_not_found_handle {
   export PROMPT_COMMAND+='history -a;'
 
   # PS1
-  parse_git_branch() {
-       git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' ;
+  function parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' ;
   }
-  # CD (in title)
-  PS1='\e]0;\w\007'
+  export -f parse_git_branch
+  function parse_title() {
+    host=$(hostname)
+    # hsot
+    if [ "$host" = "tourny" ]; then
+      res=''
+    else
+      res="<$host>:   "
+    fi
+    res+=$(dirs +0)
+    echo "$res"
+  }
+  export -f parse_title
+
+  # Title: Host: CD
+  PS1+='\e]0;`parse_title`\007'
   # CD (green)
   PS1+='\[\e[32m\]\w'
   # Git Branch (yellow)

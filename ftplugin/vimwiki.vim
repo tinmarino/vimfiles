@@ -5,7 +5,9 @@ so $v/pack/bundle/opt/wiki/ftplugin/vimwiki.vim
 packadd table-mode
 
 " Ultisnip
-UltiSnipsAddFiletypes markdown
+if exists('did_plugin_ultisnips')
+    UltiSnipsAddFiletypes markdown
+endif
 
 " Preference
 setlocal linebreak
