@@ -47,6 +47,8 @@ function try_link {
     fi
 }
 
+# Trash
+mkdir $HOME/.Trash
 
 # Git
 try_link $scriptpath/gitconfig  ~/.gitconfig

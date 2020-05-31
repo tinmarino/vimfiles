@@ -621,7 +621,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   packadd textobj-indent  " dai
   packadd textobj-function  " daf
   " Snip
-  packadd ultisnips " 3ms
+  "packadd ultisnips " 3ms
   packadd snippets " for some ultisnips macro
   " Slow : reload on demand
   packadd emacscommandline
