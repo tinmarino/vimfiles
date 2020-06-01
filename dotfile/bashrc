@@ -88,7 +88,7 @@ function command_not_found_handle {
   export -f parse_title
 
   # Title: Host: CD
-  PS1+='\e]0;`parse_title`\007'
+  PS1='\e]0;`parse_title`\007'
   # CD (green)
   PS1+='\[\e[32m\]\w'
   # Git Branch (yellow)
