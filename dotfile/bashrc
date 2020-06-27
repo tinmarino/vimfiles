@@ -186,7 +186,7 @@ function command_not_found_handle {
 
 
 # Perl
-  export PERL5LIB="$HOME/Program/Perl/Lib/lib/perl5/x86_64-linux-gnu-thread-multi"
+  export PERL5LIB="$PERL5LIB:$HOME/Program/Perl/Lib/lib/perl5/x86_64-linux-gnu-thread-multi"
   export PERL5LIB="$PERL5LIB:$HOME/Software/Perl/Lib:$HOME/Program/Komodo/Komodo-PerlRemoteDebugging-8.0.2-78971-linux-x86_64"
   export PERL5DB="BEGIN { require q($PERL5LIB/perl5db.pl)}"
   export PERLDB_OPTS="RemotePort=localhost:9000"
@@ -228,7 +228,7 @@ function command_not_found_handle {
   # man
   export PAGER="vman"
   # complete -cf sudo
-  export TEXMFHOME=$HOME/Software/LaTeX/CV/Class
+  export TEXMFHOME=$HOME/Program/Tlmgr
 
 # pip bash completion start
 _pip_completion()

@@ -1,4 +1,4 @@
-packadd tex
+"packadd tex
 
 " Compile
 map <leader>c :VimtexCompile<CR>

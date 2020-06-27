@@ -87,7 +87,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " Wildignore : Ignore these filenames during enhanced command line completion.
     set wildmenu
     set wildmode=list:full
-    set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz  " LaTeX intermediate files
+    set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz,*.dvi,*.svg,*.log  " LaTeX intermediate files
     set wildignore+=*.tex.backup,*.lg,*.4ct,*.4tc,*.tmp,*.idv  " LaTeX html intermediate files
     set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images
     set wildignore+=*.luac  " Lua byte code
@@ -214,8 +214,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     " Up
     noremap  <C-Up>    <C-W>k
     noremap  <C-k>     <C-W>k
-    inoremap <C-Up>    <C-O><C-W>k
-    inoremap <C-k>     <C-O><C-W>k
+    " inoremap <C-Up>    <C-O><C-W>k
+    " inoremap <C-k>     <C-O><C-W>k
     " Down
     noremap  <C-Down>  <C-W>j
     noremap  <C-j>     <C-W>j
@@ -515,6 +515,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     let g:EclimCompletionMethod = 'omnifunc'
 
   " Vimtex
+    " No autoindent
+    let g:vimtex_indent_enabled = 0
     " Disable overfull/underfull \hbox
     let g:vimtex_quickfix_latexlog = {
         \ 'overfull' : 0,
@@ -577,10 +579,15 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     noremap <leader>tg :call Windex(2)<CR>:VimwikiGoto 
     map <leader>k :packadd calendar <bar> Calendar<CR>
     " Option
+    let g:vimwiki_automatic_nested_syntaxes = 1
+    " New
+    "let g:vimwiki_cycle_bullets = 1
+    "let g:vimwiki_bullet_types = ['-', '•', '→', '*']
+
+    let g:vimwiki_markdown_link_ext = 1
     let g:vimwiki_table_reduce_last_col = 1
     let g:vimwiki_table_mappings = 0
     let g:vimwiki_table_auto_fmt = 1
-    let g:vimwiki_automatic_nested_syntaxes = 1
     let g:vimwiki_syntax = 'markdown'
     let g:vimwiki_ext = '.md'
     let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
@@ -589,8 +596,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     " augroup VimwikInit
     "     autocmd FileType vimwiki set nomodeline
     " augroup END
-
     packadd wiki " TODO remove and add autoload
+
     " Calendar
     let g:calendar_monday = 1
 
@@ -663,5 +670,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " Pb with gruvbox-material
   hi Comment cterm=NONE
 
+  " C-Space omnicompletion
+  inoremap <C-Space> <C-x><C-o>
+  inoremap <C-@> <C-x><C-o>
 
 " vim: sw=2:ts=2
