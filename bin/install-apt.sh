@@ -19,6 +19,7 @@ fzf
 jupyter-console
 perl
 bash
+texlive-latex-extra
 
 # Program
 gimp
