@@ -416,7 +416,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     " Alma
     let g:vimwiki_list += [{
       \ 'path': '$h/wiki/alki',
-      \ 'path_html': '$h/alki/alki_html'
+      \ 'path_html': '$h/wiki/alki_html'
       \ }]
     map <leader>aa :VimwikiIndex 3<CR>
     map <leader>a<leader>a :VimwikiMakeDiaryNote 3<CR>

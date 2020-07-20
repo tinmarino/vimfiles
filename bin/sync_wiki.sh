@@ -14,16 +14,22 @@ function ssync(){
     mkdir $1 2> /dev/null && echo "Created directory $1"
     pushd $1 > /dev/null
 
+    # Add remote if not present
+    if !git ls-remote > /dev/null ; then
+        echo '[*] Creating remote'
+        git remote add origin $2
+    fi
+
     # Git sync
     git add .
     message="___ <- sync_wiki.sh: Modified: $(git diff --name-only --cached | sed ':a;N;$!ba;s/\n/, /g')"
     git commit -m "$message"
     git pull --rebase
-    if git push ; then
-      echo '[+] push OK'
+    if git push --all ; then
+        echo '[+] push OK'
     else
-      echo '[-] push failed'
-      let ret=1
+        echo '[-] push failed'
+        let ret=1
     fi
 
     # Popd && Ret
@@ -38,11 +44,11 @@ let ok=0
 let n=0
 
 # let n++ ; ssync ~/.vim           && let ok++
-let n++ ; ssync ~/wiki/wiki      && let ok++
-let n++ ; ssync ~/wiki/wiki_html && let ok++
-let n++ ; ssync ~/wiki/alki      && let ok++
-let n++ ; ssync ~/wiki/alki_html && let ok++
-let n++ ; ssync ~/wiki/todo      && let ok++
+let n++ ; ssync ~/wiki/wiki      https://github.com/tinmarino/wiki           && let ok++
+let n++ ; ssync ~/wiki/wiki_html https://github.com/tinmarino/wiki_html      && let ok++
+let n++ ; ssync ~/wiki/alki      https://gitlab.com/tinmarino/alki_html      && let ok++
+let n++ ; ssync ~/wiki/alki_html https://gitlab.com/tinmarino/alki           && let ok++
+let n++ ; ssync ~/wiki/todo      https://gitlab.com/tinmarino/todo           && let ok++
 # let n++ ; ssync ~/wiki/html      && let ok++
 
 
