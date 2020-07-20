@@ -229,6 +229,11 @@ function command_not_found_handle {
   export PAGER="vman"
   # complete -cf sudo
   export TEXMFHOME=$HOME/Program/Tlmgr
+  # Add "substitute" mnemonic, which the info file left out.
+  doc_sed() {
+    info sed "Command and Option Index" | \
+      sed -n '/\*/s/ s c/ s \(substitute\) c/;s/command[:,].*//p'
+  }
 
 # pip bash completion start
 _pip_completion()

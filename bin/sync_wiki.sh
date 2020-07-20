@@ -40,6 +40,8 @@ let n=0
 # let n++ ; ssync ~/.vim           && let ok++
 let n++ ; ssync ~/wiki/wiki      && let ok++
 let n++ ; ssync ~/wiki/wiki_html && let ok++
+let n++ ; ssync ~/wiki/alki      && let ok++
+let n++ ; ssync ~/wiki/alki_html && let ok++
 let n++ ; ssync ~/wiki/todo      && let ok++
 # let n++ ; ssync ~/wiki/html      && let ok++
 

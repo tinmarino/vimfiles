@@ -8,30 +8,36 @@ gitk
 tmux
 bash-completion
 vlc
-vim-gnome
-exuberant-ctag
+vim-gtk  # For system clipboard
+exuberant-ctags
 ssh
 mosh
 xterm
 fzf
 
 # Language
-jupyter-console
+python3 jupyter-console python3-pip
 perl
 bash
-texlive-latex-extra
+npm
+
+# LaTex
+texlive-latex-extra latex-mk latexmk
+pandoc
+pdf2svg
 
 # Program
 gimp
 firefox
 pdftk
 imagemagick
-pandoc
+virtual-box
 
 # System
 ubuntu-drivers-common
 gnome-terminal
 wine
+linux-headers-generic
 )
 
 # Print out

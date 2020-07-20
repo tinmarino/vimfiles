@@ -19,7 +19,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " One letter
   let $h = expand($HOME)
   let $s = expand('$v/scripts') | let $script = $s
-  let $w = expand('$h/wiki/wiki') | let $wiki = $w
+  let $w = expand('$h/wiki') | let $wiki = $w
   let $p = expand('$v/pack/bundle/opt') | let $pack = $p | let $opt = $p
   let $d = expand('$v/undo/dump') | let $dump = $d
   " RC
@@ -65,6 +65,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     set conceallevel=3
     set number
     set iskeyword+=#,-
+    set modeline
   " Statusline
     set laststatus=2        " alwaus show statusline
     set statusline=         " init void
@@ -111,7 +112,6 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
       " Revert Color to default when leaving Insert Mode
       autocmd InsertLeave * highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
     augroup END
-
   " Window
     set ruler
     set backspace=2
@@ -157,6 +157,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     nnoremap <Leader>eg :call Edit($gitrc)<CR>
     nnoremap <Leader>et :call Edit($tmuxrc)<CR>
     nnoremap <Leader>ev :call Edit($vimrc)<CR>
+  " a, t, w for wiki
   " b -> Backup file
     function! Backup(s)
       " Backup path
@@ -174,6 +175,10 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
                 \ . expand('$v/undo/bck_') . strftime('%y-%m-%d'))
     nnoremap <leader>b :Backup<CR>
     vnoremap <leader>b :Backup<CR>
+  " g -> Ag the silver searcher <- ack
+    noremap <leader>g :silent packadd ack<CR>:Ack! ''<LEFT>
+  " k -> :Calendar
+    nnoremap <leader>k :packadd calendar <bar> Calendar<CR>
   " n -> :NERDTree
     function! NERDTreeExists()
       let cr_tab = tabpagenr()
@@ -383,6 +388,72 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
 
 
 " Plugin
+  " Vimwiki
+    " Lazycall WikiIndex
+    function! Windex(num)
+      let l:nr = 1 + vimwiki#vars#get_bufferlocal('wiki_nr')
+      if &filetype !=# 'vimwiki' || l:nr != a:num
+        execute 'VimwikiIndex ' . a:num
+      endif
+    endfunction
+    " Wiki
+    let g:vimwiki_list = [{
+      \ 'path': '$h/wiki/wiki',
+      \ 'path_html': '$h/wiki/wiki_html'
+      \ }]
+    noremap <leader>ww :VimwikiIndex 1<CR>
+    map <leader>w<leader>w :VimwikiMakeDiaryNote 1<CR>
+    noremap <leader>wg :call Windex(1)<CR>:VimwikiGoto 
+    " Todo
+    let g:vimwiki_list += [{
+      \ 'path': '$h/wiki/todo',
+      \ 'path_html': '$h/wiki/todo_html'
+      \ }]
+    map <leader>tt :VimwikiIndex 2<CR>
+    map <leader>t<leader>t :VimwikiMakeDiaryNote 2<CR>
+    noremap <leader>tg :call Windex(2)<CR>:VimwikiGoto 
+    noremap <leader>ta :call Windex(2)<CR>:VimwikiGoto Alma<CR>
+    " Alma
+    let g:vimwiki_list += [{
+      \ 'path': '$h/wiki/alki',
+      \ 'path_html': '$h/alki/alki_html'
+      \ }]
+    map <leader>aa :VimwikiIndex 3<CR>
+    map <leader>a<leader>a :VimwikiMakeDiaryNote 3<CR>
+    noremap <leader>ag :call Windex(3)<CR>:VimwikiGoto 
+    " Test
+    let g:vimwiki_list += [{
+      \ 'path': '$h/Test/Wiki',
+      \ 'path_html': '$h/Test/Wiki_html'
+      \ }]
+    " Filename todo -> setft vimwiki
+    augroup Wiki
+      au BufNewFile,BufRead */todo      setf vimwiki
+    augroup END
+    " Map
+    " Option
+    let g:vimwiki_automatic_nested_syntaxes = 1
+    " New
+    "let g:vimwiki_cycle_bullets = 1
+    "let g:vimwiki_bullet_types = ['-', '•', '→', '*']
+
+    let g:vimwiki_markdown_link_ext = 1
+    let g:vimwiki_table_reduce_last_col = 1
+    let g:vimwiki_table_mappings = 0
+    let g:vimwiki_table_auto_fmt = 1
+    let g:vimwiki_syntax = 'markdown'
+    let g:vimwiki_ext = '.md'
+    let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
+    let g:vimwiki_css_name = '/Css/include.css'
+
+    " augroup VimwikInit
+    "     autocmd FileType vimwiki set nomodeline
+    " augroup END
+    packadd wiki " TODO remove and add autoload
+
+    " Calendar
+    let g:calendar_monday = 1
+
   " YouCompleteMe
     let g:ycm_always_populate_location_list = 1 " use :lne and :lp to navigate
     let g:ycm_python_binary_path = 'python3'
@@ -546,65 +617,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " Table mode
     let g:table_mode_tableize_map = ',i'
 
-  " Vimwiki
-    " Wiki
-    let g:vimwiki_list = [{
-      \ 'path': '$h/wiki/wiki',
-      \ 'path_html': '$h/wiki/wiki_html'
-      \ }]
-    " Todo
-    let g:vimwiki_list += [{
-      \ 'path': '$h/wiki/todo',
-      \ 'path_html': '$h/wiki/todo_html'
-      \ }]
-    " Test
-    let g:vimwiki_list += [{
-      \ 'path': '$h/Test/Wiki',
-      \ 'path_html': '$h/Test/Wiki_html'
-      \ }]
-    augroup Wiki
-      au BufNewFile,BufRead */todo      setf vimwiki
-    augroup END
-    " Map
-    noremap <leader>ww :VimwikiIndex 1<CR>
-    map <leader>tt :VimwikiIndex 2<CR>
-    map <leader>t<leader>t :VimwikiDiaryIndex 2<CR>
-    function! Windex(num)
-      let l:nr = 1 + vimwiki#vars#get_bufferlocal('wiki_nr')
-      if &filetype !=# 'vimwiki' || l:nr != a:num
-        execute 'VimwikiIndex ' . a:num
-      endif
-    endfunction
-    noremap <leader>wg :call Windex(1)<CR>:VimwikiGoto 
-    noremap <leader>tg :call Windex(2)<CR>:VimwikiGoto 
-    map <leader>k :packadd calendar <bar> Calendar<CR>
-    " Option
-    let g:vimwiki_automatic_nested_syntaxes = 1
-    " New
-    "let g:vimwiki_cycle_bullets = 1
-    "let g:vimwiki_bullet_types = ['-', '•', '→', '*']
-
-    let g:vimwiki_markdown_link_ext = 1
-    let g:vimwiki_table_reduce_last_col = 1
-    let g:vimwiki_table_mappings = 0
-    let g:vimwiki_table_auto_fmt = 1
-    let g:vimwiki_syntax = 'markdown'
-    let g:vimwiki_ext = '.md'
-    let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
-    let g:vimwiki_css_name = '/Css/include.css'
-
-    " augroup VimwikInit
-    "     autocmd FileType vimwiki set nomodeline
-    " augroup END
-    packadd wiki " TODO remove and add autoload
-
-    " Calendar
-    let g:calendar_monday = 1
-
   " Ack to use ag
     let g:ack_qhandler='rightbelow vert copen 80'
-    " a -> Ag the silver searcher <- ack
-    noremap <leader>a :silent packadd ack<CR>:Ack! ''<LEFT>
     let g:ackprg = 'ag --vimgrep --smart-case'
     cnoreabbrev ag Ack
     cnoreabbrev aG Ack
@@ -674,4 +688,4 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   inoremap <C-Space> <C-x><C-o>
   inoremap <C-@> <C-x><C-o>
 
-" vim: sw=2:ts=2
+" vim:sw=2:ts=2:
