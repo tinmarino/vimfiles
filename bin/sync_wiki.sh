@@ -1,6 +1,7 @@
 #!/bin/bash
 # This file serves for synchronosation
 
+s_error_msg=''
 
 # Sychrnonize argument folder
 function ssync(){
@@ -14,8 +15,13 @@ function ssync(){
     mkdir $1 2> /dev/null && echo "Created directory $1"
     pushd $1 > /dev/null
 
+    # Create git repo
+    if ! [ -d .git ]; then
+        echo '[*] Initiating repo'
+        git init .
+    fi
     # Add remote if not present
-    if !git ls-remote > /dev/null ; then
+    if ! git ls-remote > /dev/null ; then
         echo '[*] Creating remote'
         git remote add origin $2
     fi
@@ -29,6 +35,7 @@ function ssync(){
         echo '[+] push OK'
     else
         echo '[-] push failed'
+        s_error_msg+="<- Failed: $1\n" 
         let ret=1
     fi
 
@@ -52,4 +59,5 @@ let n++ ; ssync ~/wiki/todo      https://gitlab.com/tinmarino/todo           && 
 # let n++ ; ssync ~/wiki/html      && let ok++
 
 
+echo $s_error_msg
 echo "<--- Synchronization finihed with $ok/$n success"
