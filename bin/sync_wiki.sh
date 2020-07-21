@@ -12,18 +12,16 @@ function ssync(){
 
     # Log && Pushd
     echo "--->  $title  ================================================="
-    mkdir $1 2> /dev/null && echo "Created directory $1"
+    mkdir $1 2> /dev/null && echo "[*] Created directory $1"
     pushd $1 > /dev/null
 
     # Create git repo
     if ! [ -d .git ]; then
-        echo '[*] Initiating repo'
-        git init .
+        git init . && echo '[*] Initialised repo'
     fi
     # Add remote if not present
     if ! git ls-remote > /dev/null ; then
-        echo '[*] Creating remote'
-        git remote add origin $2
+        git remote add origin $2 && echo '[*] Created remote'
     fi
 
     # Git sync
@@ -53,9 +51,9 @@ let n=0
 # let n++ ; ssync ~/.vim           && let ok++
 let n++ ; ssync ~/wiki/wiki      https://github.com/tinmarino/wiki           && let ok++
 let n++ ; ssync ~/wiki/wiki_html https://github.com/tinmarino/wiki_html      && let ok++
-let n++ ; ssync ~/wiki/alki      https://gitlab.com/tinmarino/alki           && let ok++
-let n++ ; ssync ~/wiki/alki_html https://gitlab.com/tinmarino/alki_html      && let ok++
-let n++ ; ssync ~/wiki/todo      https://gitlab.com/tinmarino/todo           && let ok++
+let n++ ; ssync ~/wiki/alki      https://gitlab.com/tinmarino/alki.git       && let ok++
+let n++ ; ssync ~/wiki/alki_html https://gitlab.com/tinmarino/alki_html.git  && let ok++
+let n++ ; ssync ~/wiki/todo      https://gitlab.com/tinmarino/todo.git       && let ok++
 # let n++ ; ssync ~/wiki/html      && let ok++
 
 
