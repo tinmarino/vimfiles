@@ -17,7 +17,7 @@ function ssync(){
 
     # Create git repo
     if ! [ -d .git ]; then
-        git clone $2 && echo '[*] Initialised clone'
+        git clone $2 . && echo '[*] Initialised clone'
     fi
 
     # Git sync
