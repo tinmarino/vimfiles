@@ -53,8 +53,8 @@ let n=0
 # let n++ ; ssync ~/.vim           && let ok++
 let n++ ; ssync ~/wiki/wiki      https://github.com/tinmarino/wiki           && let ok++
 let n++ ; ssync ~/wiki/wiki_html https://github.com/tinmarino/wiki_html      && let ok++
-let n++ ; ssync ~/wiki/alki      https://gitlab.com/tinmarino/alki_html      && let ok++
-let n++ ; ssync ~/wiki/alki_html https://gitlab.com/tinmarino/alki           && let ok++
+let n++ ; ssync ~/wiki/alki      https://gitlab.com/tinmarino/alki           && let ok++
+let n++ ; ssync ~/wiki/alki_html https://gitlab.com/tinmarino/alki_html      && let ok++
 let n++ ; ssync ~/wiki/todo      https://gitlab.com/tinmarino/todo           && let ok++
 # let n++ ; ssync ~/wiki/html      && let ok++
 
