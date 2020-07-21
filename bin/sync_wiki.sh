@@ -17,11 +17,7 @@ function ssync(){
 
     # Create git repo
     if ! [ -d .git ]; then
-        git init . && echo '[*] Initialised repo'
-    fi
-    # Add remote if not present
-    if ! git ls-remote > /dev/null ; then
-        git remote add origin $2 && echo '[*] Created remote'
+        git clone $2 && echo '[*] Initialised clone'
     fi
 
     # Git sync
