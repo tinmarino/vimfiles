@@ -11,7 +11,7 @@ endif
 
 " Preference
 setlocal linebreak
-setlocal tw=0
+"setlocal textwidth=0
 setlocal expandtab
 setlocal tabstop=2
 setlocal softtabstop=2
@@ -31,11 +31,11 @@ augroup END
 " Callback : autobackup
 function! s:textyankpost(dict)
   " Check
-  if v:event['operator'] != 'd' | return | endif
-  if expand('%:$') =~  '/wiki/todo/done.md' | return | endif
+  if v:event['operator'] !=# 'd' | return | endif
+  if expand('%:$') =~#  '/wiki/todo/done.md' | return | endif
 
   " Append to done
   let l:new_line = a:dict['regcontents']
-  let l:new_line[0] = strftime(">%Y/%m/%d at %X : ") . l:new_line[0]
+  let l:new_line[0] = strftime('>%Y/%m/%d at %X : ') . l:new_line[0]
   call writefile(l:new_line, $done , 'a')
 endfunction

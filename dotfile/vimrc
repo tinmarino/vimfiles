@@ -39,7 +39,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " Termux
   if 'termux' ==? $os
     " Autosave
-    if expand('%') != ''
+    if expand('%') !=# ''
       augroup Autosave
         autocmd CursorHold,CursorHoldI *  silent update
       augroup END
@@ -176,7 +176,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     nnoremap <leader>b :Backup<CR>
     vnoremap <leader>b :Backup<CR>
   " g -> Ag the silver searcher <- ack
-    noremap <leader>g :silent packadd ack<CR>:Ack! ''<LEFT>
+    noremap <leader>f :update<Cr>:silent packadd ack<CR>:Ack! ''<LEFT>
+    noremap <leader>ak :silent packadd ack<CR>:Ack! ''<LEFT>
   " k -> :Calendar
     nnoremap <leader>k :packadd calendar <bar> Calendar<CR>
   " n -> :NERDTree
