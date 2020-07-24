@@ -9,7 +9,7 @@ function link {
   window_name="$1" ; window_number="$2" ; start_directory="$3" ; cmd="$4" ; variable_name="$5"
 
   # If window is in current section, Select it
-  if tmux list-windows -F "#{window_name}" | grep "$window_name"; then
+  if tmux list-windows -F "#{window_name}" | grep "$window_name" &> /dev/null ; then
     tmux select-window -t "$window_name"
   else
     # If window was created once, link to it (mirror)
