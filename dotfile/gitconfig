@@ -1,5 +1,6 @@
 [credential]
 	helper = store
+
 [alias]
     # One letter
     a = add
@@ -78,6 +79,8 @@
 
 [core]
 	excludesfile = ~/.gitignore
-# vim:ft=sh
+
 [http]
 	sslVerify = false
+
+# vim:ft=sh
