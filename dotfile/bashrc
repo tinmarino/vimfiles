@@ -27,9 +27,12 @@
   [ -z "$USER" ] && command -v whoami > /dev/null && export USER=$(whoami)
 
 # Path
-  # My script
+  # Save
   export path_save=$PATH
   export PATH=""
+  # Windows fast
+  export PATH="$PATH:/c/Program Files/Vim/vim82"
+  # My script
   export PATH=$PATH:$HOME/.vim/bin
   export PATH=$PATH:$HOME/Bin
   # Node after npm config set prefix ~/.npm

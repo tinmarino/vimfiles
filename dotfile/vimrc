@@ -10,7 +10,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
 
   " Set v: windows gvim do NOT read .bashrc
   if has('win32') || has('win64')
-    let $v = expand('$VIM/vimfiles')
+    let $v = expand('$HOME/vimfiles')
     let $os = 'windows'
   endif
   set runtimepath+=$v
