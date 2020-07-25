@@ -14,6 +14,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     let $os = 'windows'
   endif
   set runtimepath+=$v
+  set packpath+=$v
 
   " Alias
   " One letter
@@ -631,7 +632,6 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
 
 
 " PackAdd
-  set packpath+=$v
   " Interface
   packadd fugitive
   packadd ctrlp " 3ms

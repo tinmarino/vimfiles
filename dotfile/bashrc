@@ -19,10 +19,7 @@
       ;;
     *"mingw"*)
       export os="windows"
-      v=$(which gvim)  # Returns : /c/Users/chio/Work/Program/Gvim/vim81/gvim
-      v=$(dirname "$v")
-      v=$(dirname "$v")
-      export v="$v/vimfiles"
+      export v="$HOME/vimfiles"
       ;;
   esac
 
