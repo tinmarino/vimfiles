@@ -184,3 +184,4 @@
 [submodule "pack/bundle/opt/color-tin"]
 	path = pack/bundle/opt/color-tin
 	url = https://github.com/tinmarino/vim-color
+    ignore = all

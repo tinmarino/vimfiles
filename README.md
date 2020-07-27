@@ -3,8 +3,8 @@
 Commands to run in vimfiles directory (`~/vim`):
 
 ```sh
-# Get me
-git clone --recurse-submodules -j8 https://github.com/tinmarino/vimfiles ~/.vim
+# Get me: --depth=number of commit, -j : number of thread
+git clone --recurse-submodules --depth=10 -j8 https://github.com/tinmarino/vimfiles ~/.vim
 
 # Sync submodules
 pushd ~/.vim

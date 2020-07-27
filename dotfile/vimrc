@@ -654,7 +654,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   packadd snippets " for some ultisnips macro
   " Slow : reload on demand
   " + make the <BS> blink
-  " packadd emacscommandline
+  packadd emacscommandline | cunmap <BS>
   " packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines)
 
 
