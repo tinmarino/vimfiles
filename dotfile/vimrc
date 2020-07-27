@@ -428,6 +428,13 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
       \ 'path': '$h/Test/Wiki',
       \ 'path_html': '$h/Test/Wiki_html'
       \ }]
+    " Test wiki syntax
+    let g:vimwiki_list += [{
+      \ 'path': '$h/Test/WikiDefault',
+      \ 'path_html': '$h/Test/WikiDefault_html',
+      \ 'syntax': 'default',
+      \ 'ext': '.wiki',
+      \ }]
     " Filename todo -> setft vimwiki
     augroup Wiki
       au BufNewFile,BufRead */todo      setf vimwiki
