@@ -185,3 +185,6 @@
 	path = pack/bundle/opt/color-tin
 	url = https://github.com/tinmarino/vim-color
     ignore = all
+[submodule "pack/bundle/opt/youcompleteme"]
+	path = pack/bundle/opt/youcompleteme
+	url = https://github.com/ycm-core/YouCompleteMe
