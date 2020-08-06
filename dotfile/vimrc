@@ -63,7 +63,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     set title                    " change the terminal's title, may not work
     set autoindent  " to have auto indentation when return line
     set wrapscan
-    set conceallevel=3
+    set conceallevel=2
     set number
     set iskeyword+=#,-
     set modeline
@@ -389,6 +389,32 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   augroup END
 
 
+" Alma
+  " AlmaSw
+    " echo | g++ -E -Wp,-v -
+    " `gcc -print-prog-name=cpp` -v  # cpp for c preprocessor
+    set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
+    set path+=/usr/local/include
+    set path+=/usr/include/x86_64-linux-gnu
+    set path+=/usr/include
+    " `gcc -print-prog-name=cc1plus` -v
+    set path+=/usr/include/c++/9/
+    set path+=/usr/include/c++/9
+    set path+=/usr/include/x86_64-linux-gnu/c++/9
+    set path+=/usr/include/c++/9/backward
+    set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
+    set path+=./../include
+    set path+=./../../*/include
+    set path+=./../../../*/include
+    set path+=/home/tourneboeuf/AlmaSw/ACS/LGPL/CommonSoftware/**/include/
+    set path+=/home/tourneboeuf/AlmaSw/ICD/**/include/
+
+    let g:ale_cpp_clang_options=''
+    let g:ale_cpp_clang_options.='-I/home/tourneboeuf/AlmaSw/ '
+    let g:ale_cpp_clang_options.='-I/home/tourneboeuf/AlmaSw/ACS/LGPL/CommonSoftware/logging/ws/include/ '
+    let g:ale_cpp_clang_options.='-I/home/tourneboeuf/AlmaSw/TELCAL/TelCalDataManager/include '
+
+
 " Plugin
   " Vimwiki
     " Lazycall WikiIndex
@@ -397,6 +423,13 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
       if &filetype !=# 'vimwiki' || l:nr != a:num
         execute 'VimwikiIndex ' . a:num
       endif
+    endfunction
+    function! VimwikiAlias()
+      " Load here and in ftpluing
+      for command in getcompletion('Vimwiki', 'command')
+        let alias = 'W' . command[7:]
+        exe ':command! -nargs=* ' . alias . ' ' . command . ' <args>'
+      endfor
     endfunction
     " Wiki
     let g:vimwiki_list = [{
@@ -449,16 +482,31 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     let g:vimwiki_markdown_link_ext = 1
     let g:vimwiki_table_reduce_last_col = 1
     let g:vimwiki_table_mappings = 0
-    let g:vimwiki_table_auto_fmt = 1
+      let g:vimwiki_table_auto_fmt = 1
+    let g:vimwiki_hl_headers = 1
+    let g:vimwiki_hl_cb_checked = 1
     let g:vimwiki_syntax = 'markdown'
     let g:vimwiki_ext = '.md'
     let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
     let g:vimwiki_css_name = '/Css/include.css'
 
+    " Test Wiki
+    " let g:vimwiki_listsym_rejected = '~'
+    " let g:vimwiki_listsyms = '•'
+    " let g:vimwiki_ext2syntax = {'.wiki': 'media'}
+    " let g:vimwiki_list_ignore_newline = 1
+    " let g:vimwiki_toc_header = 'Sadrzaj'
+    "function! VimwikiLinkHandler(link)
+    "  set foldmethod=indent
+    "  normal zv
+    "endfunction
+
     " augroup VimwikInit
     "     autocmd FileType vimwiki set nomodeline
     " augroup END
+    let vimwiki_ext2syntax = {} 
     packadd wiki " TODO remove and add autoload
+    call VimwikiAlias()
 
     " Calendar
     let g:calendar_monday = 1
@@ -656,6 +704,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " + make the <BS> blink
   packadd emacscommandline | cunmap <BS>
   " packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines)
+  packadd vader
 
 
 
@@ -696,5 +745,58 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " C-Space omnicompletion
   inoremap <C-Space> <C-x><C-o>
   inoremap <C-@> <C-x><C-o>
+
+function! SynStack()
+  if !exists('*synstack')
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+function! SynGroup()                                                            
+    let l:s = synID(line('.'), col('.'), 1)                                       
+    echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+endfun
+
+" For italic ??
+set t_ZH=[3m
+set t_ZR=[23m
+set term=xterm-256color
+
+" Tex
+let g:tex_stylish = 1
+let g:tex_flavor = 'latex'
+"let g:tex_conceal = ''
+"let g:tex_isk='48-57,a-z,A-Z,192-255,:'
+"
+"let g:vimtex_fold_enabled = 1
+"let g:vimtex_fold_types = {
+"      \ 'markers' : {'enabled': 0},
+"      \ 'sections' : {'parse_levels': 1},
+"      \}
+"let g:vimtex_format_enabled = 1
+""let g:vimtex_view_method = 'zathura'
+"let g:vimtex_view_automatic = 0
+"let g:vimtex_view_forward_search_on_start = 0
+"let g:vimtex_toc_config = {
+"      \ 'split_pos' : 'full',
+"      \ 'mode' : 2,
+"      \ 'fold_enable' : 1,
+"      \ 'hotkeys_enabled' : 1,
+"      \ 'hotkeys_leader' : '',
+"      \ 'refresh_always' : 0,
+"      \}
+"let g:vimtex_quickfix_open_on_warning = 0
+"let g:vimtex_quickfix_autoclose_after_keystrokes = 3
+"let g:vimtex_imaps_enabled = 1
+"let g:vimtex_complete_img_use_tail = 1
+"let g:vimtex_complete_bib = {
+"      \ 'simple' : 1,
+"      \ 'menu_fmt' : '@year, @author_short, @title',
+"      \}
+"let g:vimtex_echo_verbose_input = 0
+
+let g:tex_conceal='abdgm'
+packadd tex-conceal
+"packadd tex
 
 " vim:sw=2:ts=2:
