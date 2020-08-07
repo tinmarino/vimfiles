@@ -188,3 +188,8 @@
 [submodule "pack/bundle/opt/youcompleteme"]
 	path = pack/bundle/opt/youcompleteme
 	url = https://github.com/ycm-core/YouCompleteMe
+    ignore = all
+[submodule "pack/bundle/opt/unicode"]
+	path = pack/bundle/opt/unicode
+	url = https://github.com/chrisbra/unicode.vim
+    ignore = all

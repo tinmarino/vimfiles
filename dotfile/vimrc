@@ -53,6 +53,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
 " Appearance
   " Preferences
     set background=dark
+    packadd color-tin
     colorscheme gruvbox-material
     set t_Co=256  " For airline and nice colors
     set formatoptions-=cro  " No auto comment
@@ -67,6 +68,11 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     set number
     set iskeyword+=#,-
     set modeline
+    " Terminal italic
+    set t_ZH=[3m
+    set t_ZR=[23m
+    " Terminal strikethrough
+    set term=xterm-256color
   " Statusline
     set laststatus=2        " alwaus show statusline
     set statusline=         " init void
@@ -215,8 +221,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
 
   " Window
     noremap <C-W>- <C-W>s
-    noremap <C-W>_ <C-W>s
     noremap <C-W><bar> <C-W>v
+    noremap <C-W>_ <C-W>s
     noremap <C-W>z <C-W><bar>
     " Up
     noremap  <C-Up>    <C-W>k
@@ -225,19 +231,19 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     " inoremap <C-k>     <C-O><C-W>k
     " Down
     noremap  <C-Down>  <C-W>j
-    noremap  <C-j>     <C-W>j
     inoremap <C-Down>  <C-O><C-W>j
-    inoremap <C-j>     <C-O><C-W>j
+    "noremap  <C-j>     <C-W>j
+    "inoremap <C-j>     <C-O><C-W>j
     " Left
     noremap  <C-Left>  <C-W>h
-    noremap  <C-h>     <C-W>h
     inoremap <C-Left>  <C-O><C-W>h
-    inoremap <C-h>     <C-O><C-W>h
+    "noremap  <C-h>     <C-W>h
+    "inoremap <C-h>     <C-O><C-W>h
     " Right
     noremap  <C-Right> <C-W>l
-    noremap  <C-l>     <C-W>l
     inoremap <C-Right> <C-O><C-W>l
-    inoremap <C-l>     <C-O><C-W>l
+    "noremap  <C-l>     <C-W>l
+    "inoremap <C-l>     <C-O><C-W>l
 
   " Maps for Package : On demand load
     " F8 : Colorscheme-switcher
@@ -643,6 +649,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     let g:EclimCompletionMethod = 'omnifunc'
 
   " Vimtex
+    let g:tex_stylish = 1
+    let g:tex_flavor = 'latex'
     " No autoindent
     let g:vimtex_indent_enabled = 0
     " Disable overfull/underfull \hbox
@@ -705,6 +713,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   packadd emacscommandline | cunmap <BS>
   " packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines)
   packadd vader
+  packadd ale
+  packadd tex
 
 
 
@@ -726,13 +736,11 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   "let g:jupyter_verbose = 1
   " let g:jupyter_auto_connect = 1
   " let b:jupyter_exec_before = 'clear-screen'
-  "packadd vader
   packadd jupyter
-  "packadd python-mode
   packadd spector
+  "packadd python-mode
   " packadd youcompleteme
   " if $os == 'unix' packadd youcompleteme endif
-  packadd ale
   packadd raku
   " packadd sleuth  " Auto indent
   let g:ycm_confirm_extra_conf = 0
@@ -758,45 +766,6 @@ function! SynGroup()
 endfun
 
 " For italic ??
-set t_ZH=[3m
-set t_ZR=[23m
-set term=xterm-256color
 
-" Tex
-let g:tex_stylish = 1
-let g:tex_flavor = 'latex'
-"let g:tex_conceal = ''
-"let g:tex_isk='48-57,a-z,A-Z,192-255,:'
-"
-"let g:vimtex_fold_enabled = 1
-"let g:vimtex_fold_types = {
-"      \ 'markers' : {'enabled': 0},
-"      \ 'sections' : {'parse_levels': 1},
-"      \}
-"let g:vimtex_format_enabled = 1
-""let g:vimtex_view_method = 'zathura'
-"let g:vimtex_view_automatic = 0
-"let g:vimtex_view_forward_search_on_start = 0
-"let g:vimtex_toc_config = {
-"      \ 'split_pos' : 'full',
-"      \ 'mode' : 2,
-"      \ 'fold_enable' : 1,
-"      \ 'hotkeys_enabled' : 1,
-"      \ 'hotkeys_leader' : '',
-"      \ 'refresh_always' : 0,
-"      \}
-"let g:vimtex_quickfix_open_on_warning = 0
-"let g:vimtex_quickfix_autoclose_after_keystrokes = 3
-"let g:vimtex_imaps_enabled = 1
-"let g:vimtex_complete_img_use_tail = 1
-"let g:vimtex_complete_bib = {
-"      \ 'simple' : 1,
-"      \ 'menu_fmt' : '@year, @author_short, @title',
-"      \}
-"let g:vimtex_echo_verbose_input = 0
-
-let g:tex_conceal='abdgm'
-packadd tex-conceal
-"packadd tex
 
 " vim:sw=2:ts=2:

@@ -1,6 +1,9 @@
 " Include
 so $v/pack/bundle/opt/wiki/ftplugin/vimwiki.vim
 
+" Alias commands
+call VimwikiAlias()
+
 " Plugin
 packadd table-mode
 
