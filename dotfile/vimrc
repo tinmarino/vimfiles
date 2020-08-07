@@ -72,7 +72,11 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     set t_ZH=[3m
     set t_ZR=[23m
     " Terminal strikethrough
-    set term=xterm-256color
+    if $os == 'windows'
+      set term=xterm
+    else
+      set term=xterm-256color
+    endif
   " Statusline
     set laststatus=2        " alwaus show statusline
     set statusline=         " init void
