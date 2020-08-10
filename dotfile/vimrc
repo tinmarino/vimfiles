@@ -57,16 +57,15 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     colorscheme gruvbox-material
     set t_Co=256  " For airline and nice colors
     set formatoptions-=cro  " No auto comment
-    augroup NoCommment
-      autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-    augroup END
+    "augroup NoCommment
+    "  autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+    "augroup END
     set diffopt+=vertical
     set title                    " change the terminal's title, may not work
     set autoindent  " to have auto indentation when return line
     set wrapscan
     set conceallevel=2
     set number
-    set iskeyword+=#,-
     set modeline
     " Terminal italic
     set t_ZH=[3m
@@ -78,10 +77,16 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
       set term=xterm-256color
     endif
   " Statusline
+    function Rc_add_path()
+      let dir = expand('%:h')
+      if dir ==# '' || dir ==# '.' | return '' | endif
+      return '    ' . dir . '/'
+    endfunction
     set laststatus=2        " alwaus show statusline
     set statusline=         " init void
     set statusline+=%m      " gflag modified
     set statusline+=%t      " tail of the filename
+    set statusline+=%{Rc_add_path()} " head of path
     set statusline+=%=      " left/right separator
     set statusline+=%P\ \   " percent through file
     set statusline+=%c,     " cursor column
@@ -501,20 +506,11 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     let g:vimwiki_css_name = '/Css/include.css'
 
     " Test Wiki
-    " let g:vimwiki_listsym_rejected = '~'
-    " let g:vimwiki_listsyms = '•'
-    " let g:vimwiki_ext2syntax = {'.wiki': 'media'}
-    " let g:vimwiki_list_ignore_newline = 1
-    " let g:vimwiki_toc_header = 'Sadrzaj'
-    "function! VimwikiLinkHandler(link)
-    "  set foldmethod=indent
-    "  normal zv
-    "endfunction
+    let g:vimwiki_emoji_enable = 3
+    "let g:vimwiki_tag_format = {'pre': '\(^[ -]*tags\s*:.*\)\@<=', 'pre_mark': '', 'post_mark': '', 'sep': '>><<'}
 
-    " augroup VimwikInit
-    "     autocmd FileType vimwiki set nomodeline
-    " augroup END
-    let vimwiki_ext2syntax = {} 
+    "let g:gfm_syntax_emoji_conceal = 1
+    "packadd gfm-syntax
     packadd wiki " TODO remove and add autoload
     call VimwikiAlias()
 
@@ -648,6 +644,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
 
   " Emacs Command line
     let g:EmacsCommandLineSearchCommandLineDisable = 1
+    let g:EmacsCommandLineBackwardCharDisable = 1
 
   " Eclim
     let g:EclimCompletionMethod = 'omnifunc'
@@ -714,7 +711,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   packadd snippets " for some ultisnips macro
   " Slow : reload on demand
   " + make the <BS> blink
-  packadd emacscommandline | cunmap <BS>
+  packadd emacscommandline
   " packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines)
   packadd vader
   packadd ale

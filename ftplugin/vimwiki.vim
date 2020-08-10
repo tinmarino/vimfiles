@@ -20,7 +20,11 @@ setlocal tabstop=2
 setlocal softtabstop=2
 setlocal shiftwidth=2
 
-" Alias
+" Map
+try
+    nunmap <buffer> gnt
+catch /E31/
+endtry
 map <leader>c :Vimwiki2HTML<CR><CR>:syntax on<CR>
 
 

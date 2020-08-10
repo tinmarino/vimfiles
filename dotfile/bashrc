@@ -47,6 +47,7 @@
   export PATH=$PATH:$HOME/.raku/bin
   # Python
   #export PATH=$PATH:$HOME/Program/Conda/bin
+  export PATH=$PATH:$HOME/.local/usr/local/bin
   export PATH=$PATH:$HOME/.local/bin
   # Rust
   export PATH=$PATH:$HOME/.cargo/bin
