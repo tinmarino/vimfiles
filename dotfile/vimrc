@@ -698,7 +698,10 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
 " PackAdd
   " Interface
   packadd fugitive
+  " TODO remove ctrp
   packadd ctrlp " 3ms
+  packadd fzf
+  packadd fzf.vim
   " Map
   packadd surround  " ySS<div>
   packadd repeat  " for surround
