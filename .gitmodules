@@ -193,3 +193,10 @@
 	path = pack/bundle/opt/unicode
 	url = https://github.com/chrisbra/unicode.vim
     ignore = all
+[submodule "pack/bundle/opt/fzf.vim"]
+	path = pack/bundle/opt/fzf.vim
+	url = https://github.com/junegunn/fzf.vim
+    ignore = all
+[submodule "pack/bundle/opt/fzf"]
+	path = pack/bundle/opt/fzf
+	url = https://github.com/junegunn/fzf
