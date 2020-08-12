@@ -1,3 +1,7 @@
+" vim: sw=2:
+" VimRc by tinmarino
+" TODO: NerdCommenter
+
 " The base
 set encoding=utf-8
 scriptencoding uft-8
@@ -5,7 +9,7 @@ filetype plugin indent on | syntax on
 set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.so
 
 
-" Variable
+" Variable (Perso)
   let $PAGER = ''
 
   " Set v: windows gvim do NOT read .bashrc
@@ -36,6 +40,11 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   let $vim = $v
 
 
+" Variable (Vim)
+  let mapleader = ','
+  let maplocalleader = ','
+
+
 " Os specific
   " Termux
   if 'termux' ==? $os
@@ -48,386 +57,6 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     " Hide file edition message
     set shortmess+=F
   endif
-
-
-" Appearance
-  " Preferences
-    set background=dark
-    packadd color-tin
-    colorscheme gruvbox-material
-    set t_Co=256  " For airline and nice colors
-    set formatoptions-=cro  " No auto comment
-    "augroup NoCommment
-    "  autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-    "augroup END
-    set diffopt+=vertical
-    set title                    " change the terminal's title, may not work
-    set autoindent  " to have auto indentation when return line
-    set wrapscan
-    set conceallevel=2
-    set number
-    set modeline
-    " Terminal italic
-    set t_ZH=[3m
-    set t_ZR=[23m
-    " Terminal strikethrough
-    if $os == 'windows'
-      set term=xterm
-    else
-      set term=xterm-256color
-    endif
-  " Statusline
-    function Rc_add_path()
-      let dir = expand('%:h')
-      if dir ==# '' || dir ==# '.' | return '' | endif
-      return '    ' . dir . '/'
-    endfunction
-    set laststatus=2        " alwaus show statusline
-    set statusline=         " init void
-    set statusline+=%m      " gflag modified
-    set statusline+=%t      " tail of the filename
-    set statusline+=%{Rc_add_path()} " head of path
-    set statusline+=%=      " left/right separator
-    set statusline+=%P\ \   " percent through file
-    set statusline+=%c,     " cursor column
-    set statusline+=%l/%L   " cursor line/total lines
-  " File format
-    set fileformat=unix
-    set wrap
-    set expandtab
-    set shiftwidth=4
-    set tabstop=4
-  " Gui
-    set guifont=Consolas:h14:cANSI:qDRAFT
-    set guioptions-=T                  " Toolbar
-    set guioptions-=m                  " Menumbar
-  " Wildignore : Ignore these filenames during enhanced command line completion.
-    set wildmenu
-    set wildmode=list:full
-    set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz,*.dvi,*.svg,*.log  " LaTeX intermediate files
-    set wildignore+=*.tex.backup,*.lg,*.4ct,*.4tc,*.tmp,*.idv  " LaTeX html intermediate files
-    set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images
-    set wildignore+=*.luac  " Lua byte code
-    set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
-    set wildignore+=*.pyc  " Python byte code
-    set wildignore+=*.spl  " compiled spelling word lists
-    set wildignore+=*.sw?  " Vim swap files
-    set wildignore+=.git/*,undo/*  " Git, Vim undo
-  " Search
-    set ignorecase
-    set smartcase
-    set hlsearch      " highlight search terms
-    set incsearch     " show search matches as you type
-  " Cursor
-    set cursorline  " Enable CursorLine
-    " Default Colors for CursorLine
-    highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
-    augroup Cursor
-      "Change Color when entering Insert Mode
-      autocmd InsertEnter * highlight  CursorLine term=None cterm=None
-      " Revert Color to default when leaving Insert Mode
-      autocmd InsertLeave * highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
-    augroup END
-  " Window
-    set ruler
-    set backspace=2
-    " set shell=H:/Program/cmder-1.2.9/Cmder.exe
-  " Viminfo rememebr last 10000 opened files
-  let s:viminfo=join(map(split(&viminfo, ','), {arg -> (v:val[0] == "'" ? "'10000" : v:val)}), ',')
-  exe('set viminfo=' . s:viminfo)
-
-
-" Backup
-  set nobackup
-  set noswapfile
-  set nowritebackup
-  set undolevels=10000
-  set history=10000
-
-  if has('persistent_undo')
-    set undodir=$v/undo
-    set undofile
-  endif
-
-
-" Mouse Integration
-  " Send more characters for redraws
-  set mouse=a " Enable mouse use in all modes
-  set ttyfast
-  set ttymouse=xterm2
-
-
-" Map Leadered
-  let mapleader = ','
-  let maplocalleader = ','
-  " Edit special files
-    function! Edit(file)
-      try | execute 'buffer ' . a:file
-      catch | execute 'edit ' . a:file
-      endtry
-    endfunction
-    nnoremap <Leader>ea :call Edit($alias)<CR>
-    nnoremap <Leader>eb :call Edit($bashrc)<CR>
-    nnoremap <Leader>ed :call Edit($h/wiki/todo/done.md)<CR>
-    nnoremap <Leader>ef :e $v/ftplugin/<C-D>
-    nnoremap <Leader>eg :call Edit($gitrc)<CR>
-    nnoremap <Leader>et :call Edit($tmuxrc)<CR>
-    nnoremap <Leader>ev :call Edit($vimrc)<CR>
-  " a, t, w for wiki
-  " b -> Backup file
-    function! Backup(s)
-      " Backup path
-      let bck_file = expand('$v/undo/bck_') . strftime('%y-%m-%d-%H-%M-%S')
-      " File path
-      let bck_file .= '--' . substitute(expand('%:p:r'), '/', '_', 'g')
-      " Extension
-      let bck_file .= '-' . a:s . '.' . expand('%:e')
-      silent execute a:s . 'write! ' . bck_file
-      echom 'Backup lines ' . a:s . ' of file: $bck_file = ' . bck_file
-    endfunction
-    command! -range=% Backup call Backup('<line1>,<line2>')
-    " :BackView to feed backup path of the day in command line
-    command! -range=% BackupView call feedkeys(':e '
-                \ . expand('$v/undo/bck_') . strftime('%y-%m-%d'))
-    nnoremap <leader>b :Backup<CR>
-    vnoremap <leader>b :Backup<CR>
-  " g -> Ag the silver searcher <- ack
-    noremap <leader>f :update<Cr>:silent packadd ack<CR>:Ack! ''<LEFT>
-    noremap <leader>ak :silent packadd ack<CR>:Ack! ''<LEFT>
-  " k -> :Calendar
-    nnoremap <leader>k :packadd calendar <bar> Calendar<CR>
-  " n -> :NERDTree
-    function! NERDTreeExists()
-      let cr_tab = tabpagenr()
-      for i in range(1, tabpagenr('$'))
-        if i == cr_tab | continue | endif
-        if len(gettabvar(i, 'NERDTreeBufName')) | return 1 | endif
-      endfor
-      return 0
-    endfunction
-
-    function! NERDTreeToogleMirror()
-      packadd nerdtree
-      if g:NERDTree.IsOpen() || exists('t:NERDTreeBufName') || !NERDTreeExists()
-        NERDTreeToggle
-      else
-        NERDTreeMirror
-      endif
-    endfunction
-    noremap <leader>n :call NERDTreeToogleMirror()<CR>
-  " u -> :UndotreeToggle
-    noremap <leader>u :silent packadd undotree<CR>:UndotreeToggle<CR>
-
-
-" Map
-  tnoremap <Esc> <C-W>N
-
-  " Use <C-L> to clear the highlighting of :set hlsearch and also preserve the
-  " default behavior of redrawing the screen
-    if maparg('<C-S-L>', 'n') ==# ''
-        nnoremap <silent> <C-S-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
-    endif
-
-  " Window
-    noremap <C-W>- <C-W>s
-    noremap <C-W><bar> <C-W>v
-    noremap <C-W>_ <C-W>s
-    noremap <C-W>z <C-W><bar>
-    " Up
-    noremap  <C-Up>    <C-W>k
-    noremap  <C-k>     <C-W>k
-    " inoremap <C-Up>    <C-O><C-W>k
-    " inoremap <C-k>     <C-O><C-W>k
-    " Down
-    noremap  <C-Down>  <C-W>j
-    inoremap <C-Down>  <C-O><C-W>j
-    "noremap  <C-j>     <C-W>j
-    "inoremap <C-j>     <C-O><C-W>j
-    " Left
-    noremap  <C-Left>  <C-W>h
-    inoremap <C-Left>  <C-O><C-W>h
-    "noremap  <C-h>     <C-W>h
-    "inoremap <C-h>     <C-O><C-W>h
-    " Right
-    noremap  <C-Right> <C-W>l
-    inoremap <C-Right> <C-O><C-W>l
-    "noremap  <C-l>     <C-W>l
-    "inoremap <C-l>     <C-O><C-W>l
-
-  " Maps for Package : On demand load
-    " F8 : Colorscheme-switcher
-    noremap <F8> :packadd misc<CR>:packadd colorscheme-switcher<CR><F8>
-    map <ESC>[19;2~ <S-F8>
-
-  " Yank all buffer to system clipboard
-    map <leader>y mtgg"+yG`t
-    map <leader>p ggdG"+p
-
-  " Indent < and >
-    noremap > >>
-    noremap < <<
-    vnoremap > >gv
-    vnoremap < <gv
-
-  " select last paste in visual mode
-    nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
-
-  " Perso maps normal
-    nnoremap H :set cursorline! cursorcolumn!<CR>
-    map xy :s/x/y/g<CR>
-    map yx :s/y/x/g<CR>
-
-  " Copy paste to from clipboard <- ctrl+p
-    if $os !=? 'termux'
-      " Disabled in termux for wheel
-      nnoremap <C-y> "+y
-      vnoremap <C-y> "+y
-    endif
-    nnoremap <C-p> "+p
-    vnoremap <C-p> "+p
-    " Note: `] goto end of paste
-    inoremap <C-p> <Esc>"+p`]a
-
-  " Command : %% to expand path in command mode
-    cnoremap %% <C-R>=expand('%:p:h').'/'<CR>|
-
-  " Insert mode begin, end <- c-a c-e shotcuts from gnome
-    inoremap <C-A> <C-O>^
-    inoremap <C-E> <C-O>g_
-    "inoremap <C-K> <C-O>D
-
-  " Esc <- jk or kj
-    imap jk <Esc>
-    imap kj <Esc>
-
-  " C-Arrow on Ubuntu
-    "Get Ctrl + ARROW KEYS,because if you don't do that, the <C-Up>  (ie crtl + up ) key is notreckognise
-    map  <Esc>[1;5A <C-Up>
-    map  <Esc>[1;5B <C-Down>
-    map  <Esc>[1;5D <C-Left>
-    map  <Esc>[1;5C <C-Right>
-    cmap <Esc>[1;5A <C-Up>
-    cmap <Esc>[1;5B <C-Down>
-    cmap <Esc>[1;5D <C-Left>
-    cmap <Esc>[1;5C <C-Right>
-
-    map  <Esc>[1;2D <S-Left>
-    map  <Esc>[1;2C <S-Right>
-    cmap <Esc>[1;2D <S-Left>
-    cmap <Esc>[1;2C <S-Right>
-
-  " Save with s
-    noremap s      :update!<CR>
-    vnoremap s    <C-C>:update!<CR>
-
-  " Commenting blocks of code with ,cc ,cu
-    " TODO better map
-    " autocmd FileType c,cpp,java,scala let b:comment_leader = '// '
-    " autocmd FileType sh,ruby,python   let b:comment_leader = '# '
-    " autocmd FileType conf,fstab       let b:comment_leader = '# '
-    " autocmd FileType tex              let b:comment_leader = '% '
-    " autocmd FileType mail             let b:comment_leader = '> '
-    " autocmd FileType vim              let b:comment_leader = '" '
-    " noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
-    " noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'\/')<CR>//e<CR>:nohlsearch<CR>
-
-  " Fold
-    nnoremap <space> za
-    vnoremap <space> zf
-    map z1  :set foldlevel=0<CR><Esc>
-    map z2  :set foldlevel=1<CR><Esc>
-    map z3  :set foldlevel=2<CR><Esc>
-    map z4  :set foldlevel=3<CR><Esc>
-    map z5  :set foldlevel=4<CR><Esc>
-    map z6  :set foldlevel=5<CR><Esc>
-    map z7  :set foldlevel=6<CR><Esc>
-    map z8  :set foldlevel=7<CR><Esc>
-    map z9  :set foldlevel=8<CR><Esc>
-    " And for azery
-    map z& z1
-    map zé z2
-    map z" z3
-    map z' z4
-    map z( z5
-    map z- z6
-    map zè z7
-    map z_ z8
-    map zç z9
-
-  " Tab
-    noremap gn :tabnew<CR>
-    noremap g1 :1tabnext<CR><Esc>
-    noremap g2 :2tabnext<CR><Esc>
-    noremap g3 :3tabnext<CR><Esc>
-    noremap g4 :4tabnext<CR><Esc>
-    noremap g5 :5tabnext<CR><Esc>
-    noremap g6 :6tabnext<CR><Esc>
-    noremap g7 :7tabnext<CR><Esc>
-    noremap g8 :8tabnext<CR><Esc>
-    noremap g9 :9tabnext<CR><Esc>
-    " And for azery
-    map g& g1
-    map gé g2
-    map g" g3
-    map g' g4
-    map g( g5
-    map g- g6
-    map gè g7
-    map g_ g8
-    map gç g9
-
-
-" Command Man
-  if exists(':Man') != 2
-    com! -nargs=+ -complete=shellcmd M ru! ftplugin/man.vim | Man <args>
-  else
-    com! -nargs=+ -complete=shellcmd M Man <args>
-  endif
-
-
-" Folding
-  highlight Folded ctermfg=DarkGreen ctermbg=Black
-  set foldignore=
-  set foldlevelstart=30 "the folding at opening
-  set foldmethod=indent
-  set foldcolumn=0  "the number of columns on the left to show the tree, default =0
-  set foldlevelstart=30 "the folding at opening
-  set shiftwidth=4  " the number of column taken into account for aa fold, IMPORTANT
-
-
-" Filetype
-  augroup FtDetect
-    au BufNewFile,BufRead *.masm      setf masm
-    au BufNewFile,BufRead *.asm       setf masm
-    au BufNewFile,BufRead *.disarm    setf disarm
-    au BufNewFile,BufRead *.kd        setf kd
-  augroup END
-
-
-" Alma
-  " AlmaSw
-    " echo | g++ -E -Wp,-v -
-    " `gcc -print-prog-name=cpp` -v  # cpp for c preprocessor
-    set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
-    set path+=/usr/local/include
-    set path+=/usr/include/x86_64-linux-gnu
-    set path+=/usr/include
-    " `gcc -print-prog-name=cc1plus` -v
-    set path+=/usr/include/c++/9/
-    set path+=/usr/include/c++/9
-    set path+=/usr/include/x86_64-linux-gnu/c++/9
-    set path+=/usr/include/c++/9/backward
-    set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
-    set path+=./../include
-    set path+=./../../*/include
-    set path+=./../../../*/include
-    set path+=/home/tourneboeuf/AlmaSw/ACS/LGPL/CommonSoftware/**/include/
-    set path+=/home/tourneboeuf/AlmaSw/ICD/**/include/
-
-    let g:ale_cpp_clang_options=''
-    let g:ale_cpp_clang_options.='-I/home/tourneboeuf/AlmaSw/ '
-    let g:ale_cpp_clang_options.='-I/home/tourneboeuf/AlmaSw/ACS/LGPL/CommonSoftware/logging/ws/include/ '
-    let g:ale_cpp_clang_options.='-I/home/tourneboeuf/AlmaSw/TELCAL/TelCalDataManager/include '
 
 
 " Plugin
@@ -554,7 +183,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
       call add(s, 'E202')  " Whitespace before ')'
       call add(s, 'E251')  " unespected space around keyword / operator =
       call add(s, 'E131')  " continuation line unaligned for hanging indent
-      call add(s, 'E129')  " visually indented line with same indent as next logical line 
+      call add(s, 'E129')  " visually indented line with same indent as next logical line
       " For dirty cats (jupyter-vim)
       " call add(s, 'E302')  " Expected 2 blank lines, found 1
       " call add(s, 'E265')  " Block comment should start with '# '
@@ -594,43 +223,6 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     \    'eval_visual' : '<Leader>e',
     \}
 
-  " CtrlP
-    " Open buffer here
-    let g:ctrlp_switch_buffer = ''
-    " Cache
-    let g:ctrlp_cache_dir ='$h/.cache/ctrlp'
-    " replace $home by ~ in cache
-    let g:ctrlp_tilde_homedir = 1
-    let g:ctrlp_mruf_max = 50000
-    " Use ag <- grep
-    " if executable('ag')
-    "   let g:ctrl_user_command = 'ag %s -l --nocolor -g ""'
-    " endif
-    " Ignore
-    let g:ctrlp_cutom_ignore = {
-      \ 'dir': '\.git$,undo/',
-      \ 'file': 'log'
-    \ }
-    if $os !=? 'termux'
-      " E like edit and closer to ctrl + <c-p> used to paste
-      let g:ctrlp_map = '<C-E>'
-      vnoremap <C-E> :<C-u>CtrlPMixed<CR>
-    else
-      " Because move up gives c-e
-      let g:ctrlp_map = ',e'
-    endif
-    " Keep cache
-    let g:ctrlp_clear_cache_on_exit = 0
-    " Mixed to search in MRU, FIles, Buffers
-    let g:ctrlp_types = ['buf', 'mru', 'fil']
-    let g:ctrlp_cmd = 'CtrlPMixed'
-    " Faster listing <- vim.globpath
-    if $os ==? 'windows'
-      let g:ctrlp_user_command = 'dir %s /-n /b /s /a-d'
-    else
-      let g:ctrlp_user_command = 'find %s -type f'
-    endif
-
   " Vim Translator
     ".vimrc
     " language code iso 639-1
@@ -668,14 +260,6 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     let g:UltiSnipsExpandTrigger='<c-j>'
     let g:UltiSnipsUsePythonVersion = 3
 
-  " Fugitive
-    map <leader>gd :Gdiff<CR>
-    map <leader>gb :Gblame<CR>
-    map <leader>gs :Gstatus<CR>
-    map <leader>gl :Glog<CR>
-    map <leader>gc :Gcommit -m ""<C-b>
-    map <leader>ga :Git add
-
   " Viewdoc
     let g:no_viewdoc_abbrev = 1
     let g:viewdoc_open = 'e'
@@ -686,20 +270,29 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " Ack to use ag
     let g:ack_qhandler='rightbelow vert copen 80'
     let g:ackprg = 'ag --vimgrep --smart-case'
-    cnoreabbrev ag Ack
-    cnoreabbrev aG Ack
-    cnoreabbrev Ag Ack
-    cnoreabbrev AG Ack
+    "cnoreabbrev ag Ack
+    "cnoreabbrev aG Ack
+    "cnoreabbrev Ag Ack
+    "cnoreabbrev AG Ack
 
   " Vimspector
     let g:vimspector_enable_mappings = 'HUMAN'
 
+  " Fzf
+    " https://github.com/junegunn/fzf/issues/274
+    command! FZFMix call fzf#run(fzf#wrap(fzf#vim#with_preview({
+                \'source':  'bash -c "'.
+                \               'echo -e \"'.join(fzf#vim#_recent_files(), '\n').'\";'.
+                \               'ag -l -g \"\"'.
+                \           '"',
+                \'sink' : 'e ',
+                \'options' : '-e -m --reverse',
+                \})))
 
 " PackAdd
   " Interface
   packadd fugitive
   " TODO remove ctrp
-  packadd ctrlp " 3ms
   packadd fzf
   packadd fzf.vim
   " Map
@@ -720,6 +313,436 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   packadd ale
   packadd tex
 
+
+" Appearance
+  " Preferences
+    set background=dark
+    packadd color-tin
+    colorscheme gruvbox-material
+    set t_Co=256  " For airline and nice colors
+    set formatoptions-=cro  " No auto comment
+    "augroup NoCommment
+    "  autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+    "augroup END
+    set diffopt+=vertical
+    set title                    " change the terminal's title, may not work
+    set autoindent  " to have auto indentation when return line
+    set wrapscan
+    set conceallevel=2
+    set number
+    set modeline
+    " Terminal italic
+    set t_ZH=[3m
+    set t_ZR=[23m
+    " Terminal strikethrough
+    if $os == 'windows'
+      set term=xterm
+    else
+      set term=xterm-256color
+    endif
+  " Statusline
+    function Rc_add_path()
+      let dir = expand('%:h')
+      if dir ==# '' || dir ==# '.' | return '' | endif
+      return '    ' . dir . '/'
+    endfunction
+    set laststatus=2        " alwaus show statusline
+    set statusline=         " init void
+    set statusline+=%m      " gflag modified
+    set statusline+=%t      " tail of the filename
+    set statusline+=%{Rc_add_path()} " head of path
+    set statusline+=%=      " left/right separator
+    set statusline+=%P\ \   " percent through file
+    set statusline+=%c,     " cursor column
+    set statusline+=%l/%L   " cursor line/total lines
+  " File format
+    set fileformat=unix
+    set wrap
+    set expandtab
+    set shiftwidth=4
+    set tabstop=4
+  " Gui
+    set guifont=Consolas:h14:cANSI:qDRAFT
+    set guioptions-=T                  " Toolbar
+    set guioptions-=m                  " Menumbar
+  " Wildignore : Ignore these filenames during enhanced command line completion.
+    set wildmenu
+    set wildmode=list:full
+    set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz,*.dvi,*.svg,*.log  " LaTeX intermediate files
+    set wildignore+=*.tex.backup,*.lg,*.4ct,*.4tc,*.tmp,*.idv  " LaTeX html intermediate files
+    set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images
+    set wildignore+=*.luac  " Lua byte code
+    set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
+    set wildignore+=*.pyc  " Python byte code
+    set wildignore+=*.spl  " compiled spelling word lists
+    set wildignore+=*.sw?  " Vim swap files
+    set wildignore+=.git/*,undo/*  " Git, Vim undo
+  " Search
+    set ignorecase
+    set smartcase
+    set hlsearch      " highlight search terms
+    set incsearch     " show search matches as you type
+  " Cursor
+    set cursorline  " Enable CursorLine
+    " Default Colors for CursorLine
+    highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
+    augroup Cursor
+      "Change Color when entering Insert Mode
+      autocmd InsertEnter * highlight  CursorLine term=None cterm=None
+      " Revert Color to default when leaving Insert Mode
+      autocmd InsertLeave * highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
+    augroup END
+  " Window
+    set ruler
+    set backspace=2
+    " set shell=H:/Program/cmder-1.2.9/Cmder.exe
+  " Viminfo rememebr last 10000 opened files
+  let s:viminfo=join(map(split(&viminfo, ','), {arg -> (v:val[0] == "'" ? "'10000" : v:val)}), ',')
+  exe('set viminfo=' . s:viminfo)
+
+  " Tabline
+    " Rename tabs to show tab number.
+    " Based on: http://stackoverflow.com/questions/5927952/whats-implementation-of-vims-default-tabline-function
+    " Copied from: https://superuser.com/questions/331272/vim-show-the-index-of-tabs-in-the-tabline
+    if exists('+showtabline')
+      function! MyTabLine()
+        let s = ''
+        let wn = ''
+        let t = tabpagenr()
+        let i = 1
+        while i <= tabpagenr('$')
+          let buflist = tabpagebuflist(i)
+          let winnr = tabpagewinnr(i)
+          let s .= '%' . i . 'T'
+          let s .= (i == t ? '%1*' : '%2*')
+          let s .= ' '
+          let wn = tabpagewinnr(i,'$')
+
+          let s .= '%#TabNum#'
+          let s .= i
+          " let s .= '%*'
+          let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+          let bufnr = buflist[winnr - 1]
+          let file = bufname(bufnr)
+          let buftype = getbufvar(bufnr, 'buftype')
+          if buftype ==# 'nofile'
+            if file =~# '\/.'
+              let file = substitute(file, '.*\/\ze.', '', '')
+            endif
+          else
+            let file = fnamemodify(file, ':p:t')
+          endif
+          if file ==# ''
+            let file = '[No Name]'
+          endif
+          let s .= ' ' . file . ' '
+          let i = i + 1
+        endwhile
+        let s .= '%T%#TabLineFill#%='
+        let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+        return s
+      endfunction
+      set showtabline=2
+      set tabline=%!MyTabLine()
+      set showtabline=1
+      highlight link TabNum Special
+    endif
+
+
+" Backup
+  set nobackup
+  set noswapfile
+  set nowritebackup
+  set undolevels=10000
+  set history=10000
+
+  if has('persistent_undo')
+    set undodir=$v/undo
+    set undofile
+  endif
+
+
+" Mouse Integration
+  " Send more characters for redraws
+  set mouse=a " Enable mouse use in all modes
+  set ttyfast
+  set ttymouse=xterm2
+
+
+" Map Leadered
+  " Edit special files
+    function! Edit(file)
+      try | execute 'buffer ' . a:file
+      catch | execute 'edit ' . a:file
+      endtry
+    endfunction
+    nnoremap <Leader>ea :call Edit($alias)<CR>
+    nnoremap <Leader>eb :call Edit($bashrc)<CR>
+    nnoremap <Leader>ed :call Edit($h/wiki/todo/done.md)<CR>
+    nnoremap <Leader>ef :e $v/ftplugin/<C-D>
+    nnoremap <Leader>eg :call Edit($gitrc)<CR>
+    nnoremap <Leader>et :call Edit($tmuxrc)<CR>
+    nnoremap <Leader>ev :call Edit($vimrc)<CR>
+  " a, t, w for wiki
+  " b -> Backup file
+    function! Backup(s)
+      " Backup path
+      let bck_file = expand('$v/undo/bck_') . strftime('%y-%m-%d-%H-%M-%S')
+      " File path
+      let bck_file .= '--' . substitute(expand('%:p:r'), '/', '_', 'g')
+      " Extension
+      let bck_file .= '-' . a:s . '.' . expand('%:e')
+      silent execute a:s . 'write! ' . bck_file
+      echom 'Backup lines ' . a:s . ' of file: $bck_file = ' . bck_file
+    endfunction
+    command! -range=% Backup call Backup('<line1>,<line2>')
+    " :BackView to feed backup path of the day in command line
+    command! -range=% BackupView call feedkeys(':e '
+                \ . expand('$v/undo/bck_') . strftime('%y-%m-%d'))
+    nnoremap <leader>b :Backup<CR>
+    vnoremap <leader>b :Backup<CR>
+  " f -> Ag the silver searcher <- ack
+    noremap <leader>f :update<Cr>:silent packadd ack<CR>:Ack! ''<LEFT>
+    noremap <leader>ak :silent packadd ack<CR>:Ack! ''<LEFT>
+  " g -> git -> Fugitive
+    map <leader>gd :Gdiff<CR>
+    map <leader>gb :Gblame<CR>
+    map <leader>gs :Gstatus<CR>
+    map <leader>gl :Glog<CR>
+    map <leader>gc :Gcommit -m ""<C-b>
+    map <leader>ga :Git add
+
+  " k -> :Calendar
+    nnoremap <leader>k :packadd calendar <bar> Calendar<CR>
+  " n -> :NERDTree
+    function! NERDTreeExists()
+      let cr_tab = tabpagenr()
+      for i in range(1, tabpagenr('$'))
+        if i == cr_tab | continue | endif
+        if len(gettabvar(i, 'NERDTreeBufName')) | return 1 | endif
+      endfor
+      return 0
+    endfunction
+
+    function! NERDTreeToogleMirror()
+      packadd nerdtree
+      if g:NERDTree.IsOpen() || exists('t:NERDTreeBufName') || !NERDTreeExists()
+        NERDTreeToggle
+      else
+        NERDTreeMirror
+      endif
+    endfunction
+    noremap <leader>n :call NERDTreeToogleMirror()<CR>
+  " u -> :UndotreeToggle
+    noremap <leader>u :silent packadd undotree<CR>:UndotreeToggle<CR>
+
+
+" Map Ctrl
+  nnoremap <C-b> :BLines<Cr>
+  nnoremap <C-e> :FZFMix<Cr>
+  " F like fuzz (exetended)
+  nnoremap <C-f>g :Commits<Cr>
+  nnoremap <C-f>v :call fzf#run({'options': '--reverse --prompt "VimFiles"', 'down': 20, 'dir': '~/.vim/', 'sink': 'e' })<Cr>
+  nnoremap <C-n> :Lines<Cr>
+
+" Map
+  tnoremap <Esc> <C-W>N
+
+  " Save with s
+    noremap s      :update!<CR>
+    vnoremap s    <C-C>:update!<CR>
+
+  " Use <C-L> to clear the highlighting of :set hlsearch and also preserve the
+  " default behavior of redrawing the screen
+    if maparg('<C-S-L>', 'n') ==# ''
+        nnoremap <silent> <C-S-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+    endif
+
+  " Window
+    noremap <C-W>- <C-W>s
+    noremap <C-W><bar> <C-W>v
+    noremap <C-W>_ <C-W>s
+    noremap <C-W>z <C-W><bar>
+    " Up
+    noremap  <C-Up>    <C-W>k
+    noremap  <C-k>     <C-W>k
+    " inoremap <C-Up>    <C-O><C-W>k
+    " inoremap <C-k>     <C-O><C-W>k
+    " Down
+    noremap  <C-Down>  <C-W>j
+    inoremap <C-Down>  <C-O><C-W>j
+    "noremap  <C-j>     <C-W>j
+    "inoremap <C-j>     <C-O><C-W>j
+    " Left
+    noremap  <C-Left>  <C-W>h
+    inoremap <C-Left>  <C-O><C-W>h
+    "noremap  <C-h>     <C-W>h
+    "inoremap <C-h>     <C-O><C-W>h
+    " Right
+    noremap  <C-Right> <C-W>l
+    inoremap <C-Right> <C-O><C-W>l
+    "noremap  <C-l>     <C-W>l
+    "inoremap <C-l>     <C-O><C-W>l
+
+  " Maps for Package : On demand load
+    " F8 : Colorscheme-switcher
+    noremap <F8> :packadd misc<CR>:packadd colorscheme-switcher<CR><F8>
+    map <ESC>[19;2~ <S-F8>
+
+  " Yank all buffer to system clipboard
+    map <leader>y mtgg"+yG`t
+    map <leader>p ggdG"+p
+
+  " Indent < and >
+    noremap > >>
+    noremap < <<
+    vnoremap > >gv
+    vnoremap < <gv
+
+  " select last paste in visual mode
+    nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+  " Perso maps normal
+    nnoremap H :set cursorline! cursorcolumn!<CR>
+    map xy :s/x/y/g<CR>
+    map yx :s/y/x/g<CR>
+
+  " Copy paste to from clipboard <- ctrl+p
+    if $os !=? 'termux'
+      " Disabled in termux for wheel
+      nnoremap <C-y> "+y
+      vnoremap <C-y> "+y
+    endif
+    nnoremap <C-p> "+p
+    vnoremap <C-p> "+p
+    " Note: `] goto end of paste
+    inoremap <C-p> <Esc>"+p`]a
+
+  " Command : %% to expand path in command mode
+    cnoremap %% <C-R>=expand('%:p:h').'/'<CR>|
+
+  " Insert mode begin, end <- c-a c-e shotcuts from gnome
+    inoremap <C-A> <C-O>^
+    inoremap <C-E> <C-O>g_
+    "inoremap <C-K> <C-O>D
+
+  " Esc <- jk or kj
+    imap jk <Esc>
+    imap kj <Esc>
+
+  " C-Arrow on Ubuntu
+    "Get Ctrl + ARROW KEYS,because if you don't do that, the <C-Up>  (ie crtl + up ) key is notreckognise
+    map  <Esc>[1;5A <C-Up>
+    map  <Esc>[1;5B <C-Down>
+    map  <Esc>[1;5D <C-Left>
+    map  <Esc>[1;5C <C-Right>
+    cmap <Esc>[1;5A <C-Up>
+    cmap <Esc>[1;5B <C-Down>
+    cmap <Esc>[1;5D <C-Left>
+    cmap <Esc>[1;5C <C-Right>
+
+    map  <Esc>[1;2D <S-Left>
+    map  <Esc>[1;2C <S-Right>
+    cmap <Esc>[1;2D <S-Left>
+    cmap <Esc>[1;2C <S-Right>
+
+  " Fold
+    nnoremap <space> za
+    vnoremap <space> zf
+    map z1  :set foldlevel=0<CR><Esc>
+    map z2  :set foldlevel=1<CR><Esc>
+    map z3  :set foldlevel=2<CR><Esc>
+    map z4  :set foldlevel=3<CR><Esc>
+    map z5  :set foldlevel=4<CR><Esc>
+    map z6  :set foldlevel=5<CR><Esc>
+    map z7  :set foldlevel=6<CR><Esc>
+    map z8  :set foldlevel=7<CR><Esc>
+    map z9  :set foldlevel=8<CR><Esc>
+    " And for azery
+    map z& z1
+    map zé z2
+    map z" z3
+    map z' z4
+    map z( z5
+    map z- z6
+    map zè z7
+    map z_ z8
+    map zç z9
+
+  " Tab
+    noremap gn :tabnew<CR>
+    noremap g1 :1tabnext<CR><Esc>
+    noremap g2 :2tabnext<CR><Esc>
+    noremap g3 :3tabnext<CR><Esc>
+    noremap g4 :4tabnext<CR><Esc>
+    noremap g5 :5tabnext<CR><Esc>
+    noremap g6 :6tabnext<CR><Esc>
+    noremap g7 :7tabnext<CR><Esc>
+    noremap g8 :8tabnext<CR><Esc>
+    noremap g9 :9tabnext<CR><Esc>
+    " And for azery
+    map g& g1
+    map gé g2
+    map g" g3
+    map g' g4
+    map g( g5
+    map g- g6
+    map gè g7
+    map g_ g8
+    map gç g9
+
+
+" Command Man
+  if exists(':Man') != 2
+    com! -nargs=+ -complete=shellcmd M ru! ftplugin/man.vim | Man <args>
+  else
+    com! -nargs=+ -complete=shellcmd M Man <args>
+  endif
+
+
+" Folding
+  highlight Folded ctermfg=DarkGreen ctermbg=Black
+  set foldignore=
+  set foldlevelstart=30 "the folding at opening
+  set foldmethod=indent
+  set foldcolumn=0  "the number of columns on the left to show the tree, default =0
+  set foldlevelstart=30 "the folding at opening
+  set shiftwidth=4  " the number of column taken into account for aa fold, IMPORTANT
+
+
+" Filetype
+  augroup FtDetect
+    au BufNewFile,BufRead *.masm      setf masm
+    au BufNewFile,BufRead *.asm       setf masm
+    au BufNewFile,BufRead *.disarm    setf disarm
+    au BufNewFile,BufRead *.kd        setf kd
+  augroup END
+
+
+" Alma
+  " AlmaSw
+    " echo | g++ -E -Wp,-v -
+    " `gcc -print-prog-name=cpp` -v  # cpp for c preprocessor
+    set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
+    set path+=/usr/local/include
+    set path+=/usr/include/x86_64-linux-gnu
+    set path+=/usr/include
+    " `gcc -print-prog-name=cc1plus` -v
+    set path+=/usr/include/c++/9/
+    set path+=/usr/include/c++/9
+    set path+=/usr/include/x86_64-linux-gnu/c++/9
+    set path+=/usr/include/c++/9/backward
+    set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
+    set path+=./../include
+    set path+=./../../*/include
+    set path+=./../../../*/include
+    set path+=/home/tourneboeuf/AlmaSw/ACS/LGPL/CommonSoftware/**/include/
+    set path+=/home/tourneboeuf/AlmaSw/ICD/**/include/
+
+    let g:ale_cpp_clang_options=''
+    let g:ale_cpp_clang_options.='-I/home/tourneboeuf/AlmaSw/ '
+    let g:ale_cpp_clang_options.='-I/home/tourneboeuf/AlmaSw/ACS/LGPL/CommonSoftware/logging/ws/include/ '
+    let g:ale_cpp_clang_options.='-I/home/tourneboeuf/AlmaSw/TELCAL/TelCalDataManager/include '
 
 
 " Fastly (added)
@@ -764,12 +787,7 @@ function! SynStack()
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
-function! SynGroup()                                                            
-    let l:s = synID(line('.'), col('.'), 1)                                       
+function! SynGroup()
+    let l:s = synID(line('.'), col('.'), 1)
     echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
 endfun
-
-" For italic ??
-
-
-" vim:sw=2:ts=2:
