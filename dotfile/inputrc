@@ -15,4 +15,4 @@ $include /etc/inputrc
 # Fast
 #"\C-h": "ctrlh-test"
 "\C-o": shell-expand-line
-"\C-p": "$(date) \e\C-e\ef\ef\ef\ef\ef"
+#"\C-p": "$(date) \e\C-e\ef\ef\ef\ef\ef"
