@@ -14,6 +14,7 @@ ssh
 mosh
 xterm
 fzf
+bat  # syntax hi in fzf
 
 # Language
 python3 jupyter-console python3-pip
