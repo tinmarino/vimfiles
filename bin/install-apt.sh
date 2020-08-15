@@ -1,3 +1,4 @@
+
 # Init
 pg=()
 
@@ -40,6 +41,8 @@ gnome-terminal
 wine
 linux-headers-generic
 )
+
+# npm install -g diff-so-fancy
 
 # Print out
 echo -n "sudo apt install "
