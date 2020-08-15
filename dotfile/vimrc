@@ -76,7 +76,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
       endfor
     endfunction
     " Wiki
-    let g:vimwiki_list = [{
+    let g:vimwiki_list = []
+    let g:vimwiki_list += [{
       \ 'path': '$h/wiki/wiki',
       \ 'path_html': '$h/wiki/wiki_html'
       \ }]
@@ -103,7 +104,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     " Test
     let g:vimwiki_list += [{
       \ 'path': '$h/Test/Wiki',
-      \ 'path_html': '$h/Test/Wiki_html'
+      \ 'path_html': '$h/Test/Wiki_html',
+      \ 'nested_syntaxes': {'python': 'python'}
       \ }]
     " Test wiki syntax
     let g:vimwiki_list += [{
@@ -119,14 +121,11 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     " Map
     " Option
     let g:vimwiki_automatic_nested_syntaxes = 1
-    " New
-    "let g:vimwiki_cycle_bullets = 1
-    "let g:vimwiki_bullet_types = ['-', '•', '→', '*']
 
     let g:vimwiki_markdown_link_ext = 1
     let g:vimwiki_table_reduce_last_col = 1
     let g:vimwiki_table_mappings = 0
-      let g:vimwiki_table_auto_fmt = 1
+    let g:vimwiki_table_auto_fmt = 1
     let g:vimwiki_hl_headers = 1
     let g:vimwiki_hl_cb_checked = 1
     let g:vimwiki_syntax = 'markdown'
@@ -134,9 +133,16 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
     let g:vimwiki_css_name = '/Css/include.css'
 
-    " Test Wiki
-    let g:vimwiki_emoji_enable = 3
-    "let g:vimwiki_tag_format = {'pre': '\(^[ -]*tags\s*:.*\)\@<=', 'pre_mark': '', 'post_mark': '', 'sep': '>><<'}
+    "" Test Wiki
+    "let g:vimwiki_emoji_enable = 3
+    " New
+    "let g:vimwiki_cycle_bullets = 1
+    "let g:vimwiki_bullet_types = ['-', '•', '→', '*']
+    "let g:vimwiki_nested_syntaxes = {'python': 'python'}
+    "let g:vimwiki_ext2syntax = {'.md': 'markdown'}
+    ""let g:vimwiki_tag_format = {'pre': '\(^[ -]*tags\s*:.*\)\@<=', 'pre_mark': '', 'post_mark': '', 'sep': '>><<'}
+    ""let g:vimwiki_toc_link_format = 1
+    let g:vimwiki_global_ext = 1
 
     "let g:gfm_syntax_emoji_conceal = 1
     "packadd gfm-syntax
@@ -321,9 +327,9 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     colorscheme gruvbox-material
     set t_Co=256  " For airline and nice colors
     set formatoptions-=cro  " No auto comment
-    "augroup NoCommment
-    "  autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-    "augroup END
+    augroup NoCommment
+      autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+    augroup END
     set diffopt+=vertical
     set title                    " change the terminal's title, may not work
     set autoindent  " to have auto indentation when return line
@@ -768,7 +774,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   "packadd python-mode
   " packadd youcompleteme
   " if $os == 'unix' packadd youcompleteme endif
-  packadd raku
+  "packadd raku
   " packadd sleuth  " Auto indent
   let g:ycm_confirm_extra_conf = 0
   " autocmd FileType python let b:jupyter_exec_before = 'clear-screen'

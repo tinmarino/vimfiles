@@ -64,6 +64,7 @@
   # shopt -s direxpand
   export b="$v/bin" ; export bin="$b"
   export p="$v/pack/bundle/opt/" ; export pack="$p"
+  export pw="$v/pack/bundle/opt/wiki"
   export t="$HOME/wiki/todo"
   export w="$HOME/wiki/wiki"
 

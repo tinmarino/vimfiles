@@ -4,18 +4,25 @@
 
 
 # Variable helper
+
   _git_log_line_to_hash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1"
   _view_log_line="$_git_log_line_to_hash | xargs -I % sh -c 'git show --color=always % | diff-so-fancy'"
   _viewGitLogLineUnfancy="$_git_log_line_to_hash | xargs -I % sh -c 'git show %'"
 
 # Variable fzf
   _fzf_size='--preview-window=right:60% --height 100%'
-  _fzf_git_commit_preview=$'f() {
-    set -- \$($_git_log_line_to_hash);
-    [ \$# -eq 0 ]
-    || git show --color=always \$1 $filter; }; f {}'
-  _fzf_bind+$'
-      --bind "j:down"
+  # TODO see filter for file
+  _fzf_eval_gcpreview=$'func() {
+    set -- \$('$_git_log_line_to_hash');
+    [ \$# -eq 0 ] || git show --color=always %; }; func {}'
+  _fzf_bind=$'
+    --bind j:down
+    --bind k:up
+    --bind q:abort
+    --bind ctrl-b:preview-page-up
+    --bind ctrl-f:preview-page-down
+    --bind alt-j:preview-down
+    --bind alt-k:preview-up
   '
 
 # System TODO cd
@@ -37,31 +44,34 @@ fbr() {
 # Log Interface
 fli() {
   # From: https://gist.github.com/junegunn/f4fca918e937e6bf5bad#gistcomment-2981199
-  #    q = quit
-  #    j = down
-  #    k = up
-  #    alt-k = preview up
-  #    alt-j = preview down
-  #    ctrl-f = preview page down
-  #    ctrl-b = preview page up
+  # Log ideas: --date-order --date=short  => Ugly for AlmaSW
   local filter
   if [ -n $@ ] && [ -f $@ ]; then
     filter="-- $@"
   fi
 
+
   git log \
-    --graph --date-order --date=short --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' $@ | \
+    --graph --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' $@ | \
     fzf \
       --ansi --no-sort --reverse --tiebreak=index \
-      --preview "$_fzf_git_commit_preview" \
-      $_fzf_size \
-      --bind "k:up,alt-j:preview-down,alt-k:preview-up,ctrl-f:preview-page-down,ctrl-b:preview-page-up,q:abort"
-            #  ctrl-m:execute:
-            #    (grep -o '[a-f0-9]\{7\}' | head -1 |
-            #    xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
-            #    {}
-            #    FZF-EOF"
+    --preview "f() { set -- \$(echo -- \$@ | grep -o '[a-f0-9]\{7\}'); [ \$# -eq 0 ] || git show --color=always \$1 $filter; }; f {}"
+      $_fzf_bind \
+      --bind "alt-v:execute:$_viewGitLogLineUnfancy | vim -" \
+      --bind "ctrl-m:execute:
+                (grep -o '[a-f0-9]\{7\}' | head -1 |
+                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+                {}
+                FZF-EOF" \
+      $_fzf_size
 }
+
+
+      #--bind "ctrl-m:execute:
+      #        (grep -o '[a-f0-9]\{7\}' | head -1 |
+      #        xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+      #        {}
+      #        FZF-EOF"
 
 # PickAce
 fpickace(){
