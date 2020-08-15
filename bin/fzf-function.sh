@@ -7,7 +7,7 @@
 
   _git_log_line_to_hash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1"
   _view_log_line="$_git_log_line_to_hash | xargs -I % sh -c 'git show --color=always % | diff-so-fancy'"
-  _viewGitLogLineUnfancy="$_git_log_line_to_hash | xargs -I % sh -c 'git show %'"
+  _view_log_line_unfancy="$_git_log_line_to_hash | xargs -I % sh -c 'git show %'"
 
 # Variable fzf
   _fzf_size='--preview-window=right:60% --height 100%'
@@ -15,7 +15,7 @@
   _fzf_eval_gcpreview=$'func() {
     set -- \$('$_git_log_line_to_hash');
     [ \$# -eq 0 ] || git show --color=always %; }; func {}'
-  _fzf_bind=$'
+  _fzf_bind=(
     --bind j:down
     --bind k:up
     --bind q:abort
@@ -23,7 +23,8 @@
     --bind ctrl-f:preview-page-down
     --bind alt-j:preview-down
     --bind alt-k:preview-up
-  '
+    --bind "alt-v:execute:$_view_log_line_unfancy | vim -"
+  )
 
 # System TODO cd
 
@@ -35,7 +36,7 @@ fbr() {
   branch=$(echo "$branches" |
     fzf +m \
       --ansi --no-sort --reverse --tiebreak=index \
-      --preview "$_fzf_git_commit_preview" \
+      --preview "$_fzf_eval_gcpreview" \
   ) &&
   git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
 }
@@ -55,17 +56,16 @@ fli() {
     --graph --color=always --abbrev=7 --format='%C(auto)%h %an %C(blue)%s %C(yellow)%cr' $@ | \
     fzf \
       --ansi --no-sort --reverse --tiebreak=index \
-    --preview "f() { set -- \$(echo -- \$@ | grep -o '[a-f0-9]\{7\}'); [ \$# -eq 0 ] || git show --color=always \$1 $filter; }; f {}"
-      $_fzf_bind \
-      --bind "alt-v:execute:$_viewGitLogLineUnfancy | vim -" \
-      --bind "ctrl-m:execute:
-                (grep -o '[a-f0-9]\{7\}' | head -1 |
-                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
-                {}
-                FZF-EOF" \
-      $_fzf_size
+      --preview "f() { set -- \$(echo -- \$@ | grep -o '[a-f0-9]\{7\}'); [ \$# -eq 0 ] || git show --color=always \$1 $filter; }; f {}" \
+      $_fzf_size \
+      "${_fzf_bind[@]}"
 }
 
+      #--bind "ctrl-m:execute:
+      #          (grep -o '[a-f0-9]\{7\}' | head -1 |
+      #          xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+      #          {}
+      #          FZF-EOF" \
 
       #--bind "ctrl-m:execute:
       #        (grep -o '[a-f0-9]\{7\}' | head -1 |

@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 # Init
 pg=()
@@ -16,6 +17,9 @@ mosh
 xterm
 fzf
 bat  # syntax hi in fzf
+
+# Linters
+shellcheck
 
 # Language
 python3 jupyter-console python3-pip
