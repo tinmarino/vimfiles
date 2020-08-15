@@ -5,20 +5,20 @@ OUT_DIR=$HOME/Images/Screenshot
 
 # ssfull script <- PrtScr
 ssfull(){
-    DATE=$(date +%Y-%m-%d-%H:%M:%S)
+    DATE=$(date +%Y-%m-%d-%H_%M_%S)
     echo saveing to $OUT_DIR/Screenshot-$DATE.png
     gnome-screenshot -f $OUT_DIR/Screenshot-$DATE.png
 }
 
 # sswin script <- Alt+PrtScr
 sswin(){
-    DATE=$(date +%Y-%m-%d-%H:%M:%S)
+    DATE=$(date +%Y-%m-%d-%H_%M_%S)
     gnome-screenshot -w -f $OUT_DIR/Screenshot-$DATE.png
 }
 
 # ssarea script <- Shift+PrtScr
 ssarea(){
-    DATE=$(date +%Y-%m-%d-%H:%M:%S)
+    DATE=$(date +%Y-%m-%d-%H_%M_%S)
     gnome-screenshot -a -f $OUT_DIR/Screenshot-$DATE.png
 }
 

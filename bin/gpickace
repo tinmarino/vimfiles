@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-# From https://github.com/junegunn/fzf/issues/1645#issuecomment-586161109
-git log --color=always --pretty=oneline --no-abbrev-commit --decorate \
-| fzf --phony --bind="change:reload:git log -G{q} --color=always --pretty=oneline --no-abbrev-commit --decorate" \
-  --preview="git show --color=always {1}" \
-  --preview-window right:80% \
-  --with-nth=2.. --layout=reverse --no-sort --ansi \
-| awk '{print $1}'
