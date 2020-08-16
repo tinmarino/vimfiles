@@ -7,6 +7,9 @@
 
   # Set OS
   export h="$HOME"
+  export hsmall='~'
+  # shellcheck disable=SC2088
+  export vsmall='~/.vim'
   uname=$(uname -a)
   uname=${uname,,}
   case $uname in
@@ -21,6 +24,8 @@
     *"mingw"*)
       export os="windows"
       export v="$HOME/vimfiles"
+      export hsmall="\"$HOME\""
+      export vsmall="\"$v\""
       ;;
   esac
 
@@ -265,11 +270,13 @@
     --bind ctrl-space:toggle-preview
     --bind ctrl-j:down
     --bind ctrl-k:up
-    --bind ctrl-d:half-page-down
     --bind ctrl-u:half-page-up
+    --bind ctrl-d:half-page-down
     --bind ctrl-s:toggle-sort
-    --bind ctrl-e:preview-down
-    --bind ctrl-y:preview-up
+    --bind ctrl-y:preview-half-page-up
+    --bind ctrl-e:preview-half-page-down
+    #--bind ctrl-y:preview-up
+    #--bind ctrl-e:preview-down
   )
   export FZF_DEFAULT_OPTS="${fzf_opts[*]}"
   # ForGit plugin

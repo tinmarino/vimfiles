@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# TODO vim and fzf from git
+# TODO sudo apt install -o Dpkg::Options::="--force-overwrite" bat ripgrep
 
 # Init
 pg=()
@@ -17,12 +19,11 @@ mosh
 xterm
 
 # Fzf stuff
-#  sudo apt install -o Dpkg::Options::="--force-overwrite" bat ripgrep
 # See: https://github.com/sharkdp/bat/issues/938 
 fzf
 bat  # syntax hi in fzf
-ripgrep 
-fdfind
+ripgrep  # faster find
+fdfind  # faster find but not used
 
 # Linters
 shellcheck

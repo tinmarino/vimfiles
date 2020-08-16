@@ -13,10 +13,6 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   let $PAGER = ''
 
   " Set v: windows gvim do NOT read .bashrc
-  if has('win32') || has('win64')
-    let $v = expand('$HOME/vimfiles')
-    let $os = 'windows'
-  endif
   set runtimepath+=$v
   set packpath+=$v
 
@@ -309,7 +305,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " Fzf
     " https://github.com/junegunn/fzf/issues/274
     let g:fzf_layout = { 'down': '100%' }
-    command! FZFMix call fzf#run(fzf#wrap(fzf#vim#with_preview({
+    command! FZFMix call fzf#run(fzf#wrap({
                 \'source':  'bash -c "'.
                 \               'echo -e \"'.join(fzf#vim#_recent_files(), '\n').'\";'.
                 \               'rg --files \"\";'.
@@ -318,7 +314,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
                 \           '"',
                 \'sink' : 'e ',
                 \'options' : $FZF_DEFAULT_OPTS
-                \})))
+                \}))
 
 
 " PackAdd
