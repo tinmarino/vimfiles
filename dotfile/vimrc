@@ -158,10 +158,15 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     nnoremap <silent> <A-Down>  :TmuxNavigateDown<cr>
     nnoremap <silent> <A-Up>    :TmuxNavigateUp<cr>
     nnoremap <silent> <A-Right> :TmuxNavigateRight<cr>
-    nnoremap <silent> <A-h>  :TmuxNavigateLeft<cr>
-    nnoremap <silent> <A-j>  :TmuxNavigateDown<cr>
-    nnoremap <silent> <A-k>  :TmuxNavigateUp<cr>
-    nnoremap <silent> <A-l>  :TmuxNavigateRight<cr>
+    nnoremap <silent> <A-h>     :TmuxNavigateLeft<cr>
+    nnoremap <silent> <A-h>     :TmuxNavigateLeft<cr>
+    nnoremap <silent> <A-j>     :TmuxNavigateDown<cr>
+    nnoremap <silent> <A-k>     :TmuxNavigateUp<cr>
+    nnoremap <silent> <A-l>     :TmuxNavigateRight<cr>
+    nnoremap <silent> <Esc>h    :TmuxNavigateLeft<cr>
+    nnoremap <silent> <Esc>j    :TmuxNavigateDown<cr>
+    nnoremap <silent> <Esc>k    :TmuxNavigateUp<cr>
+    nnoremap <silent> <Esc>l    :TmuxNavigateRight<cr>
     " See: For alt keys https://stackoverflow.com/questions/6778961/alt-key-shortcuts-not-working-on-gnome-terminal-with-vim
     exe "set <A-h>=\eh"
     exe "set <A-j>=\ej"
@@ -303,13 +308,16 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
 
   " Fzf
     " https://github.com/junegunn/fzf/issues/274
+    let g:fzf_layout = { 'down': '100%' }
     command! FZFMix call fzf#run(fzf#wrap(fzf#vim#with_preview({
                 \'source':  'bash -c "'.
                 \               'echo -e \"'.join(fzf#vim#_recent_files(), '\n').'\";'.
-                \               'ag -l -g \"\"'.
+                \               'rg --files \"\";'.
+                \               'rg --files \"\" \"$v\";'.
+                \               'rg --files \"\" \"$HOME\";'.
                 \           '"',
                 \'sink' : 'e ',
-                \'options' : '-e -m --reverse',
+                \'options' : $FZF_DEFAULT_OPTS
                 \})))
 
 
@@ -560,7 +568,11 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
 
 " Map Ctrl
   nnoremap <C-b> :BLines<Cr>
-  nnoremap <C-e> :FZFMix<Cr>
+  if 'termux' ==? $os
+    nnoremap <Leader>e :FZFMix<Cr>
+  else
+    nnoremap <C-e> :FZFMix<Cr>
+  endif
   " F like fuzz (exetended)
   nnoremap <C-f>g :Commits<Cr>
   nnoremap <C-f>v :call fzf#run({'options': '--reverse --prompt "VimFiles"', 'down': 20, 'dir': '~/.vim/', 'sink': 'e' })<Cr>

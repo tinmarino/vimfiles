@@ -1,4 +1,4 @@
-# Init
+# Init, Variables
   # If not running interactively, don't do anything
   [ -z "$PS1" ] && return
 
@@ -6,6 +6,7 @@
   if [ "$PWD" == / ] ; then cd "$HOME" || : ; fi
 
   # Set OS
+  export h="$HOME"
   uname=$(uname -a)
   uname=${uname,,}
   case $uname in
@@ -25,6 +26,7 @@
 
   # Set USER
   [ -z "$USER" ] && command -v whoami > /dev/null && USER=$(whoami) && export USER
+
 
 # Path
   # Save
@@ -70,6 +72,8 @@
   export LD_LIBRARY_PATH=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu:$LD_LIBRARY_PATH
   export NDK=$HOME/Program/Ndk/Current
 
+  # shellcheck source=/home/tourneboeuf/.fzf.bash
+  [ -f "$HOME/.fzf.bash" ] && source "$HOME/.fzf.bash"
 
 # Execute tmux
   if command -v tmux &> /dev/null && [ -n "$PS1" ] \
@@ -111,6 +115,13 @@
   bind 'set meta-flag on'
   bind 'set output-meta on'
 
+  # History
+  # append instead of overwrite
+  shopt -s histappend
+  export HISTSIZE=100000
+  export HISTFILESIZE=100000
+  export HISTCONTROL=ignoredups:ignorespace
+
 
 # Prompt
   # Save history after each executed line
@@ -147,14 +158,6 @@
   export PS1
 
 
-# History
-  # append instead of overwrite
-  shopt -s histappend
-  export HISTSIZE=100000
-  export HISTFILESIZE=100000
-  export HISTCONTROL=ignoredups:ignorespace
-
-
 # Head
   clear
   # Nowrap
@@ -181,26 +184,15 @@
   printf '\e[?7h'
 
 
-# Include
-  if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-      . /etc/bash_completion
-  fi
-
-  if [ -f "$HOME/.bash_aliases.sh" ]; then
-    # shellcheck source=/home/tourneboeuf/.bash_aliases.sh
-    source "$HOME/.bash_aliases.sh"
-  fi
-
-
-# Perl
+# Languages
+  # Perl
   export PERL5LIB="$PERL5LIB:$HOME/Program/Perl/Lib/lib/perl5/x86_64-linux-gnu-thread-multi"
   export PERL5LIB="$PERL5LIB:$HOME/Software/Perl/Lib:$HOME/Program/Komodo/Komodo-PerlRemoteDebugging-8.0.2-78971-linux-x86_64"
   export PERL5DB="BEGIN { require q($PERL5LIB/perl5db.pl)}"
   export PERLDB_OPTS="RemotePort=localhost:9000"
   export DBGP_IDEKEY="whatever"
 
-
-# Git
+  # Git
   # Android
   if [ "$os" = "termux" ] ; then
     export GIT_AUTHOR_NAME=tinmux
@@ -226,10 +218,21 @@
   export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 
 
-# Source Extension
+# Include, Source, Extension
+  # Alias
+  if [ -f "$HOME/.bash_aliases.sh" ]; then
+    # shellcheck source=/home/tourneboeuf/.bash_aliases.sh
+    source "$HOME/.bash_aliases.sh"
+  fi
+
+  # Bash completion
+  if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+      . /etc/bash_completion
+  fi
+
   # Tmux completion
   # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-tmux-completion.sh
-  [ -x "$v/bin/_tinrc-tmux-completion.sh" ] && source "$v/bin/_tinrc-tmux-completion.sh"
+  [ -f "$v/bin/_tinrc-tmux-completion.sh" ] && source "$v/bin/_tinrc-tmux-completion.sh"
 
   # Pip bash completion start
   _pip_completion()
@@ -240,11 +243,50 @@
         PIP_AUTO_COMPLETE=1 $1 2>/dev/null )
   }
   complete -o default -F _pip_completion pip
+  # pip bash completion end
 
   # Fzf functions
+  # export FZF_DEFAULT_COMMAND="fdfind --type file --color=never"
+  export FZF_DEFAULT_CMD="rg --files --color=never"
+  # CTRL-J / CTRL-K (or CTRL-N / CTRL-P) to move cursor up and down
+  # Enter key to select the item, CTRL-C / CTRL-G / ESC to exit
+  # On multi-select mode (-m), TAB and Shift-TAB to mark multiple items
+  # Emacs style key bindings
+  # Mouse: scroll, click, double-click; shift-click and shift-scroll on multi-select mode
+  fzf_opts=(
+    # Enable exact match
+    #--exact
+    # Multi Selection
+    --multi
+    --reverse
+    "--preview-window=right:60%" --height 100%
+    --preview \"bat "--style=numbers" "--color=always" --line-range :500 {}\"
+    --bind ?:toggle-preview
+    --bind ctrl-space:toggle-preview
+    --bind ctrl-j:down
+    --bind ctrl-k:up
+    --bind ctrl-d:half-page-down
+    --bind ctrl-u:half-page-up
+    --bind ctrl-s:toggle-sort
+    --bind ctrl-e:preview-down
+    --bind ctrl-y:preview-up
+  )
+  export FZF_DEFAULT_OPTS="${fzf_opts[*]}"
+  # ForGit plugin
+  export FORGIT_LOG_FZF_OPTS="$FZF_DEFAULT_OPTS"
+  export FORGIT_DIFF_FZF_OPTS="$FZF_DEFAULT_OPTS"
+  export FORGIT_DIFF_FZF_OPTS="$FZF_DEFAULT_OPTS"
+  # From: https://github.com/junegunn/fzf/wiki/Configuring-shell-key-bindings
+  export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+  export FZF_CTRL_R_OPTS="--sort --exact --preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
   # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-fzf-function.sh
-  [ -x "$v/bin/_tinrc-fzf-function.sh" ] && source "$v/bin/_tinrc-fzf-function.sh"
+  [ -f "$v/bin/_tinrc-fzf-function.sh" ] && source "$v/bin/_tinrc-fzf-function.sh"
+  # shellcheck source=/home/tourneboeuf/Program/ForGit/forgit.plugin.sh
+  [ -f "$h/Program/ForGit/forgit.plugin.sh" ] && source "$h/Program/ForGit/forgit.plugin.sh" 
 
+
+# Bind
+  bind -x '"\ee":fo'
 
 
 # Fast
@@ -257,7 +299,6 @@
     info sed "Command and Option Index" | \
       sed -n '/\*/s/ s c/ s \(substitute\) c/;s/command[:,].*//p'
   }
-# pip bash completion end
 
 
 function myff() { ffmpeg -i "$1"  -f avi -c:v mpeg4 -b:v 4000k -c:a libmp3lame -b:a 320k  "$2" ; }
@@ -266,3 +307,4 @@ function mymp3() { find . -type f -regex '.*/.*\(webm\|mkv\)' -exec bash -c 'FIL
 
 
 # vim:sw=2:ts=2:foldignore=:
+export PATH="/home/tourneboeuf/Program/GitFuzzy/bin:$PATH"

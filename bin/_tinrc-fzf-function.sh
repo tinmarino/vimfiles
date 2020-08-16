@@ -11,19 +11,12 @@
 
 # Variable fzf
   _fzf_base=(--ansi --no-sort --reverse --tiebreak=index)
-  _fzf_size=(--preview-window=right:60% --height 100%)
+  _fzf_size=(--preview-window=right:50% --height 100%)
   # TODO see filter for file
   _fzf_gcpreview=$'func() {
     set -- \$('$_git_log_line_to_hash');
     [ \$# -eq 0 ] || git show --color=always %; }; func {}'
   _fzf_bind=(
-    --bind q:abort
-    --bind ctrl-j:down
-    --bind ctrl-k:up
-    --bind ctrl-d:preview-down
-    --bind ctrl-u:preview-up
-    --bind alt-j:preview-down
-    --bind alt-k:preview-up
     --bind "ctrl-m:execute:
               (grep -o '[a-f0-9]\{7\}' | head -1 |
               xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
@@ -33,6 +26,17 @@
   )
 
 # System TODO cd
+
+# Vi <= alt-e <= basrc
+fo() {
+  IFS=$'\n' out=("$(fzf --query="$1" --exit-0 --expect=ctrl-o,ctrl-e)")
+  key=$(head -1 <<< "$out")
+  file=$(head -2 <<< "$out" | tail -1)
+  if [ -n "$file" ]; then
+    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
+  fi
+}
+
 
 # Git
 

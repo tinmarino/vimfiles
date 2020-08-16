@@ -15,8 +15,14 @@ exuberant-ctags
 ssh
 mosh
 xterm
+
+# Fzf stuff
+#  sudo apt install -o Dpkg::Options::="--force-overwrite" bat ripgrep
+# See: https://github.com/sharkdp/bat/issues/938 
 fzf
 bat  # syntax hi in fzf
+ripgrep 
+fdfind
 
 # Linters
 shellcheck
