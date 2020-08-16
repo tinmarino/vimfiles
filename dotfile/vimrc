@@ -1,5 +1,5 @@
-" vim: sw=2:
 " VimRc by tinmarino
+" vim: sw=2:ts=2:
 " TODO: NerdCommenter
 
 " The base
@@ -152,6 +152,23 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     " Calendar
     let g:calendar_monday = 1
 
+  " TmuxNavigator
+    let g:tmux_navigator_no_mappings = 1
+    nnoremap <silent> <A-Left>  :TmuxNavigateLeft<cr>
+    nnoremap <silent> <A-Down>  :TmuxNavigateDown<cr>
+    nnoremap <silent> <A-Up>    :TmuxNavigateUp<cr>
+    nnoremap <silent> <A-Right> :TmuxNavigateRight<cr>
+    nnoremap <silent> <A-h>  :TmuxNavigateLeft<cr>
+    nnoremap <silent> <A-j>  :TmuxNavigateDown<cr>
+    nnoremap <silent> <A-k>  :TmuxNavigateUp<cr>
+    nnoremap <silent> <A-l>  :TmuxNavigateRight<cr>
+    " See: For alt keys https://stackoverflow.com/questions/6778961/alt-key-shortcuts-not-working-on-gnome-terminal-with-vim
+    exe "set <A-h>=\eh"
+    exe "set <A-j>=\ej"
+    exe "set <A-k>=\ek"
+    exe "set <A-l>=\el"
+    set ttimeout ttimeoutlen=10
+
   " YouCompleteMe
     let g:ycm_always_populate_location_list = 1 " use :lne and :lp to navigate
     let g:ycm_python_binary_path = 'python3'
@@ -295,12 +312,13 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
                 \'options' : '-e -m --reverse',
                 \})))
 
+
 " PackAdd
   " Interface
   packadd fugitive
-  " TODO remove ctrp
   packadd fzf
   packadd fzf.vim
+  packadd lastplace  " vi $VIMRUNTIME/vimrc_example.vim
   " Map
   packadd surround  " ySS<div>
   packadd repeat  " for surround
@@ -308,13 +326,13 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   packadd textobj-arg  " daa
   packadd textobj-indent  " dai
   packadd textobj-function  " daf
+  packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines), ]q
+  packadd tmux-navigator  " ]q
   " Snip
   "packadd ultisnips " 3ms
   packadd snippets " for some ultisnips macro
   " Slow : reload on demand
-  " + make the <BS> blink
   packadd emacscommandline
-  " packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines)
   packadd vader
   packadd ale
   packadd tex
@@ -341,13 +359,17 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     set t_ZH=[3m
     set t_ZR=[23m
     " Terminal strikethrough
-    if $os == 'windows'
+    if $os ==# 'windows'
       set term=xterm
     else
       set term=xterm-256color
     endif
+    " Mouse Integration
+    set mouse=a " Enable mouse use in all modes
+    set ttyfast
+    set ttymouse=xterm2
   " Statusline
-    function Rc_add_path()
+    function! Rc_add_path() abort
       let dir = expand('%:h')
       if dir ==# '' || dir ==# '.' | return '' | endif
       return '    ' . dir . '/'
@@ -468,13 +490,6 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   endif
 
 
-" Mouse Integration
-  " Send more characters for redraws
-  set mouse=a " Enable mouse use in all modes
-  set ttyfast
-  set ttymouse=xterm2
-
-
 " Map Leadered
   " Edit special files
     function! Edit(file)
@@ -550,6 +565,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   nnoremap <C-f>g :Commits<Cr>
   nnoremap <C-f>v :call fzf#run({'options': '--reverse --prompt "VimFiles"', 'down': 20, 'dir': '~/.vim/', 'sink': 'e' })<Cr>
   nnoremap <C-n> :Lines<Cr>
+
 
 " Map
   tnoremap <Esc> <C-W>N
