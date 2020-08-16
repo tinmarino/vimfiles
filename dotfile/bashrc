@@ -77,7 +77,7 @@
       && [[ ! "$TERM" =~ screen ]]  && [[ ! "$TERM" =~ "screen-256color" ]] \
       && [[ ! "$TERM" =~ tmux ]] && [[ ! "$TERM" =~ "tmux-256color" ]] \
       ; then
-    exec env TERM=tmux-256-color tmux
+    exec env TERM=tmux-256color tmux
   fi
 
 
@@ -169,7 +169,7 @@
               _____|_____
               \_________/
    ~~^^~~^~^~~^^~^^^^~~~~^~^~^~^^^^^^^
-  
+
         |\   \\\\__     o
         | \_/    o_\    o
         >  _  (( <_  oo
@@ -226,15 +226,28 @@
   export GIT_COMMITTER_EMAIL="$GIT_AUTHOR_EMAIL"
 
 
-# Vim
-  # TODO not for terlux
-  # export VIMRUNTIME="$HOME/Program/Vim/Source/runtime"
+# Source Extension
+  # Tmux completion
+  # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-tmux-completion.sh
+  [ -x "$v/bin/_tinrc-tmux-completion.sh" ] && source "$v/bin/_tinrc-tmux-completion.sh"
+
+  # Pip bash completion start
+  _pip_completion()
+  {
+      mapfile -t COMPREPLY < <( \
+        COMP_WORDS="${COMP_WORDS[*]}" \
+        COMP_CWORD=$COMP_CWORD \
+        PIP_AUTO_COMPLETE=1 $1 2>/dev/null )
+  }
+  complete -o default -F _pip_completion pip
+
+  # Fzf functions
+  # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-fzf-function.sh
+  [ -x "$v/bin/_tinrc-fzf-function.sh" ] && source "$v/bin/_tinrc-fzf-function.sh"
+
 
 
 # Fast
-  # tmux completion
-  # shellcheck source=/home/tourneboeuf/.vim/dotfile/tmux_completion.sh
-  source "$v/dotfile/tmux_completion.sh"
   # man
   export PAGER="vman"
   # complete -cf sudo
@@ -244,17 +257,6 @@
     info sed "Command and Option Index" | \
       sed -n '/\*/s/ s c/ s \(substitute\) c/;s/command[:,].*//p'
   }
-
-
-# pip bash completion start
-_pip_completion()
-{
-    mapfile -t COMPREPLY < <( \
-      COMP_WORDS="${COMP_WORDS[*]}" \
-      COMP_CWORD=$COMP_CWORD \
-      PIP_AUTO_COMPLETE=1 $1 2>/dev/null )
-}
-complete -o default -F _pip_completion pip
 # pip bash completion end
 
 
