@@ -200,3 +200,9 @@
 [submodule "pack/bundle/opt/fzf"]
 	path = pack/bundle/opt/fzf
 	url = https://github.com/junegunn/fzf
+[submodule "pack/bundle/opt/tmux-navigator"]
+	path = pack/bundle/opt/tmux-navigator
+	url = https://github.com/christoomey/vim-tmux-navigator
+[submodule "pack/bundle/opt/lastplace"]
+	path = pack/bundle/opt/lastplace
+	url = https://github.com/farmergreg/vim-lastplace
