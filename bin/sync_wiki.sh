@@ -45,11 +45,11 @@ let ok=0
 let n=0
 
 # let n++ ; ssync ~/.vim           && let ok++
-let n++ ; ssync ~/wiki/wiki      https://github.com/tinmarino/wiki           && let ok++
-let n++ ; ssync ~/wiki/wiki_html https://github.com/tinmarino/wiki_html      && let ok++
-let n++ ; ssync ~/wiki/alki      https://gitlab.com/tinmarino/alki.git       && let ok++
-let n++ ; ssync ~/wiki/alki_html https://gitlab.com/tinmarino/alki_html.git  && let ok++
 let n++ ; ssync ~/wiki/todo      https://gitlab.com/tinmarino/todo.git       && let ok++
+let n++ ; ssync ~/wiki/wiki      https://github.com/tinmarino/wiki           && let ok++
+let n++ ; ssync ~/wiki/alki      https://gitlab.com/tinmarino/alki.git       && let ok++
+let n++ ; ssync ~/wiki/wiki_html https://github.com/tinmarino/wiki_html      && let ok++
+let n++ ; ssync ~/wiki/alki_html https://gitlab.com/tinmarino/alki_html.git  && let ok++
 # let n++ ; ssync ~/wiki/html      && let ok++
 
 
