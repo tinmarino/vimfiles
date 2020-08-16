@@ -1,3 +1,5 @@
+# For ripgrep
+.local
 .ropeproject
 jupyter.log
 tags

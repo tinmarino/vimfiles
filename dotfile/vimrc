@@ -308,9 +308,9 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     command! FZFMix call fzf#run(fzf#wrap({
                 \'source':  'bash -c "'.
                 \               'echo -e \"'.join(fzf#vim#_recent_files(), '\n').'\";'.
-                \               'rg --files \"\";'.
-                \               'rg --files \"\" \"$v\";'.
-                \               'rg --files \"\" \"$HOME\";'.
+                \               'rg --color never --files \".\";'.
+                \               'rg --color never --files \"$v\";'.
+                \               'rg --color never --files \"$HOME\";'.
                 \           '"',
                 \'sink' : 'e ',
                 \'options' : $FZF_DEFAULT_OPTS

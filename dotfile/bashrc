@@ -7,9 +7,7 @@
 
   # Set OS
   export h="$HOME"
-  export hsmall='~'
   # shellcheck disable=SC2088
-  export vsmall='~/.vim'
   uname=$(uname -a)
   uname=${uname,,}
   case $uname in
@@ -24,8 +22,6 @@
     *"mingw"*)
       export os="windows"
       export v="$HOME/vimfiles"
-      export hsmall="\"$HOME\""
-      export vsmall="\"$v\""
       ;;
   esac
 
@@ -252,12 +248,15 @@
 
   # Fzf functions
   # export FZF_DEFAULT_COMMAND="fdfind --type file --color=never"
-  export FZF_DEFAULT_CMD="rg --files --color=never"
-  # CTRL-J / CTRL-K (or CTRL-N / CTRL-P) to move cursor up and down
-  # Enter key to select the item, CTRL-C / CTRL-G / ESC to exit
-  # On multi-select mode (-m), TAB and Shift-TAB to mark multiple items
-  # Emacs style key bindings
-  # Mouse: scroll, click, double-click; shift-click and shift-scroll on multi-select mode
+  # export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+  fzf_cmds=(bash -c "
+    vi -NEs +'redir>>/dev/stdout | packadd fzf.vim'
+            +'echo join(fzf#vim#_recent_files(), \"\\n\")'
+            +'redir END | q'
+    rg --color never --files \".\";
+    rg --color never --files \"$HOME\";
+    rg --color never --files \"$v\";")
+  export FZF_DEFAULT_COMMAND="${fzf_cmds[*]}"
   fzf_opts=(
     # Enable exact match
     #--exact
@@ -273,8 +272,8 @@
     --bind ctrl-u:half-page-up
     --bind ctrl-d:half-page-down
     --bind ctrl-s:toggle-sort
-    --bind ctrl-y:preview-half-page-up
-    --bind ctrl-e:preview-half-page-down
+    --bind alt-u:preview-half-page-up
+    --bind alt-d:preview-half-page-down
     #--bind ctrl-y:preview-up
     #--bind ctrl-e:preview-down
   )
@@ -293,6 +292,8 @@
 
 
 # Bind
+  # Enable Readline not waiting for additional input when a key is pressed.
+  set keyseq-timeout 10
   bind -x '"\ee":fo'
 
 
