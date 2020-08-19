@@ -249,22 +249,21 @@
   # Fzf functions
   # export FZF_DEFAULT_COMMAND="fdfind --type file --color=never"
   # export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-  fzf_cmds=(bash -c "
-    vi -NEs +'redir>>/dev/stdout | packadd fzf.vim'
-            +'echo join(fzf#vim#_recent_files(), \"\\n\")'
-            +'redir END | q'
-    rg --color never --files \".\";
-    rg --color never --files \"$HOME\";
-    rg --color never --files \"$v\";")
-  export FZF_DEFAULT_COMMAND="${fzf_cmds[*]}"
+  _fzf_cmds="bash -c
+    \"rg --color never --files \\\".\\\";
+  \""
+    #rg --color never --files \"$HOME\";
+    #rg --color never --files \"$v\";
+  export FZF_DEFAULT_COMMAND="${_fzf_cmds//$'\n'/}"
   fzf_opts=(
     # Enable exact match
     #--exact
     # Multi Selection
     --multi
     --reverse
-    "--preview-window=right:60%" --height 100%
-    --preview \"bat "--style=numbers" "--color=always" --line-range :500 {}\"
+    --no-sort
+    "--preview-window=right:50%" --height 100%
+    --preview \"$v/bin/_tinrc-fzf-preview.sh {}\"
     --bind ?:toggle-preview
     --bind ctrl-space:toggle-preview
     --bind ctrl-j:down

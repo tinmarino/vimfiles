@@ -156,3 +156,9 @@ robustify
 env
 deps
 cchar
+bufferlocal
+Vimwiki
+Wikilocal
+Syntaxlocal
+im
+Vimwiki's
