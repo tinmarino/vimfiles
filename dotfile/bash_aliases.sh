@@ -72,6 +72,8 @@
   export t="$HOME/wiki/todo"
   export vb="$v/bin"
   export w="$HOME/wiki/wiki"
+  export wt="$HOME/wiki/todo"
+  export wa="$HOME/wiki/alma"
 
 
 

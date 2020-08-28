@@ -227,9 +227,9 @@
   fi
 
   # Bash completion
-  #if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-  #    . /etc/bash_completion
-  #fi
+  if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+      source /etc/bash_completion
+  fi
 
   # Tmux completion
   # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-tmux-completion.sh
@@ -239,6 +239,12 @@
   if [ -f "$HOME/.fzf.bash" ]; then
     # shellcheck source=/home/tourneboeuf/.bash_aliases.sh
     source "$HOME/.fzf.bash"
+  fi
+
+  # Alacrity
+  if [ -f "$HOME/.bash_completion/alacritty" ]; then
+    # shellcheck source=/home/tourneboeuf/.bash_completion/alacritty
+    source "$HOME/.bash_completion/alacritty" 
   fi
 
   # Pip bash completion start
@@ -327,4 +333,3 @@ function mymp3() { find . -type f -regex '.*/.*\(webm\|mkv\)' -exec bash -c 'FIL
 
 # vim:sw=2:ts=2:foldignore=:
 export PATH="/home/tourneboeuf/Program/GitFuzzy/bin:$PATH"
-source /home/tourneboeuf/.bash_completion/alacritty
