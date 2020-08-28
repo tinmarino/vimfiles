@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # <- Pager <- Vim: https://vim.fandom.com/wiki/Using_vim_as_a_man-page_viewer_under_Unix
 # <- Check size <- https://unix.stackexchange.com/questions/245064/what-is-the-best-way-to-pipe-the-output-of-a-command-through-a-pager-if-and-onl
 # <- Pass argument dynamically <- https://unix.stackexchange.com/questions/459367/using-shell-variables-for-command-options
@@ -12,18 +12,18 @@ call_vim(){
     vim \
         -R \
         --not-a-term \
-        -c 'map q :q!<CR>' \
-        -c 'set foldlevel=30'  \
+        -c "map q :q!<CR> \
+          | set foldlevel=30 \
+          | set t_te=" \
         --cmd 'autocmd StdinReadPre * set nomodeline' \
-        -c 'set t_te=' \
         "$@"
 }
 
 # Helper:1 for manpages (prefix by col)
 man_col(){
     col -b -x | call_vim \
-        -c 'set ft=man nomod nolist' \
-        -c 'set sw=3' -c 'set foldmethod=indent' \
+        -c "set ft=man nomod nolist \
+          | set sw=3 | set foldmethod=indent" \
         -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' \
         -
 }
@@ -35,8 +35,7 @@ man_cat_col(){
 
 # Helper:1 PAGER for git diff files (Ansi-Escaped)
 man_ansi() {
-    call_vim \
-        -c 'packadd ansiesc' -c 'AnsiEsc' -
+    call_vim -c 'packadd ansiesc | AnsiEsc'  -
 }
 
 
@@ -80,7 +79,7 @@ man_select(){
                 # Concatenate buffer (size of the screen) and stdin (-)
                 less "$buffer" - |
                 # Go in Vim
-                "${PAGER:="$man_cmd"}"
+                "${PAGER:="$man_cmd"}" "$@"
             fi
         fi
         break
@@ -91,11 +90,16 @@ man_select(){
 
 man_main() {
     # See if argument commes from stdin (unix) or file first argument (man on termux)
-    if [ ! -z "$1" ] ; then
-        man_cat_col "$1"
-    else
+    # shellcheck disable=SC2199
+    if [[ -z "$1" ]]; then
         man_select
+    elif [[ " $@ " =~ " --select "  ]]; then
+        delete='--select'
+        args=( "${@/$delete}" )
+        man_select "${args[@]}"
+    else
+        man_cat_col "$@"
     fi
 }
 
-man_main "$1"
+man_main "$@"
