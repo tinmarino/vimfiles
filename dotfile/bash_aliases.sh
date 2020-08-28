@@ -38,9 +38,13 @@
 
   # Languages
   malias py python3
+  malias py2 python2
+  malias py3 python3
   malias vi vim
   malias pl perl
   malias ra 'raku -I.'
+  malias terminal 'alacritty'
+  malias te 'alacritty'
   alias ipy='jupyter-console'
   alias ira='jupyter-console --kernel=raku'
   alias ija='jupyter-console --kernel=java'
@@ -66,6 +70,7 @@
   export p="$v/pack/bundle/opt/" ; export pack="$p"
   export pw="$v/pack/bundle/opt/wiki"
   export t="$HOME/wiki/todo"
+  export vb="$v/bin"
   export w="$HOME/wiki/wiki"
 
 

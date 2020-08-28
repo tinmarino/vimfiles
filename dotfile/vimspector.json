@@ -1,8 +1,9 @@
 {
 "configurations": {
   "Python - Launch": {
-    "adapter": "vscode-python",
+    "adapter": "debugpy",
     "configuration": {
+      "args": [ "*${CommandLineArgs}" ],
       "name": "Python: Launch current file",
       "type": "python",
       "request": "launch",

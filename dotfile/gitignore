@@ -1,3 +1,13 @@
+# For AlmaSw
+ICD/
+ACS/ExtProd/
+lib/
+object/
+NORM-BUILD-OUTPUT
+bin/
+gen/
+
+
 # For ripgrep
 .local
 

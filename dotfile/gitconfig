@@ -12,6 +12,7 @@
     dw = diff --word-diff-regex=.
     dww = diff --word-diff
     f = pull --rebase
+    fa = fetch --all
     h = push
     k = "!gitk --all &"
     l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
@@ -24,12 +25,25 @@
 
     # Quick
     # Status to stage by number and not name. Ex : g st; g a 1; g u 1
-    qs = "!git -c color.ui=always status --short | perl -lane 'my $color1=substr(@F[0], 0, 5); my $flag=substr(@F[0], 5, -3); $flag= \" \" . $flag if not flag =~ m/\\e\\[3m/; $,=\" \"; printf \"%s %4s %3s %s\n\", $color1, ++$l, $flag, @F[1];'"
+    qs = "!cd -- ${GIT_PREFIX:-.}; git -c color.ui=always status --short | perl -lane 'my $color1=substr(@F[0], 0, 5); my $flag=substr(@F[0], 5, -3); $flag= \" \" . $flag if not flag =~ m/\\e\\[3m/; $,=\" \"; printf \"%s %4s %3s %s\\n\", $color1, ++$l, $flag, @F[1];'"
     # Helper: Keep only numbers
     funcremovenumber = "!fct() { echo $@ | perl -ane '$OFS=\" \"; print join \" \", grep(!/^[\\d,\\.]*$/, @F); print \" \";' -;}; fct"
     funckeepnumber = "!fct() { echo $@ | perl -ane '$OFS=\" \"; print grep(/^[\\d,\\.]*$/, @F)' -; }; fct"
+    funcdiff = "!fct() { \
+            cd -- ${GIT_PREFIX:-.}; \
+            if [ -x \"$(command -v diff-so-fancy)\" ]; then \
+                git diff --color-words $@; \
+                `#Some bug with AnsiEsc` \
+                `#git diff $@ | diff-so-fancy | vman -c 'set nowrap' --select ;` \
+            else \
+                git diff --color-words $@; \
+            fi \
+        }; fct"
     # Helper: Quick PrintF: Grep file[s]
     qp = "!qprint() { \
+        `# Git alias is working in root direcotry`; \
+        `# https://stackoverflow.com/questions/26243145`; \
+        cd -- ${GIT_PREFIX:-.};  \
         `# Print the non number parameters`; \
         git funcremovenumber $@; \
         `# Get the lines matching the number params`; \
@@ -37,17 +51,18 @@
         git status --short | cat -n | \
         perl -ane \"no warnings; print @F[2] . ' ' if $. ~~ [ $r_num ]\" | \
         perl -pe 'chop'; }; qprint"
-    qa = "!qstage() { git add `git qp $*` ; git qs; }; qstage"
-    qd = "!qdiff() { git diff --color=always `git qp $*`; git qs; }; qdiff"
-    qdw = "!qdiffd() { git diff --word-diff --color=always `git qp $*`; git qs; }; qdiffd"
-    qdww = "!qdiffd() { git diff --word-diff-regex=. --color=always `git qp $*`; git qs; }; qdiffd"
-    qdc = "!qdiffc() { git diff --cached --color=always `git qp $*`; git qs; }; qdiffc"
-    qdcw = "!qdiffcc() { git diff --word-diff --cached --color=always `git qp $*`; git qs; }; qdiffcc"
-    qdcww = "!qdiffcc() { git diff --word-diff-regex=. --cached --color=always `git qp $*`; git qs; }; qdiffcc"
-    qe = "!qedit() { vim -c'Gdiffsplit' `git qp $1`; git qs; }; qedit"
-    qk = "!qcheckout() { git checkout -- `git qp $1`; git qs; }; qcheckout"
-    qr = "!qreset() { git reset HEAD `git qp $1`; git qs; }; qreset"
-    qu = "!qunstage() { git reset HEAD `git qp $1`; git qs; }; qunstage"
+    qa = "!qstage() { cd -- ${GIT_PREFIX:-.}; git add `git qp $*` ; git qs; }; qstage"
+    qd = "!qdiff() { git funcdiff `git qp $*`; git qs; }; qdiff"
+    qdw = "!qdiffd() { git funcdiff --word-diff --color=always `git qp $*`; git qs; }; qdiffd"
+    qdww = "!qdiffd() { git funcdiff --word-diff-regex=. --color=always `git qp $*`; git qs; }; qdiffd"
+    qdc = "!qdiffc() { git funcdiff --cached `git qp $*`; git qs; }; qdiffc"
+    qdcw = "!qdiffcc() { git funcdiff --cached --word-diff `git qp $*`; git qs; }; qdiffcc"
+    qdcww = "!qdiffcc() { git funcdiff --cached --word-diff-regex=. `git qp $*`; git qs; }; qdiffcc"
+    qe = "!qedit() { cd -- ${GIT_PREFIX:-.}; vim -c'Gdiffsplit' `git qp $1`; git qs; }; qedit"
+    qee = "!qedit() { cd -- ${GIT_PREFIX:-.}; vim `git qp $1`; git qs; }; qedit"
+    qk = "!qcheckout() { cd -- ${GIT_PREFIX:-.}; git checkout -- `git qp $1`; git qs; }; qcheckout"
+    qr = "!qreset() { cd -- ${GIT_PREFIX:-.}; git reset HEAD `git qp $1`; git qs; }; qreset"
+    qu = "!qunstage() { cd -- ${GIT_PREFIX:-.}; git reset HEAD `git qp $1`; git qs; }; qunstage"
     qv = qe
  
     # Util
@@ -58,6 +73,7 @@
     ck = checkout
     dc = diff --cached
     dcw = diff --cached --word-diff-regex=.
+    dn = diff --name-only
     ds = dc  # --Staged
     ph = push
     pl = pull
@@ -76,6 +92,11 @@
     # Find text in any commit ever.
     grep-all = !"f() { git rev-list --all | xargs git grep \"$@\"; }; f"
 
+    # List alias
+	  alias = ! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ /
+
+    test = "!fct() { echo $PATH; diff-so-fancy; }; fct"
+
 [rerere]
 	enabled = true
 
@@ -86,3 +107,6 @@
 	sslVerify = false
 
 # vim:ft=sh
+[user]
+	name = Tinmarino
+	email = tinmarino@gmail.com

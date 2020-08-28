@@ -129,7 +129,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
     let g:vimwiki_css_name = '/Css/include.css'
 
-    "" Test Wiki
+    " Test Wiki
     "let g:vimwiki_emoji_enable = 3
     " New
     "let g:vimwiki_cycle_bullets = 1
@@ -151,10 +151,11 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " TmuxNavigator
     let g:tmux_navigator_no_mappings = 1
     nnoremap <silent> <A-Left>  :TmuxNavigateLeft<cr>
+    nnoremap <silent> <Esc>[1;3D :TmuxNavigateLeft<cr>
     nnoremap <silent> <A-Down>  :TmuxNavigateDown<cr>
     nnoremap <silent> <A-Up>    :TmuxNavigateUp<cr>
     nnoremap <silent> <A-Right> :TmuxNavigateRight<cr>
-    nnoremap <silent> <A-h>     :TmuxNavigateLeft<cr>
+    nnoremap <silent> <Esc>[1;3C :TmuxNavigateRight<cr>
     nnoremap <silent> <A-h>     :TmuxNavigateLeft<cr>
     nnoremap <silent> <A-j>     :TmuxNavigateDown<cr>
     nnoremap <silent> <A-k>     :TmuxNavigateUp<cr>
@@ -180,7 +181,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     let g:pymode_python = 'python3'
     " They `set nowrap` !!
     let g:pymode_options = 0
-    let pymode_lint_checkers = ['pylint', 'pep8', 'pyflakes']
+    let pymode_lint_checkers = ['pylint', 'pep8']
     " Use rope
     let g:pymode_rope = 1
     let g:pymode_rope_completion = 1
@@ -305,16 +306,30 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " Fzf
     " https://github.com/junegunn/fzf/issues/274
     let g:fzf_layout = { 'down': '100%' }
-    command! FZFMix call fzf#run(fzf#wrap({
-                \'source':  'bash -c "'.
-                \               'echo -e \"'.join(fzf#vim#_recent_files(), '\n').'\";'.
-                \               'rg --color never --files \".\";'.
-                \               'rg --color never --files \"$v\";'.
-                \               'rg --color never --files \"$HOME\";'.
-                \           '"',
+    function! FZFMix()
+      " Start source list command
+      let _fzf_source = 'bash -c "'
+      " -- Buffer list
+      let _fzf_source .= 'echo -e \"' . join(map(getbufinfo(), 'v:val.name'), '\n') . '\";'
+      " -- Oldfiles
+      let _fzf_source .= 'echo -e \"'.join(fzf#vim#_recent_files(), '\n').'\";'
+      " -- Current dir
+      let _fzf_source .= 'rg --color never --files \".\";'
+      " -- Vim dir
+      let _fzf_source .= 'rg --color never --files \"$v\";'
+      " -- HOME dir
+      let _fzf_source .= 'rg --color never --files \"$HOME\";'
+      " End
+      let _fzf_source .= '"'
+      call fzf#run(fzf#wrap({
+                \'source': _fzf_source,
                 \'sink' : 'e ',
                 \'options' : $FZF_DEFAULT_OPTS
                 \}))
+    endfunction
+    command! FZFMix call FZFMix()
+  " Ale
+    let g:ale_python_autopep8_options = '--indent-size=4  --max-line-length=120 '
 
 
 " PackAdd
@@ -338,8 +353,11 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " Slow : reload on demand
   packadd emacscommandline
   packadd vader
+  let g:ale_pattern_options = {
+        \ '.*\.md$': {'ale_enabled': 0}}
   packadd ale
   packadd tex
+  packadd youcompleteme
 
 
 " Appearance
@@ -349,9 +367,9 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     colorscheme gruvbox-material
     set t_Co=256  " For airline and nice colors
     set formatoptions-=cro  " No auto comment
-    augroup NoCommment
-      autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-    augroup END
+    "augroup NoCommment
+    "  autocmd FileType *.py setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+    "augroup END
     set diffopt+=vertical
     set title                    " change the terminal's title, may not work
     set autoindent  " to have auto indentation when return line
@@ -391,8 +409,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     set fileformat=unix
     set wrap
     set expandtab
-    set shiftwidth=4
-    set tabstop=4
+    set shiftwidth=2
+    set tabstop=2
   " Gui
     set guifont=Consolas:h14:cANSI:qDRAFT
     set guioptions-=T                  " Toolbar
@@ -503,7 +521,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     endfunction
     nnoremap <Leader>ea :call Edit($alias)<CR>
     nnoremap <Leader>eb :call Edit($bashrc)<CR>
-    nnoremap <Leader>ed :call Edit($h/wiki/todo/done.md)<CR>
+    nnoremap <Leader>ec :call Edit($h .'/.alacritty.yml')<CR>
+    nnoremap <Leader>ed :call Edit($h . '/wiki/todo/done.md')<CR>
     nnoremap <Leader>ef :e $v/ftplugin/<C-D>
     nnoremap <Leader>eg :call Edit($gitrc)<CR>
     nnoremap <Leader>et :call Edit($tmuxrc)<CR>
@@ -593,27 +612,6 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     noremap <C-W><bar> <C-W>v
     noremap <C-W>_ <C-W>s
     noremap <C-W>z <C-W><bar>
-    " Up
-    noremap  <C-Up>    <C-W>k
-    noremap  <C-k>     <C-W>k
-    " inoremap <C-Up>    <C-O><C-W>k
-    " inoremap <C-k>     <C-O><C-W>k
-    " Down
-    noremap  <C-Down>  <C-W>j
-    inoremap <C-Down>  <C-O><C-W>j
-    "noremap  <C-j>     <C-W>j
-    "inoremap <C-j>     <C-O><C-W>j
-    " Left
-    noremap  <C-Left>  <C-W>h
-    inoremap <C-Left>  <C-O><C-W>h
-    "noremap  <C-h>     <C-W>h
-    "inoremap <C-h>     <C-O><C-W>h
-    " Right
-    noremap  <C-Right> <C-W>l
-    inoremap <C-Right> <C-O><C-W>l
-    "noremap  <C-l>     <C-W>l
-    "inoremap <C-l>     <C-O><C-W>l
-
   " Maps for Package : On demand load
     " F8 : Colorscheme-switcher
     noremap <F8> :packadd misc<CR>:packadd colorscheme-switcher<CR><F8>
@@ -751,23 +749,23 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
 
 " Alma
   " AlmaSw
-    " echo | g++ -E -Wp,-v -
-    " `gcc -print-prog-name=cpp` -v  # cpp for c preprocessor
-    set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
-    set path+=/usr/local/include
-    set path+=/usr/include/x86_64-linux-gnu
-    set path+=/usr/include
-    " `gcc -print-prog-name=cc1plus` -v
-    set path+=/usr/include/c++/9/
-    set path+=/usr/include/c++/9
-    set path+=/usr/include/x86_64-linux-gnu/c++/9
-    set path+=/usr/include/c++/9/backward
-    set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
-    set path+=./../include
-    set path+=./../../*/include
-    set path+=./../../../*/include
-    set path+=/home/tourneboeuf/AlmaSw/ACS/LGPL/CommonSoftware/**/include/
-    set path+=/home/tourneboeuf/AlmaSw/ICD/**/include/
+    "" echo | g++ -E -Wp,-v -
+    "" `gcc -print-prog-name=cpp` -v  # cpp for c preprocessor
+    "set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
+    "set path+=/usr/local/include
+    "set path+=/usr/include/x86_64-linux-gnu
+    "set path+=/usr/include
+    "" `gcc -print-prog-name=cc1plus` -v
+    "set path+=/usr/include/c++/9/
+    "set path+=/usr/include/c++/9
+    "set path+=/usr/include/x86_64-linux-gnu/c++/9
+    "set path+=/usr/include/c++/9/backward
+    "set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
+    "set path+=./../include
+    "set path+=./../../*/include
+    "set path+=./../../../*/include
+    "set path+=/home/tourneboeuf/AlmaSw/ACS/LGPL/CommonSoftware/**/include/
+    "set path+=/home/tourneboeuf/AlmaSw/ICD/**/include/
 
     let g:ale_cpp_clang_options=''
     let g:ale_cpp_clang_options.='-I/home/tourneboeuf/AlmaSw/ '

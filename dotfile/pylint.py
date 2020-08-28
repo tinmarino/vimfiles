@@ -13,6 +13,11 @@ disable=invalid-name,
         bare-except,
         too-many-ancestors,
 
+        redefined-outer-name,
+        useless-return,
+
         missing-function-docstring,
         missing-module-docstring
         
+#indent-string='  '
+max-line-length=120
