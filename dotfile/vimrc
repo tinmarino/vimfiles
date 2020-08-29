@@ -326,11 +326,13 @@ filetype plugin indent on | syntax on
       " -- Oldfiles
       let _fzf_source .= 'echo -e \"'.join(fzf#vim#_recent_files(), '\n').'\";'
       " -- Current dir
-      let _fzf_source .= 'rg --color never --files \".\";'
+      if $HOME !=# getcwd()
+        let _fzf_source .= 'rg --color never --files \".\";'
+      endif
       " -- Vim dir
-      let _fzf_source .= 'rg --color never --files \"$v\";'
+      let _fzf_source .= 'cd \"$v\" && rg --color never --files  | awk ''{print \"~/\" \$HOME}'';'
       " -- HOME dir
-      let _fzf_source .= 'rg --color never --files \"$HOME\";'
+      let _fzf_source .= 'cd \"$HOME\" && rg --color never --files  | awk ''{print \"~/\" \$HOME}'';'
       " End
       let _fzf_source .= '"'
       call fzf#run(fzf#wrap({

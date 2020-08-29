@@ -16,9 +16,13 @@ set -- "$(echo -- "$input" | grep -o '[a-f0-9]\{7\}')";
 if [ $# -eq 0 ]; then
     # missing some potential argument of git log (filter)
     git show --color=always "$input"
+    return
+fi
+
+input="${input/#\~/$HOME}"
 
 # Check file
-elif [[ -e "$input" ]]; then
+if [[ -e "$input" ]]; then
     # Symlink
     [[ -L "$input" ]] && input=$(readlink content)
     bat --style=numbers --color=always --line-range :500 "$input"

@@ -258,8 +258,9 @@
   complete -o default -F _pip_completion pip
   # pip bash completion end
 
-  # Fzf functions
-  _vim_escaped2='let out = map(fzf#vim#_recent_files(), \"substitute(v:val, \\\"\\\\\\\\~\\\", \\\"'$HOME'\\\", \\\"\\\")\")'
+# Fzf functions
+  #_vim_escaped2='let out = map(fzf#vim#_recent_files(), \"substitute(v:val, \\\"\\\\\\\\~\\\", \\\"'$HOME'\\\", \\\"\\\")\")'
+  _vim_escaped2='let out = fzf#vim#_recent_files()'
   _fzf_cmds="bash -c \"
     vim -NEs
       +'redir>>/dev/stdout | packadd fzf.vim'
@@ -267,8 +268,8 @@
       +'echo join(out, \\\"\\\\n\\\")'
       +'redir END | q';
     rg --color always --files \\\".\\\";
-    rg --color always --files \\\"$HOME\\\";
-    rg --color always --files \\\"$v\\\";
+    cd \\\"$HOME\\\" && rg --color always --files | awk '{print \\\"~/\\\" \\\$0}';
+    cd \\\"$v\\\" && rg --color always --files | awk '{print \\\"~/\\\" \\\$0}';
   \""
   export FZF_DEFAULT_COMMAND="${_fzf_cmds//$'\n'/}"
   # shellcheck disable=SC2206,SC2191
