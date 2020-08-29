@@ -82,7 +82,10 @@
       && [[ ! "$TERM" =~ screen ]]  && [[ ! "$TERM" =~ "screen-256color" ]] \
       && [[ ! "$TERM" =~ tmux ]] && [[ ! "$TERM" =~ "tmux-256color" ]] \
       ; then
-    exec env TERM=tmux-256color tmux
+    # for ALMA
+    exec env TERM=xterm-256color tmux
+    # For bold and italic
+    # exec env TERM=tmux-256color tmux
   fi
 
 
