@@ -369,6 +369,9 @@ filetype plugin indent on | syntax on
     " Misc:
     packadd vader
     " ALE:
+    " Removes flakes8
+    let g:ale_linters = {
+          \ 'python': ['mypy', 'pylint', 'pyright']}
     let g:ale_pattern_options = {
           \ '.*\.md$': {'ale_enabled': 0}}
     packadd ale
@@ -617,7 +620,8 @@ filetype plugin indent on | syntax on
     endfunction
     noremap <leader>n :call NERDTreeToogleMirror()<CR>
   " r -> Ag the silver searcher <- ack r like RipGrep
-    noremap <leader>r :update<Cr>:silent packadd ack<CR>:Ack! ''<LEFT>
+    noremap <expr> <leader>r ":update<Cr>:silent packadd ack<CR>:Ack! '"
+          \ . expand('<cword>') . "'"
     noremap <leader>ak :silent packadd ack<CR>:Ack! ''<LEFT>
   " u -> :UndotreeToggle
     noremap <leader>u :silent packadd undotree<CR>:UndotreeToggle<CR>
