@@ -370,7 +370,14 @@ filetype plugin indent on | syntax on
         \ '.*\.md$': {'ale_enabled': 0}}
   packadd ale
   packadd tex
-  packadd youcompleteme
+  " Youcompleteme is verbose at init if no python
+  try
+    python '42' | packadd youcompleteme
+  catch | endtry
+  " Ultisnip is annoying at run time if no python
+  try
+    python '42' | packadd ultisnips  " 3ms
+  catch | endtry
 
 
 " Appearance
@@ -871,7 +878,6 @@ filetype plugin indent on | syntax on
   packadd jupyter
   packadd spector
   "packadd python-mode
-  " packadd youcompleteme
   " if $os == 'unix' packadd youcompleteme endif
   "packadd raku
   " packadd sleuth  " Auto indent
