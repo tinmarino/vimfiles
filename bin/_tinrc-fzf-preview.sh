@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # From: https://github.com/junegunn/fzf/issues/1928
 # From: https://gist.github.com/junegunn/f4fca918e937e6bf5bad#gistcomment-2981199
 
@@ -11,9 +12,17 @@
 
 input="$*"
 set -- "$(echo -- "$input" | grep -o '[a-f0-9]\{7\}')";
+
 if [ $# -eq 0 ]; then
     # missing some potential argument of git log (filter)
     git show --color=always "$input"
+
+# Check file
+elif [[ -e "$input" ]]; then
+    # Symlink
+    [[ -L "$input" ]] && input=$(readlink content)
+    bat --style=numbers --color=always --line-range :500 "$input"
 else
+    # TODO
     bat --style=numbers --color=always --line-range :500 "$input"
 fi

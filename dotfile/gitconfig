@@ -48,6 +48,8 @@
         git funcremovenumber $@; \
         `# Get the lines matching the number params`; \
         r_num=$(git funckeepnumber $@); \
+        `# If no numeric arguments gives me all`; \
+        [ -z \"$r_num\" ] && r_num=1..1000;  \
         git status --short | cat -n | \
         perl -ane \"no warnings; print @F[2] . ' ' if $. ~~ [ $r_num ]\" | \
         perl -pe 'chop'; }; qprint"

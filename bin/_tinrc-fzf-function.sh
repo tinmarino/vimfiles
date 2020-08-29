@@ -4,13 +4,13 @@
 
 
 # Variable helper
-
   _git_log_line_to_hash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1"
   _view_log_line="$_git_log_line_to_hash | xargs -I % sh -c 'git show --color=always % | diff-so-fancy'"
   _view_log_line_unfancy="$_git_log_line_to_hash | xargs -I % sh -c 'git show %'"
 
 # Variable fzf
   _fzf_base=(--ansi --no-sort --reverse --tiebreak=index)
+  _fzf_preview=(--preview "$v/bin/_tinrc-fzf-preview.sh {}")
   _fzf_size=(--preview-window=right:50% --height 100%)
   # TODO see filter for file
   _fzf_gcpreview=$'func() {
@@ -25,20 +25,87 @@
     --bind "alt-v:execute:$_view_log_line_unfancy | $PAGER -"
   )
 
+######################################################################
 # System TODO cd
+######################################################################
 
-# Vi <= alt-e <= basrc
-fo() {
-  IFS=$'\n' out=("$(fzf --query="$1" --exit-0 --expect=ctrl-o,ctrl-e)")
+
+# Vi <= Binded alt-e <= BashRc
+fzf_open() {
+  IFS=$'\n' out="$(fzf --query="$1" --exit-0 --expect=ctrl-o,ctrl-e \
+    --preview "$v/bin/_tinrc-fzf-preview.sh {}")"
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
   if [ -n "$file" ]; then
     [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
   fi
 }
+alias fo=fzf_open
+
+fzf_dir(){
+  pushd "$1" > /dev/null || echo "Error: Cannot cd to $1"
+  out="$(rg --color always --follow --files | fzf \
+    --ansi \
+    --preview "$v/bin/_tinrc-fzf-preview.sh {}")"
+  key=$(head -1 <<< "$out")
+  file=$(head -2 <<< "$out" | tail -1)
+  if [ -n "$file" ]; then
+    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
+  fi
+  popd > /dev/null || return 1
+}
 
 
+
+fzf_line() {
+  # Interactive search.
+  # Usage: `ff` or `ff <folder>`.
+  [[ -n $1 ]] && cd $1 # go to provided folder or noop
+  RG_DEFAULT_COMMAND="rg -i -l --hidden --no-ignore-vcs"
+  
+  selected=$(
+  FZF_DEFAULT_COMMAND="rg --files" fzf \
+    -m \
+    -e \
+    --ansi \
+    --phony \
+    --reverse \
+    --bind "ctrl-a:select-all" \
+    --bind "f12:execute-silent:(vim -b {})" \
+    --bind "change:reload:$RG_DEFAULT_COMMAND {q} || true" \
+    --preview "rg -i --pretty --context 2 {q} {}" | cut -d":" -f1,2
+  )
+  
+  # Open multiple files in editor
+  [[ -n "$selected" ]] && vim "$selected"
+}
+alias ff=fzf_line
+alias fl=fzf_line
+
+# cf - fuzzy cd from anywhere
+# ex: cf word1 word2 ... (even part of a file name)
+# zsh autoload function
+fzf_cd() {
+  local file
+
+  file="$(locate -Ai -0 "$@" | grep -z -vE '~$' | fzf --read0 -0 -1)"
+
+  if [[ -n $file ]]
+  then
+     if [[ -d $file ]]
+     then
+        cd -- "$file" || return
+     else
+        cd -- "${file:h}" || return
+     fi
+  fi
+}
+alias fc=fzf_cd
+
+
+######################################################################
 # Git
+######################################################################
 
 # Log Interface
 fzf_git_log() {
@@ -58,7 +125,6 @@ fzf_git_log() {
       "${_fzf_bind[@]}"
 }
 alias fgl=fzf_git_log
-alias fl=fzf_git_log
 
 
 fbr() {
@@ -101,4 +167,4 @@ fkill() {
     fi  
 }
 
-# vim: sw=2
+# vim: sw=2:ts=2

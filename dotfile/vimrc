@@ -20,7 +20,6 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " One letter
   let $h = expand($HOME)
   let $s = expand('$v/scripts') | let $script = $s
-  let $w = expand('$h/wiki') | let $wiki = $w
   let $p = expand('$v/pack/bundle/opt') | let $pack = $p | let $opt = $p
   let $d = expand('$v/undo/dump') | let $dump = $d
   " RC
@@ -169,6 +168,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     exe "set <A-j>=\ej"
     exe "set <A-k>=\ek"
     exe "set <A-l>=\el"
+    exe "set <A-e>=\ee"
     set ttimeout ttimeoutlen=10
 
   " YouCompleteMe
@@ -306,7 +306,19 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
   " Fzf
     " https://github.com/junegunn/fzf/issues/274
     let g:fzf_layout = { 'down': '100%' }
-    function! FZFMix()
+
+    function! FzfRg(query, fullscreen, files)
+      let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s ' . a:files . ' || true'
+      let initial_command = printf(command_fmt, shellescape(a:query))
+      let reload_command = printf(command_fmt, '{q}')
+      let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+      call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+    endfunction
+    command! -nargs=* -bang RG call FzfRg(<q-args>, <bang>0, '')
+    command! -nargs=* -bang FzfOldLines call FzfRg(
+                \ <q-args>, <bang>0, join(fzf#vim#_recent_files(), ' '))
+
+    function! FzfRgFileFull()
       " Start source list command
       let _fzf_source = 'bash -c "'
       " -- Buffer list
@@ -327,7 +339,8 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
                 \'options' : $FZF_DEFAULT_OPTS
                 \}))
     endfunction
-    command! FZFMix call FZFMix()
+    command! FzfRgFileFull call FzfRgFileFull()
+
   " Ale
     let g:ale_python_autopep8_options = '--indent-size=4  --max-line-length=120 '
 
@@ -545,9 +558,15 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
                 \ . expand('$v/undo/bck_') . strftime('%y-%m-%d'))
     nnoremap <leader>b :Backup<CR>
     vnoremap <leader>b :Backup<CR>
-  " f -> Ag the silver searcher <- ack
-    noremap <leader>f :update<Cr>:silent packadd ack<CR>:Ack! ''<LEFT>
-    noremap <leader>ak :silent packadd ack<CR>:Ack! ''<LEFT>
+  " f -> fuzzy -> Fzf
+    " Some have shortcut ,f -> C-
+    nnoremap <Leader>fb :BLines<Cr>
+    nnoremap <Leader>fe :FzfRgFileFull<Cr>
+    nnoremap <Leader>ff :FzfOldLines " Same C-n<Cr>
+    nnoremap <Leader>fn :FzfOldLines<Cr>
+    nnoremap <Leader>fg :Commits<Cr>
+    nnoremap <Leader>fv :call fzf#run({'options': '--reverse --prompt "VimFiles"', 'down': 20, 'dir': '~/.vim/', 'sink': 'e' })<Cr>
+    nnoremap <Leader>fw :call FzfRg('', 1, $w)<Cr>
   " g -> git -> Fugitive
     map <leader>gd :Gdiff<CR>
     map <leader>gb :Gblame<CR>
@@ -555,7 +574,6 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     map <leader>gl :Glog<CR>
     map <leader>gc :Gcommit -m ""<C-b>
     map <leader>ga :Git add
-
   " k -> :Calendar
     nnoremap <leader>k :packadd calendar <bar> Calendar<CR>
   " n -> :NERDTree
@@ -577,26 +595,37 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
       endif
     endfunction
     noremap <leader>n :call NERDTreeToogleMirror()<CR>
+  " r -> Ag the silver searcher <- ack r like RipGrep
+    noremap <leader>r :update<Cr>:silent packadd ack<CR>:Ack! ''<LEFT>
+    noremap <leader>ak :silent packadd ack<CR>:Ack! ''<LEFT>
   " u -> :UndotreeToggle
     noremap <leader>u :silent packadd undotree<CR>:UndotreeToggle<CR>
 
 
-" Map Ctrl
+" Map Ctrl, Alt
   nnoremap <C-b> :BLines<Cr>
   if 'termux' ==? $os
-    nnoremap <Leader>e :FZFMix<Cr>
+    nnoremap <Leader>e :FzfRgFileFull<Cr>
   else
-    nnoremap <C-e> :FZFMix<Cr>
+    nnoremap <C-e> :FzfRgFileFull<Cr>
+    nnoremap <A-e> :FzfRgFileFull<Cr>
+    exe "set <A-e>=\ee"
   endif
-  " F like fuzz (exetended)
-  nnoremap <C-f>g :Commits<Cr>
-  nnoremap <C-f>v :call fzf#run({'options': '--reverse --prompt "VimFiles"', 'down': 20, 'dir': '~/.vim/', 'sink': 'e' })<Cr>
-  nnoremap <C-n> :Lines<Cr>
+  nnoremap <C-n> :FzfOldLines<Cr>
 
 
 " Map
   tnoremap <Esc> <C-W>N
 
+  " NetRw Open Link
+    function! OpenLink()
+      let link = a:0 ? a:1 : expand("<cWORD>")
+      if link =~? '^ICT-\d*'
+        let link = 'https://ictjira.alma.cl/browse/' . link
+      endif
+      exe '!xdg-open ' . link . '&'
+    endfunction
+    nmap gx yiW:call OpenLink() <Cr><Cr>
   " Save with s
     noremap s      :update!<CR>
     vnoremap s    <C-C>:update!<CR>
@@ -612,6 +641,49 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
     noremap <C-W><bar> <C-W>v
     noremap <C-W>_ <C-W>s
     noremap <C-W>z <C-W><bar>
+
+    " Source: https://ddrscott.github.io/blog/2016/making-a-window-submode/
+    packadd submode
+    " A message will appear in the message line when you're in a submode
+    " and stay there until the mode has existed.
+    let g:submode_timeoutlen = 4000
+    let g:submode_always_show_submode = 1
+
+    " We're taking over the default <C-w> setting. Don't worry we'll do
+    " our best to put back the default functionality.
+    call submode#enter_with('window', 'n', '', '<C-w>')
+
+    " Note: <C-c> will also get you out to the mode without this mapping.
+    " Note: <C-[> also behaves as <ESC>
+    call submode#leave_with('window', 'n', '', '<ESC>')
+
+    " Go through every letter
+    for key in ['a','b','c','d','e','f','g','h','i','j','k','l','m',
+    \           'n','o','p','q','r','s','t','u','v','w','x','y','z']
+      " maps lowercase, uppercase and <C-key>
+      call submode#map('window', 'n', '', key, '<C-w>' . key)
+      call submode#map('window', 'n', '', toupper(key), '<C-w>' . toupper(key))
+      call submode#map('window', 'n', '', '<C-' . key . '>', '<C-w>' . '<C-'.key . '>')
+    endfor
+    " Go through symbols. Sadly, '|', not supported in submode plugin.
+    for key in ['=','_','+','-','<','>']
+      call submode#map('window', 'n', '', key, '<C-w>' . key)
+    endfor
+
+    " I don't like <C-w>q, <C-w>c won't exit Vim when it's the last window.
+    call submode#map('window', 'n', '', 'q', '<C-w>c')
+    call submode#map('window', 'n', '', '<C-q>', '<C-w>c')
+
+    " <lowercase-pipe> sets the width to 80 columns, pipe (<S-\>) by default
+    " maximizes the width.
+    call submode#map('window', 'n', '', '\', ':vertical resize 80<CR>')
+
+    " Resize faster
+    call submode#map('window', 'n', '', '+', '3<C-w>+')
+    call submode#map('window', 'n', '', '-', '3<C-w>-')
+    call submode#map('window', 'n', '', '<', '10<C-w><')
+    call submode#map('window', 'n', '', '>', '10<C-w>>')
+
   " Maps for Package : On demand load
     " F8 : Colorscheme-switcher
     noremap <F8> :packadd misc<CR>:packadd colorscheme-switcher<CR><F8>
@@ -632,7 +704,7 @@ set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.s
 
   " Perso maps normal
     nnoremap H :set cursorline! cursorcolumn!<CR>
-    map xy :s/x/y/g<CR>
+      map xy :s/x/y/g<CR>
     map yx :s/y/x/g<CR>
 
   " Copy paste to from clipboard <- ctrl+p

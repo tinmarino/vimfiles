@@ -121,7 +121,7 @@
   shopt -s histappend
   export HISTSIZE=100000
   export HISTFILESIZE=100000
-  export HISTCONTROL=ignoredups:ignorespace
+  export HISTCONTROL=ignoredups
 
 
 # Prompt
@@ -160,7 +160,7 @@
 
 
 # Head
-  clear
+  #clear
   # Nowrap
   printf '\e[?7l'
   cat << '  EOF'
@@ -226,11 +226,6 @@
     source "$HOME/.bash_aliases.sh"
   fi
 
-  # Bash completion
-  if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-      source /etc/bash_completion
-  fi
-
   # Tmux completion
   # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-tmux-completion.sh
   [ -f "$v/bin/_tinrc-tmux-completion.sh" ] && source "$v/bin/_tinrc-tmux-completion.sh"
@@ -243,8 +238,8 @@
 
   # Alacrity
   if [ -f "$HOME/.bash_completion/alacritty" ]; then
-    # shellcheck source=/home/tourneboeuf/.bash_completion/alacritty
-    source "$HOME/.bash_completion/alacritty" 
+    # shellcheck source=/home/tourneboeuf/.vim/scripts/completion/alacritty
+    source "$v/scripts/completion/alacritty" 
   fi
 
   # Pip bash completion start
@@ -261,27 +256,28 @@
   # Fzf functions
   _vim_escaped2='let out = map(fzf#vim#_recent_files(), \"substitute(v:val, \\\"\\\\\\\\~\\\", \\\"'$HOME'\\\", \\\"\\\")\")'
   _fzf_cmds="bash -c \"
-    vi -NEs
+    vim -NEs
       +'redir>>/dev/stdout | packadd fzf.vim'
       +'$_vim_escaped2'
       +'echo join(out, \\\"\\\\n\\\")'
       +'redir END | q';
-    rg --color never --files \\\".\\\";
-    rg --color never --files \\\"$HOME\\\";
-    rg --color never --files \\\"$v\\\";
+    rg --color always --files \\\".\\\";
+    rg --color always --files \\\"$HOME\\\";
+    rg --color always --files \\\"$v\\\";
   \""
   export FZF_DEFAULT_COMMAND="${_fzf_cmds//$'\n'/}"
   # shellcheck disable=SC2206,SC2191
   fzf_opts=(
     # Enable exact match
     #--exact
+    --ansi
     # Multi Selection
     --multi
     --reverse
     # First olfiles
     #--no-sort
     --preview-window=right:50% --height 100%
-    --preview \"$v/bin/_tinrc-fzf-preview.sh {}\"
+    #--preview \"$v/bin/_tinrc-fzf-preview.sh {}\"
     --bind ?:toggle-preview
     --bind ctrl-space:toggle-preview
     --bind ctrl-j:down
@@ -312,6 +308,7 @@
   # Enable Readline not waiting for additional input when a key is pressed.
   set keyseq-timeout 10
   bind -x '"\ee":fo'
+  bind -x '"\er":fzf_dir ~/wiki/roseta/Lang'
 
 
 # Fast
