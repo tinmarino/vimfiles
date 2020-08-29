@@ -372,11 +372,11 @@ filetype plugin indent on | syntax on
   packadd tex
   " Youcompleteme is verbose at init if no python
   try
-    python '42' | packadd youcompleteme
+    python3 '42' | packadd youcompleteme
   catch | endtry
   " Ultisnip is annoying at run time if no python
   try
-    python '42' | packadd ultisnips  " 3ms
+    python3 '42' | packadd ultisnips  " 3ms
   catch | endtry
 
 
