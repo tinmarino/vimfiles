@@ -346,38 +346,52 @@ filetype plugin indent on | syntax on
 
 
 " PackAdd
-  " Interface
-  packadd fugitive
+  " Interface: 5ms for 4plugings
   packadd fzf
   packadd fzf.vim
   packadd lastplace  " vi $VIMRUNTIME/vimrc_example.vim
-  " Map
-  packadd surround  " ySS<div>
-  packadd repeat  " for surround
-  packadd textobj-user  " for function
-  packadd textobj-arg  " daa
-  packadd textobj-indent  " dai
-  packadd textobj-function  " daf
-  packadd unimpaired  " ]b (:bn) , ]<space> (add empty lines), ]q
-  packadd tmux-navigator  " ]q
-  " Snip
-  "packadd ultisnips " 3ms
-  packadd snippets " for some ultisnips macro
-  " Slow : reload on demand
-  packadd emacscommandline
-  packadd vader
-  let g:ale_pattern_options = {
-        \ '.*\.md$': {'ale_enabled': 0}}
-  packadd ale
-  packadd tex
-  " Youcompleteme is verbose at init if no python
-  try
-    python3 '42' | packadd youcompleteme
-  catch | endtry
-  " Ultisnip is annoying at run time if no python
-  try
-    python3 '42' | packadd ultisnips  " 3ms
-  catch | endtry
+  packadd submode  " Map C-W
+
+  function TinPack(timer)
+    " Lazy loader
+    " Interface:
+    packadd fugitive
+    " Map: 10ms for 9pg
+    packadd surround  " ySS<div>
+    packadd repeat  " for surround
+    packadd textobj-user  " for function
+    packadd textobj-arg  " daa
+    packadd textobj-indent  " dai
+    packadd textobj-function  " daf
+    packadd unimpaired  " 5ms  ]b (:bn) , ]<space> (add empty lines), ]q
+    packadd tmux-navigator  " ]q
+    packadd emacscommandline  " 3ms
+    " Misc:
+    packadd vader
+    " ALE:
+    let g:ale_pattern_options = {
+          \ '.*\.md$': {'ale_enabled': 0}}
+    packadd ale
+    " Youcompleteme: is verbose at init if no python
+    try
+      python3 '42'
+      packadd youcompleteme
+      call youcompleteme#Enable()
+    catch | endtry
+    " Ultisnip: is annoying at run time if no python
+    try
+      python3 '42'
+      packadd ultisnips  " 3ms
+      packadd snippets " for some ultisnips macro
+    catch | endtry
+  endfunction
+
+  " Call it
+  if has('timers')
+    call timer_start(200, 'TinPack')
+  else
+    call TinPack(42)
+  endif
 
 
 " Appearance
@@ -650,7 +664,6 @@ filetype plugin indent on | syntax on
     noremap <C-W>z <C-W><bar>
 
     " Source: https://ddrscott.github.io/blog/2016/making-a-window-submode/
-    packadd submode
     function SetWindowMap()
       if !exists('submode#map')
         return
