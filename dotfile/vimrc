@@ -611,7 +611,15 @@ filetype plugin indent on | syntax on
     endfunction
 
     function! NERDTreeToogleMirror()
+      " Removes deprecation warning devicons Vs git-plugin
+      let g:NERDTreeGitStatusLogLevel = 3
+      let g:NERDTreeGitStatusUseNerdFonts = 1
+      let g:NERDTreeRespectWildIgnore=1
+      "let g:NERDTreeGitStatusShowIgnored = 1
+      "packadd nerdtree-git-plugin
+      packadd devicons
       packadd nerdtree
+      let g:NERDTreeRespectWildIgnore=1
       if g:NERDTree.IsOpen() || exists('t:NERDTreeBufName') || !NERDTreeExists()
         NERDTreeToggle
       else
