@@ -45,6 +45,7 @@ firefox
 pdftk
 imagemagick
 virtual-box
+zeal
 
 # System
 ubuntu-drivers-common
