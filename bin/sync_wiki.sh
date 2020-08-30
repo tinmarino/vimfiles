@@ -12,6 +12,7 @@ usage() {
     -h, --help (Help) Print this help message
 
     -a, --all  (All)  Sync all except vim (if fire: do -av)
+    -r, --rosetta  (Rosetta)  Sync Rosetta Stone code ~/wiki/rosetta
     -s, --site (Site) Sync ~/wiki/html folder (dump of pages)
     -v, --vim  (Vim)  Sync ~/.vim folder
     -x, --html (Html) Sync ~/wiki/*_html generated folders
@@ -31,7 +32,7 @@ function ssync_wget(){
     echo "Info: $check not existing => Dowloading"
   fi
   ((n++))
-  wget "$2" -O "$1" || { echo -e "[-] $1 ${cbad}Failed Download" && return 1; }
+  wget "$2" -O "$1" || { echo -e "[-] $1 ${cbad}Download FAILED" && return 1; }
 
   if [[ "$1" =~ .tar.bz2$ ]]; then
     directory="$(dirname "$1")"
@@ -53,6 +54,9 @@ function ssync_site(){
 
 # Sychrnonize argument folder
 function ssync_base(){
+  # 1: Local Diretory
+  # 2: Remote URL
+  # 3: Sync command: ex: "pull --rebase"
   # Set vars
   title=$(basename -- "$1")
   title=${title^^}
@@ -73,16 +77,26 @@ function ssync_base(){
   fi
 
   # Git sync
-  git add .
-  message="___ <- sync_wiki.sh: Modified: $(git diff --name-only --cached | sed ':a;N;$!ba;s/\n/, /g')"
-  git commit -m "$message"
-  git pull --rebase
-  if git push --all ; then
-    echo -e "[+] push OK"
+  if [[ -z "$3" ]]; then
+    git add .
+    message="___ <- sync_wiki.sh: Modified: $(git diff --name-only --cached | sed ':a;N;$!ba;s/\n/, /g')"
+    git commit -m "$message"
+    git pull --rebase
+    if git push --all ; then
+      echo -e "[+] push OK"
+    else
+      echo -e "[-] ${cbad}push FAILED\e[0m"
+      s_error_msg+="<- Failed: $1\n"
+      ((ret=1))
+    fi
   else
-    echo -e "[-] ${cbad}push failed\e[0m"
-    s_error_msg+="<- Failed: $1\n" 
-    ((ret=1))
+    if $3; then
+      echo -e "[+] $3 OK"
+    else
+      echo -e "[-] ${cbad}$3 FAILED\e[0m"
+      s_error_msg+="<- Failed: $1\n"
+      ((ret=1))
+    fi
   fi
 
   # Popd && Ret
@@ -95,7 +109,7 @@ function ssync_base(){
 
 # Proxy counting errors
 function ssync(){
-  ((n++)); ssync_base "$1" "$2"  && ((ok++))
+  ((n++)); ssync_base "$1" "$2" "$3"  && ((ok++))
 }
 
 ((ok=0))
@@ -106,6 +120,7 @@ cgood="\e[1m\e[38;5;46m"
 cbad="\e[1m\e[38;5;196m"
 
 ((ball=0))
+((brosetta=0))
 ((bsite=0))
 ((bvim=0))
 ((bwiki=0))
@@ -115,11 +130,11 @@ cbad="\e[1m\e[38;5;196m"
 # -o is for short options like -v
 # -l is for long options with double dash like --version
 options=$(getopt \
-  -l "all,help,site,vim,html,wiki" \
-  -o "ahsvxw" -- "$@")
+  -l "all,help,rosetta,site,vim,html,wiki" \
+  -o "ahrsvxw" -- "$@")
 
 # set --:
-# If no arguments follow this option, then the positional parameters are unset. Otherwise, the positional parameters 
+# If no arguments follow this option, then the positional parameters are unset. Otherwise, the positional parameters
 # are set to the arguments, even if some of them begin with a ‘-’.
 eval set -- "$options"
 echo -n "Args: "
@@ -131,6 +146,10 @@ while true; do
       ;;
     -h|--help)
       usage
+      ;;
+    -r|--rosetta)
+      echo -n "Rosetta, "
+      ((brosetta=1))
       ;;
     -s|--site)
       echo -n "Site, "
@@ -161,12 +180,13 @@ echo
 echo -e "${cend}---> Synchronizing from internet\e[0m"
 
 # let n++ ; ssync ~/.vim           && let ok++
-((ball || bsite))  && ssync_site ~/wiki/html
-((ball || bwiki))  && ssync ~/wiki/todo      https://gitlab.com/tinmarino/todo.git
-((ball || bwiki))  && ssync ~/wiki/wiki      https://github.com/tinmarino/wiki
-((ball || bwiki))  && ssync ~/wiki/alki      https://gitlab.com/tinmarino/alki.git
-((ball || bhtml))  && ssync ~/wiki/wiki_html https://github.com/tinmarino/wiki_html
-((ball || bhtml))  && ssync ~/wiki/alki_html https://gitlab.com/tinmarino/alki_html.git
+((ball || bsite))    && ssync_site ~/wiki/html
+((ball || bwiki))    && ssync ~/wiki/todo      https://gitlab.com/tinmarino/todo.git
+((ball || bwiki))    && ssync ~/wiki/wiki      https://github.com/tinmarino/wiki
+((ball || bwiki))    && ssync ~/wiki/alki      https://gitlab.com/tinmarino/alki.git
+((ball || bhtml))    && ssync ~/wiki/wiki_html https://github.com/tinmarino/wiki_html
+((ball || bhtml))    && ssync ~/wiki/alki_html https://gitlab.com/tinmarino/alki_html.git
+((ball || brosetta)) && ssync ~/wiki/rosetta   https://github.com/acmeism/RosettaCodeData "git pull --rebase"
 # shellcheck disable=SC2154
 ((bvim))           && ssync "$v"             https://github.com/tinmarino/vimfiles
 

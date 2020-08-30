@@ -314,7 +314,7 @@
   # Enable Readline not waiting for additional input when a key is pressed.
   set keyseq-timeout 10
   bind -x '"\ee":fo'
-  bind -x '"\er":fzf_dir ~/wiki/roseta/Lang'
+  bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
 
 
 # Fast
