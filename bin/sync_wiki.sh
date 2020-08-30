@@ -45,6 +45,7 @@ function ssync_wget(){
 
 # Get online documentation
 function ssync_site(){
+  echo -e "${ctitle}--->  SITES  =================================================\e[0m"
   ssync_wget "$1/Bash/bash_reference.html" "https://www.gnu.org/software/bash/manual/bash.html"
   ssync_wget "$1/Bash/bash_advanced_bash_scripting.html" "https://tldp.org/LDP/abs/html/abs-guide.html"
   ssync_wget "$1/Python/python-3.8.5-docs-html.tar.bz2" "https://docs.python.org/3.8/archives/python-3.8.5-docs-html.tar.bz2"
