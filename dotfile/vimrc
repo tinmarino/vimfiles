@@ -354,7 +354,7 @@ filetype plugin indent on | syntax on
   packadd lastplace  " vi $VIMRUNTIME/vimrc_example.vim
   packadd submode  " Map C-W
 
-  function TinPack(timer)
+  function! TinPack(timer) abort
     " Lazy loader
     " Interface:
     packadd fugitive
@@ -380,10 +380,10 @@ filetype plugin indent on | syntax on
     " Youcompleteme: is verbose at init if no python
     try
       python3 '42'
-      packadd youcompleteme
-      call youcompleteme#Enable()
+      " Deletes the vim intro screen
+      "packadd youcompleteme
     catch | endtry
-    " Ultisnip: is annoying at run time if no python
+    "" Ultisnip: is annoying at run time if no python
     try
       python3 '42'
       packadd ultisnips  " 3ms
@@ -393,7 +393,7 @@ filetype plugin indent on | syntax on
 
   " Call it
   if has('timers')
-    call timer_start(200, 'TinPack')
+    call timer_start(0, 'TinPack')
   else
     call TinPack(42)
   endif
@@ -678,7 +678,7 @@ filetype plugin indent on | syntax on
     noremap <C-W>z <C-W><bar>
 
     " Source: https://ddrscott.github.io/blog/2016/making-a-window-submode/
-    function SetWindowMap()
+    function! SetWindowMap() abort
       if !exists('submode#map')
         return
       endif

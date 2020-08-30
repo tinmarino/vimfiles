@@ -72,3 +72,7 @@ allcolors() {
 allcolors 3 9
 echo
 allcolors 4 10
+
+echo
+echo 'echo -e "\e[1m\e[38;5;13mBold Purple Fg\e[0m Normal"'
+echo 'echo -e "\e[1m\e[48;5;55mBold Purple Bg\e[0m Normal"'
