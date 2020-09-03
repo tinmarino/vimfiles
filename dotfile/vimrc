@@ -560,12 +560,13 @@ filetype plugin indent on | syntax on
     endfunction
     nnoremap <Leader>ea :call Edit($alias)<CR>
     nnoremap <Leader>eb :call Edit($bashrc)<CR>
-    nnoremap <Leader>ec :call Edit($h .'/.alacritty.yml')<CR>
     nnoremap <Leader>ed :call Edit($h . '/wiki/todo/done.md')<CR>
     nnoremap <Leader>ef :e $v/ftplugin/<C-D>
     nnoremap <Leader>eg :call Edit($gitrc)<CR>
+    nnoremap <Leader>ep :call Edit($h . '/.bash_profile')<CR>
     nnoremap <Leader>et :call Edit($tmuxrc)<CR>
     nnoremap <Leader>ev :call Edit($vimrc)<CR>
+    nnoremap <Leader>ey :call Edit($h .'/.alacritty.yml')<CR>
   " a, t, w for wiki
   " b -> Backup file
     function! Backup(s)
@@ -672,9 +673,9 @@ filetype plugin indent on | syntax on
     endif
 
   " Window
-    noremap <C-W>- <C-W>s
-    noremap <C-W><bar> <C-W>v
-    noremap <C-W>_ <C-W>s
+    noremap <C-W>_ :split above<Cr>
+    noremap <C-W>- <C-W>s<C-W>j
+    noremap <C-W><bar> <C-W>v<C-W>l
     noremap <C-W>z <C-W><bar>
 
     " Source: https://ddrscott.github.io/blog/2016/making-a-window-submode/

@@ -37,14 +37,16 @@
   malias so source
 
   # Languages
+  malias fd fdfind
   malias py python3
   malias py2 python2
   malias py3 python3
-  malias vi vim
   malias pl perl
   malias ra 'raku -I.'
-  malias terminal 'alacritty'
-  malias te 'alacritty'
+  malias terminal 'TMUX= alacritty'
+  malias te 'TMUX= alacritty'
+  malias terminal_raw 'alacritty'
+  malias vi vim
   alias ipy='jupyter-console'
   alias ira='jupyter-console --kernel=raku'
   alias ija='jupyter-console --kernel=java'
@@ -75,6 +77,10 @@
   export wt="$HOME/wiki/todo"
   export wa="$HOME/wiki/alma"
 
+
+# Tmux
+  alias tl="tmux list-sessions"
+  alias tks='tmux kill-session -t'
 
 
 # Shortcut largers

@@ -2,10 +2,10 @@
 
 # Init, Variables
   # If not running interactively, don't do anything
-  [ -z "$PS1" ] && return
+  [[ -z "$PS1" ]] && return
 
   # Goto home
-  if [ "$PWD" == / ] ; then cd "$HOME" || : ; fi
+  if [[ "$PWD" == / ]] ; then cd "$HOME" || : ; fi
 
   # Set OS
   export h="$HOME"
@@ -28,7 +28,15 @@
   esac
 
   # Set USER
-  [ -z "$USER" ] && command -v whoami > /dev/null && USER=$(whoami) && export USER
+  [[ -z "$USER" ]] && command -v whoami > /dev/null && USER=$(whoami) && export USER
+
+
+# Profiling
+  # https://stackoverflow.com/questions/5014823/how-to-profile-a-bash-shell-script-slow-startup
+  #exec 3>&2 2> >( tee /tmp/bash-$$.log |
+  #                  sed -u 's/^.*$/now/' |
+  #                  date -f - +%s.%N >/tmp/bash-$$.tim)
+  #set -x
 
 
 # Path
@@ -76,25 +84,25 @@
   export NDK=$HOME/Program/Ndk/Current
 
   # shellcheck source=/home/tourneboeuf/.fzf.bash
-  [ -f "$HOME/.fzf.bash" ] && source "$HOME/.fzf.bash"
+  [[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
 
 # Execute tmux
-  if command -v tmux &> /dev/null && [ -n "$PS1" ] \
-      && [ -z "$TMUX" ] \
-      && [[ ! "$TERM" =~ screen ]]  && [[ ! "$TERM" =~ "screen-256color" ]] \
-      && [[ ! "$TERM" =~ tmux ]] && [[ ! "$TERM" =~ "tmux-256color" ]] \
+  if command -v tmux &> /dev/null \
+      && [[ -z "$TMUX" \
+      &&  ! "$TERM" =~ screen  && ! "$TERM" =~ "screen-256color" \
+      &&  ! "$TERM" =~ tmux  &&  ! "$TERM" =~ "tmux-256color" ]] \
       ; then
-    # for ALMA
-    exec env TERM=xterm-256color tmux
+    # for ALMA but some glinch in scroll vim
+    # exec env TERM=xterm-256color tmux
     # For bold and italic
-    # exec env TERM=tmux-256color tmux
+    exec env TERM=tmux-256color tmux
   fi
 
 
 # Unknown command callback (tip: install bash-completion on tmux)
   function command_not_found_handle {
     # If starting with g : git
-    if [ "${1:0:1}" == "g" ]; then
+    if [[ "${1:0:1}" == "g" ]]; then
       # shellcheck disable=SC2086
       git "${1:1}" $2
     # If any shit, echo bash default errmsg
@@ -141,7 +149,7 @@
   function parse_title() {
     host=$(hostname)
     # hsot
-    if [ "$host" = "tourny" ]; then
+    if [[ "$host" == "tourny" ]]; then
       res=''
     else
       res="<$host>:   "
@@ -226,23 +234,35 @@
 
 # Include, Source, Extension
   # Alias
-  if [ -f "$HOME/.bash_aliases.sh" ]; then
+  if [[ -f "$HOME/.bash_aliases.sh" ]]; then
     # shellcheck source=/home/tourneboeuf/.bash_aliases.sh
     source "$HOME/.bash_aliases.sh"
   fi
 
+  ############
+  # Completion
+  bcan_complete=0
+  if [[ -f "/etc/bash_completion" ]]; then
+    source "/etc/bash_completion" && bcan_complete=1;
+  elif [[ -f "$HOME/.local/usr/share/bash-completion/bash_completion" ]]; then
+    # shellcheck disable=SC1090
+    source "$HOME/.local/usr/share/bash-completion/bash_completion" && bcan_complete=1;
+  fi
   # Tmux completion
   # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-tmux-completion.sh
-  [ -f "$v/bin/_tinrc-tmux-completion.sh" ] && source "$v/bin/_tinrc-tmux-completion.sh"
+  if ((bcan_complete)) && [[ -f "$v/bin/_tinrc-tmux-completion.sh" ]]; then
+    source "$v/bin/_tinrc-tmux-completion.sh"
+  fi
+
 
   # Fzf default
-  if [ -f "$HOME/.fzf.bash" ]; then
+  if [[ -f "$HOME/.fzf.bash" ]]; then
     # shellcheck source=/home/tourneboeuf/.bash_aliases.sh
     source "$HOME/.fzf.bash"
   fi
 
   # Alacrity
-  if [ -f "$HOME/.bash_completion/alacritty" ]; then
+  if [[ -f "$HOME/.bash_completion/alacritty" ]]; then
     # shellcheck source=/home/tourneboeuf/.vim/scripts/completion/alacritty
     source "$v/scripts/completion/alacritty" 
   fi
@@ -269,7 +289,7 @@
       +'redir END | q';
     rg --color always --files \\\".\\\";
     cd \\\"$HOME\\\" && rg --color always --files | awk '{print \\\"~/\\\" \\\$0}';
-    cd \\\"$v\\\" && rg --color always --files | awk '{print \\\"~/\\\" \\\$0}';
+    cd \\\"$v\\\" && rg --color always --files | awk '{print \\\"$v/\\\" \\\$0}';
   \""
   export FZF_DEFAULT_COMMAND="${_fzf_cmds//$'\n'/}"
   # shellcheck disable=SC2206,SC2191
@@ -305,9 +325,9 @@
   export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
   export FZF_CTRL_R_OPTS="--sort --exact --preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
   # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-fzf-function.sh
-  [ -f "$v/bin/_tinrc-fzf-function.sh" ] && source "$v/bin/_tinrc-fzf-function.sh"
+  [[ -f "$v/bin/_tinrc-fzf-function.sh" ]] && source "$v/bin/_tinrc-fzf-function.sh"
   # shellcheck source=/home/tourneboeuf/Program/ForGit/forgit.plugin.sh
-  [ -f "$h/Program/ForGit/forgit.plugin.sh" ] && source "$h/Program/ForGit/forgit.plugin.sh" 
+  [[ -f "$h/Program/ForGit/forgit.plugin.sh" ]] && source "$h/Program/ForGit/forgit.plugin.sh" 
 
 
 # Bind
