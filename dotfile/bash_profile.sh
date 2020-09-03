@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 # Init, Variables
   # Set OS
   export h="$HOME"
@@ -20,6 +21,10 @@
     export v="$HOME/vimfiles"
     ;;
   esac
+
+  # Man
+  export PAGER="vman"
+  export TEXMFHOME="$HOME/Program/Tlmgr"
 
 
 # Path
