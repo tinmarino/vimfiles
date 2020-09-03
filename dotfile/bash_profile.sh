@@ -170,16 +170,16 @@
 
   ############
   # Completion
-  bcan_complete=0
-  if [[ -f "/etc/bash_completion" ]]; then
-    source "/etc/bash_completion" && bcan_complete=1;
-  elif [[ -f "$HOME/.local/usr/share/bash-completion/bash_completion" ]]; then
-    # shellcheck disable=SC1090
-    source "$HOME/.local/usr/share/bash-completion/bash_completion" && bcan_complete=1;
-  fi
+  #bcan_complete=0
+  #if [[ -f "/etc/bash_completion" ]]; then
+  #  source "/etc/bash_completion" && bcan_complete=1;
+  #elif [[ -f "$HOME/.local/usr/share/bash-completion/bash_completion" ]]; then
+  #  # shellcheck disable=SC1090
+  #  source "$HOME/.local/usr/share/bash-completion/bash_completion" && bcan_complete=1;
+  #fi
   # Tmux completion
   # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-tmux-completion.sh
-  if ((bcan_complete)) && [[ -f "$v/bin/_tinrc-tmux-completion.sh" ]]; then
+  if command -v _get_comp_words_by_ref &> /dev/null && [[ -f "$v/bin/_tinrc-tmux-completion.sh" ]]; then
     source "$v/bin/_tinrc-tmux-completion.sh"
   fi
 
