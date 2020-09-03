@@ -35,6 +35,7 @@
   malias disas 'objdump -drwC -Mintel'
   malias ll 'ls -lh'
   malias so source
+  malias ssh 'TMUX= TERM=xterm-256color ssh'
 
   # Languages
   malias fd fdfind
