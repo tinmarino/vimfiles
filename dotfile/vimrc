@@ -24,7 +24,7 @@ filetype plugin indent on | syntax on
   let $d = expand('$v/undo/dump') | let $dump = $d
   " RC
   let $alias = expand('$v/dotfile/bash_aliases.sh')
-  let $bashrc = expand('$v/dotfile/bashrc')
+  let $bashrc = expand('$v/dotfile/bashrc.sh')
   let $gitrc = expand('$v/dotfile/gitconfig')
   let $vimrc = expand('$v/dotfile/vimrc')
   let $tmuxrc = expand('$v/dotfile/tmux.conf')

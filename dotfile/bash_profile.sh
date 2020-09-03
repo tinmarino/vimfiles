@@ -1,5 +1,261 @@
 #!/usr/bin/env bash
 
+# Init, Variables
+  # Set OS
+  export h="$HOME"
+  # shellcheck disable=SC2088
+  uname=$(uname -a)
+  uname=${uname,,}
+  case $uname in
+  *"android"*)
+    export os="termux"
+    export v="$HOME/.vim"
+    ;;
+  *"linux"*)
+    export os="unix"
+    export v="$HOME/.vim"
+    ;;
+  *"mingw"*)
+    export os="windows"
+    export v="$HOME/vimfiles"
+    ;;
+  esac
+
+
+# Path
+  # Save
+  export path_save=$PATH
+  export PATH=""
+  # Windows fast
+  export PATH="$PATH:/c/Program Files/Vim/vim82"
+  # My script
+  export PATH=$PATH:$HOME/.vim/bin
+  export PATH=$PATH:$HOME/Bin
+  # Node after npm config set prefix ~/.npm
+  export PATH=$PATH:$HOME/.npm/bin
+  # Perl6
+  export RAKUDOLIB=$HOME/.raku
+  export PATH=$PATH:$HOME/Program/Raku/Doc/bin
+  export PATH=$PATH:$HOME/Program/Raku/Repo/install/bin
+  export PATH=$PATH:$HOME/Program/Raku/Repo/install/share/perl6/site/bin
+  export PATH=$PATH:$HOME/Program/Raku/Z/bin
+  export PATH=$PATH:$HOME/.raku/share/perl6/site/bin
+  export PATH=$PATH:$HOME/.raku/bin
+  # Python
+  #export PATH=$PATH:$HOME/Program/Conda/bin
+  export PATH=$PATH:$HOME/.local/usr/local/bin
+  export PATH=$PATH:$HOME/.local/bin
+  # Rust
+  export PATH=$PATH:$HOME/.cargo/bin
+  # Android sdk
+  export PATH=$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools
+  export PATH=$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools/bin
+  export PATH=$PATH:$HOME/Program/Eclipse/eclipse
+  export ANDROID_HOME=$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796
+  export ANDROID_SDK=$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796
+  # Programs
+  export PATH=$PATH:/usr/local/cuda-10.0/bin
+  export PATH=$PATH:$HOME/Program/Metapixel/metapixel
+  # Readd
+  export PATH=$PATH:$path_save
+
+  # Lib
+  export LD_LIBRARY_PATH=$HOME/Bin:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH=$HOME/Program/Gecode:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu:$LD_LIBRARY_PATH
+  export NDK=$HOME/Program/Ndk/Current
+
+  # shellcheck source=/home/tourneboeuf/.fzf.bash
+  [[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
+
+
+# Unknown command callback (tip: install bash-completion on tmux)
+  function command_not_found_handle {
+    # If starting with g : git
+    if [[ "${1:0:1}" == "g" ]]; then
+      # shellcheck disable=SC2086
+      git "${1:1}" $2
+    # If any shit, echo bash default errmsg
+    else
+      echo "bash(rc): $1: command not found"
+    fi
+  }
+
+
+# Preferences
+  # Enable directory with $
+  shopt -s direxpand
+  # Avoid c-s freezing
+  stty -ixon
+
+  # Vi as default `git commit`
+  export EDITOR='vim'
+  # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
+  shopt -s checkwinsize
+
+  # French characters
+  stty cs8 -istrip -parenb
+  bind 'set convert-meta off'
+  bind 'set meta-flag on'
+  bind 'set output-meta on'
+
+  # History
+  # append instead of overwrite
+  shopt -s histappend
+  export HISTSIZE=100000
+  export HISTFILESIZE=100000
+  export HISTCONTROL=ignoredups
+
+
+# Prompt
+  # Save history after each executed line
+  export PROMPT_COMMAND+='history -a;'
+
+  # PS1
+  function parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' ;
+  }
+  export -f parse_git_branch
+  function parse_title() {
+    host=$(hostname)
+    # hsot
+    if [[ "$host" == "tourny" ]]; then
+      res=''
+    else
+      res="<$host>:   "
+    fi
+    res+=$(dirs +0)
+    echo "$res"
+  }
+  export -f parse_title
+
+  # Title: Host: CD
+  PS1='\[\e]0;\]`parse_title`\007'
+  # CD (green)
+  PS1+='\[\e[32m\]\w'
+  # Git Branch (yellow)
+  PS1+='\[\e[33m\]'
+  PS1+='`parse_git_branch`'
+  PS1+='\[\e[00m\]'
+  # New line
+  PS1+='\n$ '
+  export PS1
+
+
+# Include, Source, Extension
+  # Alias
+  if [[ -f "$HOME/.bash_aliases.sh" ]]; then
+    # shellcheck source=/home/tourneboeuf/.bash_aliases.sh
+    source "$HOME/.bash_aliases.sh"
+  fi
+
+  ############
+  # Completion
+  bcan_complete=0
+  if [[ -f "/etc/bash_completion" ]]; then
+    source "/etc/bash_completion" && bcan_complete=1;
+  elif [[ -f "$HOME/.local/usr/share/bash-completion/bash_completion" ]]; then
+    # shellcheck disable=SC1090
+    source "$HOME/.local/usr/share/bash-completion/bash_completion" && bcan_complete=1;
+  fi
+  # Tmux completion
+  # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-tmux-completion.sh
+  if ((bcan_complete)) && [[ -f "$v/bin/_tinrc-tmux-completion.sh" ]]; then
+    source "$v/bin/_tinrc-tmux-completion.sh"
+  fi
+
+
+  # Fzf default
+  if [[ -f "$HOME/.fzf.bash" ]]; then
+    # shellcheck source=/home/tourneboeuf/.bash_aliases.sh
+    source "$HOME/.fzf.bash"
+  fi
+
+  # Alacrity
+  if [[ -f "$HOME/.bash_completion/alacritty" ]]; then
+    # shellcheck source=/home/tourneboeuf/.vim/scripts/completion/alacritty
+    source "$v/scripts/completion/alacritty"
+  fi
+
+  # Pip bash completion start
+  _pip_completion()
+  {
+      mapfile -t COMPREPLY < <( \
+        COMP_WORDS="${COMP_WORDS[*]}" \
+        COMP_CWORD=$COMP_CWORD \
+        PIP_AUTO_COMPLETE=1 $1 2>/dev/null )
+  }
+  complete -o default -F _pip_completion pip
+  # pip bash completion end
+
+
+# Fzf functions
+  #_vim_escaped2='let out = map(fzf#vim#_recent_files(), \"substitute(v:val, \\\"\\\\\\\\~\\\", \\\"'$HOME'\\\", \\\"\\\")\")'
+  _vim_escaped2='let out = fzf#vim#_recent_files()'
+  _fzf_cmds="bash -c \"
+    vim -NEs
+      +'redir>>/dev/stdout | packadd fzf.vim'
+      +'$_vim_escaped2'
+      +'echo join(out, \\\"\\\\n\\\")'
+      +'redir END | q';
+    rg --color always --files \\\".\\\";
+    cd \\\"$HOME\\\" && rg --color always --files | awk '{print \\\"~/\\\" \\\$0}';
+    cd \\\"$v\\\" && rg --color always --files | awk '{print \\\"$v/\\\" \\\$0}';
+  \""
+  export FZF_DEFAULT_COMMAND="${_fzf_cmds//$'\n'/}"
+  # shellcheck disable=SC2206,SC2191
+  fzf_opts=(
+    # Enable exact match
+    #--exact
+    --ansi
+    # Multi Selection
+    --multi
+    --reverse
+    # First olfiles
+    #--no-sort
+    --preview-window=right:50% --height 100%
+    #--preview \"$v/bin/_tinrc-fzf-preview.sh {}\"
+    --bind ?:toggle-preview
+    --bind ctrl-space:toggle-preview
+    --bind ctrl-j:down
+    --bind ctrl-k:up
+    --bind ctrl-u:half-page-up
+    --bind ctrl-d:half-page-down
+    --bind ctrl-s:toggle-sort
+    #--bind alt-u:preview-half-page-up
+    #--bind alt-d:preview-half-page-down
+    #--bind ctrl-y:preview-up
+    #--bind ctrl-e:preview-down
+  )
+  export FZF_DEFAULT_OPTS="${fzf_opts[*]}"
+  # ForGit plugin
+  export FORGIT_LOG_FZF_OPTS="$FZF_DEFAULT_OPTS"
+  export FORGIT_DIFF_FZF_OPTS="$FZF_DEFAULT_OPTS"
+  export FORGIT_DIFF_FZF_OPTS="$FZF_DEFAULT_OPTS"
+  # From: https://github.com/junegunn/fzf/wiki/Configuring-shell-key-bindings
+  export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
+  export FZF_CTRL_R_OPTS="--sort --exact --preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
+  # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-fzf-function.sh
+  [[ -f "$v/bin/_tinrc-fzf-function.sh" ]] && source "$v/bin/_tinrc-fzf-function.sh"
+  # shellcheck source=/home/tourneboeuf/Program/ForGit/forgit.plugin.sh
+  [[ -f "$h/Program/ForGit/forgit.plugin.sh" ]] && source "$h/Program/ForGit/forgit.plugin.sh"
+
+
+# Util
+  function tin_ff_tv() { ffmpeg -i "$1"  -f avi -c:v mpeg4 -b:v 4000k -c:a libmp3lame -b:a 320k  "$2" ; }
+  function tin_ff_gif() { ffmpeg  -i "$1" -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 "$2"; }
+  function tin_ff_mp3() { find . -type f -regex '.*/.*\(webm\|mkv\)' -exec bash -c 'FILE="$1"; ffmpeg -i "${FILE}" -vn -c:a libmp3lame -y "${FILE%.*}.mp3";' _ '{}' \; ; }
+
+
+# Bind
+  # Enable Readline not waiting for additional input when a key is pressed.
+  set keyseq-timeout 10
+  bind -x '"\ee":fo'
+  bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
+
+
+
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
@@ -21,3 +277,5 @@ if [ -d "$HOME/.local/bin" ] ; then
 fi
 
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# vim:sw=2:ts=2:foldignore=:
