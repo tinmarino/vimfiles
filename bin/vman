@@ -35,7 +35,9 @@ man_cat_col(){
 
 # Helper:1 PAGER for git diff files (Ansi-Escaped)
 man_ansi() {
-    call_vim -c 'packadd ansiesc | AnsiEsc'  -
+    call_vim -c "packadd ansiesc | AnsiEsc" -c "\
+      hi ansiGreenFg guifg=Green | \
+      hi ansiRedFg guifg=Red" -
 }
 
 

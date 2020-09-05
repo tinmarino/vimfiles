@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+
 my $file    = shift;
 my $pattern = shift;
 open FH, "<" , $file or die $!;
