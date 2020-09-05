@@ -1,11 +1,11 @@
 " Include
-so $v/pack/bundle/opt/wiki/ftplugin/vimwiki.vim
+"source $v/pack/bundle/opt/wiki/ftplugin/vimwiki.vim
 
 " Alias commands
 call VimwikiAlias()
 
 " Plugin
-packadd table-mode
+"packadd table-mode
 
 " Ultisnip
 if exists('did_plugin_ultisnips')

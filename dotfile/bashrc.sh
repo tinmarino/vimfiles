@@ -4,7 +4,7 @@
   # If not running interactively, don't do anything
   [[ -z "$PS1" ]] && return
 
-  # Goto home
+  # Goto home, not /
   if [[ "$PWD" == / ]] ; then cd "$HOME" || : ; fi
 
   # Set USER
@@ -23,7 +23,7 @@
   fi
 
 # Head
-  #clear
+  # clear
   # Nowrap
   printf '\e[?7l'
   cat << '  EOF'
@@ -49,10 +49,6 @@
 
 # Fast
   # Add "substitute" mnemonic, which the info file left out.
-  doc_sed() {
-    info sed "Command and Option Index" | \
-      sed -n '/\*/s/ s c/ s \(substitute\) c/;s/command[:,].*//p'
-  }
   export PATH="/home/tourneboeuf/Program/GitFuzzy/bin:$PATH"
 
 # vim:sw=2:ts=2:foldignore=:

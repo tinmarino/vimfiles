@@ -9,8 +9,6 @@
     cc = commit
     cp = cherry-pick
     d = diff
-    dw = diff --word-diff-regex=.
-    dww = diff --word-diff
     f = pull --rebase
     fa = fetch --all
     h = push
@@ -33,8 +31,8 @@
             cd -- ${GIT_PREFIX:-.}; \
             if [ -x \"$(command -v diff-so-fancy)\" ]; then \
                 git diff --color-words $@; \
-                `#Some bug with AnsiEsc` \
-                `#git diff $@ | diff-so-fancy | vman -c 'set nowrap' --select ;` \
+                `#Some bug with AnsiEsc`; \
+                `#git diff $@ | diff-so-fancy | vman -c 'set nowrap' --select ;`; \
             else \
                 git diff --color-words $@; \
             fi \
@@ -75,6 +73,8 @@
     ck = checkout
     dc = diff --cached
     dcw = diff --cached --word-diff-regex=.
+    dw = diff --word-diff-regex=.
+    dww = diff --word-diff
     dn = diff --name-only
     ds = dc  # --Staged
     ph = push

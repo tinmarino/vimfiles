@@ -13,6 +13,10 @@ filetype plugin indent on | syntax on
   let $PAGER = ''
 
   " Set v: windows gvim do NOT read .bashrc
+  if has('win32') || has('win64')
+    let $v = expand('$HOME/vimfiles')
+    let $os = 'windows'
+  endif
   set runtimepath+=$v
   set packpath+=$v
 
@@ -403,7 +407,8 @@ filetype plugin indent on | syntax on
   " Preferences
     set background=dark
     packadd color-tin
-    colorscheme gruvbox-material
+    set termguicolors
+    colorscheme gruvbox
     set t_Co=256  " For airline and nice colors
     set formatoptions-=cro  " No auto comment
     "augroup NoCommment
@@ -630,6 +635,9 @@ filetype plugin indent on | syntax on
       endif
     endfunction
     noremap <leader>n :call NERDTreeToogleMirror()<CR>
+  " p -> Package
+    " pa -> AnsiEscape
+    noremap <leader>pa :silent packadd ansiesc<CR>:AnsiEsc<CR>
   " r -> Ag the silver searcher <- ack r like RipGrep
     noremap <expr> <leader>r ":update<Cr>:silent packadd ack<CR>:Ack! '"
           \ . expand('<cword>') . "'"
@@ -730,8 +738,8 @@ filetype plugin indent on | syntax on
     map <ESC>[19;2~ <S-F8>
 
   " Yank all buffer to system clipboard
-    map <leader>y mtgg"+yG`t
-    map <leader>p ggdG"+p
+    map <leader>yy mtgg"+yG`t
+    map <leader>pp ggdG"+p
 
   " Indent < and >
     noremap > >>
@@ -847,7 +855,6 @@ filetype plugin indent on | syntax on
   set foldmethod=indent
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0
   set foldlevelstart=30 "the folding at opening
-  set shiftwidth=4  " the number of column taken into account for aa fold, IMPORTANT
 
 
 " Filetype
