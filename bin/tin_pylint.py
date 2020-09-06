@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Insert comment in python code to ignore pylint errors
 """
 https://stackoverflow.com/questions/2028268/invoking-pylint-programmatically
 

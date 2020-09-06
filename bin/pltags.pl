@@ -1,6 +1,5 @@
 #!/usr/bin/env perl
-
-# pltags - create a tags file for Perl code, for use by vi(m)
+# Create a tags file for Perl code, for use by vi(m)
 #
 # Distributed with Vim <http://www.vim.org/>, latest version always available
 # at <http://www.mscha.com/mscha.html?pltags#tools>

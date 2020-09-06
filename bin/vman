@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Read Stdin as a PAGER 
 # <- Pager <- Vim: https://vim.fandom.com/wiki/Using_vim_as_a_man-page_viewer_under_Unix
 # <- Check size <- https://unix.stackexchange.com/questions/245064/what-is-the-best-way-to-pipe-the-output-of-a-command-through-a-pager-if-and-onl
 # <- Pass argument dynamically <- https://unix.stackexchange.com/questions/459367/using-shell-variables-for-command-options

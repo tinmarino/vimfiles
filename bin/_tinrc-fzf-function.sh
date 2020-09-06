@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Function definition to use git with fzf
+# Define Functions to use git with fzf
 # From: https://github.com/junegunn/fzf/wiki/Examples
 
 

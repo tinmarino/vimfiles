@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# Define tmux utils: A Bash inteligence
+# Define tmux utils: A Bash inteligence: Used by <prefix>w => wiki
+#
 # Used because tmux.conf do not support functions
+# TODO: source bash_profile or bashrc
 
 function link {
   # Link to an existing termux window

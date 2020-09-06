@@ -1,5 +1,5 @@
 #!/bin/bash
-# This file serves for synchronosation
+# Synchronize wikis, and .vim
 
 s_error_msg=''
 

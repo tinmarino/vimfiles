@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Print APT commands to install for myself => feel at home (vim, bash-completion)
+#
 # TODO vim and fzf from git
 # TODO sudo apt install -o Dpkg::Options::="--force-overwrite" bat ripgrep
 

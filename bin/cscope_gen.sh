@@ -1,4 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env sh
+# Helper generate scope tags (Used for AlmaSw)
 # From: https://stackoverflow.com/questions/934233
 
 find . -type f \

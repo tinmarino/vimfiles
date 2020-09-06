@@ -1,4 +1,5 @@
 #!/bin/sh
+# Set gnome shortcut to move window with numpad
 
 
 # gsettings set org.gnome.desktop.wm.keybindings move-to-corner-sw "['<Control><Alt>KP_1']"

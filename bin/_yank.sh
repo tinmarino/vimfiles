@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
+# Yank here or in ssh section inteligently
+#
 # From: https://github.com/samoshkin/tmux-config/blob/master/tmux/yank.sh
+# TODO _paste
 
 set -eu
 

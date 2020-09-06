@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Apply offsets to subtitles
 # python subslider.py MySubs.srt offset
 # -*- coding: utf-8 -*-
 #

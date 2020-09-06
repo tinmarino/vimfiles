@@ -1,17 +1,14 @@
 #!/usr/bin/env bash
-# Shell utilities to hide the misery
+# Implement Shell utilities to hide the misery
 #
 # shellcheck disable=SC2155  # Declare and assign separately to avoid masking return values
 # shellcheck disable=SC2092  # Remove backticks
 # shellcheck disable=SC2178  # Variable was used as an array but is now assigned a string
 #
 
-get_root(){
-  `# Echo path of the IrmJenkins project`
-  script_rel="$(dirname "${BASH_SOURCE[0]}")"
-  script_abs="$(realpath "$script_rel")"
-  root_path="$(realpath "$script_abs/..")"
-  echo "$root_path"
+bin_path(){
+  `# Print path of bin`
+  echo "$(dirname "${BASH_SOURCE[0]}")"
 }
 
 get_fct_dic(){
@@ -47,8 +44,9 @@ get_fct_dic(){
       # Stop: if not an inline comment
       [[ "$line" =~ ^\`\# ]] || break
       # Append to dic
-      description+="${line:3:-2}$nl"
-      # Debug: TODO remove
+      [[ "$description" == "" ]] \
+        && description+="${line:3:-2}" \
+        || description+="$nl${line:3:-2}"
     done < <(typeset -f "$fct")
     # shellcheck disable=SC2034  # l_fct_dic appears unused <= it is a reference
     l_fct_dic["$fct"]="$description"
@@ -67,16 +65,26 @@ can_color(){
 print_fct_usage(){
   `# Echo functon description`
   `# :param1: <ref> function dictionary <- get_fct_dic`
+  `# short version`
   declare -n l_fct_dic=$1
+  format="${2:-short}"
   # shellcheck disable=SC2207  # Prefer mapfile
   IFS=$'\n' sorted_fct=($(sort <<<"${local_fct[*]}"))
   # shellcheck disable=SC2068  # Double quote
-  for fct in ${sorted_fct[@]}; do
-    echo -e "$cpurple$fct$cend"
-    while read -r line; do
-      echo "  $line"
-    done < <(echo "${l_fct_dic[$fct]}")
-  done
+  if [[ "$format" == "short" ]]; then
+    for fct in ${sorted_fct[@]}; do
+      read -r line < <(echo "${l_fct_dic[$fct]}")
+      printf "$cpurple%-13s$cend%s\n" "${fct#_}" "$line"
+    done
+  else
+    for fct in ${sorted_fct[@]}; do
+      echo -e "$cpurple${fct#_}$cend"
+      while read -r line; do
+        echo "  $line"
+      done < <(echo "${l_fct_dic[$fct]}")
+      echo
+    done
+  fi
 }
 
 print_script_start(){
@@ -87,7 +95,7 @@ print_script_start(){
 }
 
 print_n_run(){
-  `# Print adn run command passed as array reference`
+  `# Print and run command passed as array reference`
   declare -n l_cmd=$1
   # Note: The "${var@Q}" expansion quotes the variable such that it can be parsed back by bash. Since bash 4.4: 17 Sep 2016
   # -- ALMA has Bash 4.2: 2011
@@ -96,6 +104,15 @@ print_n_run(){
   echo -e "${cyellow}IrmJenkins: $0: Running: $(printf "'%s' " "${l_cmd[@]}")  # at $(date "+%Y-%m-%dT%H:%M:%S")$cend"
   ((b_run)) && { eval "${l_cmd[@]}"; res=$?; }
   return $res
+}
+
+print_title(){
+  `# Link: https://stackoverflow.com/questions/5349718/how-can-i-repeat-a-character-in-bash`
+  color=${2:-$cpurple}
+  chrlen=${#1}
+  echo -e "${color}$1"
+  eval printf '%.0s-' {1..$chrlen}
+  echo -e "$cend"
 }
 
 set_print(){
@@ -109,17 +126,14 @@ call_fct_arg(){
   `# :param2: <ref> argumet array`
   declare -n l_fct_dic=$1
   declare -n l_args=$2
-  for arg in $l_args; do
+  for arg in "${l_args[@]}"; do
     # shellcheck disable=SC2076  # Don't quote right-hand side of =
     if [[ " ${!l_fct_dic[*]} " =~ " $arg " ]]; then
-      echo
-      echo -e "${cpurple}IrmJenkins: $0: Calling: $arg"
-      echo -e "-------------------------------------------------$cend"
-      $arg
+      "$arg"
+    elif [[ " ${!l_fct_dic[*]} " =~ " _$arg " ]]; then
+      "_$arg"
     else
-      echo
-      echo -e "${cred}ERROR: IrmJenkins: $0: unknown argument: $arg => Ciao!"
-      echo -e "-------------------------------------------------$cend"
+      echo -e "${cred}ERROR: ShellUtil: $0: unknown argument: $arg => Ciao!"
       exit "$error_arg"
     fi
   done
@@ -141,6 +155,9 @@ else
   cgreen=""
   cred=""
 fi
+
+# Path here
+bin_path=$(bin_path)
 
 # Error values
 # shellcheck disable=SC2034

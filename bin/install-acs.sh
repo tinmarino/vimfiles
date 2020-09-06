@@ -1,5 +1,8 @@
+#!/usr/bin/env bash
+# Print APT commands to install for Alma Common Software"
+
 # sudo add-apt-repository ppa:glasen/freetype2
-pg+=(
+pg=(
 ksh
 gcc
 libx11-dev

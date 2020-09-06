@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+# Display AnsiEscape colors
 
-# Form: https://github.com/alacritty/alacritty/wiki/Scripts
+# From: https://github.com/alacritty/alacritty/wiki/Scripts
 # Test 256 color support along with bold and dim attributes.
 # Copyright (C) 2014  Egmont Koblinger 2019 Nathan Lilienthal
 #

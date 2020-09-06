@@ -1,4 +1,5 @@
 #!/bin/bash
+# Create tmux 4 windows monitor (top, iftop, iotop, wmctrl)
 
 # monitor les fenetre
 tmux_monitor_array=(top 'iftop -i wlp3s0' 'sudo iotop' 'watch wmctrl -l')

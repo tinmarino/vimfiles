@@ -1,4 +1,5 @@
 #!/bin/bash
+# Take screenshot <= Binded to print key
 # From: https://cialu.net/how-to-change-default-gnome-screenshot-savings-folder/
 
 OUT_DIR=$HOME/Images/Screenshot

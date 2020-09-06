@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
-# Complete tmux command
+# Complete tin command
 
-# Copy of https://github.com/Bash-it/bash-it/blob/master/completion/available/tmux.completion.bash
-# and https://github.com/przepompownia/bash-it/blob/master/completion/available/tmux.completion.bash
-# slightly refactored
-
-# tmux completion
-# See: http://www.debian-administration.org/articles/317 for how to write more.
-# Usage: Put "source bash_completion_tmux.sh" into your .bashrc
-# Based upon the example at http://paste-it.appspot.com/Pj4mLycDE
 
 function _tmux_complete_client() {
     local IFS=$'\n'
@@ -44,7 +36,7 @@ function _tmux_complete_window() {
     return 0
 }
 
-__tmux_init_completion()
+__tin_init_completion()
 {
     COMPREPLY=()
     _get_comp_words_by_ref cur prev words cword
@@ -55,7 +47,7 @@ _tmux() {
     if declare -F _init_completions >/dev/null 2>&1; then
         _init_completion
     else
-        __tmux_init_completion
+        __tin_init_completion
     fi
 
     if [[ $cword -eq 1 ]]; then

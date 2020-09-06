@@ -1,4 +1,5 @@
 #!/bin/bash
+# Deploy wiki file TODO mutualize with sync_wiki
 
 create_dir() {
   cd ~ && mkdir wiki \

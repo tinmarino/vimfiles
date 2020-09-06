@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Implement generic preview command to use as defautl for Fzf
+#
 # From: https://github.com/junegunn/fzf/issues/1928
 # From: https://gist.github.com/junegunn/f4fca918e937e6bf5bad#gistcomment-2981199
 
