@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+# Chio command switch
+#
+# shellcheck disable=SC2092  # Remove backticks
+
+# Here is the magic
+source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
+
+
+
+docgit(){
+  `# Print git commands: push and pull`
+  printf "${cblue}Send to internet:$cend\n"
+  printf "  %-20s  # Add your file to the future snapshot,\n" "git add all"
+  printf "  %-20s  # maybe you do not want to snapshot all the folder\n"
+  printf "\n"
+  printf "  %-20s\n" "git commit -m 'This is the message of the snapshot'"
+  printf "\n"
+  printf "  %-20s  # Push your snapshot to internet,\n" "git push"
+  printf "  %-20s  # maybe you did a snapshot just for you\n" ""
+  printf "\n"
+
+  printf "${cblue}Receive from internet:$cend\n"
+  printf "  %-20s  # Pull all the change from the internet,\n" "git pull --rebase"
+  printf "  %-20s  # much more easy because you have no choice:\n" ""
+  printf "  %-20s  # internet decides what you get,\n" ""
+  printf "\n"
+}
+  
+docterminal(){
+  `# Print terminal emulator tips`
+  printf "%-20s# Clear screen\n" "clear"
+  printf "%-20s# Print last commands\n" "history"
+  msg="
+  ${cblue}Copy with:$cend
+    * Keep shift pressed drawing selection (White), then ctrl-shift-c
+    * Select without shift (Yellow), then ctrl-q then y (like yank) (tinmarino's way)
+  ${cblue}Paste with:$cend
+    * Ctrl+Shift+P (like paste)
+  "
+  echo -ne "$msg" | sed -e 's/^[[:space:]]\{2\}//'
+}
+
+docredshift(){
+  `# Print the command I always forget about redhshift`
+  printf "%-20s# Set ${cblue}Temperature$cend to 3600\n" "redshift -O 3600"
+  printf "%-20s# Reset redshift (think ${cblue}Close$cend)\n" "redshift -x"
+  printf "%-20s# Get more information (think ${cblue}Manual$cend)\n" "man redshift"
+  echo -e "# Press q to close the manual page, like Quit"
+}
+
+fftv(){
+  `# Convert video for tv: chio fftv archivo_in.avi archivo_out.avi`
+  ffmpeg -i "$1"  -f avi -c:v mpeg4 -b:v 4000k -c:a libmp3lame -b:a 320k  "$2"
+}
+
+ffgif(){
+  `# Convert video to gif: chio ffgif file_in.avi file_out.gif`
+  ffmpeg  -i "$1" -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 "$2";
+}
+
+ffmp3(){
+  `# Convert All video in current directory to mp3 (delete nothing)`
+  find . -type f -regex '.*/.*\(webm\|mkv\)' -exec bash -c 'FILE="$1"; ffmpeg -i "${FILE}" -vn -c:a libmp3lame -y "${FILE%.*}.mp3";' _ '{}' \; ;
+}
+
+get_fct_dic
+
+# shellcheck disable=SC2034  # Unsued
+declare -a args=("$@")
+call_fct_arg args

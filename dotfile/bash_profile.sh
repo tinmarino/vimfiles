@@ -269,12 +269,6 @@ fi
   [[ -f "$h/Program/ForGit/forgit.plugin.sh" ]] && source "$h/Program/ForGit/forgit.plugin.sh"
 
 
-# Util
-  function tin_ff_tv() { ffmpeg -i "$1"  -f avi -c:v mpeg4 -b:v 4000k -c:a libmp3lame -b:a 320k  "$2" ; }
-  function tin_ff_gif() { ffmpeg  -i "$1" -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 "$2"; }
-  function tin_ff_mp3() { find . -type f -regex '.*/.*\(webm\|mkv\)' -exec bash -c 'FILE="$1"; ffmpeg -i "${FILE}" -vn -c:a libmp3lame -y "${FILE%.*}.mp3";' _ '{}' \; ; }
-
-
 # Bind
   # Enable Readline not waiting for additional input when a key is pressed.
   set keyseq-timeout 10

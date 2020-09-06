@@ -8,6 +8,22 @@
 # shellcheck disable=SC2178  # Variable was used as an array but is now assigned a string
 #
 
+default_usage(){
+  `# Print this message`
+  #print_title "Tinmarino Default Usage"
+  msg="${cblue}Usage:$cend $(basename "$0") [options] function
+
+  ${cblue}Default Option list:
+  --------------------$cend
+    -h | --help           Print (this) help and exit
+
+  ${cblue}Function list:
+  --------------$cend
+  "
+  echo -ne "$msg" | sed -e 's/^[[:space:]]\{2\}//'
+  print_fct_usage; echo
+}
+
 bin_path(){
   `# Print path of bin`
   dirname "${BASH_SOURCE[0]}"
@@ -54,15 +70,6 @@ get_fct_dic(){
   done
 }
 
-can_color(){
-  `# Test if stdoutput supports color`
-  if command -v tput > /dev/null && tput colors > /dev/null ; then
-    return 0
-  else
-    return 1
-  fi
-}
-
 print_fct_usage(){
   `# Echo functon description`
   `# :param1: <ref> function dictionary <- get_fct_dic`
@@ -90,6 +97,61 @@ print_fct_usage(){
       done < <(echo "${fct_dic[$fct]}")
       echo
     done
+  fi
+}
+
+switch_usage(){
+  `# Switch Call: usage, _usage or default_usage`
+  if declare -F usage; then
+    usage;
+    elif declare -F _usage; then
+    _usage
+  else
+    default_usage
+  fi
+}
+
+call_fct_arg(){
+  `# Call function from trailing arguments (after options)`
+  `# :param1: <ref> argumet array`
+  declare -n l_args=$1
+
+  # Clause: Do not work without argument
+  if [[ -z "${l_args[@]}" ]]; then
+    switch_usage;
+    exit 0;
+  fi
+
+  local b_is_subcommand=0
+  set -- "${l_args[@]}"
+  for arg in "${l_args[@]}"; do
+    shift
+    # shellcheck disable=SC2076  # Don't quote right-hand side of =
+    if [[ "complete" == "$arg" ]]; then
+      print_fct_usage "complete"
+      break
+    elif ! ((b_is_subcommand)) && [[ "-h" == "$arg" || "--help" == "$arg" ]]; then
+      switch_usage;
+      exit 0;
+    elif [[ " ${!fct_dic[*]} " =~ " $arg " ]]; then
+      b_is_subcommand=1
+      "$arg" $@
+    elif [[ " ${!fct_dic[*]} " =~ " _$arg " ]]; then
+      b_is_subcommand=1
+      "_$arg" $@
+    elif [[ ! $b_is_subcommand ]]; then
+      echo -e "${cred}ERROR: ShellUtil: $0: unknown argument: $arg => Ciao!"
+      exit "$error_arg"
+    fi
+  done
+}
+
+can_color(){
+  `# Test if stdoutput supports color`
+  if command -v tput > /dev/null && tput colors > /dev/null ; then
+    return 0
+  else
+    return 1
   fi
 }
 
@@ -125,27 +187,6 @@ set_print(){
   `# Set do not run => only print command`
   b_run=0
 }
-
-call_fct_arg(){
-  `# Call function from trailing arguments (after options)`
-  `# :param1: <ref> argumet array`
-  declare -n l_args=$1
-  for arg in "${l_args[@]}"; do
-    # shellcheck disable=SC2076  # Don't quote right-hand side of =
-    if [[ "complete" =~ "$arg" ]]; then
-      print_fct_usage "complete"
-      break
-    elif [[ " ${!fct_dic[*]} " =~ " $arg " ]]; then
-      "$arg"
-    elif [[ " ${!fct_dic[*]} " =~ " _$arg " ]]; then
-      "_$arg"
-    else
-      echo -e "${cred}ERROR: ShellUtil: $0: unknown argument: $arg => Ciao!"
-      exit "$error_arg"
-    fi
-  done
-}
-
 
 # shellcheck disable=SC2034  # ... appears unused
 if can_color; then

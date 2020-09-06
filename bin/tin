@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 # Tinmarino command switch
+#
+# shellcheck disable=SC2092  # Remove backticks
 
 source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
 doc(){
-  `#Comment doc`
-  echo called doc
+  `# Subcommand Print Documentation`
+  echo "$@"
+  "$bin_path/tin_doc" $@
 }
 
 sync(){

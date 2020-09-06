@@ -12,7 +12,7 @@ _tin_complete()
   #local cur prev words cword
   #_init_completion || return
 
-  readarray -t output < <(tin complete "$1" "$2" "$3")
+  readarray -t output < <($1 complete "$1" "$2" "$3")
 
   fct_list=()
   for line in "${output[@]}"; do
@@ -34,4 +34,5 @@ _tin_complete()
 
 } &&
 
-complete -F _tin_complete tin
+complete -F "_tin_complete" tin
+complete -F "_tin_complete" chio

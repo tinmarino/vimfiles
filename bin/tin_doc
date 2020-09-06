@@ -6,7 +6,7 @@ source "$(dirname "$0")/_shellutil.sh"
 
 _usage(){
   `# Print this message`
-  print_title "Tinmarino Documentation"
+  print_title "Documentation"
   msg="${cblue}Usage:$cend $(basename "$0") function
 
   ${cblue}Function list:
@@ -45,6 +45,7 @@ get_fct_dic
 # ################
 
 # Clause: Work only if at least one argument
+echo "Tin doc called with $@"
 if [[ $# -eq 0 ]] ; then _usage; exit 0; fi
 
 options=$(getopt \
