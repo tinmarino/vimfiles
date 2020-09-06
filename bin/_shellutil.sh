@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Implement Shell utilities to hide the misery
 #
+# Warning: cannot be sourced in main bashrc it will polute the declared functions
+#
 # shellcheck disable=SC2155  # Declare and assign separately to avoid masking return values
 # shellcheck disable=SC2092  # Remove backticks
 # shellcheck disable=SC2178  # Variable was used as an array but is now assigned a string
@@ -8,30 +10,30 @@
 
 bin_path(){
   `# Print path of bin`
-  echo "$(dirname "${BASH_SOURCE[0]}")"
+  dirname "${BASH_SOURCE[0]}"
 }
 
 get_fct_dic(){
   `# Get associative array of functions in calling script`
   `# :param1: <ref_out> associative array name`
   `# :param2: <ref_in> array of functions already defined`
-  declare -n l_fct_dic=$1
-  declare -n l_pre_fct=$2
   declare -a post_fct=$(declare -F -p | cut -d " " -f 3)
   local nl=$'\n'
 
-
   # Purge funtions defined before
-  tps=" ${post_fct[*]} "
+  # See copy: https://stackoverflow.com/questions/19417015/how-to-copy-an-array-in-bash
+  # See delete: https://stackoverflow.com/questions/16860877/remove-an-element-from-a-bash-array
+  tps=("${post_fct[@]}")
   # shellcheck disable=SC2068
-  for item in ${l_pre_fct[@]}; do
+  for item in ${pre_fct[@]}; do
     # shellcheck disable=SC2206  # Quote
     #local_fct=( [${post_fct[@]//${i}}]="" )
     # Replace item
-    tps=${tps//${item}}
+    tps=("${tps[@]/$item}")
   done
+  tps=("${tps[@]//}")
   # shellcheck disable=SC2206
-  local_fct=( $tps )
+  local_fct=("${tps[@]}")
 
   # Get functions docstring
   # shellcheck disable=SC2068
@@ -48,8 +50,7 @@ get_fct_dic(){
         && description+="${line:3:-2}" \
         || description+="$nl${line:3:-2}"
     done < <(typeset -f "$fct")
-    # shellcheck disable=SC2034  # l_fct_dic appears unused <= it is a reference
-    l_fct_dic["$fct"]="$description"
+    fct_dic["$fct"]="$description"
   done
 }
 
@@ -66,14 +67,19 @@ print_fct_usage(){
   `# Echo functon description`
   `# :param1: <ref> function dictionary <- get_fct_dic`
   `# short version`
-  declare -n l_fct_dic=$1
-  format="${2:-short}"
+  format="${1:-short}"
   # shellcheck disable=SC2207  # Prefer mapfile
   IFS=$'\n' sorted_fct=($(sort <<<"${local_fct[*]}"))
   # shellcheck disable=SC2068  # Double quote
-  if [[ "$format" == "short" ]]; then
+  if [[ "$format" == "complete" ]]; then
     for fct in ${sorted_fct[@]}; do
-      read -r line < <(echo "${l_fct_dic[$fct]}")
+      COMPREPLY+=("$fct $line")
+      echo $fct
+      printf ">$cpurple%-13s$cend%s\n" "${fct#_}" "$line"
+    done
+  elif [[ "$format" == "short" ]]; then
+    for fct in ${sorted_fct[@]}; do
+      read -r line < <(echo "${fct_dic[$fct]}")
       printf "$cpurple%-13s$cend%s\n" "${fct#_}" "$line"
     done
   else
@@ -81,7 +87,7 @@ print_fct_usage(){
       echo -e "$cpurple${fct#_}$cend"
       while read -r line; do
         echo "  $line"
-      done < <(echo "${l_fct_dic[$fct]}")
+      done < <(echo "${fct_dic[$fct]}")
       echo
     done
   fi
@@ -111,7 +117,7 @@ print_title(){
   color=${2:-$cpurple}
   chrlen=${#1}
   echo -e "${color}$1"
-  eval printf '%.0s-' {1..$chrlen}
+  eval printf '%.0s-' "{1..$chrlen}"
   echo -e "$cend"
 }
 
@@ -122,15 +128,16 @@ set_print(){
 
 call_fct_arg(){
   `# Call function from trailing arguments (after options)`
-  `# :param1: <ref> fct_dic`
-  `# :param2: <ref> argumet array`
-  declare -n l_fct_dic=$1
-  declare -n l_args=$2
+  `# :param1: <ref> argumet array`
+  declare -n l_args=$1
   for arg in "${l_args[@]}"; do
     # shellcheck disable=SC2076  # Don't quote right-hand side of =
-    if [[ " ${!l_fct_dic[*]} " =~ " $arg " ]]; then
+    if [[ "complete" =~ "$arg" ]]; then
+      print_fct_usage "complete"
+      break
+    elif [[ " ${!fct_dic[*]} " =~ " $arg " ]]; then
       "$arg"
-    elif [[ " ${!l_fct_dic[*]} " =~ " _$arg " ]]; then
+    elif [[ " ${!fct_dic[*]} " =~ " _$arg " ]]; then
       "_$arg"
     else
       echo -e "${cred}ERROR: ShellUtil: $0: unknown argument: $arg => Ciao!"
@@ -157,6 +164,7 @@ else
 fi
 
 # Path here
+# shellcheck disable=SC2034  # bin_path appears unused
 bin_path=$(bin_path)
 
 # Error values
@@ -166,3 +174,8 @@ error_arg=3
 
 # By default, run commands
 b_run=1
+
+
+# Register caller functions
+declare -a pre_fct=$(declare -F -p | cut -d " " -f 3)
+declare -A fct_dic

@@ -9,19 +9,19 @@ endif
 
 
 " Better ?
-    set wrap
-    set colorcolumn=120
-    set tabstop=4
-    set softtabstop=4
-    set shiftwidth=4
-    set textwidth=0
-    set expandtab
+    setlocal wrap
+    setlocal colorcolumn=120
+    setlocal tabstop=4
+    setlocal softtabstop=4
+    setlocal shiftwidth=4
+    setlocal textwidth=0
+    setlocal expandtab
 
 " PEP 8
-    set autoindent
-    set fileformat=unix
-    set foldmethod=indent
-    set foldignore=
+    setlocal autoindent
+    setlocal fileformat=unix
+    setlocal foldmethod=indent
+    setlocal foldignore=
 
 " Reload
 if !g:ftpy_reloaded

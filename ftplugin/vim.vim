@@ -2,10 +2,8 @@
 " Compile is sourcing
 nnoremap <leader>c :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
 
-set shiftwidth=4
 set foldmethod=indent
 set foldexpr=FoldVimMethod(v:lnum)
-set tabstop=4
 set expandtab
 
 function! FoldVimMethod(lnum)

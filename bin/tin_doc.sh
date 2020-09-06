@@ -3,18 +3,17 @@
 # shellcheck disable=SC2092  # Remove backticks
 
 source "$(dirname "$0")/_shellutil.sh"
-declare -a pre_fct=$(declare -F -p | cut -d " " -f 3)
 
 _usage(){
   `# Print this message`
   print_title "Tinmarino Documentation"
-  msg="${cblue}Usage:$cend $0 function
+  msg="${cblue}Usage:$cend $(basename "$0") function
 
   ${cblue}Function list:
   --------------$cend
   "
   echo -ne "$msg" | sed -e 's/^[[:space:]]\{2\}//'
-  print_fct_usage fct_dic; echo
+  print_fct_usage; echo
 }
 
 _sed(){
@@ -40,8 +39,7 @@ _tin_command(){
   done
 }
 
-declare -A fct_dic
-get_fct_dic fct_dic pre_fct
+get_fct_dic
 
 # Argument Parsing
 # ################
@@ -64,4 +62,4 @@ done
 
 # shellcheck disable=SC2034  # Unsued
 declare -a args=("$@")
-call_fct_arg fct_dic args
+call_fct_arg args

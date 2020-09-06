@@ -334,7 +334,7 @@ filetype plugin indent on | syntax on
         let _fzf_source .= 'rg --color never --files \".\";'
       endif
       " -- Vim dir
-      let _fzf_source .= 'cd \"$v\" && rg --color never --files  | awk ''{print \"~/\" \$HOME}'';'
+      let _fzf_source .= 'cd \"$v\" && rg --color never --files  | awk ''{print \"$v/\" \$HOME}'';'
       " -- HOME dir
       let _fzf_source .= 'cd \"$HOME\" && rg --color never --files  | awk ''{print \"~/\" \$HOME}'';'
       " End
@@ -408,7 +408,12 @@ filetype plugin indent on | syntax on
     set background=dark
     packadd color-tin
     set termguicolors
-    colorscheme gruvbox
+    try
+      colorscheme gruvbox
+    catch /E185/
+      echom 'Vimrc: Cannot load colorscheme'
+      colorscheme dante
+    endtry
     set t_Co=256  " For airline and nice colors
     set formatoptions-=cro  " No auto comment
     "augroup NoCommment
