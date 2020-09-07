@@ -81,8 +81,9 @@ print_fct_usage(){
   if [[ "$format" == "complete" ]]; then
     for fct in ${sorted_fct[@]}; do
       COMPREPLY+=("$fct $line")
-      echo $fct
-      printf ">$cpurple%-13s$cend%s\n" "${fct#_}" "$line"
+      read -r line < <(echo "${fct_dic[$fct]}")
+      echo "$fct - $line"
+      #printf ">$cpurple%-13s$cend%s\n" "${fct#_}" "$line"
     done
   elif [[ "$format" == "short" ]]; then
     for fct in ${sorted_fct[@]}; do
@@ -117,29 +118,34 @@ call_fct_arg(){
   declare -n l_args=$1
 
   # Clause: Do not work without argument
-  if [[ -z "${l_args[@]}" ]]; then
+  if [[ -z "${l_args[*]}" ]]; then
     switch_usage;
     exit 0;
   fi
 
   local b_is_subcommand=0
   set -- "${l_args[@]}"
-  for arg in "${l_args[@]}"; do
+  for arg in "$@"; do
     shift
     # shellcheck disable=SC2076  # Don't quote right-hand side of =
     if [[ "complete" == "$arg" ]]; then
       print_fct_usage "complete"
       break
-    elif ! ((b_is_subcommand)) && [[ "-h" == "$arg" || "--help" == "$arg" ]]; then
+    elif ((b_is_subcommand)); then
+      break
+    elif [[ "-h" == "$arg" || "--help" == "$arg"  || "help" == "$arg" \
+        || "usage" == "$arg" || "_usage" == "$arg" ]]; then
       switch_usage;
       exit 0;
     elif [[ " ${!fct_dic[*]} " =~ " $arg " ]]; then
       b_is_subcommand=1
-      "$arg" $@
+      # shellcheck disable=SC2068  # Double quote array
+      "$arg" $@  # ${l_args[@]}
     elif [[ " ${!fct_dic[*]} " =~ " _$arg " ]]; then
       b_is_subcommand=1
-      "_$arg" $@
-    elif [[ ! $b_is_subcommand ]]; then
+      # shellcheck disable=SC2068  # Double quote array
+      "_$arg" $@  # ${l_args[@]}
+    else
       echo -e "${cred}ERROR: ShellUtil: $0: unknown argument: $arg => Ciao!"
       exit "$error_arg"
     fi

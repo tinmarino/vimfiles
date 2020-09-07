@@ -2,7 +2,8 @@
 # Print documentation on command, utils, self-scripts
 # shellcheck disable=SC2092  # Remove backticks
 
-source "$(dirname "$0")/_shellutil.sh"
+# shellcheck disable=SC1090  # Can't follow non-constant source
+source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
 _usage(){
   `# Print this message`
@@ -40,26 +41,6 @@ _tin_command(){
 }
 
 get_fct_dic
-
-# Argument Parsing
-# ################
-
-# Clause: Work only if at least one argument
-echo "Tin doc called with $@"
-if [[ $# -eq 0 ]] ; then _usage; exit 0; fi
-
-options=$(getopt \
-  -l "help" \
-  -o "h" -- "$@")
-
-eval set -- "$options"
-while true; do
-  case "$1" in
-    (-h|--help) _usage; exit 0;;
-    (--) shift; break;;
-  esac
-  shift
-done
 
 # shellcheck disable=SC2034  # Unsued
 declare -a args=("$@")

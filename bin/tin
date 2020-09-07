@@ -3,21 +3,38 @@
 #
 # shellcheck disable=SC2092  # Remove backticks
 
+# shellcheck disable=SC1090  # Can't follow non-constant source
 source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
 doc(){
   `# Subcommand Print Documentation`
-  echo "$@"
+  # shellcheck disable=SC2154,SC2068  # bin_path, double quote
   "$bin_path/tin_doc" $@
 }
 
+tin(){
+  `# Subcommand: Call myself: I can go far`
+  echo "tin arg passed: $*"
+  # shellcheck disable=SC2154,SC2068  # bin_path, double quote
+  "$bin_path/tin" $@
+}
+
+args(){
+  `# Debug: Print args passed`
+  i=0
+  for var in "$@"; do
+    echo "Arg $i: $var!"
+    ((i++))
+  done
+}
+
 sync(){
-  `#Comment sync`
+  `# Test sync`
   echo called sync
 }
 
 fzf(){
-  `#Comment fzf`
+  `# Test fzf`
   echo called fzf
 }
 

@@ -186,6 +186,12 @@ fi
   #  # shellcheck disable=SC1090
   #  source "$HOME/.local/usr/share/bash-completion/bash_completion" && bcan_complete=1;
   #fi
+
+  # shellcheck source=/home/tourneboeuf/.vim/bin/_tin_complete.sh
+  if [[ -f "$v/bin/_tin_complete.sh" ]]; then
+    source "$v/bin/_tin_complete.sh"
+  fi
+
   # Tmux completion
   # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-tmux-completion.sh
   if command -v _get_comp_words_by_ref &> /dev/null && [[ -f "$v/bin/_tinrc-tmux-completion.sh" ]]; then
