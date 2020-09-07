@@ -16,7 +16,7 @@ tin(){
   `# Subcommand: Call myself: I can go far`
   echo "tin arg passed: $*"
   # shellcheck disable=SC2154,SC2068  # bin_path, double quote
-  "$bin_path/tin" $@
+  "$bin_path/tin" "$@"
 }
 
 args(){

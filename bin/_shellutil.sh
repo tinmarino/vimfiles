@@ -148,11 +148,11 @@ call_fct_arg(){
     elif [[ " ${!fct_dic[*]} " =~ " $arg " ]]; then
       b_is_subcommand=1
       # shellcheck disable=SC2068  # Double quote array
-      "$arg" $@  # ${l_args[@]}
+      "$arg" "$@"  # ${l_args[@]}
     elif [[ " ${!fct_dic[*]} " =~ " _$arg " ]]; then
       b_is_subcommand=1
       # shellcheck disable=SC2068  # Double quote array
-      "_$arg" $@  # ${l_args[@]}
+      "_$arg" "$@"  # ${l_args[@]}
     else
       echo -e "${cred}ERROR: ShellUtil: $0: unknown argument: $arg => Ciao!"
       exit "$error_arg"
