@@ -28,7 +28,7 @@ docgit(){
 }
   
 docterminal(){
-  `# Print terminal emulator tips`
+  `# Print ${cblue}Terminal$cend emulator tips`
   printf "%-20s# Clear screen\n" "clear"
   printf "%-20s# Print last commands\n" "history"
   msg="
@@ -42,25 +42,36 @@ docterminal(){
 }
 
 docredshift(){
-  `# Print the command I always forget about redhshift`
+  `# Print ${cblue}Redshift$cend commands I always forget`
   printf "%-20s# Set ${cblue}Temperature$cend to 3600\n" "redshift -O 3600"
   printf "%-20s# Reset redshift (think ${cblue}Close$cend)\n" "redshift -x"
   printf "%-20s# Get more information (think ${cblue}Manual$cend)\n" "man redshift"
   echo -e "# Press q to close the manual page, like Quit"
 }
 
+__ff_check_arg(){
+  if (($# != 2 )); then
+    echo "${cred}Bad usage:$cend I need two agument: file_in and file_out"
+    echo "And I received $# arguments"
+    exit 1
+  fi
+}
+
 fftv(){
-  `# Convert video for tv: chio fftv archivo_in.avi archivo_out.avi`
+  `# Convert video for ${cblue}TeleVision$cend: ${cyellow}chio fftv archivo_in.avi archivo_out.avi$cend`
+  __ff_check_arg $@
   ffmpeg -i "$1"  -f avi -c:v mpeg4 -b:v 4000k -c:a libmp3lame -b:a 320k  "$2"
 }
 
 ffgif(){
-  `# Convert video to gif: chio ffgif file_in.avi file_out.gif`
+  `# Convert video to ${cblue}Gif$cend: ${cyellow}chio ffgif file_in.avi file_out.gif$cend`
+  __ff_check_arg $@
   ffmpeg  -i "$1" -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 "$2";
 }
 
 ffmp3(){
-  `# Convert All video in current directory to mp3 (delete nothing)`
+  `# Convert All video in current directory to ${cblue}Mp3$cend: ${cyellow}chio ffmp3$cend`
+  # TODO confirm
   find . -type f -regex '.*/.*\(webm\|mkv\)' -exec bash -c 'FILE="$1"; ffmpeg -i "${FILE}" -vn -c:a libmp3lame -y "${FILE%.*}.mp3";' _ '{}' \; ;
 }
 

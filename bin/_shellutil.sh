@@ -10,7 +10,7 @@
 
 default_usage(){
   `# Print this message`
-  #print_title "Tinmarino Default Usage"
+  #print_title "Default Usage"
   msg="${cblue}Usage:$cend $(basename "$0") [options] function
 
   ${cblue}Default Option list:
@@ -54,18 +54,23 @@ get_fct_dic(){
   # Get functions docstring
   # shellcheck disable=SC2068
   for fct in ${local_fct[@]}; do
+    # Clause: Hide function starting with `__`
+    [[ "${fct:0:2}" == "__" ]] && continue
+
     description=""
     while read -r line; do
       # Pass: if head
       [[ "$line" =~ ^$fct ]] && continue
-      [[ "$line" =~ \{ ]] && continue
+      # Pass: if first open bracket
+      [[ "${line:0:1}" == '{' ]] && continue
       # Stop: if not an inline comment
-      [[ "$line" =~ ^\`\# ]] || break
-      # Append to dic
+      [[ "${line:0:2}" == '`#' ]] || break
+      # Purge head and tail and concat
       [[ "$description" == "" ]] \
         && description+="${line:3:-2}" \
         || description+="$nl${line:3:-2}"
     done < <(typeset -f "$fct")
+    # Append to dic
     fct_dic["$fct"]="$description"
   done
 }
@@ -76,24 +81,27 @@ print_fct_usage(){
   `# short version`
   format="${1:-short}"
   # shellcheck disable=SC2207  # Prefer mapfile
-  IFS=$'\n' sorted_fct=($(sort <<<"${local_fct[*]}"))
+  IFS=$'\n' sorted_fct=($(sort <<<"${!fct_dic[*]}"))
   # shellcheck disable=SC2068  # Double quote
   if [[ "$format" == "complete" ]]; then
     for fct in ${sorted_fct[@]}; do
       COMPREPLY+=("$fct $line")
       read -r line < <(echo "${fct_dic[$fct]}")
+      line=$(eval echo "\"$line\"")
       echo "$fct - $line"
       #printf ">$cpurple%-13s$cend%s\n" "${fct#_}" "$line"
     done
   elif [[ "$format" == "short" ]]; then
     for fct in ${sorted_fct[@]}; do
       read -r line < <(echo "${fct_dic[$fct]}")
-      printf "$cpurple%-13s$cend%s\n" "${fct#_}" "$line"
+      line=$(eval echo "\"$line\"")
+      printf "$cpurple%-13s$cend$line\n" "${fct#_}"
     done
   else
     for fct in ${sorted_fct[@]}; do
       echo -e "$cpurple${fct#_}$cend"
       while read -r line; do
+        line=$(eval echo "\"$line\"")
         echo "  $line"
       done < <(echo "${fct_dic[$fct]}")
       echo
@@ -154,7 +162,9 @@ call_fct_arg(){
 
 can_color(){
   `# Test if stdoutput supports color`
-  if command -v tput > /dev/null && tput colors > /dev/null ; then
+  if command -v tput > /dev/null \
+      && tput colors > /dev/null \
+      && [[ "$1" != 'complete' ]] ; then
     return 0
   else
     return 1
@@ -195,13 +205,13 @@ set_print(){
 }
 
 # shellcheck disable=SC2034  # ... appears unused
-if can_color; then
-  cend="\e[0m"
-  cpurple="\e[38;5;135m"
-  cblue="\e[38;5;39m"
-  cgreen="\e[38;5;34m"
-  cred="\e[38;5;124m"
-  cyellow="\e[38;5;229m"
+if can_color $@; then
+  cend="\e[0m"             # Normal
+  cpurple="\e[38;5;135m"   # Titles
+  cblue="\e[38;5;39m"      # Bold
+  cgreen="\e[38;5;34m"     # Ok
+  cred="\e[38;5;124m"      # Error
+  cyellow="\e[38;5;229m"   # Code
 else
   cend=""
   cpurple=""
