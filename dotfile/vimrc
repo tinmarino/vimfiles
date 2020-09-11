@@ -573,6 +573,7 @@ filetype plugin indent on | syntax on
     nnoremap <Leader>ed :call Edit($h . '/wiki/todo/done.md')<CR>
     nnoremap <Leader>ef :e $v/ftplugin/<C-D>
     nnoremap <Leader>eg :call Edit($gitrc)<CR>
+    nnoremap <Leader>ei :call Edit($h . '/.inputrc')<CR>
     nnoremap <Leader>ep :call Edit($h . '/.bash_profile')<CR>
     nnoremap <Leader>et :call Edit($tmuxrc)<CR>
     nnoremap <Leader>ev :call Edit($vimrc)<CR>

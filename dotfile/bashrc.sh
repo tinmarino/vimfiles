@@ -10,6 +10,13 @@
   # Set USER
   [[ -z "$USER" ]] && command -v whoami > /dev/null && USER=$(whoami) && export USER
 
+# Do I need to load .bash_profile
+if [[ -z "$os" && -f "$HOME/.bash_profile" ]]; then
+    # shellcheck source=/home/tourneboeuf/.bashrc
+  echo Sourcing Profile
+	source "$HOME/.bash_profile"
+fi
+
 # Execute tmux
   if command -v tmux &> /dev/null \
       && [[ -z "$TMUX" \
