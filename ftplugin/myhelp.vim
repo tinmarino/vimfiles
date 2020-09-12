@@ -1,4 +1,3 @@
-
 " TAB
   set tabstop=4
   set expandtab
@@ -11,9 +10,6 @@
 
 
 " FOLD 
-  set foldmethod=expr
-  set foldexpr=FoldMyHelpMethod(v:lnum)
-
   function! FoldMyHelpMethod(lnum)
     let crLine = getline( a:lnum )
     if crLine =~ '^====\+$'

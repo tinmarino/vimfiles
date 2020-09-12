@@ -347,8 +347,19 @@ filetype plugin indent on | syntax on
     endfunction
     command! FzfRgFileFull call FzfRgFileFull()
 
-  " Ale
+  " ALE
+    " -- Ale python
     let g:ale_python_autopep8_options = '--indent-size=4  --max-line-length=120 '
+    " Removes flakes8
+    let g:ale_linters = {'python': ['mypy', 'pylint', 'pyright']}
+    let g:ale_pattern_options = {'.*\.md$': {'ale_enabled': 0}}
+    " -- Ale Bash
+    let si = '--exclude '
+    let si.= 'SC2155,'  " Declare and assign separately to avoid masking return values -> Prevent declare -a
+    let si.= 'SC2092,'  " Remove backticks
+    let si.='SC1090,'  " Can't follow file location with $
+
+    let g:ale_sh_shellcheck_options = si
 
 
 " PackAdd
@@ -358,7 +369,7 @@ filetype plugin indent on | syntax on
   packadd lastplace  " vi $VIMRUNTIME/vimrc_example.vim
   packadd submode  " Map C-W
 
-  function! TinPack(timer) abort
+  function! TimerPack(timer) abort
     " Lazy loader
     " Interface:
     packadd fugitive
@@ -374,12 +385,6 @@ filetype plugin indent on | syntax on
     packadd emacscommandline  " 3ms
     " Misc:
     packadd vader
-    " ALE:
-    " Removes flakes8
-    let g:ale_linters = {
-          \ 'python': ['mypy', 'pylint', 'pyright']}
-    let g:ale_pattern_options = {
-          \ '.*\.md$': {'ale_enabled': 0}}
     packadd ale
     " Youcompleteme: is verbose at init if no python
     try
@@ -397,9 +402,9 @@ filetype plugin indent on | syntax on
 
   " Call it
   if has('timers')
-    call timer_start(0, 'TinPack')
+    call timer_start(0, 'TimerPack')
   else
-    call TinPack(42)
+    call TimerPack(42)
   endif
 
 
@@ -412,7 +417,6 @@ filetype plugin indent on | syntax on
       colorscheme gruvbox
     catch /E185/
       echom 'Vimrc: Cannot load colorscheme'
-      colorscheme dante
     endtry
     set t_Co=256  " For airline and nice colors
     set formatoptions-=cro  " No auto comment
@@ -861,6 +865,11 @@ filetype plugin indent on | syntax on
   set foldmethod=indent
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0
   set foldlevelstart=30 "the folding at opening
+  if has('timers')
+    call timer_start(0, 'tin#fold_atom#main')
+  else
+    call tin#fold_atom#main()
+  endif
 
 
 " Filetype
@@ -876,10 +885,10 @@ filetype plugin indent on | syntax on
   " AlmaSw
     "" echo | g++ -E -Wp,-v -
     "" `gcc -print-prog-name=cpp` -v  # cpp for c preprocessor
-    "set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
-    "set path+=/usr/local/include
-    "set path+=/usr/include/x86_64-linux-gnu
-    "set path+=/usr/include
+    set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
+    set path+=/usr/local/include
+    set path+=/usr/include/x86_64-linux-gnu
+    set path+=/usr/include
     "" `gcc -print-prog-name=cc1plus` -v
     "set path+=/usr/include/c++/9/
     "set path+=/usr/include/c++/9

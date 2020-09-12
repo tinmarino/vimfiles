@@ -1,7 +1,7 @@
 
 " FOLD
-  set foldmethod=indent
-  set foldexpr=FoldCMethod(v:lnum)
+  "set foldmethod=indent
+  "set foldexpr=FoldCMethod(v:lnum)
 
   function! FoldCMethod(lnum)
     let crLine = getline( a:lnum ) 

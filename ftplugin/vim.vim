@@ -2,9 +2,8 @@
 " Compile is sourcing
 nnoremap <leader>c :update \| :so %<CR>:echo 'file sourced ' . expand('%')<CR>
 
-set foldmethod=indent
-set foldexpr=FoldVimMethod(v:lnum)
-set expandtab
+"set foldmethod=indent
+"set foldexpr=FoldVimMethod(v:lnum)
 
 function! FoldVimMethod(lnum)
   " check if endfunction or endif endfo for vim syntax 

@@ -256,8 +256,8 @@ fi
     --bind ctrl-u:half-page-up
     --bind ctrl-d:half-page-down
     --bind ctrl-s:toggle-sort
-    #--bind alt-u:preview-half-page-up
-    #--bind alt-d:preview-half-page-down
+    --bind alt-u:preview-page-up
+    --bind alt-d:preview-page-down
     #--bind ctrl-y:preview-up
     #--bind ctrl-e:preview-down
   )

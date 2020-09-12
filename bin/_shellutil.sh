@@ -1,28 +1,14 @@
 #!/usr/bin/env bash
-# Implement Shell utilities to hide the misery
+# Shell utilities to hide the misery
 #
 # Warning: cannot be sourced in main bashrc it will polute the declared functions
 #
-# shellcheck disable=SC2155  # Declare and assign separately to avoid masking return values
-# shellcheck disable=SC2092  # Remove backticks
-# shellcheck disable=SC2178  # Variable was used as an array but is now assigned a string
-#
 
 default_usage(){
-  `# Print this message`
-  #print_title "Default Usage"
-  msg="${cblue}Usage:$cend $(basename "$0") [options] function
-
-  ${cblue}Default Option list:
-  --------------------$cend
-    -h | --help           Print (this) help and exit
-
-  ${cblue}Function list:
-  --------------$cend
-  "
-  echo -ne "$msg" | sed -e 's/^[[:space:]]\{2\}//'
-  print_fct_usage; echo
+  `# Print this usage message`
+  print_usage_common
 }
+
 
 bin_path(){
   `# Print path of bin`
@@ -40,19 +26,16 @@ get_fct_dic(){
   # See copy: https://stackoverflow.com/questions/19417015/how-to-copy-an-array-in-bash
   # See delete: https://stackoverflow.com/questions/16860877/remove-an-element-from-a-bash-array
   tps=("${post_fct[@]}")
-  # shellcheck disable=SC2068
+  # shellcheck disable=SC2068  # Use quotes
   for item in ${pre_fct[@]}; do
-    # shellcheck disable=SC2206  # Quote
-    #local_fct=( [${post_fct[@]//${i}}]="" )
     # Replace item
     tps=("${tps[@]/$item}")
   done
   tps=("${tps[@]//}")
-  # shellcheck disable=SC2206
   local_fct=("${tps[@]}")
 
   # Get functions docstring
-  # shellcheck disable=SC2068
+  # shellcheck disable=SC2068  # Use quotes
   for fct in ${local_fct[@]}; do
     # Clause: Hide function starting with `__`
     [[ "${fct:0:2}" == "__" ]] && continue
@@ -75,38 +58,158 @@ get_fct_dic(){
   done
 }
 
-print_fct_usage(){
+print_usage_fct(){
   `# Echo functon description`
-  `# :param1: <ref> function dictionary <- get_fct_dic`
+  `# :param1: format <string>: short, long`
+  `# :param2: type <string>: option, function`
   `# short version`
-  format="${1:-short}"
+  local format="${1:-short}"
+  local typee="${2:-function}"
   # shellcheck disable=SC2207  # Prefer mapfile
   IFS=$'\n' sorted_fct=($(sort <<<"${!fct_dic[*]}"))
   # shellcheck disable=SC2068  # Double quote
-  if [[ "$format" == "complete" ]]; then
-    for fct in ${sorted_fct[@]}; do
+  for fct in ${sorted_fct[@]}; do
+    arg="$fct"
+    # Clause: Pass -h, --help and set_env
+    if [[ "${fct}" == "set_env" ]]; then
+      continue
+    fi
+    if [[ "${fct:0:3}" == "mm_" ]]; then
+      if [[ "$typee" == "option" ]]; then
+        arg="--${fct:3}"
+      else
+        continue
+      fi
+    fi
+    if [[ "${fct:0:2}" == "m_" ]]; then
+      if [[ "$typee" == "option" ]]; then
+        arg="--${fct:2}"
+      else
+        continue
+      fi
+    fi
+    if [[ "$typee" == "option" ]] \
+        && [[ "${fct:0:2}" != "m_"  && "${fct:0:3}" != "mm_" ]]; then
+      continue
+    fi
+
+    if [[ "$format" == "complete" ]]; then
       COMPREPLY+=("$fct $line")
       read -r line < <(echo "${fct_dic[$fct]}")
       line=$(eval echo "\"$line\"")
-      echo "$fct - $line"
+      echo "$arg - $line"
       #printf ">$cpurple%-13s$cend%s\n" "${fct#_}" "$line"
-    done
-  elif [[ "$format" == "short" ]]; then
-    for fct in ${sorted_fct[@]}; do
+    elif [[ "$format" == "short" ]]; then
       read -r line < <(echo "${fct_dic[$fct]}")
       line=$(eval echo "\"$line\"")
-      printf "$cpurple%-13s$cend$line\n" "${fct#_}"
-    done
-  else
-    for fct in ${sorted_fct[@]}; do
+      printf "$cpurple%-13s$cend  $line\n" "${arg}"
+    else
       echo -e "$cpurple${fct#_}$cend"
       while read -r line; do
         line=$(eval echo "\"$line\"")
         echo "  $line"
       done < <(echo "${fct_dic[$fct]}")
       echo
-    done
+    fi
+  done
+}
+
+call_fct_arg(){
+  `# Call function from trailing arguments (after options)`
+  `# :param1: <ref> argumet array`
+  # Clause: Do not work without argument
+  if [[ -z "$*" ]]; then
+    switch_usage;
   fi
+
+  local b_is_subcommand=0
+  for arg in "$@"; do
+    shift
+    # shellcheck disable=SC2076  # Don't quote right-hand side of =
+    if [[ "complete" == "$arg" ]]; then
+      print_usage_fct "complete"
+      break
+    elif ((b_is_subcommand)); then
+      break
+    elif [[ "-h" == "$arg" || "--help" == "$arg"  || "help" == "$arg" \
+        || "usage" == "$arg" || "_usage" == "$arg" ]]; then
+      switch_usage
+      exit 0;
+    elif [[ "-p" == "$arg" || "--print" == "$arg" ]] ; then
+      set_print
+    elif [[ "${arg:0:2}" == "--" ]] \
+        && fct="${arg:2}" && fct="mm_${fct//-/_}" \
+        && [[ " ${!fct_dic[*]} " =~ " $fct " ]]; then
+      "$fct" "$@"
+    elif [[ "${arg:0:1}" == "-" && " ${!fct_dic[*]} " =~ " m_$arg " ]]; then
+      "m_$arg" "$@"
+    elif [[ " ${!fct_dic[*]} " =~ " $arg " ]]; then
+      b_is_subcommand=1
+      "$arg" "$@"
+    elif [[ " ${!fct_dic[*]} " =~ " _$arg " ]]; then
+      b_is_subcommand=1
+      "_$arg" "$@"
+    else
+      echo -e "${cred}ERROR: ShellUtil: $0: unknown argument: $arg => Ciao!"
+      exit "$error_arg"
+    fi
+  done
+}
+
+register_subcommand(){
+  `# Register a sub command`
+  `# Used for function call and completion`
+  fct="$1"
+  file="$2"
+  description=$(awk 'NR == 2' "$file")
+  # Purge head and tail
+  description="${description:3:-2}"
+  # Append to dictionaries
+  fct_dic["$fct"]="$description"
+  cmd_dic["$fct"]="$file"
+}
+
+print_usage_env(){
+  `# Print Environment varaibles used`
+  # shellcheck disable=SC2034  # set_env appears unused
+  typeset -f set_env | awk -v cpurple="\\$cpurple" -v cend="\\$cend" '
+    BEGIN { FS=":=" }
+    /:/ {
+      gsub("^ *: *\"\\$\\{|\\}\";$", "", $0) ;
+      slen=20-length($1); if(slen < 2) slen=2 ;
+      s=sprintf("%-*s", slen , " ");
+      gsub(/ /,"-",s);
+      printf("%s%s%s  %s  %s\n", cpurple, $1, cend, s, $2);
+    }
+  '
+}
+
+print_usage_common(){
+  `# Print Usage Tail: Fct, Option, Env`
+  msg="${cblue}Usage:$cend ${cpurple}$(basename "$0")$cend [options] function"
+
+  list="$(print_usage_fct)"
+  [[ -n "$list" ]] && msg+="
+  ${cblue}Function list:
+  --------------$cend
+  $list
+  "
+
+  list="$(print_usage_fct short option)"
+  [[ -n "$list" ]] && msg+="
+  ${cblue}Option list:
+  ------------$cend
+  $list
+  "
+
+  list="$(print_usage_env)"
+  [[ -n "$list" ]] && msg+="
+  ${cblue}Environment variable:
+  ---------------------$cend
+  $list
+  "
+
+  echo -ne "$msg" | sed -e 's/^[[:space:]]\{2\}//'
 }
 
 switch_usage(){
@@ -118,46 +221,6 @@ switch_usage(){
   else
     default_usage
   fi
-}
-
-call_fct_arg(){
-  `# Call function from trailing arguments (after options)`
-  `# :param1: <ref> argumet array`
-  declare -n l_args=$1
-
-  # Clause: Do not work without argument
-  if [[ -z "${l_args[*]}" ]]; then
-    switch_usage;
-    exit 0;
-  fi
-
-  local b_is_subcommand=0
-  set -- "${l_args[@]}"
-  for arg in "$@"; do
-    shift
-    # shellcheck disable=SC2076  # Don't quote right-hand side of =
-    if [[ "complete" == "$arg" ]]; then
-      print_fct_usage "complete"
-      break
-    elif ((b_is_subcommand)); then
-      break
-    elif [[ "-h" == "$arg" || "--help" == "$arg"  || "help" == "$arg" \
-        || "usage" == "$arg" || "_usage" == "$arg" ]]; then
-      switch_usage;
-      exit 0;
-    elif [[ " ${!fct_dic[*]} " =~ " $arg " ]]; then
-      b_is_subcommand=1
-      # shellcheck disable=SC2068  # Double quote array
-      "$arg" "$@"  # ${l_args[@]}
-    elif [[ " ${!fct_dic[*]} " =~ " _$arg " ]]; then
-      b_is_subcommand=1
-      # shellcheck disable=SC2068  # Double quote array
-      "_$arg" "$@"  # ${l_args[@]}
-    else
-      echo -e "${cred}ERROR: ShellUtil: $0: unknown argument: $arg => Ciao!"
-      exit "$error_arg"
-    fi
-  done
 }
 
 can_color(){
@@ -172,21 +235,34 @@ can_color(){
 }
 
 print_script_start(){
-  `# Echo: script starting => for log and debug`
-  echo -e "${cgreen}-------------------------------------------------"
-  echo -e "IrmJenkins: $0: Starting at: $(date "+%Y-%m-%dT%H:%M:%S")"
-  echo -e "-------------------------------------------------$cend"
+  `# Echo: script starting => for log`
+  start_time=$(date +%s)
+  echo -e "${cgreen}--------------------------------------------------------"
+  echo -e "ShellUtil: $(basename "$0"): Starting at: $(date "+%Y-%m-%dT%H:%M:%S")"
+  echo -e "--------------------------------------------------------$cend"
+}
+
+print_script_end(){
+  `# Echo: script ending + time elapsed => for log`
+  # Calcultate time
+  local end_time=$(date +%s)
+  local sec_time=$((end_time - start_time))
+  printf -v script_time '%dh:%dm:%ds' $((sec_time/3600)) $((sec_time%3600/60)) $((sec_time%60))
+  echo -e "${cgreen}------------------------------------------------------"
+  echo -e "ShellUtil: $(basename "$0"): Ending at: $(date "+%Y-%m-%dT%H:%M:%S")$cend"
+  echo -e "  # After: $script_time"
+  echo -e "${cgreen}------------------------------------------------------$cend"
 }
 
 print_n_run(){
   `# Print and run command passed as array reference`
-  declare -n l_cmd=$1
   # Note: The "${var@Q}" expansion quotes the variable such that it can be parsed back by bash. Since bash 4.4: 17 Sep 2016
   # -- ALMA has Bash 4.2: 2011
   # -- Link: https://stackoverflow.com/questions/12985178
   res=0
-  echo -e "${cyellow}IrmJenkins: $0: Running: $(printf "'%s' " "${l_cmd[@]}")  # at $(date "+%Y-%m-%dT%H:%M:%S")$cend"
-  ((b_run)) && { eval "${l_cmd[@]}"; res=$?; }
+  echo -e "${cpurple}ShellUtil: $(basename "$0"): Running:$cend ${cyellow}$(printf "'%s' " "$@")$cend"
+  echo -e "  # at $(date "+%Y-%m-%dT%H:%M:%S") in $PWD"
+  ((b_run)) && { eval "$@"; res=$?; }
   return $res
 }
 
@@ -204,35 +280,49 @@ set_print(){
   b_run=0
 }
 
-# shellcheck disable=SC2034  # ... appears unused
-if can_color $@; then
-  cend="\e[0m"             # Normal
-  cpurple="\e[38;5;135m"   # Titles
-  cblue="\e[38;5;39m"      # Bold
-  cgreen="\e[38;5;34m"     # Ok
-  cred="\e[38;5;124m"      # Error
-  cyellow="\e[38;5;229m"   # Code
-else
-  cend=""
-  cpurple=""
-  cblue=""
-  cgreen=""
-  cred=""
-fi
 
-# Path here
-# shellcheck disable=SC2034  # bin_path appears unused
-bin_path=$(bin_path)
+shellutil_main(){
+  `# Main function`
+  if can_color "$@"; then
+    cend="\e[0m"             # Normal
+    cpurple="\e[38;5;135m"   # Titles
+    cblue="\e[38;5;39m"      # Bold
+    cgreen="\e[38;5;34m"     # Ok
+    cred="\e[38;5;124m"      # Error
+    cyellow="\e[38;5;229m"   # Code
+  elif false; then
+    cend="\e[0m"       # Normal
+    cred="\e[31m"      # Error
+    cgreen="\e[32m"    # Ok
+    cyellow="\e[33m"   # Code
+    cblue="\e[34m"     # Bold
+    cpurple="\e[35m"   # Titles
+  else
+    cend=""
+    cpurple=""
+    cblue=""
+    cgreen=""
+    cred=""
+  fi
+  
+  # Path here
+  # shellcheck disable=SC2034  # bin_path appears unused
+  bin_path=$(bin_path)
+  
+  # Error values
+  # shellcheck disable=SC2034
+  error_cd=2
+  error_arg=3
+  
+  # By default, run commands
+  b_run=1
 
-# Error values
-# shellcheck disable=SC2034
-error_cd=2
-error_arg=3
+  # Register caller functions
+  declare -a pre_fct=$(declare -F -p | cut -d " " -f 3)
+  declare -A fct_dic
+  declare -A cmd_dic
+}
 
-# By default, run commands
-b_run=1
+shellutil_main "$@"
 
-
-# Register caller functions
-declare -a pre_fct=$(declare -F -p | cut -d " " -f 3)
-declare -A fct_dic
+# vim:sw=2:ts=2:

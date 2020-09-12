@@ -2,6 +2,8 @@
 # Chio command switch
 #
 # shellcheck disable=SC2092  # Remove backticks
+# shellcheck disable=SC1090  # Can't follow non-constant source
+# shellcheck disable=SC2059  # Don't use variables in the printf format string
 
 # Here is the magic
 source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
@@ -10,9 +12,10 @@ source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
 docgit(){
   `# Print git commands: push and pull`
+  # shellcheck disable=SC2154  # cred is referenced but not assigned
   printf "${cblue}Send to internet:$cend\n"
   printf "  %-20s  # Add your file to the future snapshot,\n" "git add all"
-  printf "  %-20s  # maybe you do not want to snapshot all the folder\n"
+  printf "  %-20s  # maybe you do not want to snapshot all the folder\n" " "
   printf "\n"
   printf "  %-20s\n" "git commit -m 'This is the message of the snapshot'"
   printf "\n"
@@ -50,6 +53,7 @@ docredshift(){
 }
 
 __ff_check_arg(){
+  # shellcheck disable=SC2154  # cred is referenced but not assigned
   if (($# != 2 )); then
     echo "${cred}Bad usage:$cend I need two agument: file_in and file_out"
     echo "And I received $# arguments"
@@ -59,13 +63,13 @@ __ff_check_arg(){
 
 fftv(){
   `# Convert video for ${cblue}TeleVision$cend: ${cyellow}chio fftv archivo_in.avi archivo_out.avi$cend`
-  __ff_check_arg $@
+  __ff_check_arg "$@"
   ffmpeg -i "$1"  -f avi -c:v mpeg4 -b:v 4000k -c:a libmp3lame -b:a 320k  "$2"
 }
 
 ffgif(){
   `# Convert video to ${cblue}Gif$cend: ${cyellow}chio ffgif file_in.avi file_out.gif$cend`
-  __ff_check_arg $@
+  __ff_check_arg "$@"
   ffmpeg  -i "$1" -vf "fps=10,scale=640:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 "$2";
 }
 
