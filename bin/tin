@@ -7,7 +7,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 register_subcommand doc "$bin_path/tin_doc" 
 register_subcommand tin "$bin_path/tin" 
 register_subcommand game "$bin_path/tin_game" 
-register_subcommand sync "$bin_path/sync_wiki.sh" 
+register_subcommand sync "$bin_path/tin_sync" 
 
 args(){
   `# Debug: Print args passed`

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Synchronize wikis, and .vim
 
 source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
