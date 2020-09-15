@@ -316,13 +316,13 @@ shellutil_main(){
   
   # By default, run commands
   b_run=1
-
-  # Register caller functions
-  declare -a pre_fct=$(declare -F -p | cut -d " " -f 3)
-  declare -A fct_dic
-  declare -A cmd_dic
 }
 
 shellutil_main "$@"
+
+# Register caller functions
+declare -a pre_fct=$(declare -F -p | cut -d " " -f 3)
+declare -A fct_dic
+declare -A cmd_dic
 
 # vim:sw=2:ts=2:

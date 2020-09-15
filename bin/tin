@@ -9,7 +9,7 @@ register_subcommand doc "$bin_path/tin"
 
 doc(){
   `# Subcommand Print Documentation`
-  "$bin_path/tin_doc" $@
+  "$bin_path/tin_doc" "$@"
 }
 
 args(){
@@ -32,7 +32,7 @@ fzf(){
   echo called fzf
 }
 
-bin_path=$(bin_path)
 get_fct_dic
+bin_path=$(bin_path)
 call_fct_arg "$@"
 # vim:sw=2:ts=2:
