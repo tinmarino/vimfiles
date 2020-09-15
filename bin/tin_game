@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Play bash games
+# shellcheck disable=SC2092  # Remove backticks
+
+# shellcheck disable=SC1090  # Can't follow non-constant source
+source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
+
+#_usage(){
+#  `# Print this message`
+#  print_title "Game"
+#  print_usage_fct
+#}
+
+_tetris(){
+  `# Tetris by Kirill Timofeev`
+  bash "$bin_path/lib/game/tetris.sh"
+}
+
+_2048(){
+  `# 2048`
+  bash "$bin_path/lib/game/bash2048.sh"
+}
+
+mine(){
+  `# Demineur`
+  bash "$bin_path/lib/game/minesweeper.sh"
+}
+
+_shellshock(){
+  `# Plane shooter, Graphics++`
+  bash "$bin_path/lib/game/shellshock.sh"
+}
+
+_snake(){
+  `# Snake game`
+  bash "$bin_path/lib/game/snake.sh"
+}
+
+_housenka(){
+  `# Snake, Graphics++`
+  bash "$bin_path/lib/game/housenka.sh"
+}
+
+get_fct_dic
+bin_path=$(bin_path)
+call_fct_arg "$@"
+# vim:sw=2:ts=2:

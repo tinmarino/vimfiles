@@ -6,6 +6,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
 register_subcommand doc "$bin_path/tin_doc" 
 register_subcommand tin "$bin_path/tin" 
+register_subcommand game "$bin_path/tin_game" 
 
 args(){
   `# Debug: Print args passed`
@@ -15,16 +16,6 @@ args(){
     echo "Arg $i: $var!"
     ((i++))
   done
-}
-
-sync(){
-  `# Test sync`
-  echo called sync
-}
-
-fzf(){
-  `# Test fzf`
-  echo called fzf
 }
 
 get_fct_dic

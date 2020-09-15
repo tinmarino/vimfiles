@@ -64,7 +64,9 @@ _tin_complete()
   #fi
 
 } && {
-  complete -F "_tin_complete" tin_doc
   complete -F "_tin_complete" tin
   complete -F "_tin_complete" chio
+
+  complete -F "_tin_complete" tin_doc
+  complete -F "_tin_complete" tin_game
 }

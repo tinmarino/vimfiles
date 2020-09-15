@@ -164,7 +164,6 @@ call_fct_arg(){
       # If registered as subcommand
       b_is_subcommand=1
       cmd="${cmd_dic["$arg"]}"
-      echo -e "\nCalling $cmd , $*" >> log
       "$cmd" "$@"
     elif [[ "-h" == "$arg" || "--help" == "$arg"  || "help" == "$arg" \
         || "usage" == "$arg" || "_usage" == "$arg" ]]; then
