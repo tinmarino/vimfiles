@@ -1,28 +1,17 @@
 #!/bin/bash
 # Synchronize wikis, and .vim
 
+source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
+
 s_error_msg=''
 
-usage() {
-  cat << '    EOF' | sed -e 's/^        //'
-    Usage: sync_wiki.sh [OPTIONS]
-
-    Synchronize files in ~/wiki folder
-
-    -h, --help (Help) Print this help message
-
-    -a, --all  (All)  Sync all except vim (if fire: do -av)
-    -r, --rosetta  (Rosetta)  Sync Rosetta Stone code ~/wiki/rosetta
-    -s, --site (Site) Sync ~/wiki/html folder (dump of pages)
-    -v, --vim  (Vim)  Sync ~/.vim folder
-    -x, --html (Html) Sync ~/wiki/*_html generated folders
-    -w, --wiki (Wiki) Sync ~/wiki/ default wiki (set by default, reset by -r)
-    EOF
-
-  exit 0
+_usage(){
+  `# Print this message`
+  print_title "Synchronization"
+  print_usage_fct
 }
 
-function ssync_wget(){
+__wget(){
   check="$1"
   check="${check%%.tar.bz2}"
   if [[ -e "$check" ]]; then
@@ -45,15 +34,15 @@ function ssync_wget(){
 }
 
 # Get online documentation
-function ssync_site(){
+function __site(){
   echo -e "${ctitle}--->  SITES  =================================================\e[0m"
-  ssync_wget "$1/Bash/bash_reference.html" "https://www.gnu.org/software/bash/manual/bash.html"
-  ssync_wget "$1/Bash/bash_advanced_bash_scripting.html" "https://tldp.org/LDP/abs/html/abs-guide.html"
-  ssync_wget "$1/Python/python-3.8.5-docs-html.tar.bz2" "https://docs.python.org/3.8/archives/python-3.8.5-docs-html.tar.bz2"
+  __wget "$1/Bash/bash_reference.html" "https://www.gnu.org/software/bash/manual/bash.html"
+  __wget "$1/Bash/bash_advanced_bash_scripting.html" "https://tldp.org/LDP/abs/html/abs-guide.html"
+  __wget "$1/Python/python-3.8.5-docs-html.tar.bz2" "https://docs.python.org/3.8/archives/python-3.8.5-docs-html.tar.bz2"
 }
 
 # Sychrnonize argument folder
-function ssync_base(){
+function __base(){
   # 1: Local Diretory
   # 2: Remote URL
   # 3: Sync command: ex: "pull --rebase"
@@ -108,8 +97,8 @@ function ssync_base(){
 }
 
 # Proxy counting errors
-function ssync(){
-  ((n++)); ssync_base "$1" "$2" "$3"  && ((ok++))
+__sync(){
+  ((n++)); __base "$1" "$2" "$3"  && ((ok++))
 }
 
 ((ok=0))
@@ -119,83 +108,50 @@ cend="\e[1m\e[38;5;39m"
 cgood="\e[1m\e[38;5;46m"
 cbad="\e[1m\e[38;5;196m"
 
-((ball=0))
-((brosetta=0))
-((bsite=0))
-((bvim=0))
-((bwiki=0))
-((bhtml=0))
-
-# $@ is all command line parameters passed to the script.
-# -o is for short options like -v
-# -l is for long options with double dash like --version
-options=$(getopt \
-  -l "all,help,rosetta,site,vim,html,wiki" \
-  -o "ahrsvxw" -- "$@")
-
-# set --:
-# If no arguments follow this option, then the positional parameters are unset. Otherwise, the positional parameters
-# are set to the arguments, even if some of them begin with a ‘-’.
-eval set -- "$options"
-echo -n "Args: "
-while true; do
-  case "$1" in
-    -a|--all)
-      echo -n "All, "
-      ((ball=1))
-      ;;
-    -h|--help)
-      usage
-      ;;
-    -r|--rosetta)
-      echo -n "Rosetta, "
-      ((brosetta=1))
-      ;;
-    -s|--site)
-      echo -n "Site, "
-      ((bsite=1))
-      ;;
-    -v|--vim)
-      echo -n "Vim, "
-      ((bvim=1))
-      ;;
-    -w|--wiki)
-      echo -n "Wiki, "
-      ((bwiki=1))
-      ;;
-    -x|--html)
-      echo -n "Html, "
-      ((bhtml=1))
-      ;;
-    --)
-      shift
-      break
-      ;;
-  esac
-  shift
-done
-echo
-
 ## Bold blue
 echo -e "${cend}---> Synchronizing from internet\e[0m"
 
-# let n++ ; ssync ~/.vim           && let ok++
-((ball || bsite))    && ssync_site ~/wiki/html
-((ball || bwiki))    && ssync ~/wiki/todo      https://gitlab.com/tinmarino/todo.git
-((ball || bwiki))    && ssync ~/wiki/wiki      https://github.com/tinmarino/wiki
-((ball || bwiki))    && ssync ~/wiki/alki      https://gitlab.com/tinmarino/alki.git
-((ball || bhtml))    && ssync ~/wiki/wiki_html https://github.com/tinmarino/wiki_html
-((ball || bhtml))    && ssync ~/wiki/alki_html https://gitlab.com/tinmarino/alki_html.git
-((ball || brosetta)) && ssync ~/wiki/rosetta   https://github.com/acmeism/RosettaCodeData "git pull --rebase"
-# shellcheck disable=SC2154
-((bvim))           && ssync "$v"             https://github.com/tinmarino/vimfiles
+site(){
+  `# Site: Sync ~/wiki/html folder: dump of pages`
+  __site ~/wiki/html
+}
+wiki(){
+  `# Wiki: Sync ~/wiki/ default wiki: set by default, reset by -r`
+  __sync ~/wiki/todo      https://gitlab.com/tinmarino/todo.git
+  __sync ~/wiki/wiki      https://github.com/tinmarino/wiki
+  __sync ~/wiki/alki      https://gitlab.com/tinmarino/alki.git
+}
 
+rosetta(){
+  `# Sync Rosetta Stone code ~/wiki/rosetta`
+  __sync ~/wiki/rosetta   https://github.com/acmeism/RosettaCodeData "git pull --rebase"
+}
+html(){
+  `#Html: Sync ~/wiki/*_html generated folders`
+  __sync ~/wiki/wiki_html https://github.com/tinmarino/wiki_html
+  __sync ~/wiki/alki_html https://gitlab.com/tinmarino/alki_html.git
+}
+vim(){
+  `# Vim: Sync ~/.vim folder`
+  # shellcheck disable=SC2154
+  __sync "$v"             https://github.com/tinmarino/vimfiles
+}
+all(){
+  `# All: Sync all except vim`
+  wiki; rosetta; html; site;
+}
+
+
+
+get_fct_dic
+call_fct_arg "$@"
 
 cout="$cbad"
 if ((ok == n)); then
   cout="$cgood"
 fi
 echo "$s_error_msg"
+
 echo -e "${cend}<--- Synchronization finished with: ${cout}$ok/$n\e[0m"
 
 # vim:sw=2:ts=2:

@@ -5,11 +5,11 @@
 # shellcheck disable=SC1090  # Can't follow non-constant source
 source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
-#_usage(){
-#  `# Print this message`
-#  print_title "Game"
-#  print_usage_fct
-#}
+_usage(){
+  `# Print this message`
+  print_title "Game"
+  print_usage_fct
+}
 
 _tetris(){
   `# Tetris by Kirill Timofeev`
