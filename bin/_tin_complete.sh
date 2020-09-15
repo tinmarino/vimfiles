@@ -5,7 +5,10 @@
 # 1. command name
 # 2. arg_lead
 # 3. pre_arg_lead
+# 4. array of word
 # $COMP_LINE all line
+# $COMP_CWORD Index of cursor in word unit
+# -- $COMP_WORDS[@] all words not passed in env <- array
 # See: padding: https://stackoverflow.com/questions/4409399
 
 _tin_complete()
@@ -13,9 +16,17 @@ _tin_complete()
   #local cur prev words cword
   #_init_completion || return
   local pad_raw='-----------------'
-  local prefix_raw='-- '
 
-  readarray -t output < <($1 complete "$1" "$2" "$3")
+  export TIN_TEST=3
+  export TIN_TEST3=(alpha bravo charlie)
+  export TIN_TEST4="alpha bravo charlie"
+  declare -a TIN_TEST2=("${COMP_WORDS[@]}")
+  export TIN_TEST2
+  export COMP_CWORD
+  # echo -e "\nTin in first: ${COMP_WORDS[*]}, $COMP_CWORD" >> log
+
+  # Launch command
+  readarray -t output < <($1 complete "$1" "$2" "$3" "${COMP_WORDS[@]}")
 
   COMPREPLY=()
   for line in "${output[@]}"; do
@@ -53,7 +64,7 @@ _tin_complete()
   #fi
 
 } && {
-
+  complete -F "_tin_complete" tin_doc
   complete -F "_tin_complete" tin
   complete -F "_tin_complete" chio
 }

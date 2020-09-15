@@ -5,12 +5,7 @@
 source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
 register_subcommand doc "$bin_path/tin_doc" 
-register_subcommand doc "$bin_path/tin" 
-
-doc(){
-  `# Subcommand Print Documentation`
-  "$bin_path/tin_doc" "$@"
-}
+register_subcommand tin "$bin_path/tin" 
 
 args(){
   `# Debug: Print args passed`

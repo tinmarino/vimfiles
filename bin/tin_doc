@@ -8,13 +8,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 _usage(){
   `# Print this message`
   print_title "Documentation"
-  msg="${cblue}Usage:$cend $(basename "$0") function
-
-  ${cblue}Function list:
-  --------------$cend
-  "
-  echo -ne "$msg" | sed -e 's/^[[:space:]]\{2\}//'
-  print_fct_usage; echo
+  print_usage_fct
 }
 
 _sed(){
@@ -32,7 +26,7 @@ _color(){
 }
 
 _tin_command(){
-  `# Print description of all commands in current directory"`
+  `# Print description of all commands in current directory`
   for cmd in $(ls -p | grep -v /); do
     desc=$(awk 'NR == 2' "$cmd")
     desc=${desc###}; desc=${desc## }
@@ -41,7 +35,5 @@ _tin_command(){
 }
 
 get_fct_dic
-
-# shellcheck disable=SC2034  # Unsued
-declare -a args=("$@")
-call_fct_arg args
+call_fct_arg "$@"
+# vim:sw=2:ts=2:

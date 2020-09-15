@@ -3,6 +3,7 @@
 #
 # Warning: cannot be sourced in main bashrc it will polute the declared functions
 #
+# shellcheck disable=SC2076  # Don't quote right-hand side of =
 
 default_usage(){
   `# Print this usage message`
@@ -65,6 +66,32 @@ print_usage_fct(){
   `# short version`
   local format="${1:-short}"
   local typee="${2:-function}"
+
+  if [[ "$format" == "complete" ]]; then
+    # Supposing array is given as argument number 4 to caller command
+    ARG_TAIL=("${@:5}")
+    #echo "ARG tail : ${ARG_TAIL[*]}" >> log
+    # From: https://stackoverflow.com/questions/17879322/how-do-i-autocomplete-nested-multi-level-subcommands
+    #echo Array2: ${ARG_TAIL[*]} >> log
+    # Unused
+    #cur=${ARG_TAIL[COMP_CWORD]}
+    prev=${ARG_TAIL[COMP_CWORD-1]}
+
+    if [[ ${COMP_CWORD} == 2 ]]; then
+      #echo  in second word: ${ARG_TAIL[2]} , $cur,  $prev with keys: ${!cmd_dic[*]} >> log
+      if [[ " ${!cmd_dic[*]} " =~ " $prev " ]]; then
+        #echo -e "\n I know this command !!prev $prev\n I call it" >> log
+        cmd="${cmd_dic["$prev"]}"
+        # echo "RIN: $cmd" complete "$2" "$3" "$4" "${ARG_TAIL[@]}" >> log
+        res=$("$cmd" complete "$2" "$3" "$4" "${ARG_TAIL[@]}")
+        #echo "Returned: $res" >> log
+        echo -ne "$res"
+        #echo -e "Exiting \n" >> log
+        return
+      fi
+    fi
+  fi
+
   # shellcheck disable=SC2207  # Prefer mapfile
   IFS=$'\n' sorted_fct=($(sort <<<"${!fct_dic[*]}"))
   # shellcheck disable=SC2068  # Double quote
@@ -88,13 +115,16 @@ print_usage_fct(){
         continue
       fi
     fi
+    if [[ "${fct:0:1}" == "_" ]]; then
+      # Removes _ prefix
+      arg="${fct:1}"
+    fi
     if [[ "$typee" == "option" ]] \
         && [[ "${fct:0:2}" != "m_"  && "${fct:0:3}" != "mm_" ]]; then
       continue
     fi
 
     if [[ "$format" == "complete" ]]; then
-      COMPREPLY+=("$fct $line")
       read -r line < <(echo "${fct_dic[$fct]}")
       line=$(eval echo "\"$line\"")
       echo "$arg - $line"
@@ -125,12 +155,17 @@ call_fct_arg(){
   local b_is_subcommand=0
   for arg in "$@"; do
     shift
-    # shellcheck disable=SC2076  # Don't quote right-hand side of =
     if [[ "complete" == "$arg" ]]; then
-      print_usage_fct "complete"
+      print_usage_fct "complete" "$@"
       break
     elif ((b_is_subcommand)); then
       break
+    elif [[ " ${!cmd_dic[*]} " =~ " $arg " ]]; then
+      # If registered as subcommand
+      b_is_subcommand=1
+      cmd="${cmd_dic["$arg"]}"
+      echo -e "\nCalling $cmd , $*" >> log
+      "$cmd" "$@"
     elif [[ "-h" == "$arg" || "--help" == "$arg"  || "help" == "$arg" \
         || "usage" == "$arg" || "_usage" == "$arg" ]]; then
       switch_usage
@@ -163,7 +198,7 @@ register_subcommand(){
   file="$2"
   description=$(awk 'NR == 2' "$file")
   # Purge head and tail
-  description="${description:3:-2}"
+  description="${description:2:-1}"
   # Append to dictionaries
   fct_dic["$fct"]="$description"
   cmd_dic["$fct"]="$file"
