@@ -4,6 +4,8 @@
 if [ -z "$BASH_VERSION" ]; then
   exit
 fi
+# DEBUG
+export BASHPROFILE_SOURCED=1
 
 # Init, Variables
   # Set OS
@@ -157,26 +159,8 @@ fi
   }
   export -f parse_title
 
-  # Title: Host: CD
-  PS1='\[\e]0;\]`parse_title`\007'
-  # CD (green)
-  PS1+='\[\e[32m\]\w'
-  # Git Branch (yellow)
-  PS1+='\[\e[33m\]'
-  PS1+='`parse_git_branch`'
-  PS1+='\[\e[00m\]'
-  # New line
-  PS1+='\n$ '
-  export PS1
-
 
 # Include, Source, Extension
-  # Alias
-  if [[ -f "$HOME/.bash_aliases.sh" ]]; then
-    # shellcheck source=/home/tourneboeuf/.bash_aliases.sh
-    source "$HOME/.bash_aliases.sh"
-  fi
-
   ############
   # Completion
   #bcan_complete=0
@@ -273,14 +257,6 @@ fi
   [[ -f "$v/bin/_tinrc-fzf-function.sh" ]] && source "$v/bin/_tinrc-fzf-function.sh"
   # shellcheck source=/home/tourneboeuf/Program/ForGit/forgit.plugin.sh
   [[ -f "$h/Program/ForGit/forgit.plugin.sh" ]] && source "$h/Program/ForGit/forgit.plugin.sh"
-
-
-# Bind
-  # Enable Readline not waiting for additional input when a key is pressed.
-  set keyseq-timeout 10
-  bind -x '"\ee":fo'
-  bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
-
 
 
 # if running bash

@@ -21,14 +21,15 @@ endfunction
 function! tin#fold_atom#atom_fold_expr(line_number) abort
   " Indent Fold Enhanced for single line
   " -- set foldexpr=AtomStyleFolding(v:lnum)
-  if getline(a:line_number) =~# g:regexp_blank
-    if getline(a:line_number+1) =~# g:regexp_blank
-      return '='
-    endif
-    let res = g:next_close
-    let g:next_close = '='
-    return res
-  endif
+  " TODO REad the doc if want =, -1. COmment more (important function)
+  "if getline(a:line_number) =~# g:regexp_blank
+  "  if getline(a:line_number+1) =~# g:regexp_blank
+  "    return '='
+  "  endif
+  "  let res = g:next_close
+  "  let g:next_close = '='
+  "  return res
+  "endif
  
   let indent_width = &shiftwidth
 
@@ -50,7 +51,7 @@ function! tin#fold_atom#atom_fold_expr(line_number) abort
       let g:next_close = '='
       return res
     endif
-  elseif indent_below < indent && getline(a:line_number + 1) !~# g:fold_close
+  elseif indent_below < indent  "&& getline(a:line_number + 1) !~# g:fold_close
     return '<' . indent
   else
     return indent

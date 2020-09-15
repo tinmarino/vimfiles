@@ -11,11 +11,11 @@
   [[ -z "$USER" ]] && command -v whoami > /dev/null && USER=$(whoami) && export USER
 
 # Do I need to load .bash_profile
-if [[ -z "$os" && -f "$HOME/.bash_profile" ]]; then
-    # shellcheck source=/home/tourneboeuf/.bashrc
-  echo Sourcing Profile
-	source "$HOME/.bash_profile"
-fi
+  if [[ -z "$os" && -z "$v" && -f "$HOME/.bash_profile" ]]; then
+      # shellcheck source=/home/tourneboeuf/.bashrc
+    echo Sourcing Profile
+  	source "$HOME/.bash_profile"
+  fi
 
 # Execute tmux
   if command -v tmux &> /dev/null \
@@ -57,5 +57,34 @@ fi
 # Fast
   # Add "substitute" mnemonic, which the info file left out.
   export PATH="/home/tourneboeuf/Program/GitFuzzy/bin:$PATH"
+
+# PS1
+  # Title: Host: CD
+  PS1='\[\e]0;\]`parse_title`\007'
+  # CD (green)
+  PS1+='\[\e[32m\]\w'
+  # Git Branch (yellow)
+  PS1+='\[\e[33m\]'
+  PS1+='`parse_git_branch`'
+  PS1+='\[\e[00m\]'
+  # New line
+  PS1+='\n$ '
+  export PS1
+
+
+# Include, Source, Extension
+  # Alias
+  if [[ -f "$HOME/.bash_aliases.sh" ]]; then
+    # shellcheck source=/home/tourneboeuf/.bash_aliases.sh
+    source "$HOME/.bash_aliases.sh"
+  fi
+
+
+# Bind
+  # Enable Readline not waiting for additional input when a key is pressed.
+  set keyseq-timeout 10
+  bind -x '"\ee":fo'
+  bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
+
 
 # vim:sw=2:ts=2:foldignore=:
