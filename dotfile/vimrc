@@ -942,13 +942,16 @@ filetype plugin indent on | syntax on
   inoremap <C-Space> <C-x><C-o>
   inoremap <C-@> <C-x><C-o>
 
+
 function! SynStack()
   if !exists('*synstack')
     return
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc
+endfunction
+
+
 function! SynGroup()
     let l:s = synID(line('.'), col('.'), 1)
     echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
-endfun
+endfunction
