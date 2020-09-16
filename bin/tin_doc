@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Print documentation on command, utils, self-scripts
+# Print ${cblue}Documentation$cend on command, utils, self-scripts
 # shellcheck disable=SC2092  # Remove backticks
 
 # shellcheck disable=SC1090  # Can't follow non-constant source

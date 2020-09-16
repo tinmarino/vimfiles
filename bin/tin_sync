@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Synchronize wikis, and .vim
+# ${cblue}Synchronize$cend wikis, .vim ... (Subcmd)
 
 source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
@@ -8,10 +8,11 @@ s_error_msg=''
 _usage(){
   `# Print this message`
   print_title "Synchronization"
-  print_usage_fct
+  print_usage_common
 }
 
 __wget(){
+  `# Wget wrapper`
   check="$1"
   check="${check%%.tar.bz2}"
   if [[ -e "$check" ]]; then
@@ -33,16 +34,16 @@ __wget(){
   echo "[+] $1 Succeed Download"
 }
 
-# Get online documentation
-function __site(){
+__site(){
+  `# Get online documentation`
   echo -e "${ctitle}--->  SITES  =================================================\e[0m"
   __wget "$1/Bash/bash_reference.html" "https://www.gnu.org/software/bash/manual/bash.html"
   __wget "$1/Bash/bash_advanced_bash_scripting.html" "https://tldp.org/LDP/abs/html/abs-guide.html"
   __wget "$1/Python/python-3.8.5-docs-html.tar.bz2" "https://docs.python.org/3.8/archives/python-3.8.5-docs-html.tar.bz2"
 }
 
-# Sychrnonize argument folder
-function __base(){
+__base(){
+  `# Sychrnonize argument folder`
   # 1: Local Diretory
   # 2: Remote URL
   # 3: Sync command: ex: "pull --rebase"
@@ -96,20 +97,10 @@ function __base(){
   return $ret
 }
 
-# Proxy counting errors
 __sync(){
+  `# Proxy counting errors`
   ((n++)); __base "$1" "$2" "$3"  && ((ok++))
 }
-
-((ok=0))
-((n=0))
-ctitle="\e[1m\e[38;5;13m"
-cend="\e[1m\e[38;5;39m"
-cgood="\e[1m\e[38;5;46m"
-cbad="\e[1m\e[38;5;196m"
-
-## Bold blue
-echo -e "${cend}---> Synchronizing from internet\e[0m"
 
 site(){
   `# Site: Sync ~/wiki/html folder: dump of pages`
@@ -123,11 +114,11 @@ wiki(){
 }
 
 rosetta(){
-  `# Sync Rosetta Stone code ~/wiki/rosetta`
+  `# Rosetta: Sync Rosetta Stone code ~/wiki/rosetta`
   __sync ~/wiki/rosetta   https://github.com/acmeism/RosettaCodeData "git pull --rebase"
 }
 html(){
-  `#Html: Sync ~/wiki/*_html generated folders`
+  `# Html: Sync ~/wiki/*_html generated folders`
   __sync ~/wiki/wiki_html https://github.com/tinmarino/wiki_html
   __sync ~/wiki/alki_html https://gitlab.com/tinmarino/alki_html.git
 }
@@ -143,15 +134,30 @@ all(){
 
 
 
+((ok=0))
+((n=0))
+ctitle="\e[1m\e[38;5;13m"
+chi="\e[1m\e[38;5;39m"     ## Bold blue
+cgood="\e[1m\e[38;5;46m"
+cbad="\e[1m\e[38;5;196m"
+
+__at_init(){
+  `# Print Hi`
+  # shellcheck disable=SC2154  # cend referenced but not assigned
+  echo -e "${chi}---> Synchronizing from internet$cend"
+}
+
+__at_finish(){
+  `# Print Low`
+  cout="$cbad"
+  if ((ok == n)); then
+    cout="$cgood"
+  fi
+  echo "$s_error_msg"
+  
+  echo -e "${chi}<--- Synchronization finished with: ${cout}$ok/$n$cend"
+}
+
 get_fct_dic
 call_fct_arg "$@"
-
-cout="$cbad"
-if ((ok == n)); then
-  cout="$cgood"
-fi
-echo "$s_error_msg"
-
-echo -e "${cend}<--- Synchronization finished with: ${cout}$ok/$n\e[0m"
-
 # vim:sw=2:ts=2:

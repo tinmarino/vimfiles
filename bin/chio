@@ -8,10 +8,18 @@
 # Here is the magic
 source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
+bin_path=$(bin_path)
+register_subcommand game "$bin_path/tin_game" 
+
+default_usage(){
+  `# Print this usage message`
+  print_title "Chio personal Command"
+  print_usage_common
+}
 
 
 docgit(){
-  `# Print git commands: push and pull`
+  `# Print ${cblue}Git$cend commands: push and pull`
   # shellcheck disable=SC2154  # cred is referenced but not assigned
   printf "${cblue}Send to internet:$cend\n"
   printf "  %-20s  # Add your file to the future snapshot,\n" "git add all"
@@ -80,7 +88,5 @@ ffmp3(){
 }
 
 get_fct_dic
-
-# shellcheck disable=SC2034  # Unsued
-declare -a args=("$@")
-call_fct_arg args
+call_fct_arg "$@"
+# vim:sw=2:ts=2:

@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
-# Tinmarino command switch
+# ${cblue}Tinmarino$cend command switch
 #
 
 source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
+bin_path=$(bin_path)
 register_subcommand doc "$bin_path/tin_doc" 
 register_subcommand tin "$bin_path/tin" 
 register_subcommand game "$bin_path/tin_game" 
 register_subcommand sync "$bin_path/tin_sync" 
 
 args(){
-  `# Debug: Print args passed`
-  echo "Full command: $0 $*"
+  `# Debug: Print ${cblue}Arguments$cend passed`
+  echo "Full command: $0 args $*"
   i=0
   for var in "$@"; do
     echo "Arg $i: $var!"
@@ -20,6 +21,5 @@ args(){
 }
 
 get_fct_dic
-bin_path=$(bin_path)
 call_fct_arg "$@"
 # vim:sw=2:ts=2:

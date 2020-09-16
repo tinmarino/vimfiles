@@ -152,6 +152,10 @@ call_fct_arg(){
     switch_usage;
   fi
 
+  if [[ ! -z "$*" ]] && [[ "complete" != "$1" ]] && declare -F __at_init > /dev/null; then
+    __at_init "$@"
+  fi
+
   local b_is_subcommand=0
   for arg in "$@"; do
     shift
@@ -188,6 +192,10 @@ call_fct_arg(){
       exit "$error_arg"
     fi
   done
+
+  if [[ ! -z "$*" ]] && [[ "complete" != "$1" ]] && declare -F __at_finish > /dev/null; then
+    __at_finish "$@"
+  fi
 }
 
 register_subcommand(){
@@ -197,7 +205,7 @@ register_subcommand(){
   file="$2"
   description=$(awk 'NR == 2' "$file")
   # Purge head and tail
-  description="${description:2:-1}"
+  description="${description:2}"
   # Append to dictionaries
   fct_dic["$fct"]="$description"
   cmd_dic["$fct"]="$file"
@@ -248,9 +256,9 @@ print_usage_common(){
 
 switch_usage(){
   `# Switch Call: usage, _usage or default_usage`
-  if declare -F usage; then
+  if declare -F usage > /dev/null; then
     usage;
-    elif declare -F _usage; then
+    elif declare -F _usage > /dev/null; then
     _usage
   else
     default_usage

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Play bash games
+# Play bash ${cblue}Games$cend: ${cyellow}$(basename "$0") game tetris$cend
 # shellcheck disable=SC2092  # Remove backticks
 
 # shellcheck disable=SC1090  # Can't follow non-constant source
