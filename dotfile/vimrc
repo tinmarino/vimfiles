@@ -45,7 +45,7 @@ filetype plugin indent on | syntax on
 
 
 " Os specific
-  " Termux
+  " Termux: shotmess
   if 'termux' ==? $os
     " Autosave
     if expand('%') !=# ''
@@ -805,7 +805,9 @@ filetype plugin indent on | syntax on
     cmap <Esc>[1;2C <S-Right>
 
   " Fold
-    nnoremap <space> za
+    " TODO ctrl arrow to inc or decresae fold
+    "nnoremap <space> za
+    nnoremap <expr> <space> foldclosed('.') == -1 ? "zc" : "zO"
     vnoremap <space> zf
     map z1  :set foldlevel=0<CR><Esc>
     map z2  :set foldlevel=1<CR><Esc>
