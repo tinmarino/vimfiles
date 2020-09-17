@@ -3,8 +3,6 @@
 
 source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
-s_error_msg=''
-
 _usage(){
   `# Print this message`
   print_title "Synchronization"
@@ -117,6 +115,11 @@ rosetta(){
   `# Rosetta: Sync Rosetta Stone code ~/wiki/rosetta`
   __sync ~/wiki/rosetta   https://github.com/acmeism/RosettaCodeData "git pull --rebase"
 }
+
+cheat(){
+  `# Cheatsheets: Sync Cheatsheet: www.github/rstacruz -> ~/wiki/cheatsheet`
+  __sync ~/wiki/cheatsheet https://github.com/rstacruz/cheatsheets "git pull --rebase"
+}
 html(){
   `# Html: Sync ~/wiki/*_html generated folders`
   __sync ~/wiki/wiki_html https://github.com/tinmarino/wiki_html
@@ -130,10 +133,12 @@ vim(){
 all(){
   `# All: Sync all except vim`
   wiki; rosetta; html; site;
+  cheat;
 }
 
 
 
+s_error_msg=''
 ((ok=0))
 ((n=0))
 ctitle="\e[1m\e[38;5;13m"

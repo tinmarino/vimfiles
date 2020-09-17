@@ -148,12 +148,13 @@ call_fct_arg(){
   `# Call function from trailing arguments (after options)`
   `# :param1: <ref> argumet array`
   # Clause: Do not work without argument
+  args="$*"
   if [[ -z "$*" ]]; then
     switch_usage;
   fi
 
-  if [[ ! -z "$*" ]] && [[ "complete" != "$1" ]] && declare -F __at_init > /dev/null; then
-    __at_init "$@"
+  if [[ -n "${args[*]}" ]] && [[ ! " ${args[*]} " =~ " complete " ]] && declare -F __at_init > /dev/null; then
+    __at_init "$@";
   fi
 
   local b_is_subcommand=0
@@ -182,10 +183,10 @@ call_fct_arg(){
     elif [[ "${arg:0:1}" == "-" && " ${!fct_dic[*]} " =~ " m_$arg " ]]; then
       "m_$arg" "$@"
     elif [[ " ${!fct_dic[*]} " =~ " $arg " ]]; then
-      b_is_subcommand=1
+      #b_is_subcommand=1
       "$arg" "$@"
     elif [[ " ${!fct_dic[*]} " =~ " _$arg " ]]; then
-      b_is_subcommand=1
+      #b_is_subcommand=1
       "_$arg" "$@"
     else
       echo -e "${cred}ERROR: ShellUtil: $0: unknown argument: $arg => Ciao!"
@@ -193,7 +194,7 @@ call_fct_arg(){
     fi
   done
 
-  if [[ ! -z "$*" ]] && [[ "complete" != "$1" ]] && declare -F __at_finish > /dev/null; then
+  if [[ -n "${args[*]}" ]] && [[ ! " ${args[*]} " =~ " complete " ]] && declare -F __at_finish > /dev/null; then
     __at_finish "$@"
   fi
 }
