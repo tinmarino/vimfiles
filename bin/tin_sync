@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # ${cblue}Synchronize$cend wikis, .vim ... (Subcmd)
+#
+# shellcheck disable=SC2016  # Expressions don't expand in single quotes, use double quotes for that
 
 source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
@@ -110,6 +112,16 @@ wiki(){
   __sync ~/wiki/wiki      https://github.com/tinmarino/wiki
   __sync ~/wiki/alki      https://gitlab.com/tinmarino/alki.git
 }
+tag(){
+  `# Tag: Wiki links for autocomplete`
+  # TODO get a time stamp and do it once a day
+  cp -r ~/wiki/wiki/Css/* ~/wiki/wiki_html/Css/
+  vim -e -c'VimwikiIndex 1' -c'let a=vimwiki#base#get_globlinks_escaped()'  -c'let b=join(split(a, "\n"))' -c'call writefile([b], expand("$HOME/wiki/wiki/Src/links.txt"))'  -c'q' || echo "vim failed: $?"
+  vim -e -c'VimwikiIndex 2' -c'let a=vimwiki#base#get_globlinks_escaped()'  -c'let b=join(split(a, "\n"))' -c'call writefile([b], expand("$HOME/wiki/todo/Src/links.txt"))'  -c'q'
+  vim -e -c'VimwikiIndex 3' -c'let a=vimwiki#base#get_globlinks_escaped()'  -c'let b=join(split(a, "\n"))' -c'call writefile([b], expand("$HOME/wiki/alma/Src/links.txt"))'  -c'q'
+}
+
+
 
 rosetta(){
   `# Rosetta: Sync Rosetta Stone code ~/wiki/rosetta`
