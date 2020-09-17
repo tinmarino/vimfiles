@@ -117,8 +117,8 @@ rosetta(){
 }
 
 cheat(){
-  `# Cheatsheets: Sync Cheatsheet: www.github/rstacruz -> ~/wiki/cheatsheet`
-  __sync ~/wiki/cheatsheet https://github.com/rstacruz/cheatsheets "git pull --rebase"
+  `# Cheatsheets: Sync: www.github/rstacruz -> ~/wiki/cheatsheet`
+  __sync ~/wiki/cheat https://github.com/rstacruz/cheatsheets "git pull --rebase"
 }
 html(){
   `# Html: Sync ~/wiki/*_html generated folders`

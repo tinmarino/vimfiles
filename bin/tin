@@ -9,6 +9,7 @@ register_subcommand doc "$bin_path/tin_doc"
 register_subcommand tin "$bin_path/tin" 
 register_subcommand game "$bin_path/tin_game" 
 register_subcommand sync "$bin_path/tin_sync" 
+register_subcommand cheat "$bin_path/tin_cheat" 
 
 args(){
   `# Debug: Print ${cblue}Arguments$cend passed`

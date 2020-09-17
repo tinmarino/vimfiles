@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# ${cblue}Edit$cend cheatsheet (Subcmd)
+
+
+main(){
+  if [[ " $* " =~ " complete " ]]; then
+    # If complete: Echo list of files
+    find "$HOME/wiki/cheat/" -maxdepth 1 -printf '%P\n' | grep '.md$' | sed -e 's/.md$//'
+    return 0
+  fi
+  vim \
+    -c "map q :q!<CR>" \
+    "$HOME/wiki/cheat/$1.md"
+}
+
+main "$@"
+
+# vim:sw=2:ts=2:
