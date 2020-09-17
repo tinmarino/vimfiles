@@ -113,12 +113,19 @@ wiki(){
   __sync ~/wiki/alki      https://gitlab.com/tinmarino/alki.git
 }
 tag(){
-  `# Tag: Wiki links for autocomplete`
+  `# Tag: Generate Wiki links for autocomplete`
+  # `vim -Es` like execute silent, but must load my vimrc (-u) and nocompatible (-N)
   # TODO get a time stamp and do it once a day
   cp -r ~/wiki/wiki/Css/* ~/wiki/wiki_html/Css/
-  vim -e -c'VimwikiIndex 1' # -c'let a=vimwiki#base#get_globlinks_escaped()'  -c'let b=join(split(a, "\n"))' -c'call writefile([b], expand("$HOME/wiki/wiki/Src/links.txt"))'  -c'q' || echo "vim failed: $?"
-  #vim -e -c'VimwikiIndex 2' -c'let a=vimwiki#base#get_globlinks_escaped()'  -c'let b=join(split(a, "\n"))' -c'call writefile([b], expand("$HOME/wiki/todo/Src/links.txt"))'  -c'q'
-  #vim -e -c'VimwikiIndex 3' -c'let a=vimwiki#base#get_globlinks_escaped()'  -c'let b=join(split(a, "\n"))' -c'call writefile([b], expand("$HOME/wiki/alma/Src/links.txt"))'  -c'q'
+
+  echo -e "${ctitle}--->  WIKI  ===========\e[0m"
+  ((n++)); vim -u "$HOME/.vimrc" -N -Es -c'VimwikiIndex 1' -c'let a=vimwiki#base#get_globlinks_escaped()'  -c'let b=join(a)' -c'call writefile([b], expand("$HOME/wiki/wiki/Src/links.txt"))'  -c'q' && ((ok++, 1)) || echo "vim failed: $?"
+
+  echo -e "${ctitle}--->  TASK  ===========\e[0m"
+  ((n++)); vim -u "$HOME/.vimrc" -N -Es -c'VimwikiIndex 2' -c'let a=vimwiki#base#get_globlinks_escaped()'  -c'let b=join(a)' -c'call writefile([b], expand("$HOME/wiki/todo/Src/links.txt"))'  -c'q' && ((ok++, 1)) || echo "vim failed: $?"
+
+  echo -e "${ctitle}--->  ALMA  ===========\e[0m"
+  ((n++)); vim -u "$HOME/.vimrc" -N -Es -c'VimwikiIndex 3' -c'let a=vimwiki#base#get_globlinks_escaped()'  -c'let b=join(a)' -c'call writefile([b], expand("$HOME/wiki/alki/Src/links.txt"))'  -c'q' && ((ok++, 1)) || echo "vim failed: $?"
 }
 
 
@@ -137,13 +144,13 @@ html(){
   __sync ~/wiki/wiki_html https://github.com/tinmarino/wiki_html
   __sync ~/wiki/alki_html https://gitlab.com/tinmarino/alki_html.git
 }
-vim(){
+_vim(){
   `# Vim: Sync ~/.vim folder`
   # shellcheck disable=SC2154
   __sync "$v"             https://github.com/tinmarino/vimfiles
 }
 all(){
-  `# All: Sync all except vim`
+  `# All: Sync all except vim, tag`
   wiki; rosetta; html; site;
   cheat;
 }
