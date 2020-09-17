@@ -133,6 +133,7 @@ filetype plugin indent on | syntax on
     let g:vimwiki_css_name = '/Css/include.css'
 
     " Test Wiki
+    let g:vimwiki_folding="expr"
     "let g:vimwiki_emoji_enable = 3
     " New
     "let g:vimwiki_cycle_bullets = 1
@@ -867,11 +868,13 @@ filetype plugin indent on | syntax on
   set foldmethod=indent
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0
   set foldlevelstart=30 "the folding at opening
-  if has('timers')
-    call timer_start(0, 'tin#fold_atom#main')
-  else
-    call tin#fold_atom#main()
-  endif
+  call tin#fold_atom#main()
+  " If in timer, it overwrites vimwiki
+  "if has('timers')
+  "  call timer_start(0, 'tin#fold_atom#main')
+  "else
+  "  call tin#fold_atom#main()
+  "endif
 
 
 " Filetype
