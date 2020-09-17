@@ -1,21 +1,23 @@
 #!/usr/bin/env bash
 # Define Functions to use git with fzf
 # From: https://github.com/junegunn/fzf/wiki/Examples
+# shellcheck disable=SC2015  # Note that A && B || C is not if-then-else. C may run when A is true
 
 
 # Variable helper
   _git_log_line_to_hash="echo {} | grep -o '[a-f0-9]\{7\}' | head -1"
-  _view_log_line="$_git_log_line_to_hash | xargs -I % sh -c 'git show --color=always % | diff-so-fancy'"
   _view_log_line_unfancy="$_git_log_line_to_hash | xargs -I % sh -c 'git show %'"
 
 # Variable fzf
-  _fzf_base=(--ansi --no-sort --reverse --tiebreak=index)
-  _fzf_preview=(--preview "$v/bin/_tinrc-fzf-preview.sh {}")
-  _fzf_size=(--preview-window=right:50% --height 100%)
-  # TODO see filter for file
-  _fzf_gcpreview=$'func() {
-    set -- \$('$_git_log_line_to_hash');
-    [ \$# -eq 0 ] || git show --color=always %; }; func {}'
+  # Unused
+  # _view_log_line="$_git_log_line_to_hash | xargs -I % sh -c 'git show --color=always % | diff-so-fancy'"
+  # _fzf_preview=(--preview "$v/bin/_tinrc-fzf-preview.sh {}")
+  # # TODO see filter for file
+  # _fzf_gcpreview=$'func() {
+  #   set -- \$('$_git_log_line_to_hash');
+  #   [ \$# -eq 0 ] || git show --color=always %; }; func {}'
+  _fzf_base=(--ansi --no-sort --reverse "--tiebreak=index")
+  _fzf_size=("--preview-window=right:50%" --height 100%)
   _fzf_bind=(
     --bind "ctrl-m:execute:
               (grep -o '[a-f0-9]\{7\}' | head -1 |
@@ -32,15 +34,15 @@
 
 # Vi <= Binded alt-e <= BashRc
 fzf_open() {
+  # shellcheck disable=SC2154  # v is referenced but not assigned
   IFS=$'\n' out="$(fzf --query="$1" --exit-0 --expect=ctrl-o,ctrl-e \
     --preview "$v/bin/_tinrc-fzf-preview.sh {}")"
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
   if [ -n "$file" ]; then
-    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
+    [[ "$key" = ctrl-o ]] && xdg-open "$file" || ${EDITOR:-vim} "$file"
   fi
 }
-alias fo=fzf_open
 
 fzf_dir(){
   pushd "$1" > /dev/null || echo "Error: Cannot cd to $1"
@@ -50,7 +52,7 @@ fzf_dir(){
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
   if [ -n "$file" ]; then
-    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
+    [[ "$key" = ctrl-o ]] && xdg-open "$file" || ${EDITOR:-vim} "$file"
   fi
   popd > /dev/null || return 1
 }
@@ -60,7 +62,7 @@ fzf_dir(){
 fzf_line() {
   # Interactive search.
   # Usage: `ff` or `ff <folder>`.
-  [[ -n $1 ]] && cd $1 # go to provided folder or noop
+  [[ -n "$1" ]] && cd "$1" || exit 2  # go to provided folder or noop
   RG_DEFAULT_COMMAND="rg -i -l --hidden --no-ignore-vcs"
   
   selected=$(
@@ -79,8 +81,6 @@ fzf_line() {
   # Open multiple files in editor
   [[ -n "$selected" ]] && vim "$selected"
 }
-alias ff=fzf_line
-alias fl=fzf_line
 
 # cf - fuzzy cd from anywhere
 # ex: cf word1 word2 ... (even part of a file name)
@@ -100,7 +100,6 @@ fzf_cd() {
      fi
   fi
 }
-alias fcd=fzf_cd
 
 
 ######################################################################
@@ -132,9 +131,9 @@ fbr() {
   branches=$(git --no-pager branch -vv && git --no-pager branch -rvv) &&
   branch=$(echo "$branches" |
     fzf +m \
-      $_fzf_base \
+      "${_fzf_base[@]}" \
       --preview "f() { set -- \$(echo -- \$@ | grep -o '[a-f0-9]\{7\}'); [ \$# -eq 0 ] || git show --color=always \$1 $filter; }; f {}" \
-      $_fzf_size \
+      "${_fzf_size[@]}" \
       "${_fzf_bind[@]}"
   ) &&
   git checkout "$(echo "$branch" | awk '{print $1}' | sed "s/.* //")"
@@ -154,17 +153,17 @@ fpickace(){
 
 # Kill
 fkill() {
-    local pid 
-    if [ "$UID" != "0" ]; then
-        pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
-    else
-        pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
-    fi  
+  local pid 
+  if [ "$UID" != "0" ]; then
+    pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
+  else
+    pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+  fi  
 
-    if [ "x$pid" != "x" ]
-    then
-        echo $pid | xargs kill -${1:-9}
-    fi  
+  if [ "x$pid" != "x" ]
+  then
+    echo "$pid" | xargs kill -"${1:-9}"
+  fi  
 }
 
 # vim: sw=2:ts=2

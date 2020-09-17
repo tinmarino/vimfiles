@@ -37,6 +37,17 @@ export BASHPROFILE_SOURCED=1
   # Save
   export path_save=$PATH
   export PATH=""
+  # set PATH so it includes user's private bin if it exists
+  if [ -d "$HOME/bin" ] ; then
+      PATH="$HOME/bin:$PATH"
+  fi
+  
+  # set PATH so it includes user's private bin if it exists
+  if [ -d "$HOME/.local/bin" ] ; then
+      PATH="$HOME/.local/bin:$PATH"
+  fi
+
+  export PATH="$HOME/.cargo/bin:$PATH"
   # Windows fast
   export PATH="$PATH:/c/Program Files/Vim/vim82"
   # My script
@@ -55,7 +66,6 @@ export BASHPROFILE_SOURCED=1
   # Python
   #export PATH=$PATH:$HOME/Program/Conda/bin
   export PATH=$PATH:$HOME/.local/usr/local/bin
-  export PATH=$PATH:$HOME/.local/bin
   # Rust
   export PATH=$PATH:$HOME/.cargo/bin
   # Android sdk
@@ -141,7 +151,7 @@ export BASHPROFILE_SOURCED=1
   # Save history after each executed line
   export PROMPT_COMMAND+='history -a;'
 
-  # PS1
+  # PS1, set in bashrc because debian update it in /etc/bashrc
   function parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' ;
   }
@@ -158,53 +168,6 @@ export BASHPROFILE_SOURCED=1
     echo "$res"
   }
   export -f parse_title
-
-
-# Include, Source, Extension
-  ############
-  # Completion
-  #bcan_complete=0
-  #if [[ -f "/etc/bash_completion" ]]; then
-  #  source "/etc/bash_completion" && bcan_complete=1;
-  #elif [[ -f "$HOME/.local/usr/share/bash-completion/bash_completion" ]]; then
-  #  # shellcheck disable=SC1090
-  #  source "$HOME/.local/usr/share/bash-completion/bash_completion" && bcan_complete=1;
-  #fi
-
-  # shellcheck source=/home/tourneboeuf/.vim/bin/_tin_complete.sh
-  if [[ -f "$v/bin/_tin_complete.sh" ]]; then
-    source "$v/bin/_tin_complete.sh"
-  fi
-
-  # Tmux completion
-  # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-tmux-completion.sh
-  if command -v _get_comp_words_by_ref &> /dev/null && [[ -f "$v/bin/_tinrc-tmux-completion.sh" ]]; then
-    source "$v/bin/_tinrc-tmux-completion.sh"
-  fi
-
-
-  # Fzf default
-  if [[ -f "$HOME/.fzf.bash" ]]; then
-    # shellcheck source=/home/tourneboeuf/.bash_aliases.sh
-    source "$HOME/.fzf.bash"
-  fi
-
-  # Alacrity
-  if [[ -f "$HOME/.bash_completion/alacritty" ]]; then
-    # shellcheck source=/home/tourneboeuf/.vim/scripts/completion/alacritty
-    source "$v/scripts/completion/alacritty"
-  fi
-
-  # Pip bash completion start
-  _pip_completion()
-  {
-      mapfile -t COMPREPLY < <( \
-        COMP_WORDS="${COMP_WORDS[*]}" \
-        COMP_CWORD=$COMP_CWORD \
-        PIP_AUTO_COMPLETE=1 $1 2>/dev/null )
-  }
-  complete -o default -F _pip_completion pip
-  # pip bash completion end
 
 
 # Fzf functions
@@ -259,26 +222,15 @@ export BASHPROFILE_SOURCED=1
   [[ -f "$h/Program/ForGit/forgit.plugin.sh" ]] && source "$h/Program/ForGit/forgit.plugin.sh"
 
 
-# if running bash
-#if [ -n "$BASH_VERSION" ]; then
-#    # include .bashrc if it exists
-#    if [ -f "$HOME/.bashrc" ]; then
-#    # shellcheck source=/home/tourneboeuf/.bashrc
-#	  source "$HOME/.bashrc"
-#    fi
-#fi
+# Source bashrc ?
+  #if [ -n "$BASH_VERSION" ]; then
+  #    # include .bashrc if it exists
+  #    if [ -f "$HOME/.bashrc" ]; then
+  #    # shellcheck source=/home/tourneboeuf/.bashrc
+  #	  source "$HOME/.bashrc"
+  #    fi
+  #fi
 
 
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
-fi
-
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
-
-export PATH="$HOME/.cargo/bin:$PATH"
 
 # vim:sw=2:ts=2:foldignore=:

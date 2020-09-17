@@ -66,6 +66,12 @@
   # Alma
   alias alma_docker='cd ~/Program/Alma/Docker && docker-compose run centos8 bash'
 
+# Fzf
+  alias fo=fzf_open
+  alias ff=fzf_line
+  alias fl=fzf_line
+  alias fcd=fzf_cd
+
 
 # Path variable
   # shopt -s direxpand

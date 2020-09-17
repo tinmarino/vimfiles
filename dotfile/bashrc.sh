@@ -11,8 +11,8 @@
   [[ -z "$USER" ]] && command -v whoami > /dev/null && USER=$(whoami) && export USER
 
 # Do I need to load .bash_profile
+  # shellcheck disable=SC2154  # os is referenced but not assigned
   if [[ -z "$os" && -z "$v" && -f "$HOME/.bash_profile" ]]; then
-      # shellcheck source=/home/tourneboeuf/.bashrc
     echo Sourcing Profile
   	source "$HOME/.bash_profile"
   fi
@@ -72,18 +72,57 @@
   export PS1
 
 
-# Include, Source, Extension
+# Include, Source, Extension (Alias and Completion)
+  ############
+  # Completion
+  #bcan_complete=0
+  #if [[ -f "/etc/bash_completion" ]]; then
+  #  source "/etc/bash_completion" && bcan_complete=1;
+  #elif [[ -f "$HOME/.local/usr/share/bash-completion/bash_completion" ]]; then
+  #  # shellcheck disable=SC1090
+  #  source "$HOME/.local/usr/share/bash-completion/bash_completion" && bcan_complete=1;
+  #fi
   # Alias
   if [[ -f "$HOME/.bash_aliases.sh" ]]; then
-    # shellcheck source=/home/tourneboeuf/.bash_aliases.sh
     source "$HOME/.bash_aliases.sh"
   fi
 
+  # ShellArsenal Complete
+  if [[ -f "$v/bin/_tin_complete.sh" ]]; then
+    source "$v/bin/_tin_complete.sh"
+  fi
+
+  # Tmux completion
+  if command -v _get_comp_words_by_ref &> /dev/null && [[ -f "$v/bin/_tinrc-tmux-completion.sh" ]]; then
+    source "$v/bin/_tinrc-tmux-completion.sh"
+  fi
+
+  # Fzf bindings
+  if [[ -f "$HOME/.fzf.bash" ]]; then
+    # shellcheck source=/home/tourneboeuf/.bash_aliases.sh
+    source "$HOME/.fzf.bash"
+  fi
+
+  # Alacrity Completion
+  if [[ -f "$v/scripts/completion/alacritty" ]]; then
+    source "$v/scripts/completion/alacritty"
+  fi
+
+  # Pip bash completion start
+  _pip_completion()
+  {
+      mapfile -t COMPREPLY < <( \
+        COMP_WORDS="${COMP_WORDS[*]}" \
+        COMP_CWORD=$COMP_CWORD \
+        PIP_AUTO_COMPLETE=1 $1 2>/dev/null )
+  }
+  complete -o default -F _pip_completion pip
+  # pip bash completion end
 
 # Bind
   # Enable Readline not waiting for additional input when a key is pressed.
   set keyseq-timeout 10
-  bind -x '"\ee":fo'
+  bind -x '"\ee":fzf_open'
   bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
 
 
