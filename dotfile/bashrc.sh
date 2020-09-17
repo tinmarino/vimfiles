@@ -79,7 +79,6 @@
   #if [[ -f "/etc/bash_completion" ]]; then
   #  source "/etc/bash_completion" && bcan_complete=1;
   #elif [[ -f "$HOME/.local/usr/share/bash-completion/bash_completion" ]]; then
-  #  # shellcheck disable=SC1090
   #  source "$HOME/.local/usr/share/bash-completion/bash_completion" && bcan_complete=1;
   #fi
   # Alias
@@ -99,7 +98,7 @@
 
   # Fzf bindings
   if [[ -f "$HOME/.fzf.bash" ]]; then
-    # shellcheck source=/home/tourneboeuf/.bash_aliases.sh
+    # Warning on termux, comment /home/tourneboeuf/Program/Fzf/shell/completion.bash
     source "$HOME/.fzf.bash"
   fi
 

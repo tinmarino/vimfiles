@@ -109,6 +109,7 @@ export BASHPROFILE_SOURCED=1
      STACK="${message}${STACK}"
      echo "$STACK"
   }
+  export -f print_stack
   function command_not_found_handle {
     # If starting with g : git
     if [[ "${1:0:1}" == "g" ]]; then
@@ -120,6 +121,7 @@ export BASHPROFILE_SOURCED=1
       print_stack ""
     fi
   }
+  export -f command_not_found_handle
 
 
 # Preferences
