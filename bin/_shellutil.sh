@@ -7,6 +7,7 @@
 
 default_usage(){
   `# Print this usage message`
+  print_title "$(basename "$0")"
   print_usage_common
 }
 
@@ -69,24 +70,16 @@ print_usage_fct(){
 
   if [[ "$format" == "complete" ]]; then
     # Supposing array is given as argument number 4 to caller command
-    ARG_TAIL=("${@:5}")
-    #echo "ARG tail : ${ARG_TAIL[*]}" >> log
     # From: https://stackoverflow.com/questions/17879322/how-do-i-autocomplete-nested-multi-level-subcommands
-    #echo Array2: ${ARG_TAIL[*]} >> log
-    # Unused
-    #cur=${ARG_TAIL[COMP_CWORD]}
+    ARG_TAIL=("${@:5}")
     prev=${ARG_TAIL[COMP_CWORD-1]}
 
     if [[ ${COMP_CWORD} == 2 ]]; then
-      #echo  in second word: ${ARG_TAIL[2]} , $cur,  $prev with keys: ${!cmd_dic[*]} >> log
+      echo 'TIn is 2 ' >>  log
       if [[ " ${!cmd_dic[*]} " =~ " $prev " ]]; then
-        #echo -e "\n I know this command !!prev $prev\n I call it" >> log
         cmd="${cmd_dic["$prev"]}"
-        # echo "RIN: $cmd" complete "$2" "$3" "$4" "${ARG_TAIL[@]}" >> log
         res=$("$cmd" complete "$2" "$3" "$4" "${ARG_TAIL[@]}")
-        #echo "Returned: $res" >> log
         echo -ne "$res"
-        #echo -e "Exiting \n" >> log
         return
       fi
     fi
@@ -326,6 +319,7 @@ set_print(){
 
 shellutil_main(){
   `# Main function`
+  # Gruvbox: https://github.com/alacritty/alacritty/wiki/Color-schemes#gruvbox
   if can_color "$@"; then
     cend="\e[0m"             # Normal
     cpurple="\e[38;5;135m"   # Titles

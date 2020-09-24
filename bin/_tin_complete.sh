@@ -17,11 +17,6 @@ _tin_complete()
   #_init_completion || return
   local pad_raw='-----------------'
 
-  export TIN_TEST=3
-  export TIN_TEST3=(alpha bravo charlie)
-  export TIN_TEST4="alpha bravo charlie"
-  declare -a TIN_TEST2=("${COMP_WORDS[@]}")
-  export TIN_TEST2
   export COMP_CWORD
   # echo -e "\nTin in first: ${COMP_WORDS[*]}, $COMP_CWORD" >> log
 

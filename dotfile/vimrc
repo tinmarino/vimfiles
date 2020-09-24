@@ -369,11 +369,11 @@ filetype plugin indent on | syntax on
   packadd fzf.vim
   packadd lastplace  " vi $VIMRUNTIME/vimrc_example.vim
   packadd submode  " Map C-W
+  " Detect git dir at load: https://github.com/tpope/vim-fugitive/issues/1499
+  packadd fugitive
 
   function! TimerPack(timer) abort
     " Lazy loader
-    " Interface:
-    packadd fugitive
     " Map: 10ms for 9pg
     packadd surround  " ySS<div>
     packadd repeat  " for surround

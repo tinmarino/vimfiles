@@ -59,6 +59,24 @@
   export PATH="/home/tourneboeuf/Program/GitFuzzy/bin:$PATH"
 
 # PS1
+  # PS1, set in bashrc because debian update it in /etc/bashrc
+  parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' ;
+  }
+  export -f parse_git_branch
+  parse_title() {
+    host=$(hostname)
+    # hsot
+    if [[ "$host" == "tourny" ]]; then
+      res=''
+    else
+      res="<$host>:   "
+    fi
+    res+=$(dirs +0)
+    echo "$res"
+  }
+  export -f parse_title
+
   # Title: Host: CD
   PS1='\[\e]0;\]`parse_title`\007'
   # CD (green)
@@ -75,12 +93,12 @@
 # Include, Source, Extension (Alias and Completion)
   ############
   # Completion
-  #bcan_complete=0
-  #if [[ -f "/etc/bash_completion" ]]; then
-  #  source "/etc/bash_completion" && bcan_complete=1;
-  #elif [[ -f "$HOME/.local/usr/share/bash-completion/bash_completion" ]]; then
-  #  source "$HOME/.local/usr/share/bash-completion/bash_completion" && bcan_complete=1;
-  #fi
+  if [[ -f "/etc/bash_completion" ]]; then
+    source "/etc/bash_completion"
+  elif [[ -f "$HOME/.local/usr/share/bash-completion/bash_completion" ]]; then
+    source "$HOME/.local/usr/share/bash-completion/bash_completion"
+  fi
+
   # Alias
   if [[ -f "$HOME/.bash_aliases.sh" ]]; then
     source "$HOME/.bash_aliases.sh"
@@ -106,6 +124,10 @@
   if [[ -f "$v/scripts/completion/alacritty" ]]; then
     source "$v/scripts/completion/alacritty"
   fi
+
+  # Fzf
+  [[ -f "$v/bin/_tinrc-fzf-function.sh" ]] && source "$v/bin/_tinrc-fzf-function.sh"
+  #[[ -f "$h/Program/ForGit/forgit.plugin.sh" ]] && source "$h/Program/ForGit/forgit.plugin.sh"
 
   # Pip bash completion start
   _pip_completion()

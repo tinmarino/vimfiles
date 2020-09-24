@@ -8,6 +8,10 @@ main(){
     find "$HOME/wiki/cheat/" -maxdepth 1 -printf '%P\n' | grep '.md$' | sed -e 's/.md$//'
     return 0
   fi
+  if [[ "$1" == "" ]]; then
+    ls "$HOME/wiki/cheat/"
+    return 0
+  fi
   vim \
     -c "map q :q!<CR>" \
     "$HOME/wiki/cheat/$1.md"

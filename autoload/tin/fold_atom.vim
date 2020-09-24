@@ -77,15 +77,21 @@ function! tin#fold_atom#atom_fold_expr(line_number) abort
         \ || (indent_below == indent && getline(a:line_number) =~# g:fold_close)
     " If I must close
     if getline(a:line_number) =~# g:fold_close
-      "let res = FindIndentHere(a:line_number-1, indent_width)
-      "let g:next_close = '<' . (indent_below+1)
-      let g:next_close = '<' . (indent_below+1)
-      let res = FindIndentHere(a:line_number-1, indent_width)
+      if getline(a:line_number+1) =~# g:fold_close
+        " If delimiter
+        let res = indent
+        let g:next_close = '='
+      else
+        let g:next_close = '<' . (indent_below+1)
+        let res = FindIndentHere(a:line_number-1, indent_width)
+      endif
 
     elseif getline(a:line_number+1) =~# g:fold_close
       " If delimiter
       let res = indent
+
     else
+      " Else Just close at next non-blank
       let g:next_close = '<' . (indent_below+1)
       let res = indent
     endif

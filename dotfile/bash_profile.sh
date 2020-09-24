@@ -4,8 +4,10 @@
 if [ -z "$BASH_VERSION" ]; then
   exit
 fi
+
 # DEBUG
 export BASHPROFILE_SOURCED=1
+echo "Sourcing bash profile at $(date)" >> /tmp/bash_profile
 
 # Init, Variables
   # Set OS
@@ -87,8 +89,13 @@ export BASHPROFILE_SOURCED=1
   export LD_LIBRARY_PATH=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu:$LD_LIBRARY_PATH
   export NDK=$HOME/Program/Ndk/Current
 
-  # shellcheck source=/home/tourneboeuf/.fzf.bash
-  [[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
+  # Perl
+  export PATH="/home/tourneboeuf/perl5/bin${PATH:+:${PATH}}"
+  export PERL5LIB="/home/tourneboeuf/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"
+  export PERL_LOCAL_LIB_ROOT="/home/tourneboeuf/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"
+  export PERL_MB_OPT="--install_base \"/home/tourneboeuf/perl5\""
+  export PERL_MM_OPT="INSTALL_BASE=/home/tourneboeuf/perl5"
+
 
 
 # Unknown command callback (tip: install bash-completion on tmux)
@@ -153,24 +160,6 @@ export BASHPROFILE_SOURCED=1
   # Save history after each executed line
   export PROMPT_COMMAND+='history -a;'
 
-  # PS1, set in bashrc because debian update it in /etc/bashrc
-  function parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' ;
-  }
-  export -f parse_git_branch
-  function parse_title() {
-    host=$(hostname)
-    # hsot
-    if [[ "$host" == "tourny" ]]; then
-      res=''
-    else
-      res="<$host>:   "
-    fi
-    res+=$(dirs +0)
-    echo "$res"
-  }
-  export -f parse_title
-
 
 # Fzf functions
   #_vim_escaped2='let out = map(fzf#vim#_recent_files(), \"substitute(v:val, \\\"\\\\\\\\~\\\", \\\"'$HOME'\\\", \\\"\\\")\")'
@@ -218,11 +207,8 @@ export BASHPROFILE_SOURCED=1
   # From: https://github.com/junegunn/fzf/wiki/Configuring-shell-key-bindings
   export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
   export FZF_CTRL_R_OPTS="--sort --exact --preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
-  # shellcheck source=/home/tourneboeuf/.vim/bin/_tinrc-fzf-function.sh
-  [[ -f "$v/bin/_tinrc-fzf-function.sh" ]] && source "$v/bin/_tinrc-fzf-function.sh"
-  # shellcheck source=/home/tourneboeuf/Program/ForGit/forgit.plugin.sh
-  [[ -f "$h/Program/ForGit/forgit.plugin.sh" ]] && source "$h/Program/ForGit/forgit.plugin.sh"
 
+# Include
 
 # Source bashrc ?
   #if [ -n "$BASH_VERSION" ]; then
