@@ -211,13 +211,13 @@ echo "Sourcing bash profile at $(date)" >> /tmp/bash_profile
 # Include
 
 # Source bashrc ?
-  #if [ -n "$BASH_VERSION" ]; then
-  #    # include .bashrc if it exists
-  #    if [ -f "$HOME/.bashrc" ]; then
-  #    # shellcheck source=/home/tourneboeuf/.bashrc
-  #	  source "$HOME/.bashrc"
-  #    fi
-  #fi
+  if [ -n "$BASH_VERSION" ]; then
+      # include .bashrc if it exists
+      if [ -f "$HOME/.bashrc" ]; then
+      # shellcheck source=/home/tourneboeuf/.bashrc
+  	  source "$HOME/.bashrc"
+      fi
+  fi
 
 
 

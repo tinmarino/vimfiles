@@ -95,8 +95,8 @@
   # Completion
   if [[ -f "/etc/bash_completion" ]]; then
     source "/etc/bash_completion"
-  elif [[ -f "$HOME/.local/usr/share/bash-completion/bash_completion" ]]; then
-    source "$HOME/.local/usr/share/bash-completion/bash_completion"
+  #elif [[ -f "$HOME/.local/usr/share/bash-completion/bash_completion" ]]; then
+  #  source "$HOME/.local/usr/share/bash-completion/bash_completion"
   fi
 
   # Alias
