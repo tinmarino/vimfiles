@@ -21,8 +21,9 @@
   if command -v tmux &> /dev/null \
       && [[ -z "$TMUX" \
       &&  ! "$TERM" =~ screen  && ! "$TERM" =~ "screen-256color" \
-      &&  ! "$TERM" =~ tmux  &&  ! "$TERM" =~ "tmux-256color" ]] \
-      ; then
+      &&  ! "$TERM" =~ tmux  &&  ! "$TERM" =~ "tmux-256color" \
+      &&  ! "$USER" == "jim" \
+      ]] ; then
     # for ALMA but some glinch in scroll vim
     # exec env TERM=xterm-256color tmux
     # For bold and italic
