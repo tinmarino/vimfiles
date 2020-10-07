@@ -25,7 +25,7 @@ _color(){
   "$(dirname "$0")/tin_color_256_show.sh"
 }
 
-_tin_command(){
+self(){
   `# Print description of all commands in current directory`
   for cmd in $(ls -p | grep -v /); do
     desc=$(awk 'NR == 2' "$cmd")

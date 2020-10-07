@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# ${cblue}Commando principal$cend de ${cblue}Jaime$cend para classes de Linux
+#
+
+source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
+
+bin_path=$(bin_path)
+register_subcommand class011 "$bin_path/lib/class/class011.sh" 
+register_subcommand link "$bin_path/lib/class/link.sh" 
+
+args(){
+  `# Debug: Print ${cblue}Arguments$cend passed`
+  echo "Full command: $0 args $*"
+  i=0
+  for var in "$@"; do
+    echo "Arg $i: $var!"
+    ((i++))
+  done
+}
+
+get_fct_dic
+call_fct_arg "$@"
