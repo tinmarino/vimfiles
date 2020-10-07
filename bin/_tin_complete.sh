@@ -18,26 +18,25 @@ _tin_complete()
   local pad_raw='-----------------'
 
   export COMP_CWORD
-  # echo -e "\nTin in first: ${COMP_WORDS[*]}, $COMP_CWORD" >> log
 
   # Launch command
   readarray -t output < <($1 complete "$1" "$2" "$3" "${COMP_WORDS[@]}")
 
   COMPREPLY=()
   for line in "${output[@]}"; do
-    cmd_name="${line%% - *}"
+    cmd_name="${line%% : *}"
     # Filter line starting with > (Obsolete)_
     if [[ "${line:0:1}" == ">" ]]; then
       : #echo -e "${line:1}"
     # If match $2, add it
     elif [[ "$cmd_name" == "$2"* ]]; then
-      comment="${line#* - }"
+      comment="${line#* : }"
       printf -v line "%s  %s  %s" "$cmd_name" "${pad_raw:${#cmd_name}}" "$comment"
       COMPREPLY+=("$line")
     fi
   done
 
-  
+
   #COMPREPLY=($(compgen -W "${output[@]}" -- "$2"))
   #COMPREPLY=($(compgen -W '${fct_list[@]}' -- "$2"))
   #echo "REPLY: ${COMPREPLY[@]}"
@@ -51,7 +50,6 @@ _tin_complete()
     COMPREPLY=( ${COMPREPLY[0]#-- } )
   fi
 
-
   ## Then sort out
   #if [[ $cur == -* ]]; then
   #    local opts=$(_parse_help "$1")
@@ -61,6 +59,7 @@ _tin_complete()
 } && {
   complete -F "_tin_complete" tin
   complete -F "_tin_complete" chio
+  complete -F "_tin_complete" jim
 
   complete -F "_tin_complete" tin_doc
   complete -F "_tin_complete" tin_game

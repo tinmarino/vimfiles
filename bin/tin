@@ -6,7 +6,6 @@ source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
 bin_path=$(bin_path)
 register_subcommand doc "$bin_path/tin_doc" 
-register_subcommand tin "$bin_path/tin" 
 register_subcommand game "$bin_path/tin_game" 
 register_subcommand sync "$bin_path/tin_sync" 
 register_subcommand cheat "$bin_path/tin_cheat" 

@@ -15,10 +15,10 @@
 input="$*"
 set -- "$(echo -- "$input" | grep -o '[a-f0-9]\{7\}')";
 
-if [ $# -eq 0 ]; then
+if [ $# -eq 1 ]; then
   # missing some potential argument of git log (filter)
-  git show --color=always "$input"
-  return
+  git show --color=always "$1"
+  exit
 fi
 
 input="${input/#\~/$HOME}"
