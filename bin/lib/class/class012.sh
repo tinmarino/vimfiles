@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ${cblue}Clase 013$cend: Extension sobre el systema de archivos
+# ${cblue}Clase 012$cend: Trabajo en casa sobre el systema de archivos
 #
 # shellcheck disable=SC2154  # cblue is referenced but not
 
