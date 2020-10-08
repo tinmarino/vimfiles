@@ -9,6 +9,7 @@ bin_path=$(bin_path)
 register_subcommand class011 "$bin_path/lib/class/class011.sh" 
 register_subcommand class012 "$bin_path/lib/class/class012.sh" 
 register_subcommand class013 "$bin_path/lib/class/class013.sh" 
+register_subcommand class021 "$bin_path/lib/class/class021.sh" 
 register_subcommand link "$bin_path/lib/class/link.sh" 
 
 sync(){

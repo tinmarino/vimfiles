@@ -272,18 +272,12 @@ call_fct_arg(){
       ((b_is_subcommand=1))
       "m_$arg" "$@"; ((res+=$?))
     elif [[ " ${!fct_dic[*]} " =~ " $arg " ]]; then
-      echo -e "${cpurple}IrmJenkins: $(basename "$0"): Calling Function: $arg"
-      echo -e "-------------------------------------------------$cend"
       ((b_is_subcommand=1))
       "$arg" "$@"; ((res+=$?))
     elif [[ " ${!fct_dic[*]} " =~ " _$arg " ]]; then
-      echo -e "${cpurple}IrmJenkins: $(basename "$0"): Calling Function: $arg"
-      echo -e "-------------------------------------------------$cend"
       ((b_is_subcommand=1))
       "_$arg" "$@"; ((res+=$?))
     else
-      echo -e "${cred}ERROR: IrmJenkins: $(basename "$0"): unknown argument: $arg => Ciao!"
-      echo -e "-------------------------------------------------$cend"
       exit "$E_ARG"
     fi
   done
