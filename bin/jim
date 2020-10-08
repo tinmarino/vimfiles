@@ -1,13 +1,23 @@
 #!/usr/bin/env bash
 # ${cblue}Commando principal$cend de ${cblue}Jaime$cend para classes de Linux
 #
+# shellcheck disable=SC2154  # cblue is referenced but not
 
 source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
 bin_path=$(bin_path)
 register_subcommand class011 "$bin_path/lib/class/class011.sh" 
+register_subcommand class012 "$bin_path/lib/class/class012.sh" 
+register_subcommand class013 "$bin_path/lib/class/class013.sh" 
 register_subcommand link "$bin_path/lib/class/link.sh" 
 
+sync(){
+  pushd ~/.vim || exit 2
+  git pull --rebase \
+    && echo -e "${cgreen}[+] Synchronization SUCCESS$cend" \
+    || echo -e "${cred}[-] Synchronization ERROR$cend" \
+  popd || exit 2
+}
 args(){
   `# Debug: Print ${cblue}Arguments$cend passed`
   echo "Full command: $0 args $*"

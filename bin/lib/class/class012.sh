@@ -1,6 +1,5 @@
-
 #!/usr/bin/env bash
-# ${cblue}Clase 010$cend: De donde vengo, donde estoy, a donde voy
+# ${cblue}Clase 013$cend: Extension sobre el systema de archivos
 #
 # shellcheck disable=SC2154  # cblue is referenced but not
 
@@ -8,46 +7,67 @@ source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"
 
 __usage(){
   msg="$cblue
-================+
-|  File System  |
-================+$cend
+========================+
+|  File System Homework |
+========================+$cend
 
-${cblue}P01: Donde estoy (PWD)?$cend
-  ${cyellow}> pwd$cend
-  'Present Working directory': te dice en que directorio estas, los commandos se ejecutaran en este directorio
 
-${cblue}P02: Donde voy (CD)?$cend
-  ${cyellow}> cd Class$cend
-  'Change directory': te mueve a un otro directorio (como un doble click en una carpeta). Aqui el directorio Class no existe, entonces te da un error.
-  Nota que ${cyellow}cd$cend sin argumento te mueve a tu casa (donde estas ahora)
+${cblue}Homework 1: Moving FIle and directory and yourself$cend
 
-${cblue}P03: Crear directorios (MKDIR)?$cend
-  ${cyellow}> mkdir Class$cend
-  'MaKe DIRectory': Crea una carpeta llamada Class en la carpeta donde estas ahora.
-  More, para crear directorios imbricados, puedes usar la opcion ${cyellow}-p$cend. Como en {cyellow}mkdir Class/Dir1/Dir2/Dir3$cend
+${cblue}P01:$cend Create a simple text file with the following console commands:
+  ${cyellow}> touch simple_file.txt$cend
+  ${cyellow}> echo \"Ejemplo de archivo de texto\\npara el curso de Linux\" > simple_file.txt$cend
 
-${cblue}P04: Listear los archivos de un directorio (LS)?$cend
+${cblue}P02:$cend Create two directories with the Linux command mkdir
+  ${cyellow}> mkdir txt$cend
+  ${cyellow}> mkdir log$cend
 
-  Ahora si puedes ir en la carpeta Test
-  ${cyellow}> cd Test$cend
-  ${cyellow}> pwd$cend
-  Estas bien en $HOME/Test?
+${cblue}P03:$cend Copy simple_file.txt into txt directory
+  ${cyellow}> cp simple_file.txt txt$cend
 
-  Vamos a crear distintos archivos (confia en mi)
-  ${cyellow}> for i in {1..10}; do touch file_\$i; done$cend
-  ${cyellow}> mkdir Dir1$cend
-  ${cyellow}> for i in {1..10}; do touch Dir1/file_in_dir_\$i; done$cend
+${cblue}P04:$cend Rename simple_file.txt to simple_file.log with the Linux command mv
+  ${cyellow}> mv simple_file.txt simple_file.log$cend
 
-  Y Miramos lo que hay en la carpeta del pwd
+${cblue}P05:$cend Move simple_file.log to the log directory
+  ${cyellow}> mv simple_file.log log$cend
+
+${cblue}P06:$cend List files of the directories txt and log with the command ls
+  ${cyellow}> ls txt log$cend
+
+${cblue}P07:$cend Create a new directory named local
+  ${cyellow}> mkdir local$cend
+
+${cblue}P08:$cend Move files of directories txt and log into local directory
+  ${cyellow}> mv txt/simple_file.txt local$cend
+  ${cyellow}> mv log/simple_file.log local$cend
+
+${cblue}P09:$cend Delete directories txt and log
+  ${cyellow}> rm -rf txt$cend
+  ${cyellow}> rm -rf log$cend
+
+${cblue}P10:$cend List the current directory with command ls
   ${cyellow}> ls$cend
 
-${cblue}The end$cend
-  Muy bien, la clase de hoy estaba sobre:
-  ${cyellow}pwd, cd, mkdir, ls$cend
-  Maniana vamos a ver:
-  ${cyellow}mv, rm, history$cend
+${cblue}P11:$cend List directory local
+  ${cyellow}> ls local$cend
+
+
+${cblue}Homework 2: basic edit files and running scripts$cend
+
+${cblue}P11:$cend Creating first script in bash
+    nano primer_script.sh
+    Add the following lines to the file.
+
+    ${cyellow}#!/bin/bash
+
+    echo 'Hola Mundo'$cend
+
+    Save the file (pressing control-s to save and control-x to exit)
+    Ctrl-s Ctrl-x
+
+    Run the script (comment about the output of the script execution)
+    ${cyellow}bash primer_script.sh$cend
   "
-  
   echo -e "$msg"
 }
 
