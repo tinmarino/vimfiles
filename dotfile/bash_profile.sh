@@ -31,7 +31,9 @@ echo "Sourcing bash profile at $(date)" >> /tmp/bash_profile
   esac
 
   # Man
-  export PAGER="vman"
+  if [[ ! "$USER" == "jim" ]]; then
+    export PAGER="vman"
+  fi
   export TEXMFHOME="$HOME/Program/Tlmgr"
 
 

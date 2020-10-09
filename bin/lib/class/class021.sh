@@ -7,9 +7,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"
 
 __usage(){
   local msg="$cblue
-+==============+
-|  Rediretions |
-+==============+$cend
++===============+
+|  Redirections |
++===============+$cend
 
 a/ Acuerdate: En Linux, todo es archivo!
 b/ En Linux existe lo que se llama ${cblue}descriptores de archivos$cend o (file descriptor o simplemente fd para los intimos van de 0 a 9). Acuerdate que empezamos a contar de 0 como para las cuadras
@@ -339,7 +339,7 @@ codeigniter          100  67307
 
 __void(){
   local cmt="
- Learn about redirection of output and input using > and < and pipes using |. Know > overwrites the output file and >> appends. Learn about stdout and stderr.
+  Learn about redirection of output and input using > and < and pipes using |. Know > overwrites the output file and >> appends. Learn about stdout and stderr.
   "
   echo "$cmt"
 }
