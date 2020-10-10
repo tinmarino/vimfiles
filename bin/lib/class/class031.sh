@@ -26,13 +26,13 @@ $cblue
 
 ${cblue}P01: Quien soy (whoami)$cend
   ${cyellow}> whoami$cend
-  ${cyellow}> echo $USER$cend
+  ${cyellow}> echo \$USER$cend
 
 
 ${cblue}P02: Quien conoce esta machine (/etc/passwd)$cend
-  ${cyellow}> cat /etc/password$cend
-  ${cyellow}> cat /etc/passwd | awk -F: '{print $1}' | sort$cend
-  ${cyellow}> cat /etc/passwd | grep "^$USER\|^root:"$cend
+  ${cyellow}> cat /etc/passwd$cend
+  ${cyellow}> cat /etc/passwd | awk -F: '{print \$1}' | sort$cend
+  ${cyellow}> cat /etc/passwd | grep "^\$USER\|^root:"$cend
 
 
 ${cblue}P03: Quien esta en esta machina (w)$cend
