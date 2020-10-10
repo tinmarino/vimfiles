@@ -86,6 +86,12 @@ $cblue
 |  Parte 2: Attack my machine    |
 +================================+$cend
 
+${cblue}P20: Primordial$cend
+  Agrege el usario jim en la machina 9 con:
+  ${cyellow}> useradd --home /home/jim jim$cend  # agrega el usario
+  ${cyellow}> passwd jim$cend  # Da la clave
+  ${cyellow}> usermod --shell /bin/bash jim$cend  # Dice que su shell es Bash (que es de 1990 <= no se porque era /bin/sh que es de los 1970)
+
 ${cblue}P21: Ok vamos (SSH)$cend
   Puedes ver la lista de las machinas con ${cyellow}jim class031 system_map$cend
   ${cyellow}> ssh 192.168.0.9$cend
