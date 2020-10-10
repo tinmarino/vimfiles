@@ -93,6 +93,9 @@ ${cblue}P21: Ok vamos (SSH)$cend
 
   ${cyellow}> whoami; hostname$cend  # aprecia que \";\" separa los commandos
 
+${cblue}P22: Rapatriar (SCP)$cend
+  Para tenerlo en tu machina
+  ${cyellow}> scp jim@192.168.0.9:Test/Jim/secret.md secret_local.md$cend
 
 
 ${cblue}P25:$cend
