@@ -98,6 +98,7 @@ ${cblue}P21: Ok vamos (SSH)$cend
   Bienvenido en mi maquina personal Jim
 
   ${cyellow}> whoami; hostname$cend  # aprecia que \";\" separa los commandos
+  ${cyellow}> espeak \"Hi, I am user \$USER and in machine \$HOSTNAME\"$cend
 
 ${cblue}P22: Rapatriar (SCP)$cend
   Para tenerlo en tu machina
