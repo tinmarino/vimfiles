@@ -6,13 +6,14 @@
 source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
 
 bin_path=$(bin_path)
-register_subcommand class011 "$bin_path/lib/class/class011.sh" 
-register_subcommand class012 "$bin_path/lib/class/class012.sh" 
-register_subcommand class013 "$bin_path/lib/class/class013.sh" 
-register_subcommand class021 "$bin_path/lib/class/class021.sh" 
-register_subcommand class022 "$bin_path/lib/class/class022.sh" 
-register_subcommand class031 "$bin_path/lib/class/class031.sh" 
-register_subcommand link "$bin_path/lib/class/link.sh" 
+register_subcommand class011 "$bin_path/lib/class/class011.sh"
+register_subcommand class012 "$bin_path/lib/class/class012.sh"
+register_subcommand class013 "$bin_path/lib/class/class013.sh"
+register_subcommand class021 "$bin_path/lib/class/class021.sh"
+register_subcommand class022 "$bin_path/lib/class/class022.sh"
+register_subcommand class031 "$bin_path/lib/class/class031.sh"
+register_subcommand class032 "$bin_path/lib/class/class032.sh"
+register_subcommand link "$bin_path/lib/class/link.sh"
 
 sync(){
   pushd ~/.vim || exit 2
