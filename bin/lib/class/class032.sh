@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ${cblue}Clase 032$cend: Red: Trabajo en casa
+# -- Tarea: route, traceroute, dig, useradd
 #
 # shellcheck disable=SC2154  # cblue is referenced but not
 
@@ -87,20 +87,20 @@ ${cblue}P05: Mas usarios$cend
 
   ${cyellow}> useradd -m -s /bin/bash jim3$cend
   ${cyellow}> useradd -m -s /bin/bash jim4$cend
-  ${cyellow}cat /etc/passwd$cend
+  ${cyellow}> cat /etc/passwd$cend
   Se agregaron los usarios? Bakan, bastante jugado sacalos Ya!
 
-  ${cyellow}userdel jim3$cend
-  ${cyellow}userdel jim4$cend
-  ${cyellow}cat /etc/passwd$cend
+  ${cyellow}> userdel jim3$cend
+  ${cyellow}> userdel jim4$cend
+  ${cyellow}> cat /etc/passwd$cend
   Ya no estan? Que bueno, conserva jim2
 
   Y connectate (login) como jim2 a tu propia machina
   ${cyellow}> su - jim2$cend  # Dale la clave jim2
-  ${cyellow}whoami$cend  # jim2? Bakan
-  ${cyellow}exit$cend
-  ${cyellow}whoami$cend
-  ${cyellow}exit$cend
+  ${cyellow}> whoami$cend  # jim2? Bakan
+  ${cyellow}> exit$cend
+  ${cyellow}> whoami$cend
+  ${cyellow}> exit$cend
   Ah ya saliste de tu ultimo subshell, en todo caso, se acabo el ejercicio de hoy.
 
 

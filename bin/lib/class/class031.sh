@@ -1,10 +1,7 @@
 #!/usr/bin/env bash
-# ${cblue}Clase 031$cend: Usarios y Machinas: La Red
+# ${cblue}System: Network$cend: Usarios y Machinas
 #
 # shellcheck disable=SC2154  # cblue is referenced but not
-# From: https://cvw.cac.cornell.edu/Linux/exercise
-# Link: https://swcarpentry.github.io/shell-novice/04-pipefilter/index.html
-# -- Buenisimo: Molecules
 
 source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"
 
@@ -63,9 +60,11 @@ ${cblue}P06: Que puertos estan abiertos aqui (defensa nivel 1)$cend
   ${cyellow}> sudo lsof -nP -i$cend
   LiSt Open File
 
+
 ${cblue}P07: Que pasa en wikipedia.com (ataque nivel 1)$cend
   ${cyellow}> ping wikipedia.com$cend
   ${cyellow}> whois 208.80.154.232$cend  # Donde 208.80.154.232 es el IP que se obtiene con ping
+
 
 ${cblue}P08: Descargar desde wikipedia.com usando falso archivos$cend
   Eso ya se esta poniendo complicado a mano.
@@ -73,6 +72,7 @@ ${cblue}P08: Descargar desde wikipedia.com usando falso archivos$cend
   ${cyellow}> exec 3<>/dev/tcp/www.het.brown.edu/80;$cend  # \"Solo\" pido enchufar el \"archivo aparato\" al file descriptor 3
   ${cyellow}> echo -e \"GET /guide/UNIX-password-security.txt\\\r\\\n\" >&3;$cend  # Mando un GET request escribiendo
   ${cyellow}> cat <&3$cend  # Ahora leo el retorno leyendo
+
 
 ${cblue}P09: Descargar desde wikipedia.com (wget)$cend
   Ahora con HTTPS y para descargar sitios enteros ... mejor usar una heramienta
@@ -92,6 +92,7 @@ ${cblue}P20: Primordial$cend
   ${cyellow}> passwd jim$cend  # Da la clave
   ${cyellow}> usermod --shell /bin/bash jim$cend  # Dice que su shell es Bash (que es de 1990 <= no se porque era /bin/sh que es de los 1970)
 
+
 ${cblue}P21: Ok vamos (SSH)$cend
   Puedes ver la lista de las machinas con ${cyellow}jim class031 system_map$cend
   ${cyellow}> ssh 192.168.0.9$cend
@@ -100,12 +101,14 @@ ${cblue}P21: Ok vamos (SSH)$cend
   ${cyellow}> whoami; hostname$cend  # aprecia que \";\" separa los commandos
   ${cyellow}> espeak \"Hi, I am user \$USER and in machine \$HOSTNAME\"$cend
 
+
 ${cblue}P22: Rapatriar (SCP)$cend
   Para tenerlo en tu machina
   ${cyellow}> scp jim@192.168.0.9:Test/Jim/secret.md secret_local.md$cend
 
 
-${cblue}P25:$cend
+${cblue}End:$cend
+  Buen trabajo!
   "
 
   echo -e "$msg"

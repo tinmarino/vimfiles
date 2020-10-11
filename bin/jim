@@ -13,6 +13,10 @@ register_subcommand class021 "$bin_path/lib/class/class021.sh"
 register_subcommand class022 "$bin_path/lib/class/class022.sh"
 register_subcommand class031 "$bin_path/lib/class/class031.sh"
 register_subcommand class032 "$bin_path/lib/class/class032.sh"
+register_subcommand class041 "$bin_path/lib/class/class041.sh"
+register_subcommand class042 "$bin_path/lib/class/class042.sh"
+register_subcommand class051 "$bin_path/lib/class/class051.sh"
+register_subcommand class052 "$bin_path/lib/class/class052.sh"
 register_subcommand link "$bin_path/lib/class/link.sh"
 
 sync(){

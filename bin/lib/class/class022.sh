@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ${cblue}Clase 022$cend: Redirecion: Trabajo en casa
+# -- Tarea: wc, seq, sed, ask, bash
 #
 # shellcheck disable=SC2154  # cblue is referenced but not
 # From: https://cvw.cac.cornell.edu/Linux/exercise
