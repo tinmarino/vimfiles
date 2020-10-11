@@ -19,6 +19,7 @@ declare -A array=(
   [https://resources.infosecinstitute.com/dns-hacking/]="${cblue}Read:$cend Clase 3: DNS hacking"
   [https://linuxize.com/post/how-to-create-users-in-linux-using-the-useradd-command/]="${cblue}Read:$cend Clase 4: useradd"
   [https://www.neoguias.com/crear-usuario-linux-comando-useradd/]="${cblue}Read:$cend Clase 4: useradd tarea"
+  [https://wiki.linuxquestions.org/wiki/Some_dd_examples]="${cblue}Read:$cend Clase 5: ejemplos de commando dd"
 )
 
 __usage(){
@@ -27,6 +28,16 @@ __usage(){
     echo -e "${array[$i]}:"
     echo -e "        $i"
   done
+}
+
+for_tin(){
+  msg="
+  * Porque no functiona shred en SSD: https://askubuntu.com/questions/794612/how-to-securely-wipe-files-from-ssd-drive
+  * fileshred: https://unix.stackexchange.com/questions/161922/view-physical-location-of-a-file-directory-on-a-hard-disk
+  * fileshred: https://unix.stackexchange.com/questions/514135/getting-sector-number-from-inode-or-address-space-mapping
+  "
+
+  echo -e "$msg"
 }
 
 get_fct_dic

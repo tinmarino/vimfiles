@@ -38,10 +38,9 @@ ${cblue}P01: Listea y describe los commandos cononcidos$cend
 ${cblue}End:$cend
 
 TODO 4
-random null zero
 Subshell
 kill like beatch
-play with redirectio
+play with redirection and pipes
 
   "
 

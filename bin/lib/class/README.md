@@ -8,11 +8,11 @@
   * OK: Learn about file glob expansion with * (and perhaps ? and [...]) and quoting and the difference between double " and single ' quotes. (See more on variable expansion below.)
   * Be familiar with Bash job management: &, ctrl-z, ctrl-c, jobs, fg, bg, kill, etc.
   * Signal suspend, shutdowmn childdeath ...
-  * Tarea: pstree and init
   * OK: Tarea: filter to get all commands seen in clases and apropos
   * READ:  trap: http://www.learnlinux.org.za/courses/build/shell-scripting/ch12s03.html
   * Tarea: prrfecta trap: https://www.linuxjournal.com/article/10815
 5. System: Navigate like a Sailor, pstree, tree, grep, find, fork, exec, trap 
+  * Tarea: pstree and init
   * Tarea: /dev/null, /dev/random, /dev/zero
   * Tarea: FileSystem playing: https://unix.stackexchange.com/questions/161922/view-physical-location-of-a-file-directory-on-a-hard-disk
 
