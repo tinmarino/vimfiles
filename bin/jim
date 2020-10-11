@@ -26,6 +26,7 @@ sync(){
     || echo -e "${cred}[-] Synchronization ERROR$cend" \
   popd || exit 2
 }
+
 args(){
   `# Debug: Print ${cblue}Arguments$cend passed`
   echo "Full command: $0 args $*"

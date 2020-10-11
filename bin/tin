@@ -22,4 +22,3 @@ args(){
 
 get_fct_dic
 call_fct_arg "$@"
-# vim:sw=2:ts=2:
