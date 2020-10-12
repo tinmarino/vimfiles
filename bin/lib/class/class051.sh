@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ${cblue}System: Explore$cend: Process, Device: pstree, /dev/zero
+# ${cblue}System: Explorar$cend: Process, Device: pstree, /dev/zero
 #
 # shellcheck disable=SC2154  # cblue is referenced but not
 
@@ -7,9 +7,9 @@ source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"
 
 __usage(){
   local msg="$cblue
-+==========================+
-| Parte 1 Explore: Process |
-+==========================+$cend
++=============================+
+| Parte 1 Explorar: Processos |
++=============================+$cend
 
 ${cblue}P01: Arbol de processos (pstree)$cend
   ${cyellow}> pstree -alp$cend  # -a = muestra la linea de commando del commando, -l = formato largo, -p = muestra el PID
@@ -27,12 +27,43 @@ ${cblue}P01: Arbol de processos (pstree)$cend
   ${cyellow}> man systemd$cend
 
 
+${cblue}P02: Clonear un proceso (fork)$cend
+  La forma que tiene Linux de crear procesos es clonear un proceso (padre). Uno de los clones queda siendo el mismo y el otro llega a ser el hijo. Este rpoceso se hace mediante la llamda systema ${cblue}fork$end.
+  En el Shell, se llama un SubShell, lo que hemos visto en la clase precedente con la substituciones de commando.
+  Un subshell se puede generar adentro de \"()\" y se genera automaticamente cuando el proceso se pone en fondo (con \"&\") sino no podrias acceder a tu \"prompt\"hasta que se termine y el proceso no estaria en fondo. Cierto?
+
+  Este ejercicio es para entender el proceso de la herencia. El (proceso) hijo herede del (proceso) padre pero el padre no herede del hijo.
+
+  ${cyellow}> var=42$cend  # En el padre
+  ${cyellow}echo In father shell: \$var$cend
+  ${cyellow}> (echo in subshell 1: \$var; var=31; echo in subshell 2: \$var);$cend  # El hijo cambia var
+  ${cyellow}echo In father shell: \$var$cend  # Pero el padre todavia tiene su var original. Hubo un clonage de la variable var y de mucho mas cosas
+
+
+${cblue}P03: Remplazar un proceso (exec)$cend
+  Forkear esta bien, pero clonea el proceso, como hago si quiero correr un otro proceso, pro ejemplo ${cblue}cat$cend, ${cblue}wait$cend o ${cblue}vim$end?
+  En este caso se usa el commando ${cblue}exec$cend que hace la llamada de systema del mismo nombre
+  ${cyellow}> exec cat /dev/urandom$cend
+  ${cyellow}> exec sleep 2$cend
+
+  Como este proceso se vuelve el proceso padre del emulador de terminal, al acabarse, se ciera la terminal!
+
+
+${cblue}P04: Remplazar un proceso (exec)$cend
+
+
 $cblue
 +==========================+
 | Parte 2 Explore: Device  |
 +==========================+$cend
 
-${cblue}P11: Zero a file (dd): descripcion de filefrag$cend
+${cblue}P11: Arbol de archivos (tree)$cend
+  Los mismos que pstree para imprimir el arbol de archivos.
+  ${cyellow}> tree$cend
+  Lo uso a veces para escribir documentation de un codigo
+
+
+${cblue}P12: Zero a file (dd): descripcion de filefrag$cend
   ${cblue}dd$end significa \"Disk Dump\". Es un commando como cat orientado a los byte y no a los caracteres imprimible. Es mas bajo nivel => mas dificil de usar pero tiene mas utilidades potencilaes.
   Masicamente si quieres escribir o leer unos bytes en un \"archivo\" (Formatear, Copiar al usb, Llenar un tunnel ...) es este commando.
 
@@ -46,7 +77,7 @@ ${cblue}P11: Zero a file (dd): descripcion de filefrag$cend
   ${cyellow}> sudo dd bs=4k skip=13004623 count=1 if=/dev/nvme0n1p4$cend  # Lee el sector directamente del disco duro (en el espacio kernel)
   
 
-${cblue}P12: Zero a file (dd): Demostracion del problema$cend
+${cblue}P13: Zero a file (dd): Demostracion del problema$cend
   Pero ahora, boramos el archivo:
   ${cyellow}> rm secret.txt$cend  # Destruye el archivo
   ${cyellow}> cat secret.txt$cend  # Si ya no se ve en el systema de archivo
@@ -58,7 +89,7 @@ ${cblue}P12: Zero a file (dd): Demostracion del problema$cend
   Eso es el ejercicio siguiente:
 
 
-${cblue}P13: Zero a file (dd): Forma dura$cend
+${cblue}P14: Zero a file (dd): Forma dura$cend
   Se puede reescribir directamente del disco duro:
 
   !! Cuidado !! No corres este commando si verificar 7 veces. Puede ser aun peor que el famos rm de la muerte
@@ -80,11 +111,11 @@ ${cblue}P13: Zero a file (dd): Forma dura$cend
   Cual es la differencia?
 
 
-${cblue}P14: Zero a file (dd): Usa el manual$cend
+${cblue}P15: Zero a file (dd): Usa el manual$cend
   De que sirven la opciones z, v y u de ${cblue}shred$cend?
 
 
-${cblue}P15: Crear un archivo grande$cend
+${cblue}P16: Crear un archivo grande$cend
   ${cyellow}> time dd iflag=fullblock if=/dev/urandom of=big_file.txt bs=32M count=16$cend
   Aumenta el tamano el numero de cuenta (count) si es demasiado rapido
 
@@ -108,8 +139,40 @@ ${cblue}P15: Crear un archivo grande$cend
   Validacion?
   
 
+${cblue}P17: Aleatorio (\$RANDOM)$end
+  Para los flojos:
+  ${cyellow}> echo \$RANDOM$cend
+
+  Para algo mas serio
+  ${cyellow}> cat /dev/urandom$cend  # Ctrl-c, sino jamas se acaba
+
+  La pregunta es, de donde saca aleatorio una machina determinista.
+  La repuest es del procesador o de la tajeta madre. Puedes ver como se llama el dispositivo con:
+  ${cyellow}> cat /sys/devices/virtual/misc/hw_random/rng_available$cend
+  o
+  ${cyellow}> cat /sys/class/misc/hw_random/rng_available$cend
+
+  El nucleo saca el aleatorio de este dispositivo, creando por comodidad un otro dispositivo (un espiece de alias) que se llama ${cblue}/dev/hwrng$cend. Para HardWare Random Number Generator.
+
+  Puedes generar numeros aleatorio a un nivel mas bajo (nivel kernel) con
+  ${cyellow}> sudo head -c 32 /dev/hwrng | hexdump$cend  # Donde puse el (${cyellos}> hexdump$cend$cend) solo para que se pueda leer (encodificado en numeros hexadecimales)
+
+  O el commando dd
+  ${cyellow}> sudo dd if=/dev/hwrng of=random.txt bs=1024 count=8$cend
+  ${cyellow}> cat random.txt$cend
+
+  Nota que leer /dev/hwrng es muchisimo mas lento que leer /dev/urandom porque toma solo los numeros primordiales de la base de entropia, y no los expande como /dev/urandom.
+
+  Todo eso sirve para la cryptografia. Que se puede ver en https, ssh, passwd y systema de archivos ecryyptados (puede ser todo el disco duro, un pdf, un archivo cualquiera, un falso archivo que simula un systema de arvhivo [en este caso hay que hacer tubos en el nucleo = pilotos])
+
+  De todo eso, solo recuerda ${cblue}/dev/urandom$cend
+
+
 
 ${cblue}End:$cend
+  Felicitacion!
+
+  Hemos visto: /dev/null, /dev/zero, /dev/urandom
 
   "
 

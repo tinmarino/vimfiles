@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ${cblue}System: Network$cend: Usarios y Machinas
+# ${cblue}System: Red$cend: Usarios y Machinas
 #
 # shellcheck disable=SC2154  # cblue is referenced but not
 

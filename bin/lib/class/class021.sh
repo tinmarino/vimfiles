@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ${cblue}Syntax: Pipe:$cend: Redirecion, Cita y Expancion
+# ${cblue}Syntax: Tubo:$cend: Redirecion, Cita y Expancion
 #
 # shellcheck disable=SC2154  # cblue is referenced but not
 

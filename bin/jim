@@ -17,7 +17,20 @@ register_subcommand class041 "$bin_path/lib/class/class041.sh"
 register_subcommand class042 "$bin_path/lib/class/class042.sh"
 register_subcommand class051 "$bin_path/lib/class/class051.sh"
 register_subcommand class052 "$bin_path/lib/class/class052.sh"
-register_subcommand link "$bin_path/lib/class/link.sh"
+
+
+register_subcommand class061 "$bin_path/lib/class/class061.sh"
+register_subcommand class062 "$bin_path/lib/class/class062.sh"
+register_subcommand class071 "$bin_path/lib/class/class071.sh"
+register_subcommand class072 "$bin_path/lib/class/class072.sh"
+register_subcommand class081 "$bin_path/lib/class/class081.sh"
+register_subcommand class082 "$bin_path/lib/class/class082.sh"
+register_subcommand class091 "$bin_path/lib/class/class091.sh"
+register_subcommand class092 "$bin_path/lib/class/class092.sh"
+register_subcommand class101 "$bin_path/lib/class/class101.sh"
+register_subcommand class102 "$bin_path/lib/class/class102.sh"
+
+register_subcommand misc "$bin_path/lib/class/misc.sh"
 
 sync(){
   pushd ~/.vim || exit 2
@@ -27,15 +40,6 @@ sync(){
   popd || exit 2
 }
 
-args(){
-  `# Debug: Print ${cblue}Arguments$cend passed`
-  echo "Full command: $0 args $*"
-  i=0
-  for var in "$@"; do
-    echo "Arg $i: $var!"
-    ((i++))
-  done
-}
 
 get_fct_dic
 call_fct_arg "$@"
