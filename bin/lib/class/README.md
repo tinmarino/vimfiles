@@ -1,3 +1,7 @@
+# TODO
+
+* Systema de examen, interactivo Y en papel, forma de imprimir una cuadra
+
 # First week
 
 1. System: File System
@@ -24,8 +28,13 @@
   * Tarea: /dev/null, /dev/random, /dev/zero
   * Tarea: FileSystem playing: https://unix.stackexchange.com/questions/161922/view-physical-location-of-a-file-directory-on-a-hard-disk
   * Tarea: Compile and load a device driver /dev/one that I must code: See links
+  * Play with urandom and $RANDOM and command interpolation
+  * Null
+  * Hacer archicos muy grandes
+
 
 - First week evaluation:
+  - TODO: Interactivo o en paple (voto en papel)
   - https://www.guru99.com/linux-interview-questions-answers.html
   - 20 awesome: https://innolitics.com/articles/advanced-bash-exercises/
 

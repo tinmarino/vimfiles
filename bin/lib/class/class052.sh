@@ -21,11 +21,6 @@ ${cblue}P00: Generar unos$end
 
 ${cblue}End:$cend
 
-TODO 5
-* Play with urandom and $RANDOM and command interpolation
-* Null
-* Hacer archicos muy grandes
-
   "
 
   echo -e "$msg"

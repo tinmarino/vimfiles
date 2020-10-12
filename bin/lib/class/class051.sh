@@ -11,7 +11,7 @@ __usage(){
 | Parte 1 Explorar: Processos |
 +=============================+$cend
 
-${cblue}P01: Arbol de processos (pstree)$cend
+${cblue}P02: Arbol de processos (pstree)$cend
   ${cyellow}> pstree -alp$cend  # -a = muestra la linea de commando del commando, -l = formato largo, -p = muestra el PID
 
   Redirecionalo en un archivo y lee el archivo
@@ -27,7 +27,7 @@ ${cblue}P01: Arbol de processos (pstree)$cend
   ${cyellow}> man systemd$cend
 
 
-${cblue}P02: Clonear un proceso (fork)$cend
+${cblue}P03: Clonear un proceso (fork)$cend
   La forma que tiene Linux de crear procesos es clonear un proceso (padre). Uno de los clones queda siendo el mismo y el otro llega a ser el hijo. Este rpoceso se hace mediante la llamda systema ${cblue}fork$end.
   En el Shell, se llama un SubShell, lo que hemos visto en la clase precedente con la substituciones de commando.
   Un subshell se puede generar adentro de \"()\" y se genera automaticamente cuando el proceso se pone en fondo (con \"&\") sino no podrias acceder a tu \"prompt\"hasta que se termine y el proceso no estaria en fondo. Cierto?
@@ -40,7 +40,7 @@ ${cblue}P02: Clonear un proceso (fork)$cend
   ${cyellow}echo In father shell: \$var$cend  # Pero el padre todavia tiene su var original. Hubo un clonage de la variable var y de mucho mas cosas
 
 
-${cblue}P03: Remplazar un proceso (exec)$cend
+${cblue}P04: Remplazar un proceso (exec)$cend
   Forkear esta bien, pero clonea el proceso, como hago si quiero correr un otro proceso, pro ejemplo ${cblue}cat$cend, ${cblue}wait$cend o ${cblue}vim$end?
   En este caso se usa el commando ${cblue}exec$cend que hace la llamada de systema del mismo nombre
   ${cyellow}> exec cat /dev/urandom$cend
@@ -172,7 +172,13 @@ ${cblue}P17: Aleatorio (\$RANDOM)$end
 ${cblue}End:$cend
   Felicitacion!
 
-  Hemos visto: /dev/null, /dev/zero, /dev/urandom
+  Hemos visto:
+  -- ps, pstree, subshell (fork), exec
+  -- /dev/null, /dev/zero, /dev/urandom
+
+  Maniana veremos: monolineas
+
+  Pero antes, tendermos la prueba de medio cyclo
 
   "
 
