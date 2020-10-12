@@ -10,6 +10,15 @@ __usage(){
 +==================+
 | Piedritas: Tarea |
 +==================+$cend
+
+${cblue}P01: Monitoreo (top)$cend
+  ${cyellow}> top$cend
+  En una terminal:
+  [+] Es facil ejecutar, aun a distancia (ssh sin configuracion)
+  [-] Es feo y (muy) complicado de usar (con el teclado)
+
+  Tienes una applicacion llamada \"System Monitor\"?
+
 ${cblue}End:$cend
 
   "

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# ${cblue}Link$cend: Recursos para ir mas lejos
+# ${cblue}Misceláneo$cend: Recursos para las clases
 #
 
 source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# -- Tarea: python, perl, java, C, assembly
+# -- Tarea: Script bash
 #
 # shellcheck disable=SC2154  # cblue is referenced but not
 

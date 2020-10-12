@@ -1,6 +1,9 @@
 # TODO
 
-* Systema de examen, interactivo Y en papel, forma de imprimir una cuadra
+* GUI vs CLI
+* Archivo con puntos hidden
+* Systema de examen:
+  * interactivo Y en papel (Como --doc)
 
 # First week
 
@@ -14,13 +17,15 @@
   * OK: Learn about file glob expansion with * (and perhaps ? and [...]) and quoting and the difference between double " and single ' quotes. (See more on variable expansion below.)
   * Be familiar with Bash job management: &, ctrl-z, ctrl-c, jobs, fg, bg, kill, etc.
   * Signal suspend, shutdowmn childdeath ...
-  * OK: Tarea: filter to get all commands seen in clases and apropos
+  * Tarea: Trap
   * READ:  trap: http://www.learnlinux.org.za/courses/build/shell-scripting/ch12s03.html
   * Tarea: prrfecta trap: https://www.linuxjournal.com/article/10815
+  * OK: Tarea: filter to get all commands seen in clases and apropos
 5. System: Navigate like a Sailor
   * ps
   * fork, exec
   * ulimit
+  * free -m, top, cat /proc/meminfo 
   * Tarea: Niceness: nice, renice
   * Tarea: fork bomb: https://www.cyberciti.biz/faq/understanding-bash-fork-bomb/
   * Tarea: find, grep, hacer la generacion de un sistem de archivos
@@ -44,30 +49,31 @@
   * One liner of death, And how to find what: man, apropos in light
 7. System: Dev tootls
   *  Wget, Curl, Git and ... Vim or Nano, Emacs or text editor, choose your weapon
+  * Class: Vim 3 modos
 8. Syntax: Programming
   * Macina de Turing
   * Turing: Teorema e mo completud
   * BlaBla: https://insights.stackoverflow.com/survey/2020#technology-programming-scripting-and-markup-languages
-  * BlaBla: Assemby, Rust, Java, Ruby
   * Function
   * Branches
   * Ciclos
-  * Python
-  * Perl
-  * Javascript
-  * C
-  * Tarea: Php
-  * Tareas: Sql
 9. System: Servidor
   * email postfix, emap
+  * Class: explicar bien daemon == servicio
   * 1/ Python: Network filesystem
   * 2/ Cgi: Php
   * 3/ Jenkins
   * Servidor jenkins
   * Tarea: cron
   * Idea: Web hosting, servidor web, apagche, nginx, ver capitulo 19
-10. Final: Los pequenios "detailles"
-  * Trap
+10. Final: Language: Collecion
+  * BlaBla: Assemby, Rust, Java, Ruby
+  * Python
+  * Perl
+  * Javascript
+  * C
+  * Tarea: Php
+  * Tareas: Sql
   * Virtualisation, VirtualBox verus Docker. Que es virtual que es real? En realidad es todo virtual pero bue. Entonces virtual significa Mas virtual
   * Monitoring (performance and load)
   * Encoding, utf8, hex (4 bits), octal, binario, ASCII, 16 bits

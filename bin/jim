@@ -17,6 +17,7 @@ register_subcommand class041 "$bin_path/lib/class/class041.sh"
 register_subcommand class042 "$bin_path/lib/class/class042.sh"
 register_subcommand class051 "$bin_path/lib/class/class051.sh"
 register_subcommand class052 "$bin_path/lib/class/class052.sh"
+register_subcommand class053 "$bin_path/lib/class/class053.sh"
 
 
 register_subcommand class061 "$bin_path/lib/class/class061.sh"
@@ -29,10 +30,12 @@ register_subcommand class091 "$bin_path/lib/class/class091.sh"
 register_subcommand class092 "$bin_path/lib/class/class092.sh"
 register_subcommand class101 "$bin_path/lib/class/class101.sh"
 register_subcommand class102 "$bin_path/lib/class/class102.sh"
+register_subcommand class103 "$bin_path/lib/class/class103.sh"
 
 register_subcommand misc "$bin_path/lib/class/misc.sh"
 
 sync(){
+  `# ${cblue}Sinconizacion$cend: de la clase`
   pushd ~/.vim || exit 2
   git pull --rebase \
     && echo -e "${cgreen}[+] Synchronization SUCCESS$cend" \
