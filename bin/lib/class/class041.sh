@@ -87,12 +87,12 @@ ${cblue}P11: Segnales: Ctrl-z, Ctrl-c$cend
   Apreta Ctrl-c
   Mandaste al utltimo trabajo (work Jim2) la senal: 2 - SIGINT - interupt process stream, ctrl-C 
 
-${cblue}P12: Segnales: Background (bg)$cend
+${cblue}P12: Senales: Fondo (bg)$cend
   ${cyellow}> work Jim3 &$cend  # Nota que \"&\" corre directamente el trabajo en background, es lo mismo que lo siguiente
   ${cyellow}> work Jim4$cend  # Press Ctrl-z
   ${cyellow}> bg$cend  # Press Ctrl-z
 
-${cblue}P13: Segnales: Foreground (fg)$cend
+${cblue}P13: Segnales: Primer plano (fg)$cend
   ${cyellow}> work Jim5 &$cend
   ${cyellow}> fg$cend
 
@@ -116,7 +116,14 @@ ${cblue}P15: Otro Shell$cend
   Hablar de herencia
 
 ${cblue}End:$cend
+  Acabaste la clase 4. Felicitacion!
 
+  Has aprendido: Las expanciones de Bash con ~, *, {}, \$, \$(()), \$()
+  
+  Manana veremos: Los processos y los dispositivos
+
+  De nuevo, buen trabajo,
+  Buenas noches.
   "
 
   echo -e "$msg"

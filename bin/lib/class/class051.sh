@@ -11,6 +11,13 @@ __usage(){
 | Parte 1 Explorar: Processos |
 +=============================+$cend
 
+
+${cblue}P01: Lista de processo (ps)$cend
+  ${cyellow}> ps$cend  # Como ProcesseS da la lista de los procesos
+  ${cyellow}> ps -aux$cend  # Suelo usar ese
+  ${cyellow}> ps -aux | grep bash$cend  # Y siempre se usa en un tubo
+
+
 ${cblue}P02: Arbol de processos (pstree)$cend
   ${cyellow}> pstree -alp$cend  # -a = muestra la linea de commando del commando, -l = formato largo, -p = muestra el PID
 
@@ -19,7 +26,7 @@ ${cblue}P02: Arbol de processos (pstree)$cend
   ${cyellow}> xdg-open process_tree.txt$cend
 
   Encuentra tu propio processo: pstree y sus padres
-  
+
   De forma mas sencilla:
   ${cyellow}> pstree -al -s \$\$$cend
   Muestra especificamente el proceso con PID \$\$ es decir el presente Shell
@@ -75,7 +82,7 @@ ${cblue}P12: Zero a file (dd): descripcion de filefrag$cend
   ${cyellow}> df$end  # Anota el nombre del dispositivo de la particion de tu /home. Para mi es /dev/nvme0n1p4
   ${cyellow}> cat secret.txt$cend  # Lee el archivo del system de archivo (en el espacio usario)
   ${cyellow}> sudo dd bs=4k skip=13004623 count=1 if=/dev/nvme0n1p4$cend  # Lee el sector directamente del disco duro (en el espacio kernel)
-  
+
 
 ${cblue}P13: Zero a file (dd): Demostracion del problema$cend
   Pero ahora, boramos el archivo:
@@ -132,12 +139,12 @@ ${cblue}P16: Crear un archivo grande$cend
   Hypothesis: que esperas de este commando Sera lento o rapido?
   ${cyellow}> time rm big_file.txt$cend
   Validacion: tenia razon en tu hypothesis? Porque?
-  
+
   ${cyellow}> time dd iflag=fullblock if=/dev/urandom of=big_file.txt bs=32M count=16$cend
   Hypothesis: que esperas de este commando Sera lento o rapido (Nota yo me equivoque)?
   ${cyellow}> cat big_file.txt > /dev/null$cend
   Validacion?
-  
+
 
 ${cblue}P17: Aleatorio (\$RANDOM)$end
   Para los flojos:

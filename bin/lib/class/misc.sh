@@ -21,6 +21,7 @@ _link(){
     [https://linuxize.com/post/how-to-create-users-in-linux-using-the-useradd-command/]="${cblue}Read:$cend Clase 4: useradd"
     [https://www.neoguias.com/crear-usuario-linux-comando-useradd/]="${cblue}Read:$cend Clase 4: useradd tarea"
     [https://wiki.linuxquestions.org/wiki/Some_dd_examples]="${cblue}Read:$cend Clase 5: ejemplos de commando dd"
+    [https://www.tecmint.com/ps-command-examples-for-linux-process-monitoring/]="${cblue}Ref:$cend Clase 5: ps: 30 ejemplos (sin tubos)"
   )
   for i in "${!array[@]}"
   do

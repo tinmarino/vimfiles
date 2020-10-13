@@ -1,5 +1,6 @@
 # TODO
 
+* play with redirection and pipes
 * GUI vs CLI
 * Archivo con puntos hidden
 * Systema de examen:
@@ -15,27 +16,25 @@
   * su -,  dig, traceroute, route.
 4. Syntax: Job and quotes:
   * OK: Learn about file glob expansion with * (and perhaps ? and [...]) and quoting and the difference between double " and single ' quotes. (See more on variable expansion below.)
-  * Be familiar with Bash job management: &, ctrl-z, ctrl-c, jobs, fg, bg, kill, etc.
+  * OK: Be familiar with Bash job management: &, ctrl-z, ctrl-c, jobs, fg, bg, kill, etc.
   * Signal suspend, shutdowmn childdeath ...
-  * Tarea: Trap
   * READ:  trap: http://www.learnlinux.org.za/courses/build/shell-scripting/ch12s03.html
-  * Tarea: prrfecta trap: https://www.linuxjournal.com/article/10815
-  * OK: Tarea: filter to get all commands seen in clases and apropos
+  * Tarea: perfecta trap: https://www.linuxjournal.com/article/10815
 5. System: Navigate like a Sailor
-  * ps
-  * fork, exec
-  * ulimit
-  * free -m, top, cat /proc/meminfo 
-  * Tarea: Niceness: nice, renice
-  * Tarea: fork bomb: https://www.cyberciti.biz/faq/understanding-bash-fork-bomb/
-  * Tarea: find, grep, hacer la generacion de un sistem de archivos
-  * Tarea: pstree and init
-  * Tarea: /dev/null, /dev/random, /dev/zero
-  * Tarea: FileSystem playing: https://unix.stackexchange.com/questions/161922/view-physical-location-of-a-file-directory-on-a-hard-disk
-  * Tarea: Compile and load a device driver /dev/one that I must code: See links
-  * Play with urandom and $RANDOM and command interpolation
-  * Null
-  * Hacer archicos muy grandes
+  * TODO Tarea: Niceness: nice, renice
+  * TODO Tarea: find, grep, hacer la generacion de un sistem de archivos
+  * Obs: Tarea: /dev/null, /dev/random, /dev/zero
+  * Obs: Play with urandom and $RANDOM and command interpolation
+  * OK: Tarea: free -m, cat /proc/meminfo
+  * OK: Tarea: fork bomb: https://www.cyberciti.biz/faq/understanding-bash-fork-bomb/
+  * OK: Tarea: ulimit (builtin, con la fork bomb)
+  * OK: Tarea: pstree and init
+  * OK: Class: Hacer archicos muy grandes (class p16)
+  * OK: Class: filter to get all commands seen in clases and apropos
+  * OK: Class: ps
+  * OK: Class: fork, exec
+  * OK: Class: FileSystem playing: https://unix.stackexchange.com/questions/161922/view-physical-location-of-a-file-directory-on-a-hard-disk
+  * OK: Tarea: Compile and load a device driver /dev/one that I must code: See links
 
 
 - First week evaluation:
@@ -93,3 +92,4 @@
   * Create a device driver: https://www.apriorit.com/dev-blog/195-simple-driver-for-linux-os
   * Device driver pdf: http://studenti.fisica.unifi.it/~carla/manuali/linux_device_driver_tutorial.pdf
   * Ver mknod
+  * Ring -3 .. 3: https://medium.com/swlh/negative-rings-in-intel-architecture-the-security-threats-youve-probably-never-heard-of-d725a4b6f831
