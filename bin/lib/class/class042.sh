@@ -19,14 +19,14 @@ ${cblue}P01: Listea y describe los commandos cononcidos$cend
   Y te respondi: \"Mejor vealo en TU sistema y mantenga tus notas tu mismo.\"
 
   Para resumir los commandos de esta clase, corre este commando:
-  ${cyellow}> jim --doc | grep -o '> \\(sudo \\)\\?\\w\\+' | sed 's/sudo //' | cut -c 3- | sort -u | awk '{print \"apropos -l \\\"^\" \$1 \"\$\\\"\"}' | bash 2>&1 | grep -v \"nothing appropriate\"$cend
+  ${cyellow}> jim --doc | grep -ao '> \\(sudo \\)\\?\\w\\+' | sed 's/sudo //' | cut -c 3- | sort -u | awk '{print \"apropos -l \\\"^\" \$1 \"\$\\\"\"}' | bash 2>&1 | grep -v \"nothing appropriate\"$cend
   Puedes redirecionar el output de este en un archivo para leerlo mas tranquilo
 
   --> Aparte
   A ver lo que hace <= es un interesante ejemplo real.
   No copies estos commandos, es solo una descripcion:
   ${cyellow}> jim --doc$cend  # Ese es un commando que el yo hice, que escribe todo el el StdOut
-  ${cyellow}> grep -o '> \\(sudo \\)\\?\\w\\+'$cend  # Agara: -o = escribe solo lo que agaro y lo las lineas enteras como el defecto, un character \">\", despues \"sudo \" o no \"\\?\", despues characters de palabra \"\\w\", 1 o mas \"\\+\", ese ultimo argumento es una ${cblue}Exprecion Regular$cend
+  ${cyellow}> grep -ao '> \\(sudo \\)\\?\\w\\+'$cend  # Agara: -a = considera el input como texto, -o = escribe solo lo que agaro y lo las lineas enteras como el defecto, un character \">\", despues \"sudo \" o no \"\\?\", despues characters de palabra \"\\w\", 1 o mas \"\\+\", ese ultimo argumento es una ${cblue}Exprecion Regular$cend
   ${cyellow}> sed 's/sudo //'$cend  # Remplaza \"sudo \" (sudo y espacio) por nada (en cada linea)
   ${cyellow}> cut -c 3-$cend  # Corta (Cut) los 3 (\"3\") primeros caracteres (\"c\")
   ${cyellow}> sort -u$cend  # Ordena lexicographicamente de forma unica: lo mismo que ${cyellow}sort | uniq$cend pero mas rapido (porque corre un processo y no dos)
@@ -111,7 +111,7 @@ ${cblue}P05: Subshell y asynchronysmo$cend
   ${cyellow}> { (sleep 1) &
 (sleep 2) &
 (sleep 3) &
-wait }$cend
+wait; }$cend
 
   Viste que es mas facil leer!
 

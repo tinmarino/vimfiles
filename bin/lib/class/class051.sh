@@ -14,7 +14,7 @@ __usage(){
 
 ${cblue}P01: Lista de processo (ps)$cend
   ${cyellow}> ps$cend  # Como ProcesseS da la lista de los procesos
-  ${cyellow}> ps -aux$cend  # Suelo usar ese
+  ${cyellow}> ps -aux$cend  # Suelo usar ese, puedes agragar -f para full
   ${cyellow}> ps -aux | grep bash$cend  # Y siempre se usa en un tubo
 
 
@@ -173,7 +173,6 @@ ${cblue}P17: Aleatorio (\$RANDOM)$end
   Todo eso sirve para la cryptografia. Que se puede ver en https, ssh, passwd y systema de archivos ecryyptados (puede ser todo el disco duro, un pdf, un archivo cualquiera, un falso archivo que simula un systema de arvhivo [en este caso hay que hacer tubos en el nucleo = pilotos])
 
   De todo eso, solo recuerda ${cblue}/dev/urandom$cend
-
 
 
 ${cblue}End:$cend

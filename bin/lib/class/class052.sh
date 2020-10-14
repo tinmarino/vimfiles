@@ -39,7 +39,10 @@ ${cblue}P02: Instalar un driver$end
   2/ En el nucleo hay solo un usario: root (la raiz abajo en el nucleo, suena coherente) y tiene acceso a todo tu systema sin que nadie lo pueda vigilar. Asi que si un virus se mete ahi, no lo detectas, ni lo sacas, pero el te espia todo sin que veas ni siquiera que usa el CPU.
      Por lo tanto existe un protecion adicional (en todos los sistema: Windows, Linux, Mac y Android) que obliga los fabricantes. Esta protecion es una firma. Si tu firma tiene autoridad, se instala sencillamente, sin ruido. Si no (como en mi caso), tienes que pedir al usario desabilitar el \"Secure boot\" es su bios o abilitar la firma reiniciando su programa y interactuando a nivel casi electronico: en el UEFI (nuevo BIOS) mas bajo que el hypevisor que es mas bajo que el kernel, lo que un virus no puede hacer ya que no tiene las manos sobre el compu.
   3/ Para finalmente interactuar con el usario final (sino serian inutiles), los pilotos contruyen archivos y leer o escribir en estos archivos dispara las funciones deseadas, aqui escribir 1111111 infinitamente y rapidamente.
+"
 
+  # shellcheck disable=SC2016  # Expressions don't expand in single quote
+  msg+='
            .-""""-.
           ////||\\\\  Humans, some mammels
           |/      \|  Carbon based and hard to predict
@@ -99,8 +102,9 @@ Ring -2    | System Management Mode |  (press f2 at boot)
           |       |
           |       |
           |_______|
+'
 
-
+  msg+="
 
 ${cblue}P03: Monitoreo de processos (top)$end
   ${cyellow}> top$cend  # q to exit, enter to refresh faster
@@ -134,17 +138,26 @@ ${cblue}P06: Limita tus limites y evita la explosion$cend
   ${cyellow}> bomb() { bomb | bomb & }; bomb$end  # Ahora si corre la bomba
   Ciera la terminal para matar en cadena esta cadena de procesos
 
+  <= Accuerdate (clase 4) que cerar un shell envia SIGTERM a todo sus hijos, y que el comportamiento por defecto al recebir una senal SIGTERM est terminar.
+
   Has visto el \"fork bomb\" un tipo de ataque primitivo que provoca una negacion de servicio (Denial Of Service DOS) osea quebra la macina del adversario y has visto como defenderse de este ataque (acuerdate de \"Your limits\")
 
 
 ${cblue}P07: Cuanta memoria libre (free)$cend
-  ${cyellow}free -h$cend
+  ${cyellow}> free -h$cend
   H como \"human read\" con el Gi. Como \"du -h\".
   Mas detalles:
   ${cyellow}cat /proc/meminfo$cend
 
 
 ${cblue}End:$cend
+  Asi acabas la primea mita de la clase intensiva de Linux. Felicitacion!
+
+  Manana: la prueba de mitad de clase.
+  Asi que te toca revisar. Puedes usar el commando que definimos en la clase 042:
+
+  ${cyellow}> jim --doc | grep -ao '> \\(sudo \\)\\?\\w\\+' | sed 's/sudo //' | cut -c 3- | sort -u | awk '{print \"apropos -l \\\"^\" \$1 \"\$\\\"\"}' | bash 2>&1 | grep -v \"nothing appropriate\" | tee command_index.txt$cend
+  ${cyellow}> xdg-open command_index.txt${cend}
 
   "
 

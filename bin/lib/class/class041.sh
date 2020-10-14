@@ -17,11 +17,13 @@ $cblue
   Antes de ejecutar cualquier linea, BaSh hace unas expanciones.
   Puedes leer (mucho) mas sobre eso en ${cyellow}man bash$end seccion \"EXPANSION\".
 
+
 ${cblue}P01: Expancion de casa: ~$cend
   Ya hemos visto como la tilde \"~\" se expande:
   ${cyellow}> echo ~$cend
   ${cyellow}> echo ~jim2$cend
   Si! Como el camino a tu casa, 1 character, para que sea facil encontrar tu casa!
+
 
 ${cblue}P02: Expancion de camino: *$cend
   ${cyellow}> echo *$cend  # Muestra todo los caminos
@@ -31,18 +33,22 @@ ${cblue}P02: Expancion de camino: *$cend
   Est symbolo \"*\" Se llama el glob porque engloba \"cualquier wea tipo \"file*\" significa file seguido por \"cualquier wea\".
   Este tipo de especificacion de nombre (aqui de camino) es una exprecion regular. Y es muy potente!
 
+
 ${cblue}P03: Expancion de llave, como el \"o\": {}$cend
   No es muy muy util, solo achica un poco los commandos
   ${cyellow}> echo estoy-{feliz,triste,boracho}$cend
   ${cyellow}> echo {estoy,soy}-{feliz,triste,boracho}$cend
   Es como el \"o\" estoy feliz o triste o contento. Puede multiplicr rapidamente los argumentos.
 
+
 ${cblue}P04: Expancion arithmetica: \$(())$cend
   ${cyellow}> echo \$((2 + 2))$cend
+
 
 ${cblue}P05: Expancion de variable: \$$cend
   ${cyellow}> echo \$USER$cend
   ${cyellow}> toto=\"adentro\"; echo \$toto$cend
+
 
 ${cblue}P06: Substitucion de commando: \$()$cend
   Esa es muy util!
@@ -74,27 +80,35 @@ Mas informaciones en ${cyellow}man 7 signal$cend.
 
 Los trabajos son todo los procesos que ha ejecutado un shell, cada linea si corre un commando o un tubo (pipeline) es un trabajo.
 
+
 ${cblue}P10: Trabajos de fondo$cend
-  Necesitamos un function de trabajo. Llamemosla \"work\".
-  Ejecuta esta declaracion en tu shell:
-  ${cyellow}> work(){ while true; do echo $1 is working; sleep 0.5; done; }$cend
+  Necesitamos un function de trabajo que lee el StdIn pero no escribe en el StdOut.
+  Vamos a usar nano y vim <= son editores de texto.
+  ${cyellow}> nano file1${cend}
+  Ctrl-X para salir
+  ${cyellow}> vim file1${cend}
+  \":q\" para salir, si el archivo se modifico: \":q!\"
+
 
 ${cblue}P11: Segnales: Ctrl-z, Ctrl-c$cend
-  ${cyellow}> work Jim1$cend
+  ${cyellow}> nano Jim1$cend
   Apreta Ctrl-z
-  Mandaste al ultimo trabajo (work Jim1) la senal: 19 - SIGSTOP - Pause the process / free command line, ctrl-Z (1st)
-  ${cyellow}> work Jim2$cend
+  Mandaste al ultimo trabajo (nano Jim1) la senal: 19 - SIGSTOP - Pause the process / free command line, ctrl-Z (1st)
+  ${cyellow}> nano Jim2$cend
   Apreta Ctrl-c
-  Mandaste al utltimo trabajo (work Jim2) la senal: 2 - SIGINT - interupt process stream, ctrl-C 
+  Mandaste al utltimo trabajo (nano Jim2) la senal: 2 - SIGINT - interupt process stream, ctrl-C 
+
 
 ${cblue}P12: Senales: Fondo (bg)$cend
-  ${cyellow}> work Jim3 &$cend  # Nota que \"&\" corre directamente el trabajo en background, es lo mismo que lo siguiente
-  ${cyellow}> work Jim4$cend  # Press Ctrl-z
+  ${cyellow}> nano Jim3 &$cend  # Nota que \"&\" corre directamente el trabajo en background, es lo mismo que lo siguiente
+  ${cyellow}> nano Jim4$cend  # Press Ctrl-z
   ${cyellow}> bg$cend  # Press Ctrl-z
 
+
 ${cblue}P13: Segnales: Primer plano (fg)$cend
-  ${cyellow}> work Jim5 &$cend
+  ${cyellow}> nano Jim5 &$cend
   ${cyellow}> fg$cend
+
 
 ${cblue}P14: Jobs and kill$cend
   Hay 2 seniales utiles:
@@ -109,11 +123,13 @@ ${cblue}P14: Jobs and kill$cend
   ${cyellow}> kill -15 %2$cend  # Manda la senial 15 (TERMINATE) al trabajo numero 2
   Ahora TERMINA o MATA todo tus trabajos
 
+
 ${cblue}P15: Otro Shell$cend
   ${cyellow}> bash$cend  # Te hace entrar en un otro shell
   ${cyellow}> exit$cend  # Te hace salir de ese
   Que pasa de un shell a otro?
   Hablar de herencia
+
 
 ${cblue}End:$cend
   Acabaste la clase 4. Felicitacion!
