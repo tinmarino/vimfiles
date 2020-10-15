@@ -103,3 +103,4 @@
   * Print 10, impresive: https://bruxy.regnet.cz/web/linux/EN/useless-bash/https://bruxy.regnet.cz/web/linux/EN/useless-bash/
   * Composing music: https://blog.robertelder.org/bash-one-liner-compose-music/
   * Super bash, Linux cheat sheet: https://bruxy.regnet.cz/web/linux/EN/bash-cheat-sheet/ (from Guru)
+  * Music, with beep: https://github.com/NaWer/beep/

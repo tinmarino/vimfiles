@@ -75,7 +75,7 @@ ${cblue}P20: 10 PRINT CHR\$(205.5+RND(1)); : GOTO 10$cend
 
 ${cblue}Imprime la table de caracteres ascii$cend
   ${cyellow}> for i in {32..255};do ((i%16==0))&&echo;printf \"\\\\\$(printf \"%o\" \$i) \";done|iconv -f cp437 -t utf8$cend
-  O 
+  O
   ${cyellow}> awk 'BEGIN {for (i = 32; i < 127; i++) printf \"%3d 0x%02x %c\\n\", i, i, i}' | pr -t6 -w78$cend
   Pero ahi, mira
   ${cyellow}> man ascii$cend
@@ -122,6 +122,15 @@ cat /dev/urandom | hexdump -v -e '/1 "%u\\n"' | awk '{ split("0,2,4,5,7,9,11,12"
 EHD
 )
 
+
+  echo -e "$msg"; msg=
+  abat <<< '  python3 -c "'
+  abat python << 'EHD'
+while 1:locals().setdefault('t',0);print(chr((((t*((ord('36364689'[t>>13&7])&15)))
+  //12&128)+(((t>>12)^(t>>12)-2)%11*t//4|t>>13)&127)),end='');t+=1
+EHD
+  abat <<< '" | aplay -r 44100'
+
   msg+="
 
 
@@ -130,6 +139,14 @@ ${cblue}End:$cend
 
   echo -e "$msg"
 }
+
+
+abat(){
+  `# alias_bat laguage < stdin > stdout`
+  local lang="${1:-bash}"
+  bat --style plain --color always --pager "" --language "$lang" - | perl -p -e 'chomp if eof';
+}
+
 
 music_abs(){
   # From: https://tldp.org/LDP/abs/html/devref1.html#MUSICSCR
@@ -171,21 +188,21 @@ fractal(){
   $(($s*$j)) -le 1073741824 ];do s=$(($r*$r$p)) j=$(($i*$i$p)) t=$(($s-$j+$R));
   i=$(((($r*$i)$p-1)+$I)) r=$t;done;if [ $B -ge 32 ];then $e\ ;else #---::BruXy::-
   $e"\E[01;$(((B+3)%8+30))m${S[$((C++%5))]}"; fi;R=$((R+512));done;#----:::(c):::-
-  $e "\E[m\E(\r\n";I=$((I+1311)); done|tee $t;head -n 12 $t| tac  #-----:2 O 1 O:-  
+  $e "\E[m\E(\r\n";I=$((I+1311)); done|tee $t;head -n 12 $t| tac  #-----:2 O 1 O:-
 }
 
 garfield(){
   ANIMATION=https://16colo.rs/pack/acdu1092/raw/BRTRACD2.ANS
   SPEED='.005' # wait this time each line
-  
+
   # 1. Disable cursor
   printf "\e[?25l"
-  
+
   # 2. Download, convert, display slow == play animation
   curl --silent $ANIMATION | \
       iconv -f cp437 -t utf-8  | \
       awk "{system(\"sleep $SPEED\");print}"
-  
+
   # 3. Enable cursor settings
   printf "\e[?12l\e[?25h"
 }
