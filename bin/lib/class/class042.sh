@@ -152,7 +152,7 @@ ${cblue}P08: Trap cada linea (DEBUG)$cend
 
 ${cblue}P09: Matar no necesariamente mata$cend
   Sino que manda una senal, si esa senal es la 9, eso si que mata!
-  ${cyellow}> kill $(jobs -p)$cend   # Kill all jobs, nota la substitucion de commando
+  ${cyellow}> kill \$(jobs -p)$cend   # Kill all jobs, nota la substitucion de commando
 
   Atrapame
   > trap \"echo Process \$BASHPID received SIGUSR1\" SIGUSR1
