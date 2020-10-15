@@ -8,7 +8,7 @@ source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"
 __usage(){
   local msg="$cblue
 +===================+
-| Hearmienta: Tarea |
+| Heramienta: Tarea |
 +===================+$cend
 ${cblue}End:$cend
 

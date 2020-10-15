@@ -45,10 +45,13 @@
 # Second Week
 
 6. Syntax: Recreo
-  * One liner of death, And how to find what: man, apropos in light
+  * One liner of death
+  * And how to find what: man, apropos in light
 7. System: Dev tootls
-  *  Wget, Curl, Git and ... Vim or Nano, Emacs or text editor, choose your weapon
-  * Class: Vim 3 modos
+  * Wget, Curl
+  * Class: Vim 3 modos,  or Nano, Emacs or text editor, choose your weapon
+  * Git
+  * Docker
 8. Syntax: Programming
   * Macina de Turing
   * Turing: Teorema e mo completud
@@ -93,3 +96,10 @@
   * Device driver pdf: http://studenti.fisica.unifi.it/~carla/manuali/linux_device_driver_tutorial.pdf
   * Ver mknod
   * Ring -3 .. 3: https://medium.com/swlh/negative-rings-in-intel-architecture-the-security-threats-youve-probably-never-heard-of-d725a4b6f831
+
+### Clase 6: Monolinea
+  * Abierto, con votos: http://www.bashoneliners.com/oneliners/popular/
+  * Jugar con 100 archivo (fome per instructivo): http://www.npcharrier.com/unix/bash-one-liner/
+  * Print 10, impresive: https://bruxy.regnet.cz/web/linux/EN/useless-bash/https://bruxy.regnet.cz/web/linux/EN/useless-bash/
+  * Composing music: https://blog.robertelder.org/bash-one-liner-compose-music/
+  * Super bash, Linux cheat sheet: https://bruxy.regnet.cz/web/linux/EN/bash-cheat-sheet/ (from Guru)

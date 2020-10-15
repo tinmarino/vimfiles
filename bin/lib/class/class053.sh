@@ -49,7 +49,7 @@ declare -A question=(
     EL CLI, se usa con un prompt, con lneas de commando. Como Bash interactivo (el prompt, tambien llamado shell).
     "
   [P11: Que hace el commando pwd? Que significa?]="\
-    Print Working Direcotory.
+    Print Working Directory.
     Escribe el directorio actual de trabajo en la salida estandar.
     Como > echo \$PWD.
     "
@@ -100,7 +100,7 @@ declare -A question=(
     o
     > cat file1 file2 > file3  # Concatena fil1 y file2 en file3, creando este ultimo.
     "
-  [P22: Cómo se puede crear un direcotrio?]="\
+  [P22: Cómo se puede crear un directorio?]="\
     > mkdir folder  # Para crear el directorio con nombre folder
     "
   [P23: Escribe un commando que permite ver el contenido del archivo \"file.txt\".]="\
