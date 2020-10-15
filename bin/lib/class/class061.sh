@@ -147,10 +147,10 @@ $(($s*$j)) -le 1073741824 ];do s=$(($r*$r$p)) j=$(($i*$i$p)) t=$(($s-$j+$R));
 i=$(((($r*$i)$p-1)+$I)) r=$t;done;if [ $B -ge 32 ];then $e\ ;else #---::BruXy::-
 $e"\E[01;$(((B+3)%8+30))m${S[$((C++%5))]}"; fi;R=$((R+512));done;#----:::(c):::-
 $e "\E[m\E(\r\n";I=$((I+1311)); done|tee $t;head -n 12 $t| tac  #-----:2 O 1 O:-
-
 EHD
-
   echo -e "
+
+
 ${cblue}Graphicos: BaSh on fire$cend
   Reconoces algunos commandos? So todos avanzados.
   "
@@ -161,7 +161,6 @@ $e -e "\E[2J\E[?25l" ; while true; do p=''; for j in  $P; do p=$p$[$RANDOM%2*9];
 done;O=${C:0:$[X*(Y-1)]}$p;C='' S='';for p in $M;do #  _-=[ BruXy.RegNet.CZ ]=-_
 read a b c d <<< "${O:$[p+X-1]:1} ${O:$[p+X]:1} ${O:$[p+X+1]:1} ${O:$[p+X+X]:1}"
 v=$[(a+b+c+d)/4] C=$C$v S=$S${B[$v]}; done; printf "\E[1;1f$S"; done  # (c) 2012
-
 EOH
   echo -e "
 
@@ -174,6 +173,24 @@ curl -L http://git.io/unix$cend  # UTF8 encoded
 curl -L http://artscene.textfiles.com/ansi/scene/am-ice.ans 2> /dev/null | iconv -f cp437 -t utf-8  #  CP-437 encoded
 curl -L http://artscene.textfiles.com/ansi/scene/bigtime3.ans 2> /dev/null | iconv -f cp437 -t utf-8
 curl -L http://artscene.textfiles.com/ansi/scene/fconfigs.ans 2> /dev/null | iconv -f cp437 -t utf-8
+EOH
+  echo -e "
+
+
+${cblue}Graphicos: Enter the matrix$cend"
+abat << 'EOH'
+
+echo -e "\e[1;40m" ; clear ; while :; do echo $LINES $COLUMNS $(( $RANDOM % $COLUMNS)) $(( $RANDOM % 72 )) ;sleep 0.05; done|awk '{ letters="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()"; c=$4; letter=substr(letters,c,1);a[$3]=0;for (x in a) {o=a[x];a[x]=a[x]+1; printf "\033[%s;%sH\033[2;32m%s",o,x,letter; printf "\033[%s;%sH\033[1;37m%s\033[0;0H",a[x],x,letter;if (a[x] >= $1) { a[x]=0; } }}'
+
+EOH
+abat << 'EOH'
+
+(echo -e "\033[2J\033[?25l"; R=`tput lines` C=`tput cols`;: $[R--] ; while true
+do ( e=echo\ -e s=sleep j=$[RANDOM%C] d=$[RANDOM%R];for i in `eval $e {1..$R}`;
+do c=`printf '\\\\0%o' $[RANDOM%57+33]` ### http://bruxy.regnet.cz/web/linux ###
+$e "\033[$[i-1];${j}H\033[32m$c\033[$i;${j}H\033[37m"$c; $s 0.1;if [ $i -ge $d ]
+then $e "\033[$[i-d];${j}H ";fi;done;for i in `eval $e {$[i-d]..$R}`; #[mat!rix]
+do echo -e "\033[$i;${j}f ";$s 0.1;done)& sleep 0.05;done) #(c) 2011 -- [ BruXy ]
 EOH
   echo -e "
 
@@ -211,7 +228,7 @@ ${cblue}P99: Just Another Perl Hacker$cend
   Perl: Practical Extraction and Reporting Language => Un idioma que busca patrones y reporta de forma elegante (el hijo de sed)
   Japh: Just Another Perl Hacker => Una competencia amical de la forma mas elegante de escribir esta misma frase.
 
-  Aqui tu maestro, escribio uno para tu batisartismo. No lo intentes entender: es magia oscura.
+  Aqui tu maestro, escribio uno para tu batismo. No lo intentes entender: es magia oscura.
   Paciencia mi aprendiz ...
   "
 abat <<< "perl -e '"
@@ -247,25 +264,6 @@ music_abs(){
   $n$g$e2$d$c$d$c$a$g$n$g$e$n$g$a$d$c$b$a$b$c" | aplay
 }
 
-
-fire(){
-  # From: https://bruxy.regnet.cz/web/linux/EN/bash-on-fire/
-  # shellcheck disable=SC2006,SC2086,SC2007,SC2175,SC2034
-  X=`tput cols` Y=`tput lines` e=echo M=`eval $e {1..$[X*Y]}` P=`eval $e {1..$X}`;
-  B=(' ' '\E[0;31m.' '\E[0;31m:' '\E[1;31m+' '\E[0;33m+' '\E[1;33mU' '\E[1;33mW');
-  $e -e "\E[2J\E[?25l" ; while true; do p='';
-  # shellcheck disable=SC2006,SC2086,SC2007,SC2175,SC2034
-  for j in  $P; do p=$p$[$RANDOM%2*9];
-  done;
-  # shellcheck disable=SC2006,SC2086,SC2007,SC2175,SC2034,SC2162
-  O=${C:0:$[X*(Y-1)]}$p;C='' S='';
-  # shellcheck disable=SC2006,SC2086,SC2007,SC2175,SC2034,SC2162
-  for p in $M;do #  _-=[ BruXy.RegNet.CZ ]=-_
-  read a b c d <<< "${O:$[p+X-1]:1} ${O:$[p+X]:1} ${O:$[p+X+1]:1} ${O:$[p+X+X]:1}"
-  v=$[(a+b+c+d)/4] C=$C$v S=$S${B[$v]}; done;
-  # shellcheck disable=SC2006,SC2086,SC2007,SC2175,SC2034,SC2162,SC2059
-  printf "\E[1;1f$S"; done  # (c) 2012
-}
 
 garfield(){
   ANIMATION=https://16colo.rs/pack/acdu1092/raw/BRTRACD2.ANS
