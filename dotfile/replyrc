@@ -1,4 +1,4 @@
-script_file = ~/.perlrc.pl
+script_file = /home/tourneboeuf/.perlrc.pl
 
 [Interrupt]
 [FancyPrompt]
