@@ -141,7 +141,7 @@ ${cblue}P07: Trap salida de un programa (EXIT)$cend
 
 ${cblue}P08: Trap cada linea (DEBUG)$cend
   ${cyellow}> var=11$cend
-  ${cyellow}> trap 'echo var = $var' DEBUG$cend  # Nota que las citas son doble, asi el \$ no se interpola (todavia). Que psas si las pongo doble
+  ${cyellow}> trap 'echo var = \$var' DEBUG$cend  # Nota que las citas son simples, asi el \$ no se interpola (todavia). Que psas si las pongo doble
   ${cyellow}var=22$cend
   ${cyellow}echo 'Cualquier wea'$cend
   ${cyellow}> ((var*=2))$cend  # Bobla el valor de var gracias al contexto arithmetico
