@@ -5,6 +5,9 @@
 * Archivo con puntos hidden
 * Systema de examen:
   * interactivo Y en papel (Como --doc)
+* Missing from last clases
+  * TODO Tarea: Niceness: nice, renice
+  * TODO Tarea: find, grep, hacer la generacion de un sistem de archivos
 
 # First week
 
@@ -21,8 +24,6 @@
   * READ:  trap: http://www.learnlinux.org.za/courses/build/shell-scripting/ch12s03.html
   * Tarea: perfecta trap: https://www.linuxjournal.com/article/10815
 5. System: Navigate like a Sailor
-  * TODO Tarea: Niceness: nice, renice
-  * TODO Tarea: find, grep, hacer la generacion de un sistem de archivos
   * Obs: Tarea: /dev/null, /dev/random, /dev/zero
   * Obs: Play with urandom and $RANDOM and command interpolation
   * OK: Tarea: free -m, cat /proc/meminfo
@@ -47,18 +48,24 @@
 6. Syntax: Recreo
   * One liner of death
   * And how to find what: man, apropos in light
-7. System: Dev tootls
-  * Wget, Curl
-  * Class: Vim 3 modos,  or Nano, Emacs or text editor, choose your weapon
-  * Git
-  * Docker
+  * arecord -f cd - | aplay -  # Tubo de la muerte
+  * Pinpon: ((t*5&t>>7)|(t*3&t>>10))&+(+50^-100)%128
+7. System: Dev tools
+  * Docker,chroot = contenedores (facil)
+  * Git, control de version (quasi una sciencia)
+  * .bashrc, instll fortune, cowsay 
+  * Class: Nano, Vim 3 modos, Emacs or text editor, choose your weapon
+  * Tarea: Wget, Curl
 8. Syntax: Programming
-  * Macina de Turing
+  * Maquina de Turing
   * Turing: Teorema e mo completud
   * BlaBla: https://insights.stackoverflow.com/survey/2020#technology-programming-scripting-and-markup-languages
+  * Expreciones regulares: son muy importantes para los admin y dev ops, hasta para los architectos y jefes
   * Function
   * Branches
   * Ciclos
+  * Tarea: sobre Regex
+  * Tarea: Demo que funciones, explicacion punto unico de salida y jumps
 9. System: Servidor
   * email postfix, emap
   * Class: explicar bien daemon == servicio
@@ -70,6 +77,7 @@
   * Idea: Web hosting, servidor web, apagche, nginx, ver capitulo 19
 10. Final: Language: Collecion
   * BlaBla: Assemby, Rust, Java, Ruby
+  * Table de idiomas de que vamos a hablar
   * Python
   * Perl
   * Javascript
@@ -84,6 +92,8 @@
 - Second week evaluation:
 
 
+
+# Note
 
 
 # Links
@@ -103,4 +113,13 @@
   * Print 10, impresive: https://bruxy.regnet.cz/web/linux/EN/useless-bash/https://bruxy.regnet.cz/web/linux/EN/useless-bash/
   * Composing music: https://blog.robertelder.org/bash-one-liner-compose-music/
   * Super bash, Linux cheat sheet: https://bruxy.regnet.cz/web/linux/EN/bash-cheat-sheet/ (from Guru)
+  * MUsic BruXy Good reference: https://bruxy.regnet.cz/web/linux/EN/linux-demoscene/
   * Music, with beep: https://github.com/NaWer/beep/
+  * Article on one liner music: http://countercomplex.blogspot.com/2011/10/some-deep-analysis-of-one-line-music.html 2011
+  * Stdin Buffering problem: http://www.pixelbeat.org/programming/stdio_buffering/
+  * TTS: https://askubuntu.com/questions/501910/how-to-text-to-speech-output-using-command-line
+  * Viznut awesome blog: http://viznut.fi/en/
+  * Github topic: One-liner: https://github.com/topics/one-liners
+  * Bytebeat cllection: http://wry.me/toys/bytebeat/examples.html
+  * Bytebeat Lines: faster retrieval: https://www.reddit.com/r/bytebeat/comments/20km9l/cool_equations/
+  * ByteBeat : Html5 : Guthub : Greggman : https://github.com/greggman/html5bytebeat

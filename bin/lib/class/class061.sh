@@ -201,12 +201,24 @@ ${cblue}Fork bomb! No lo corres!$cend
 abat <<< ':(){:|:&};:'
   echo -e "
 
+$cblue
++----------------+
+| Sound to Music |
++----------------+$cend
 
-${cblue}Musica 1$cend "
+${cblue}41: Sonido pito$cend"
+  abat <<< 'echo -e "\a"'; echo
+  echo 'The -e (Escape) is fundamental to enable escape sequence. You can also printf "\a"'
+  echo '  Or, after installing sox'
+  abat <<< 'play -n synth 0.1 sine 880 vol 0.5'; echo
+
+  echo -e "
+
+
+${cblue}42: Musica desde el chaos$cend"
 abat << 'EHD'
 cat /dev/urandom | hexdump -v -e '/1 "%u\\n"' | awk '{ split("0,2,4,5,7,9,11,12",a,","); for (i = 0; i < 1; i+= 0.0001) printf("%08X\\n", 100*sin(1382*exp((a[$1%8+1]/12)*log(2))*i)) }' | xxd -r -p | aplay -c 2 -f S32_LE -r 16000
 EHD
-
   echo -e "
 
 
@@ -218,6 +230,51 @@ while 1:locals().setdefault('t',0);print(chr((((t*((ord('36364689'[t>>13&7])&15)
 EHD
 abat <<< '" | aplay -r 44100'
 
+  echo -e "
+
+
+${cblue}Musica 3: Bytebeat From fractal$cend
+  Bytebeat (Viznut 2011). Es una forma de generar musica de codigo, basada en la propriedaddes de:
+  1/ Fractales
+  2/ Bug (overflow y side effect)
+  3/ Dicretisacion
+
+  Mira el fractal: \"Triangulo de Sierpinski\" (t&t>>8):
+  (Nota que para annular el efecto de retorno a la linea ${cyellow}> setterm -linewrap off$cend or ${cyellow}> tput rmam$cend y ${cyellow}> tput smam$cend para restorar.
+  "
+abat << 'EHD'
+for((y=63;y>0;y-=2));do s="";for((x=64;x--;));do(((x-y/2)&y))&&s+=" "||s+="Δ";done;echo "$s";done
+EHD
+  echo -e "
+  Convertido En sonido, seria:"
+abat << 'EHD'
+for((t=0;;t++));do((n=(
+t&t>>8
+), d=n%255,a=d/64,r=(d%64),b=r/8,c=r%8));printf '%b' "\\$a$b$c";done| aplay 
+EHD
+  echo -e "
+
+
+${cblue}Musica 3: Bytebeat VizNut 2011$cend
+  Esta melodia la llame \"Mysterie trans\".
+  "
+abat << 'EHD'
+for((t=0;;t++));do((n=(
+(t>>7|t|t>>6)*10+4*(t&t>>13|t>>6)
+), d=n%255,a=d/64,r=(d%64),b=r/8,c=r%8));printf '%b' "\\$a$b$c";done| aplay 
+EHD
+  echo -e "
+
+${cblue}Musica 4: ALSA, OSS and SOX, => function$cend
+ sox -t raw -b 8 -e signed -c 1  -r 8000 - -t wav - | play -
+
+${cblue}Musica 5: Corporate Bullshit Generator$cend
+  Permanent Link: http://cbsg.sf.net
+  Please install ${cblue}libttspico-utils$cend, a better speach generator than ${cblue}espeak$cend
+  "
+abat << 'EHD'
+curl -s http://pasta.phyrama.com:8083/cgi-bin/live.exe    | grep -Eo '^<li>.*</li>' | sed s,\</\\?li\>,,g | shuf -n 1 | tee /dev/stderr | xargs -I foo -0 pico2wave -w /tmp/blah.wav foo; say  /tmp/blah.wav &> /dev/null
+EHD
   echo -e "
 
 

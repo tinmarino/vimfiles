@@ -330,11 +330,13 @@ font:
   # When set to `command: None`, no command will be executed.
   #
   # Example:
-  #   command:
-  #     program: notify-send
-  #     args: ["Hello, World!"]
+  command:
+    program: notify-send
+    args: ["Hello, World!"]
   #
-  #command: None
+  #command:
+  #  program: play
+  #  args: ['-n', 'synth', '0.1', 'sine', '880', 'vol', '0.5']
 
 # Background opacity
 #

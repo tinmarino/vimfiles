@@ -12,10 +12,15 @@ default_usage(){
   `# Print this usage message`
   `# :param1: format: long, short (default:short)`
   `# :param2: title: (default \$0)`
+  `# :param3: indent <int>`
+  `# :param4: filetype <str> (default text, can be html)`
+  `# -- Convert stdin to html, used for --doc 0 html`
+  `# -- Require: pip install ansi2html`
   local format="${1:-short}"
   local main_file="$0"
   local title="${2:-$main_file}"
   local indent="${3:-0}"
+  local filetype=${4:-text}
 
   if [[ "$format" == "short" ]]; then
     # Short
@@ -40,8 +45,9 @@ default_usage(){
       printf "%${indent}s$desc\n\n"
     fi
 
-    print_usage_common "$format" "" "$indent"
+    print_usage_common "$format" "" "$indent" "$filetype"
     ((next_indent=indent+2))
+
     # shellcheck disable=SC2207  # Prefer mapfile
     IFS=$'\n' sorted_cmd=($(sort <<<"${!cmd_dic[*]}"))
     # shellcheck disable=SC2068  # Double quote
@@ -49,6 +55,10 @@ default_usage(){
       local file="${cmd_dic[$cmd]}"
       local desc=$(get_file_header "$file" long)
       echo; echo
+      # Add reference
+      add_tag "placeholder_tag a name=\"$cmd\""
+      add_tag "placeholder_tag /a"
+
       # Title
       print_title "$cmd" "" "$indent"
 
@@ -56,9 +66,22 @@ default_usage(){
       printf "%${indent}s$desc\n\n"
 
       # Sub call
-      "$0" "$cmd" "--doc" "$next_indent"
+      "$0" "$cmd" "--doc" "$next_indent" "$filetype"
     done
   fi
+}
+
+add_tag(){
+  `# Helper: Add html tag`
+  `# In: \$filetype`
+  # Only if html
+  [[ ! "$filetype" == "html" ]] && return
+  # Close ansi escape pre
+  echo "placeholder_tag /pre"
+  # Add my tag
+  echo "$1"
+  # Reopen ansi escape pre tag
+  echo "placeholder_tag pre class=\"ansi2html-content\""
 }
 
 get_file_header(){
@@ -132,6 +155,7 @@ print_usage_fct(){
   `# :param1: format <string>: short, long`
   `# :param2: type <string>: option, function`
   `# :param3: indent <int>`
+  `# :param4: filetype`
   local format="${1:-short}"
   local typee="${2:-function}"
   local indent="${3:-0}"
@@ -207,7 +231,9 @@ print_usage_fct(){
       printf "${s_indent}$cpurple%-13s$cend  $line\n" "${arg}"
     else
       # Long
+      add_tag "placeholder_tag a href=\"#$arg\">"
       echo -e "$s_indent$cpurple${arg}$cend"
+      add_tag "placeholder_tag /a"
       while read -r line; do
         line=$(eval echo "\"$line\"")
         echo -e "$s_indent$line"
@@ -258,7 +284,7 @@ call_fct_arg(){
       if typeset -f __doc > /dev/null; then
         __doc long "" "$1"
       else
-        switch_usage long "" "$1"
+        switch_usage long "" "$1" "$2"
       fi
       exit 0;
     elif [[ "-p" == "$arg" || "--print" == "$arg" ]] ; then
@@ -336,15 +362,17 @@ print_usage_common(){
   `# :param1: format`
   `# :param2: title`
   `# :param3: indent`
+  `# :param4: filetype`
   local format="${1:=short}"
   local indent="${3:=0}"
   local s_indent="$(printf "%${indent}s" "")"
+  local filetype=${4:-text}
 
   # Usage
   local msg="${s_indent}${cblue}Usage:$cend ${cpurple}$(basename "$0")$cend [options] function\n"
 
   # Function
-  local list="$(print_usage_fct "$format" "" "$indent")"
+  local list="$(print_usage_fct "$format" "" "$indent" "$filetype")"
   if [[ -n "$list" ]]; then
     msg+="${s_indent}${cblue}Function list:\n"
     msg+="${s_indent}--------------$cend\n"
@@ -352,7 +380,7 @@ print_usage_common(){
   fi
 
   # Option
-  local list="$(print_usage_fct "$format" option "$indent")"
+  local list="$(print_usage_fct "$format" option "$indent" "$filetype")"
   if [[ -n "$list" ]]; then
     msg+="${s_indent}${cblue}Option list:\n"
     msg+="${s_indent}------------$cend\n"
@@ -360,7 +388,7 @@ print_usage_common(){
   fi
 
   # Environment
-  local list="$(print_usage_env "$format" "" "$indent")"
+  local list="$(print_usage_env "$@")"
   if [[ -n "$list" ]]; then
     msg+="${s_indent}${cblue}Environment variable:\n"
     msg+="${s_indent}---------------------$cend\n"
@@ -376,13 +404,28 @@ switch_usage(){
   `# :param1: format: short or long`
   `# :param2: title <str>`
   `# :param3: indent <int>`
+  `# :param4: filetype <str> (default text, can be html)`
+  local cmd=default_usage
   # shellcheck disable=SC2034  # __usage appears unused
   if typeset -F __usage > /dev/null; then
-    __usage "$1" "$2" "$3";
+    cmd=__usage
   elif typeset -F __doc > /dev/null; then
-    __doc "$1" "$2" "$3";
+    cmd=__doc
+  fi
+
+  if [[ "$4" == "html" && "$3" == "0" ]] ; then
+    # Check if ansi2html present
+    if ! command -v ansi2html > /dev/null; then
+      echo -e "${cred}ERROR: ansi2html not present => pip install ansi2html$cend"
+      exit "$E_REQ"
+    fi
+    "$cmd" "$@" | ansi2html -f 13pt |\
+      sed 's/^placeholder_tag \(.*\)$/<\1>/' |\
+      # Background from Alacritty
+      sed 's/^.body_background { background-color.*$/.body_background { background-color: #1d1f21; }/'
+
   else
-    default_usage "$1" "$2" "$3"
+    "$cmd" "$@"
   fi
 }
 
@@ -446,9 +489,9 @@ print_title(){
   `# :param2: color or prefix to print (default purple)`
   `# :param3: <int> indentation level (default 0)`
   # Link: https://stackoverflow.com/questions/5349718/how-can-i-repeat-a-character-in-bash
-  chrlen=${#1}
-  color=${2:-$cpurple}
-  indent="${3:-0}"
+  local chrlen=${#1}
+  local color=${2:-$cpurple}
+  local indent="${3:-0}"
 
   # First line
   printf "%${indent}s" ""
@@ -513,6 +556,7 @@ shellutil_main(){
   E_USER=84      # Bad user => sudo run me ?
   # shellcheck disable=SC2034  # Unused variable
   E_GIT=85       # Git failed somehow => bug in code, someone added ?
+  # shellcheck disable=SC2034  # Unused variable
   E_GREP=86      # Error detected grepping it in build.log => Read log
   # shellcheck disable=SC2034  # Unused variable
   E_PYTHON=87    # Python configuration => pyenv -g
