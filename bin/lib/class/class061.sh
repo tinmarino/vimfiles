@@ -302,20 +302,14 @@ ${cblue}End:$cend
 }
 
 
-abat(){
-  `# alias_bat laguage < stdin > stdout`
-  local lang="${1:-bash}"
-  bat --style plain --color always --pager "" --language "$lang" - | perl -p -e 'chomp if eof';
-}
-
-
 music_abs(){
+  # TODO merge
   # From: https://tldp.org/LDP/abs/html/devref1.html#MUSICSCR
-  ti=2000 vl=$'\xc0' z=$'\x80'; f(){ for t in `seq 0 $ti`
+  ti=2000 vl=$'\xc0' z=$'\x80'; ff(){ for t in `seq 0 $ti`
   do test $(( $t % $1 )) = 0 && echo -n $vl || echo -n $z; done; }
 
-  e=`f 49` g=`f 41` a=`f 36` b=`f 32` c=`f 30` cis=`f 29` d=`f 27`
-  e2=`f 24` n=`f 32767`
+  e=`ff 49` g=`ff 41` a=`ff 36` b=`ff 32` c=`ff 30` cis=`ff 29`
+  d=`ff 27` e2=`f 24` n=`f 32767`
 
   echo -n "$g$e2$d$c$d$c$a$g$n$g$e$n$g$e2$d$c$c$b$c$cis$n$cis$d \
   $n$g$e2$d$c$d$c$a$g$n$g$e$n$g$a$d$c$b$a$b$c" | aplay
@@ -323,6 +317,7 @@ music_abs(){
 
 
 garfield(){
+  TODO in tarea
   ANIMATION=https://16colo.rs/pack/acdu1092/raw/BRTRACD2.ANS
   SPEED='.005' # wait this time each line
 
@@ -336,6 +331,11 @@ garfield(){
 
   # 3. Enable cursor settings
   printf "\e[?12l\e[?25h"
+}
+
+more(){
+  # Generate random text: http://www.bashoneliners.com/oneliners/199/
+  tr -dc a-z1-4 </dev/urandom | tr 1-2 ' \n' | awk 'length==0 || length>50' | tr 3-4 ' ' | sed 's/^ *//' | cat -s | fmt
 }
 
 get_fct_dic

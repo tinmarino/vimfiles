@@ -53,14 +53,15 @@
 7. System: Dev tools
   * Docker,chroot = contenedores (facil)
   * Git, control de version (quasi una sciencia)
-  * .bashrc, instll fortune, cowsay 
+  * .bashrc, install fortune, cowsay 
   * Class: Nano, Vim 3 modos, Emacs or text editor, choose your weapon
   * Tarea: Wget, Curl
+  * Tarea: Chroot : French class exercices jail break : http://demange.vincent.free.fr/teaching/2012s2l3infosecu/td5_break_chroot.pdf
 8. Syntax: Programming
+  * Expreciones regulares: son muy importantes para los admin y dev ops, hasta para los architectos y jefes
   * Maquina de Turing
   * Turing: Teorema e mo completud
   * BlaBla: https://insights.stackoverflow.com/survey/2020#technology-programming-scripting-and-markup-languages
-  * Expreciones regulares: son muy importantes para los admin y dev ops, hasta para los architectos y jefes
   * Function
   * Branches
   * Ciclos
@@ -107,6 +108,7 @@
   * Ver mknod
   * Ring -3 .. 3: https://medium.com/swlh/negative-rings-in-intel-architecture-the-security-threats-youve-probably-never-heard-of-d725a4b6f831
 
+
 ### Clase 6: Monolinea
   * Abierto, con votos: http://www.bashoneliners.com/oneliners/popular/
   * Jugar con 100 archivo (fome per instructivo): http://www.npcharrier.com/unix/bash-one-liner/
@@ -120,6 +122,34 @@
   * TTS: https://askubuntu.com/questions/501910/how-to-text-to-speech-output-using-command-line
   * Viznut awesome blog: http://viznut.fi/en/
   * Github topic: One-liner: https://github.com/topics/one-liners
-  * Bytebeat cllection: http://wry.me/toys/bytebeat/examples.html
+  * Bytebeat collection: http://wry.me/toys/bytebeat/examples.html
   * Bytebeat Lines: faster retrieval: https://www.reddit.com/r/bytebeat/comments/20km9l/cool_equations/
-  * ByteBeat : Html5 : Guthub : Greggman : https://github.com/greggman/html5bytebeat
+  * ByteBeat : Html5 : Github : Greggman : https://github.com/greggman/html5bytebeat
+  * Bytebeat : Text list: https://github.com/feilipu/avrfreertos/blob/master/GoldilocksAnalogue/music_formula_collection.txt
+  * ByteBeat : Pdf : https://nightmachines.tv/downloads/Bytebeats_Beginners_Guide_TTNM_v1-5.pdf
+  * ByteBeat : Full music Hexagon: https://github.com/Qqwy/ExtremeBytebeats
+
+
+### Clase 7: Herramientas Docker y Git
+  * Chroot : French class exercices jail break : http://demange.vincent.free.fr/teaching/2012s2l3infosecu/td5_break_chroot.pdf
+  * Chroot : Tutorial largo : https://www.howtogeek.com/441534/how-to-use-the-chroot-command-on-linux/
+  * Busybox : List of Unix command : https://en.wikipedia.org/wiki/List_of_Unix_commands
+  * Sandobox : First name I encountered (2011): https://www2.dmst.aueb.gr/dds/pubs/conf/2001-Freenix-Sandbox/html/sandbox32final.pdf
+  * Sandbox : FireJail : In Linux Many approach : https://www.opensourceforu.com/2016/07/many-approaches-sandboxing-linux/
+  * Sandbox : Seccomp :  Full Description : https://blog.cloudflare.com/sandboxing-in-linux-with-zero-lines-of-code/
+  * Docker namespaces : https://stackoverflow.com/questions/46450341/chroot-vs-docker
+  * Docker : Doc : Get-Started : https://docs.docker.com/get-started/
+  * Docker tutorial Long : https://docker-curriculum.com/
+  * Markdown descripcion rapida (cheatsheet): https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+  * Markdown para progradores: https://github.github.com/gfm/
+  * Github : Advanced search doc : https://docs.github.com/en/free-pro-team@latest/github/searching-for-information-on-github/searching-issues-and-pull-requests
+
+
+### Clase 8: Common programming, Regex
+
+
+### Clase 9:
+
+
+### Clase 10: Language zoo
+  * Paradigmos : https://en.wikipedia.org/wiki/Programming_paradigm

@@ -515,6 +515,12 @@ bin_path(){
   dirname "${BASH_SOURCE[0]}"
 }
 
+abat(){
+  `# Alias_bat laguage < stdin > stdout`
+  local lang="${1:-bash}"
+  bat --style plain --color always --pager "" --language "$lang" - | perl -p -e 'chomp if eof';
+}
+
 shellutil_main(){
   `# Main code: embeded in function for fold`
   `# Keep me last!`

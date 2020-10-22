@@ -100,13 +100,13 @@ filetype plugin indent on | syntax on
     map <leader>aa :VimwikiIndex 3<CR>
     map <leader>a<leader>a :VimwikiMakeDiaryNote 3<CR>
     noremap <leader>ag :call Windex(3)<CR>:VimwikiGoto 
-    " Test
+    " Test markdown syntax
     let g:vimwiki_list += [{
       \ 'path': '$h/Test/Wiki',
       \ 'path_html': '$h/Test/Wiki_html',
       \ 'nested_syntaxes': {'python': 'python'}
       \ }]
-    " Test wiki syntax
+    " Test default syntax
     let g:vimwiki_list += [{
       \ 'path': '$h/Test/WikiDefault',
       \ 'path_html': '$h/Test/WikiDefault_html',
@@ -133,6 +133,9 @@ filetype plugin indent on | syntax on
     let g:vimwiki_css_name = '/Css/include.css'
 
     " Test Wiki
+    imap <tab> :echo "tab pressed"<CR>
+    let g:vimwiki_key_mappings = {}
+    let g:vimwiki_key_mappings.table_mappings = 0
     let g:vimwiki_folding="expr"
     "let g:vimwiki_emoji_enable = 3
     " New
@@ -420,6 +423,7 @@ filetype plugin indent on | syntax on
       echom 'Vimrc: Cannot load colorscheme'
     endtry
     set t_Co=256  " For airline and nice colors
+    set nrformats-=octal  " Prevent Ctrl-a: 07 -> 010
     set formatoptions-=cro  " No auto comment
     "augroup NoCommment
     "  autocmd FileType *.py setlocal formatoptions-=c formatoptions-=r formatoptions-=o
@@ -471,7 +475,7 @@ filetype plugin indent on | syntax on
     set guioptions-=m                  " Menumbar
   " Wildignore : Ignore these filenames during enhanced command line completion.
     set wildmenu
-    set wildmode=list:full
+    set wildmode=list
     set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz,*.dvi  " LaTeX intermediate files
     set wildignore+=*.tex.backup,*.lg,*.4ct,*.4tc,*.tmp,*.idv  " LaTeX html intermediate files
     set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images

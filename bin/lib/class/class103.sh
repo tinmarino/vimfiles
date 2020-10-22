@@ -16,7 +16,12 @@ declare -A question=(
     Hay 3 modos en vi: - Modo de comando: este es el modo en el que se inicia en el modo Editar: este es el modo que le permite editar texto - Modo Ex: este es el modo en el que interactúa con vi con instrucciones para procesar un archivo
 
     "
-  [P03: ]="\
+  [P03: Cual es la diferencia entre un interpretador y una maquina virtual]="\
+      El interpretador: lee y ejecuta el codigo tal como lo escribio el programador. Ex: BaSh, Python, JavaScript
+      La maquina virtual: lee y ejecuta codigo compilado o pseudo compilado. Ex: VirtualBox, Java Virtual Machine
+      Ambos permiten abstraerse de la architectura de la maquina sobre la cual el codigo esta corriendo.
+      Nota que un codigo pseudo compilado de una maquina virtual puede llegar a compilarse y correr en la arquitectura real para ser mas rapido. Ver \"Compilacion justo a tiempo\" de la Dalvik virtual machine de Java
+      Tambien el interpretador puede elejir (pseudo) compilar lo que interpreta para ejecutarlo mas rapido. Ver Python pyc o JavaScript WebAssembly.
     "
   [P04: ]="\
     "
@@ -98,6 +103,10 @@ __usage(){
   for i in ${sorted_fct[@]}
   do
     echo -e "$i"
+    # TODO at final
+    # if [[ "$1" == "long" ]] ; then
+    #   echo "${question[$i]}"
+    # fi
   done
 
   msg="${cblue}End:$cend
