@@ -61,10 +61,7 @@
   * Expreciones regulares: son muy importantes para los admin y dev ops, hasta para los architectos y jefes
   * Maquina de Turing
   * Turing: Teorema e mo completud
-  * BlaBla: https://insights.stackoverflow.com/survey/2020#technology-programming-scripting-and-markup-languages
-  * Function
-  * Branches
-  * Ciclos
+  * Function, Condiciones, Ciclos
   * Tarea: sobre Regex
   * Tarea: Demo que funciones, explicacion punto unico de salida y jumps
 9. System: Servidor
@@ -85,6 +82,7 @@
   * C
   * Tarea: Php
   * Tareas: Sql
+  * Stackoverflow survey: https://insights.stackoverflow.com/survey/2020#technology-programming-scripting-and-markup-languages
   * Virtualisation, VirtualBox verus Docker. Que es virtual que es real? En realidad es todo virtual pero bue. Entonces virtual significa Mas virtual
   * Monitoring (performance and load)
   * Encoding, utf8, hex (4 bits), octal, binario, ASCII, 16 bits
@@ -94,10 +92,10 @@
 
 
 
-# Note
-
-
 # Links
+
+### Meta
+  * Link in terminal: https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
 
 ### Clase 5: Procesos y Dispositivos
   * Porque no functiona shred en SSD: https://askubuntu.com/questions/794612/how-to-securely-wipe-files-from-ssd-drive
@@ -146,10 +144,21 @@
 
 
 ### Clase 8: Common programming, Regex
+  * Expreciones regulares, cuantificacion, agrupacion, alternacion: https://es.wikipedia.org/wiki/Expresi%C3%B3n_regular
+  * Ejercicios BaSh: https://dccn-hpc-wiki.readthedocs.io/en/latest/docs/bash/exercise_programming.html
+  * Historia: First function in 1945: https://en.wikipedia.org/wiki/Subroutine#History
+  * Tarea: Regex : exelente juego : http://regextutorials.com/excercise.html?Floating%20point%20numbers
 
 
-### Clase 9:
+### Clase 9: Servicio y servidor
 
 
 ### Clase 10: Language zoo
   * Paradigmos : https://en.wikipedia.org/wiki/Programming_paradigm
+  * Js Fast code for Web console: https://www.digitalocean.com/community/tutorials/how-to-use-the-javascript-developer-console
+  * VHDL: ex: http://www.asic-world.com/vhdl/first1.html
+  * VHDL Compile: http://ghdl.free.fr/ghdl/The-hello-word-program.html
+  * VHDL Reference (my) : https://www.ics.uci.edu/~jmoorkan/vhdlref/for_loop.html
+
+
+

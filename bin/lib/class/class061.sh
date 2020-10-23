@@ -35,14 +35,14 @@ ${cblue}P11: Descarga el libro Advanced Bash Scripting$cend"
   abat <<< 'wget -qO- https://tldp.org/LDP/abs/abs-guide.txt.gz | gunzip - > abs.txt'
   echo -e "
   wget: web get:
-    -q = suprime la salida estandard (los mensage)
-    -O- es del alphabet y no zero, escribe en la salida estandar lo que descargo
+    -q = suprime la salida estándar (los mensaje)
+    -O- es del alfabeto y no cero, escribe en la salida estándar lo que descargo
   gunzip: despaquetea
     - = entrada estandar
   ${cyellow}> cat abs.txt$cend  # Un archivo con texto humano (ingles)
 
 
-${cblue}P12: Muestra los 10 archivos arbiertos los mas largos$cend"
+${cblue}P12: Muestra los 10 archivos abiertos los mas largos$cend"
 abat << 'EOH'
 lsof / | awk '{ if($7 > 1048576) print $7/1048576 "MB" " " $9 " " $1 }' | sort -n -u | tail
 EOH
@@ -54,28 +54,28 @@ abat <<< 'echo Dado: $(shuf -i 1-6 -n 1)'
   echo -e "
 
 
-${cblue}P14: Escanea todo los puertos abiertos de todas las interfaces accessibles$cend"
+${cblue}P14: Escanea todo los puertos abiertos de todas las interfaces accesibles$cend"
 abat << 'EOH'
 ifconfig -a | grep -Po '\b(?!255)(?:\d{1,3}\.){3}(?!255)\d{1,3}\b' | xargs nmap -A -p0-
 EOH
   echo -e "
 
 
-${cblue}P15: Busca las palabras mas utilisadas$cend"
+${cblue}P15: Busca las palabras mas utilizadas$cend"
 abat << 'EOH'
 tr -c a-zA-Z '\n' < abs.txt  | sed '/^.\{1,2\}$/d' | sort | uniq -i -c | sort -n
 EOH
   echo -e "
 
 
-${cblue}P16: Busca los processos que usan mas RAM$cend"
+${cblue}P16: Busca los procesos que usan mas RAM$cend"
 abat << 'EOH'
 ps aux | awk '{if ($5 != 0 ) print $2,$5,$6,$11}' | sort -k2n
 EOH
   echo -e "
 
 
-${cblue}P17: Busca los 10 commandos los mas usados$cend"
+${cblue}P17: Busca los 10 comandos los mas usados$cend"
 abat << 'EOH'
 awk '{print $1}' ~/.bash_history | sort | uniq -c | sort -n
 EOH
@@ -90,13 +90,13 @@ $cblue
 +--------------------+
 | Efectos especiales |
 +--------------------+$cend
-Ctrl-l : cLear terminal (mas rapido que escribir \"> clear\")
+Ctrl-l : cLear terminal (mas rápido que escribir \"> clear\")
 
 ${cblue}P20: 10 PRINT CHR\$(205.5+RND(1)); : GOTO 10$cend
-  10 PRINT es un libreo de 300 paginas sobre esta linea de commando.
+  10 PRINT es un libreo de 300 paginas sobre esta linea de comando.
   Arriba en BASIC, abajo en BaSh, mas ahi: https://10print.org/
   Bienvenido en el mundo del \"hackeo\"
-    <= palabra que se usa tambien para referirse al escribir programas muy pequenios y elegantes"
+    <= palabra que se usa tambien para referirse al escribir programas muy pequeños y elegantes"
 abat << 'EOH'
 while :; do printf \\$(printf '%o' $[47+45*(RANDOM%2)]); done
 EOH
@@ -265,15 +265,13 @@ for((t=0;;t++));do((n=(
 EHD
   echo -e "
 
-${cblue}Musica 4: ALSA, OSS and SOX, => function$cend
- sox -t raw -b 8 -e signed -c 1  -r 8000 - -t wav - | play -
 
-${cblue}Musica 5: Corporate Bullshit Generator$cend
+${cblue}Musica 4: Corporate Bullshit Generator$cend
   Permanent Link: http://cbsg.sf.net
   Please install ${cblue}libttspico-utils$cend, a better speach generator than ${cblue}espeak$cend
   "
 abat << 'EHD'
-curl -s http://pasta.phyrama.com:8083/cgi-bin/live.exe    | grep -Eo '^<li>.*</li>' | sed s,\</\\?li\>,,g | shuf -n 1 | tee /dev/stderr | xargs -I foo -0 pico2wave -w /tmp/blah.wav foo; say  /tmp/blah.wav &> /dev/null
+curl -s http://pasta.phyrama.com:8083/cgi-bin/live.exe    | grep -Eo '^<li>.*</li>' | sed s,\</\\?li\>,,g | shuf -n 1 | tee /dev/stderr | xargs -I foo -0 pico2wave -w /tmp/blah.wav foo; play  /tmp/blah.wav &> /dev/null
 EHD
   echo -e "
 

@@ -23,15 +23,19 @@ declare -A question=(
       Nota que un codigo pseudo compilado de una maquina virtual puede llegar a compilarse y correr en la arquitectura real para ser mas rapido. Ver \"Compilacion justo a tiempo\" de la Dalvik virtual machine de Java
       Tambien el interpretador puede elejir (pseudo) compilar lo que interpreta para ejecutarlo mas rapido. Ver Python pyc o JavaScript WebAssembly.
     "
-  [P04: ]="\
+  [P04: RegEx: Usando grep, imprime las lineas que empiezan con "root" en /etc/passwd]="\
+    grep '^root' /etc/passwd
     "
-  [P05: ]="\
+  [P05: Bash: un cyclo donde la variable \"i\" toma los valores de 1 a 10 (inclusivo), imprime el contenido de \"i\" a cada vuelta]="\
+    for i in {1..10}; do echo $i; done
     "
-  [P06: ]="\
+  [P06: Lenguaje: Dame un ejemplo de idioma compilado]="\
+    C, Fortran, Rust
     "
-  [P07: ]="\
+  [P07: Lenguaje: Dame un ejemplo de idioma no compilado. A que nivel (tipo de salida) pertenece este idioma]="\
+    Python es Interpretado
     "
-  [P08: ]="\
+  [P08: Lenguaje: Hay niveles de lenguaje mas bajo que el compilado? Si es que si da el ejemplo de un nivel (dije el nivel, no el lenguaje)]="\
     "
   [P09: ]="\
     "
