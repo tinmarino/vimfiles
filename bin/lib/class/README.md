@@ -148,6 +148,8 @@
   * Ejercicios BaSh: https://dccn-hpc-wiki.readthedocs.io/en/latest/docs/bash/exercise_programming.html
   * Historia: First function in 1945: https://en.wikipedia.org/wiki/Subroutine#History
   * Tarea: Regex : exelente juego : http://regextutorials.com/excercise.html?Floating%20point%20numbers
+  * Djistra: Single return point : https://softwareengineering.stackexchange.com/questions/118703/where-did-the-notion-of-one-return-only-come-from
+  * Turing machine Ex: https://github.com/forsooth/Turing-Machine
 
 
 ### Clase 9: Servicio y servidor

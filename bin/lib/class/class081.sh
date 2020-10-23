@@ -8,16 +8,16 @@ source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"
 __usage(){
   echo -e "$cblue
 +==========+
-| Language |
+| Lenguaje |
 +==========+$cend
 
-Escribir languages informaticos es el trabajo de los desarolladores.
-No es (para nada) la parte mas dificil de la informatica. Al contrario.
-Es el principio. Empezaste tu estudios con eso y yo tambien.
-Tal como un ninio empieza su vida intelectual aprendiendo a hablar pero al crecer, puede estudiar litteratura hasta los 80 anios (y mas).
+Escribir lenguajes informáticos es el trabajo de los desarrolladores.
+No es (para nada) la parte mas difícil de la informática. Al contrario.
+Es el principio. Empezaste tu estudios con eso y yo también.
+Tal como un niño empieza su vida intelectual aprendiendo a hablar pero al crecer, puede estudiar literatura hasta los 80 años (y mas).
 En todo caso, si no sabe hablar, esta cagado!
 
-Un idioma informatico es muy basico. Tiene 50 palabras en 5..10 grupos lexicales (nombre, verbo, adjectivo) distintos. Aqui son: commando, argumento, variable, controlador, commentario, operador.
+Un idioma informático es muy básico. Tiene 50 palabras en 5..10 grupos lexicales (nombre, verbo, adjetivo) distintos. Aquí son: comando, argumento, variable, controlador, comentario, operador.
 
 
 ${cblue}P01: Un ejemplo gramatical$cend
@@ -26,9 +26,9 @@ ${cblue}P01: Un ejemplo gramatical$cend
             ^- operador                           argumento -^
 
 
-${cblue}P02: Cyclo$cend
-  Hay distintas formas de hacer un cyclo, iterar sobre una lista o repetir una tarea cambiando un contador hasta que una cierta condicion ya no sea valida.
-  Empezamos con la lista. La generamos con interpolation de rango \"{1..10}\"
+${cblue}P02: Ciclo$cend
+  Hay distintas formas de hacer un ciclo, iterar sobre una lista o repetir una tarea cambiando un contador hasta que una cierta condición ya no sea valida.
+  Empezamos con la lista. La generamos con interpolación de rango \"{1..10}\"
 "
 abat << 'EHD'
   # Experimenta la expancion de rango
@@ -44,9 +44,9 @@ abat << 'EHD'
 EHD
   echo -e "
 
-  Bastante facil no?
-  El mismo cyclo con sytaxis typo C
-  Observa las dobles parenthesis que hacen pensar en una interpolacion arithmetica
+  Bastante fácil no?
+  El mismo ciclo con sintaxis tipo C
+  Observa las dobles paréntesis que hacen pensar en una interpolación aritmética
 "
 abat << 'EHD'
   for ((i=1; i<=10; i=i+1)); do
@@ -55,7 +55,7 @@ abat << 'EHD'
 EHD
   echo -e "
 
-  El mismo cyclo con el cyclo \"Mientras\"
+  El mismo ciclo con el ciclo \"Mientras\"
 "
 abat << 'EHD'
   i=1
@@ -67,7 +67,7 @@ EHD
   echo -e "
 
   Un poco sobre el valor de retorno de las operaciones:
-  Nota que \$? es una variable que tiene el valor de retorno del commando anterior
+  Nota que \$? es una variable que tiene el valor de retorno del comando anterior
 "
 abat << 'EHD'
   cat this_will_fails_because_file_do_not_exists; echo $?
@@ -93,9 +93,9 @@ EHD
   echo -e "
 
 
-${cblue}P03: Condicion$cend
-  Cuando un quiere ejecutar codigo solo en ciertos casos.
-  La forma canonica es ejecutar un blocke si un commando tiene exito
+${cblue}P03: Condición$cend
+  Cuando un quiere ejecutar código solo en ciertos casos.
+  La forma canónica es ejecutar un bloque si un comando tiene éxito
 
 "
 abat << 'EHD'
@@ -127,13 +127,13 @@ EHD
   echo -e "
 
   Con esto, ya puedes hacer todo lo que quieres con las condiciones.
-  Nota que el \"commando\" puede ser tambien una funcion.
-  Pero puede ser lento crear un commando o llamar una funcion para solo probar:
-  - si un archivo exists
-  - si dos string son eguales
+  Nota que el \"comando\" puede ser también una función.
+  Pero puede ser lento crear un comando o llamar una función para solo probar:
+  - si un archivo existe
+  - si dos string son iguales
   - si un numero es inferior a otro
 
-  Por eso, vamos a recurir a protocolos internos de bash, que, como siempre, llamamos \"interpolaciones\".
+  Por eso, vamos a recurrir a protocolos internos de bash, que, como siempre, llamamos \"interpolaciones\".
 "
 abat << 'EHD'
   # Interpolacion de test con opciones heridas de la historia
@@ -158,10 +158,10 @@ abat << 'EHD'
 EHD
   echo -e "
 
-  Un error frecuente es un cerrar el blocke: con done, fi o } para respectivamente los cyclos, condiciones y funciones.
+  Un error frecuente es un cerrar el bloque: con \"done\", \"fi\" o \"}\" para respectivamente los ciclos, condiciones y funciones.
   Que pasa si no lo pones?
 
-  Una otra palabra clase de condicion es \"elif\"
+  Una otra palabra clase de condición es \"elif\"
 "
 abat << 'EHD'
   var=4
@@ -177,7 +177,7 @@ abat << 'EHD'
 EHD
   echo -e "
 
-  Pero a veces puede ser feo de leer porque al final eso es un interuptor con distintos casos. Por lo tanto, lo que sigue, en C, se llama un \"switch\" o interuptor
+  Pero a veces puede ser feo de leer porque al final eso es un interruptor con distintos casos. Por lo tanto, lo que sigue, en C, se llama un \"switch\" o interruptor
 "
 abat << 'EHD'
   var=4
@@ -204,9 +204,9 @@ EHD
 
 ${cblue}P04: Funciones$cend
   Antes de 1945 todo lo que precede se hacia con saltos condicionales e incondicionales.
-  El codigo era naturalamente spaghetti.
-  La invetion de las subroutinas (hoy dia llamada funciones) era simple, crear bloques de codigo llamados, asi el llamador llama el codigo por su nombre y sabe que el codigo var a volver con una repuesta.
-  Nota: Antes no se sabia si un salto a volver => ver en C \"longjmp\" que todavia se usa en la terminal al hacer un commando porque a veces no vuelve, por ejemplo \"exec\").
+  El código era naturalmente espagueti.
+  La invención de las subrutinas (hoy día llamada funciones) era simple, crear bloques de código llamados, así el llamador llama el código por su nombre y sabe que el código va a volver con una repuesta.
+  Nota: Antes no se sabia si un salto a volver => ver en C \"longjmp\" que todavía se usa en la terminal al hacer un comando porque a veces no vuelve, por ejemplo \"exec\").
 
   Asi que los \"CALL\" remplazaron unos \"JUMP\".
   En BaSh:
@@ -228,6 +228,87 @@ EHD
 
   Nota que \$1 se refiere al primer argumento, \$2 al segundo, etc hasta el \$9. \$@ es una tabla con todo los argumentos.
 
+  Nota 2:
+  Edsger Dijkstra (1930 - 2002) formulo el patrón de la entrada única y salida única de una función.
+  Eso es lo que llevo a definir las funciones como las conocemos hoy día: la llamas a su entrada y el flujo de control vuelve a ti, una vez la función ejecutada.
+  Este patrón ahora es muy mal interpretado. Por ejemplo la gente viene a pensar que una función puede tener solo una palabra clave \"return\", cuando, al contrario, salida temprana es recomendada en caso de error o de no necesidad de trabajo por ejemplo.
+  Acuérdate que el patrón \"Single Entry, Single Exit\" es lo que define una función y lo usan todo los idiomas modernos (después de Fortran 1966) y en ningún caso un restricción de salir al toque.
+
+
+${cblue}P05: Alan Turing (1912 - 1954)$cend
+  Es el padre de los informáticos transformo las matemáticas de la computación en la informática que, como sabes, hoy día es un ciencia aparte,
+  La informática es mas cerca de la matemáticas que cualquier otra ciencia por la única razón que es la ultima que se separo (digamos en 1955).
+  Por la misma razón Galileo Galilei (1564 - 1642) es el padre de los físicos.
+
+  Quisiera comentar 2 cosas (de sus trabajos): el problema de la parada y la maquina de Turing
+
+
+  ${cblue}5.1 Problema de la parada (1936)$cend
+  \"En el caso general, es imposible saber si un programar va a llegar a su salida o no\" y un corolario inmediato, no se puede saber si va a ejecutar una cierta rama, y el segundo corolario, es imposible estar seguro de lo que va a hacer. Entiende bien que hablamos de un caso general y no de programas particulares, que a 99% se puede leer y predecir.
+  Este theorema de la parada de Truing (1936) es un correlario de los teoremas de incompletitud de Gödel (1931) que stipula que \"Cualquier teoría aritmética recursiva que sía consistente ye incompleta\".
+  Ambas pruebas recursivamente absurdas, Turing copio Godel hasta en la prueba. Aqui esta la de Turing en Python:
+"
+abat << 'EHD'
+  # Prueba del theorema de la parada (fuente Wikipedia)
+  def termina(p):
+      # Supongamos que aquí se encuentra un código maravilloso que soluciona el problema de la parada
+      # Esta función regresa True si el programa p termina o False en otro caso
+
+  # Funcion principal recursivamente absurda
+  def main():
+      if termina(main):
+          ciclo_eterno()  # while True: pass  # en Python
+
+  # LLama la funcion principal
+  main
+EHD
+  echo -e "
+
+  En castellano, si podemos saber que un programa termina o no, se puede construir un programa que si termina, no termina y si no termina, termina.
+  Lo que es absurdo => no se puede saber de forma genérica si un programa termina, osea la función \"termina\" nunca se podrá escribir.
+
+  Nota que esta absurdidad venida de Godel revoluciono las matemáticas también.
+  Conclusión 2: Lo que se puede entender y formular bien gana sobre lo incomprehensible
+
+
+  ${cblue}5.2 Maquina de Turing (1936)$cend
+  Una maquina de turing tiene 2 operaciones llamada transiciones:
+  1. Mover a la derecha
+  2. Mover a la izquierda
+
+  Tiene un estado interno (variables), un alfabeto (sintaxis) y un código de entrada
+  Así se representa:
+
+"
+abat << 'EHD'
+Input:
+01
+┌─────────────┬─────────┬──────────┬─────────────┬─────────────┐
+│ STATE: q0   │ READ: 0 │ WRITE: o │ GO TO: qo1  │ MOVE: RIGHT │
+└─────────────┴─────────┴──────────┴─────────────┴─────────────┘
+╔═▼═╗───┬───┬────
+║ 0 ║ 1 │ B │ ···
+╚═▲═╝───┴───┴────
+
+┌─────────────┬─────────┬──────────┬─────────────┬─────────────┐
+│ STATE: qo1  │ READ: 1 │ WRITE: i │ GO TO: qrb  │ MOVE: RIGHT │
+└─────────────┴─────────┴──────────┴─────────────┴─────────────┘
+┌───╔═▼═╗───┬────
+│ o ║ 1 ║ B │ ···
+└───╚═▲═╝───┴────
+
+┌─────────────┬─────────┬──────────┬─────────────┬─────────────┐
+│ STATE: qrb  │ READ: B │ WRITE:   │ GO TO: qa   │ MOVE:       │
+└─────────────┴─────────┴──────────┴─────────────┴─────────────┘
+┌───┬───╔═▼═╗────
+│ o │ i ║ B ║ ···
+└───┴───╚═▲═╝────
+EHD
+  echo -e "
+
+  Se puede demostrar que es posible construir una máquina especial de este tipo que pueda realizar el trabajo de todas las demás. Esta máquina especial puede ser denominada máquina universal.
+  Unos 15 años después nace la informática (1950), el transistor también ayudo <= física cuántica de ... también 1936! Y 20 anos después (1969), el humano pisa la luna.
+  Tienes que entender que la machina de Turing no es una vieja maquina pasada, es un modelo matemático que representa cualquier computador y que permita a cualquier computador simular cualquier otro.
 
 
 $cblue
