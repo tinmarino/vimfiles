@@ -1,14 +1,5 @@
 # TODO
 
-* play with redirection and pipes
-* GUI vs CLI
-* Archivo con puntos hidden
-* Systema de examen:
-  * interactivo Y en papel (Como --doc)
-* Missing from last clases
-  * TODO Tarea: Niceness: nice, renice
-  * TODO Tarea: find, grep, hacer la generacion de un sistem de archivos
-
 # First week
 
 1. System: File System
@@ -45,27 +36,28 @@
 
 # Second Week
 
-6. Syntax: Recreo
+6. OK: Syntax: Recreo
   * One liner of death
   * And how to find what: man, apropos in light
   * arecord -f cd - | aplay -  # Tubo de la muerte
   * Pinpon: ((t*5&t>>7)|(t*3&t>>10))&+(+50^-100)%128
-7. System: Dev tools
-  * Docker,chroot = contenedores (facil)
-  * Git, control de version (quasi una sciencia)
-  * .bashrc, install fortune, cowsay 
-  * Class: Nano, Vim 3 modos, Emacs or text editor, choose your weapon
-  * Tarea: Wget, Curl
-  * Tarea: Chroot : French class exercices jail break : http://demange.vincent.free.fr/teaching/2012s2l3infosecu/td5_break_chroot.pdf
+7. OK: System: Dev tools
+  * OK: Docker,chroot = contenedores (facil)
+  * OK: Git, control de version (quasi una sciencia)
+  * OK Tarea: Wget, Curl
+  * NOT DONE: Tarea: Docker .bashrc, install fortune, cowsay 
+    * Mande el alumno al quick start de la doc oficial, ya es grande y me queda el 9 entero
+  * OK: Tarea: unshare
+  * OK: Tarea: Chroot : French class exercices jail break : http://demange.vincent.free.fr/teaching/2012s2l3infosecu/td5_break_chroot.pdf
 8. Syntax: Programming
-  * Expreciones regulares: son muy importantes para los admin y dev ops, hasta para los architectos y jefes
-  * Maquina de Turing
-  * Turing: Teorema e mo completud
-  * Function, Condiciones, Ciclos
+  * OK: Maquina de Turing
+  * OK: Turing: Teorema e mo completud
+  * OK: Función, Condiciones, Ciclos
+  * Expresiones regulares: son muy importantes para los admin y dev ops, hasta para los architectos y jefes
   * Tarea: sobre Regex
   * Tarea: Demo que funciones, explicacion punto unico de salida y jumps
 9. System: Servidor
-  * email postfix, emap
+  * email postfix, imap
   * Class: explicar bien daemon == servicio
   * 1/ Python: Network filesystem
   * 2/ Cgi: Php
@@ -73,23 +65,31 @@
   * Servidor jenkins
   * Tarea: cron
   * Idea: Web hosting, servidor web, apagche, nginx, ver capitulo 19
-10. Final: Language: Collecion
-  * BlaBla: Assemby, Rust, Java, Ruby
-  * Table de idiomas de que vamos a hablar
+  * Tarea: Niceness: nice, renice
+  * Tarea: find, grep, hacer la generacion de un sistem de archivos, servir los resultados de stackoverflow
+10. Final: Lenguaje: Colección
+  * OK: Table de idiomas de que vamos a hablar
+  * OK: BlaBla: Assemby, Rust, Java, Ruby
+  * OK: Javascript
+  * OK: Stackoverflow survey: https://insights.stackoverflow.com/survey/2020#technology-programming-scripting-and-markup-languages
+  * TODO tipeo, fuerte, debil
   * Python
   * Perl
-  * Javascript
   * C
   * Tarea: Php
-  * Tareas: Sql
-  * Stackoverflow survey: https://insights.stackoverflow.com/survey/2020#technology-programming-scripting-and-markup-languages
+  * Tareas: Sql (StackOverflow)
+
+- Bonus 1:
+  * Process start
+  * Computar start
+  * Fast: Class: Nano, Vim 3 modos, Emacs or text editor, choose your weapon
+  * Compilator workflow, or interpreter (Raku and Javascript/WebAssembly)
+
+- Ideas:
   * Virtualisation, VirtualBox verus Docker. Que es virtual que es real? En realidad es todo virtual pero bue. Entonces virtual significa Mas virtual
   * Monitoring (performance and load)
   * Encoding, utf8, hex (4 bits), octal, binario, ASCII, 16 bits
   * Idea: Penetration testing con nmap, openssl
-
-- Second week evaluation:
-
 
 
 # Links
@@ -141,6 +141,14 @@
   * Markdown descripcion rapida (cheatsheet): https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
   * Markdown para progradores: https://github.github.com/gfm/
   * Github : Advanced search doc : https://docs.github.com/en/free-pro-team@latest/github/searching-for-information-on-github/searching-issues-and-pull-requests
+  * Git: Practical Easy : Init : https://opensource.com/article/19/5/practical-learning-exercise-git
+  * Git: Practical: Ultra interactiveo: 23 (demasiado largo): https://gitexercises.fracz.com/
+  * Git exericice: Training material pure text, many ideas: https://training-course-material.com/training/Git_exercises
+  * HIt interactive and online: (my choice):  https://learngitbranching.js.org/
+  * Wget: 20 commands: https://www.labnol.org/software/wget-command-examples/28750/
+  * Domain example: http://example.com/
+  * Git: easy class, starting by init, white bg pages: https://www.rithmschool.com/courses/git/git-github-git-basics-exercises
+  * Big website example: https://wiki.bash-hackers.org/syntax/basicgrammar
 
 
 ### Clase 8: Common programming, Regex
@@ -150,6 +158,7 @@
   * Tarea: Regex : exelente juego : http://regextutorials.com/excercise.html?Floating%20point%20numbers
   * Djistra: Single return point : https://softwareengineering.stackexchange.com/questions/118703/where-did-the-notion-of-one-return-only-come-from
   * Turing machine Ex: https://github.com/forsooth/Turing-Machine
+  * Historia de informatica : En 5 generaciones : https://apen.es/2019/08/29/historia-de-la-informatica/
 
 
 ### Clase 9: Servicio y servidor

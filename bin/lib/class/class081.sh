@@ -226,7 +226,9 @@ abat << 'EHD'
 EHD
   echo -e "
 
-  Nota que \$1 se refiere al primer argumento, \$2 al segundo, etc hasta el \$9. \$@ es una tabla con todo los argumentos.
+  Nota 1:
+  - La variable \$1 se refiere al primer argumento, \$2 al segundo, etc hasta el \$9.
+  - La variable \$@ es una tabla con todo los argumentos.
 
   Nota 2:
   Edsger Dijkstra (1930 - 2002) formulo el patrón de la entrada única y salida única de una función.
@@ -241,7 +243,6 @@ ${cblue}P05: Alan Turing (1912 - 1954)$cend
   Por la misma razón Galileo Galilei (1564 - 1642) es el padre de los físicos.
 
   Quisiera comentar 2 cosas (de sus trabajos): el problema de la parada y la maquina de Turing
-
 
   ${cblue}5.1 Problema de la parada (1936)$cend
   \"En el caso general, es imposible saber si un programar va a llegar a su salida o no\" y un corolario inmediato, no se puede saber si va a ejecutar una cierta rama, y el segundo corolario, es imposible estar seguro de lo que va a hacer. Entiende bien que hablamos de un caso general y no de programas particulares, que a 99% se puede leer y predecir.
@@ -267,12 +268,12 @@ EHD
   En castellano, si podemos saber que un programa termina o no, se puede construir un programa que si termina, no termina y si no termina, termina.
   Lo que es absurdo => no se puede saber de forma genérica si un programa termina, osea la función \"termina\" nunca se podrá escribir.
 
-  Nota que esta absurdidad venida de Godel revoluciono las matemáticas también.
+  Nota que esta absurdidad venida de Gödel revoluciono las matemáticas también.
   Conclusión 2: Lo que se puede entender y formular bien gana sobre lo incomprehensible
 
 
   ${cblue}5.2 Maquina de Turing (1936)$cend
-  Una maquina de turing tiene 2 operaciones llamada transiciones:
+  Una maquina de Turing tiene 2 operaciones llamada transiciones:
   1. Mover a la derecha
   2. Mover a la izquierda
 
@@ -319,66 +320,66 @@ $cblue
 Una expresión regular es una secuencia de caracteres que conforma un patrón de búsqueda.
 Es como un sub-idioma.
 
-El idioma consiste en atomos, multiplicadores y alteraciones.
+El idioma consiste en átomos, multiplicadores y alteraciones.
 Una buena referencia es:
 
 ${cyellow}> man perlreref$cend
 
 No olvides que Perl significa: \"Pattern Extraction and Report Language\".
-Y extracion de patrones se hace mediante expreciones regulares.
+Y extracción de patrones se hace mediante expresiones regulares.
 
-Muy facil:
-  AlphaNum: Los caracterres alpha numericos como 1, 3, s, b significan estos caracteres literales, excepto si estan escapados como, \\1, \\3, \\s, \\b en cual caso, toman un significado especial
-  Punctuacion: La punctuacon como: ., ?, (, [, * tiene un significado especial excepto si estan escapado como: \\, \\? ,\\(, \\[ en caul caso, tienen un significado literal
+Muy fácil:
+  AlfaNum: Los caracteres alfa numéricos como 1, 3, s, b significan estos caracteres literales, excepto si están escapados como, \\1, \\3, \\s, \\b en cual caso, toman un significado especial
+  Puntuación: La puntuación como: ., ?, (, [, * tiene un significado especial excepto si están escapado como: \\, \\? ,\\(, \\[ en cual caso, tienen un significado literal
 
 
 ${cblue}P01: Un ejemplo gramatical$cend
   ${cyellow}> grep -P '^(cat|echo) .*\|.*$' abs.txt$cend
 
-  ^  ---------  principio de linea (atomo)
+  ^  ---------  principio de linea (átomo)
   (  ---------  empezar grupo (token)
-    cat  -----  \"cat\" literal (serie de atomos)
-    |  -------  o (alteracion)
+    cat  -----  \"cat\" literal (serie de átomos)
+    |  -------  o (alteración)
     echo  ----  \"echo\' literal
-  )  ---------  ciera grupo
+  )  ---------  cierra grupo
   <espacio>  -  espacio literal
-  .  ---------  cualquier caracter (atomo)
-  *  ---------  cualquier numero de veces (quatificador)
+  .  ---------  cualquier carácter (átomo)
+  *  ---------  cualquier numero de veces (cuantificador)
   \| ---------   \"|\" literal
-  .* ---------  cualquier caracter, cuaquier numero de veces
-  $  ---------  fin de linea (atomo)
+  .* ---------  cualquier carácter, cualquier numero de veces
+  $  ---------  fin de linea (átomo)
 
-  Lo que coicide (match) con:
+  Lo que coincide (match) con:
   -- cat o echo al principio de la linea seguido por
   -- un espacio y cualquier numero de cualquier caracteres (\".*\") seguidos por
   -- un tubo \"|\" seguido por cualquier numero de cualquier caracteres (\".*\") seguido por
   -- el fin de la linea
 
-  Puedes ya qdivinar que \".*\" se usa mucho en RegEx
+  Puedes ya adivinar que \".*\" se usa mucho en RegEx
 
 
 ${cblue}P22: Descarga el libro Advanced Bash Scripting$cend
-  Ya deberias tenerlo del la clase 6:
+  Ya deberías tenerlo del la clase 6:
   "
   abat <<< '  wget -qO- https://tldp.org/LDP/abs/abs-guide.txt.gz | gunzip - > abs.txt'
   echo -e "
 
 
 ${cblue}P23: Corta el contenido del libro, principio de linea (^)$cend
-  Aqui vemos nuestra primera exprecion regular en sed:
-  ^Chapter => Match principio de linea (\"^\") seguido por literalmete \"Chapter 2\"
+  Aquí vemos nuestra primera expresión regular en sed:
+  ^Chapter => Match principio de linea (\"^\") seguido por literalmente \"Chapter 2\"
   "
   abat <<< "  cat abs.txt | sed '/^Chapter 3/ q' > ab.txt"
   echo -e "
 
-  Sed hace para cada linea el commando pasado en parametro.
-  Aqui el commando es: si la linea coincide con el patron entre \"/\", quit (\"q\")
+  Sed hace para cada linea el comando pasado en parámetro.
+  Aquí el comando es: si la linea coincide con el patrón entre \"/\", quit (\"q\")
 
 
-${cblue}P24: Estar o no estar: quantificadores (?)$cend
-  Hay distintos dialectos de expreciones regulares.
+${cblue}P24: Estar o no estar: cuantificadores (?)$cend
+  Hay distintos dialectos de expresiones regulares.
   Vamos usar las de Perl: PCRE para Perl Compatible Regular Expression
-  Por lo tanto, agregaremos la opcion \"-P\" a grep
+  Por lo tanto, agregaremos la opción \"-P\" a grep
   Ademas para evitar que el argumento se divide o expande o interpole, lo pondremos entre simples citas
 
   Queremos encontrar las palabras \"sh\" o \"bash\"
@@ -386,43 +387,43 @@ ${cblue}P24: Estar o no estar: quantificadores (?)$cend
   abat <<< "  grep -Pi 'b?a?sh'"
   echo -e "
 
-  -P: Exprecion regular en formato Perl
-  -i: Ignore case = pude ser mayuscula o minuscula
+  -P: Expresión regular en formato Perl
+  -i: Ignore case = pude ser mayúscula o minúscula
 
   El patron es:
   b? = \"b\" o nada (\"?\")
   a? = \"a\" o nada (\"?\")
   sh = \"sh\"
 
-  Mira la parte \"SYNTAX\" (opcinalmente \"QUANTIFERS\") del manual.
+  Mira la parte \"SYNTAX\" (opcionalmente \"QUANTIFERS\") del manual.
   Tienes que entender ?, * y +
-  De hecho, vamos a buscar en el manual (o en vim) con \"/\". En nano apreta f1 para obtener ayuda.
+  De hecho, vamos a buscar en el manual (o en Vim) con \"/\". En Nano aprieta f1 para obtener ayuda.
 
 
-${cblue}P25: Regex a atomo: grupar (())$cend
+${cblue}P25: Regex a átomo: agrupar (())$cend
   El problema de la RegEx precedente es que puede coincidir con \"bsh\" o \"ash\".
-  Nira que aparece \"f${cred}ash${cend}ion\" y \"Su${cred}bsh${cend}ells\"
-  Por eso queremos \"ba\" o nada, es decir tratar \"ba\" como un atomo.
-  Eso se llamar grupar (gruping) y se hace mediante parenthesis, como en una ecuacion mathematica.
+  Mira que aparece \"f${cred}ash${cend}ion\" y \"Su${cred}bsh${cend}ells\"
+  Por eso queremos \"ba\" o nada, es decir tratar \"ba\" como un átomo.
+  Eso se llamar agrupar (gruping) y se hace mediante paréntesis, como en una ecuación matemática.
   "
   abat <<< "  grep -Pi '(ba)?sh'"
   echo -e "
 
-  El patron es:
+  El patrón es:
   (ba)? = \"ba\" o nada
   sh = \"sh\"
 
-  Asi, si queremos coincidir con el SheBang #!/bin/bash
+  Así, si queremos coincidir con el SheBang #!/bin/bash
   "
   abat <<< "  abagrep -Pi '#!\/bin\/b?a?sh' ab.txt"
   echo -e "
 
-  Nota solamente que tube que escapar los \"/\" -> \"\\/\" que tienen un significado especial (Principio y fin de regex)
+  Nota solamente que tubo que escapar los \"/\" -> \"\\/\" que tienen un significado especial (Principio y fin de regex)
 
 
   ${cblue}P26: Alteraciones (|)$cend
-  Con multiples grep en un tubo, podemos filtrar exclusivamente, pero como hacemos si quermoes filtrar dos patrones inclusivamente?
-  Usamos la alteracion, que es lo utimo de la clase, acuerdate: Atomos, Quantificadores y Alteraciones
+  Con múltiples grep en un tubo, podemos filtrar exclusivamente, pero como hacemos si queremos filtrar dos patrones inclusivamente?
+  Usamos la alteración, que es lo ultimo de la clase, acuérdate: Átomos, Cuantificadores y Alteraciones
   "
 abat << 'EHD'
   grep -Pi 'system|programming' ab.txt
@@ -436,9 +437,9 @@ EHD
 
 
 ${cblue}P27: Ejemplo$cend
-  Un atomo interesante para lo que sigue es \"un digito, es decir entre 0 y 9\".
-  Se puede escribir, de la vieja forma como \"[0-9]\" que significa literalemente entre 0 y nueve.
-  O con Perl \"\\d\" como Digit, que es mas rapido de escribir
+  Un atomo interesante para lo que sigue es \"un dígito, es decir entre 0 y 9\".
+  Se puede escribir, de la vieja forma como \"[0-9]\" que significa literalmente entre 0 y nueve.
+  O con Perl \"\\d\" como Dígito, que es mas rápido de escribir
   "
 abat << 'EHD'
   grep -Pi '\d*' ab.txt
@@ -461,16 +462,19 @@ EHD
   echo -e "
 
 
-
-
-${cblue}P25: $cend
-
-
 ${cblue}End:$cend
+  Felicitación: hemos visto:
 
+  BaSh: Los ladrillos del control de flujo en programación:
+  -- Función, Rama, Ciclo
+
+  Expresiones Regulares: Un idioma especifico al buscar patrones:
+  -- Alternación, Cuantificación, Agrupación
+
+  La tarea te hara poner la manos arriba sobre el control de flujo y las expreciones regulares
+  Mañana veremos los servicios y servidores.
+  Nos vemos!
   "
-
-  echo -e "$msg"
 }
 
 get_fct_dic

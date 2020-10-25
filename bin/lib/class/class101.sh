@@ -23,8 +23,8 @@ abat << 'EHD'
   | Familly         | Description                  | Example           |
   |-----------------+------------------------------+-------------------|
   | Domain Specific | Usually short, to manage a   | Git, SQL, Dot     |
-  | Language        | tack specific to one domain  | Sed, Awk          |
-  |                 |                              |                   |
+  | Language        | tack specific to one domain  | Sed, Awk,         |
+  |                 |                              | PCRE (=RegExp)    |
   |-----------------+------------------------------+-------------------|
   | Markup          | Format that describe data:   | Html, Pdf,        |
   |                 | Text, Sound, Video, Web page | Xml, Json, LaTeX, |
@@ -33,7 +33,7 @@ abat << 'EHD'
   |-----------------+------------------------------+-------------------|
   | Interpreted     | Sent to a program which      | BaSh, Python,     |
   |                 | is executing it while        | Perl, JavaScript, |
-  |                 | reading                      | VimScript         |
+  |                 | reading                      | Ruby, Php         |
   |-----------------+------------------------------+-------------------|
   | Pseudo-Compiled | A compiler transform it      | Java              |
   |                 | to pseudo code and a         | Web-Assembly      |

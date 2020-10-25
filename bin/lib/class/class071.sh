@@ -438,6 +438,7 @@ ${cblue}P19: Git: Mantenimiento avanzado$cend
 
 
 ${cblue}End:$cend
+  Felicitacion, son dos piedras mas en tu bolisilo, no olvides celebrar cada victoria.
 
   Hemos visto:
   ${cyellow}> chroot$cend: Commando unix para cambiar el directorio raiz, y asi aislar

@@ -36,14 +36,31 @@ declare -A question=(
     Python es Interpretado
     "
   [P08: Lenguaje: Hay niveles de lenguaje mas bajo que el compilado? Si es que si da el ejemplo de un nivel (dije el nivel, no el lenguaje)]="\
+    Asemblado
+    ByteCode
+    MicroCode
+    VHDL
     "
-  [P09: ]="\
+  [P09: Que hace el comando \"chroot\"?]="\
+    Ejecuta un comando en un entorno con cambio de raiz.
+    Un entorno donde no se puede acceder al sistema de archivos afuera del directorio que ha sido elejido como raiz.
     "
-  [P10: ]="\
+  [P10: Programacion: Que estipula el teorema de retorno (de Turing)]="\
+    Que de forma generica no se puede predecir si un progrma retorna o no.
+    Y entonces, de forma as generic, no se puede saber que rama va a seguir y lo que va a hacer.
     "
-  [P11: ]="\
+  [P11: Programacion: Porque la machina de turing se llama \"machina universal\"]="\
+    Porque con cualquier machina de Turing se puede hacer toda las operaciones de otra.
+    Eso esta llamado el Teorema de Turing. Desarollo todo eso solo para llegar al
+    teorema del retorno que hoy dia es menos famoso que el desarollo.
     "
-  [P12: ]="\
+  [P12: Cuentame una diferencia entre Docker y Chroot]="\
+    - Docker es mas moderno
+    - Docker aisla mas cosas que el sistema de archivo (los espacios de nombre: PID< UID, GID, Hostname, IPC)
+    - Docker tiene una CLI mucho mas potente: Puede manejar el ciclo de vida de los contenedores
+    - En Docker, los contenedores se definen por capa, imagen y contenedor lo que ahora el disco duro.
+    - En Docker, se pueden compartir imagenes en internet
+    - Concluscion, Docker es Chroot++ como C++ es C .... ++!
     "
   [P13: ]="\
     "
