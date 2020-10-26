@@ -45,7 +45,7 @@
   * OK: Docker,chroot = contenedores (facil)
   * OK: Git, control de version (quasi una sciencia)
   * OK Tarea: Wget, Curl
-  * NOT DONE: Tarea: Docker .bashrc, install fortune, cowsay 
+  * NOT DONE: Tarea: Docker .bashrc, install fortune, cowsay
     * Mande el alumno al quick start de la doc oficial, ya es grande y me queda el 9 entero
   * OK: Tarea: unshare
   * OK: Tarea: Chroot : French class exercices jail break : http://demange.vincent.free.fr/teaching/2012s2l3infosecu/td5_break_chroot.pdf
@@ -53,9 +53,10 @@
   * OK: Maquina de Turing
   * OK: Turing: Teorema e mo completud
   * OK: Función, Condiciones, Ciclos
-  * Expresiones regulares: son muy importantes para los admin y dev ops, hasta para los architectos y jefes
-  * Tarea: sobre Regex
-  * Tarea: Demo que funciones, explicacion punto unico de salida y jumps
+  * OK: Expresiones regulares: son muy importantes para los admin y dev ops, hasta para los architectos y jefes
+  * OK: Tarea: sobre Regex
+  * OK: Tarea: Demo que funciones, jumps
+  * TODO: Tarea, 3 tareas sobre ciclo, funcion y rama
 9. System: Servidor
   * email postfix, imap
   * Class: explicar bien daemon == servicio
@@ -156,6 +157,9 @@
   * Ejercicios BaSh: https://dccn-hpc-wiki.readthedocs.io/en/latest/docs/bash/exercise_programming.html
   * Historia: First function in 1945: https://en.wikipedia.org/wiki/Subroutine#History
   * Tarea: Regex : exelente juego : http://regextutorials.com/excercise.html?Floating%20point%20numbers
+  * Tarea: Regex: French class: http://www.ww.exelib.net/linux/les-expressions-regulieres-regex.html
+  * Tarea: Regex: Easy some examples: https://code-maven.com/slides/perl/exercise-regular-expressions
+
   * Djistra: Single return point : https://softwareengineering.stackexchange.com/questions/118703/where-did-the-notion-of-one-return-only-come-from
   * Turing machine Ex: https://github.com/forsooth/Turing-Machine
   * Historia de informatica : En 5 generaciones : https://apen.es/2019/08/29/historia-de-la-informatica/
@@ -170,6 +174,3 @@
   * VHDL: ex: http://www.asic-world.com/vhdl/first1.html
   * VHDL Compile: http://ghdl.free.fr/ghdl/The-hello-word-program.html
   * VHDL Reference (my) : https://www.ics.uci.edu/~jmoorkan/vhdlref/for_loop.html
-
-
-

@@ -475,7 +475,7 @@ filetype plugin indent on | syntax on
     set guioptions-=m                  " Menumbar
   " Wildignore : Ignore these filenames during enhanced command line completion.
     set wildmenu
-    set wildmode=list
+    set wildmode=longest
     set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz,*.dvi  " LaTeX intermediate files
     set wildignore+=*.tex.backup,*.lg,*.4ct,*.4tc,*.tmp,*.idv  " LaTeX html intermediate files
     set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images

@@ -19,6 +19,7 @@ En todo caso, si no sabe hablar, esta cagado!
 
 Un idioma informático es muy básico. Tiene 50 palabras en 5..10 grupos lexicales (nombre, verbo, adjetivo) distintos. Aquí son: comando, argumento, variable, controlador, comentario, operador.
 
+BaSh no es el lenguaje el mas fácil, pero si el mas accesible, rápido de llamar ya que es el lenguaje por defecto del Shell Linux.
 
 ${cblue}P01: Un ejemplo gramatical$cend
   > if [[ 1 == 1 ]]; then let a=42; else let a=31; fi; echo $a  # Que pasa

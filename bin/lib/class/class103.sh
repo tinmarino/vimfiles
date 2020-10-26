@@ -5,7 +5,6 @@
 
 source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"
 
-# TODO 35 questions
 declare -A question=(
   [P01: Que es un daemon?]="\
     Los daemons son servicios que proporcionan varias funciones que pueden no estar disponibles en el sistema operativo base.
@@ -62,19 +61,28 @@ declare -A question=(
     - En Docker, se pueden compartir imagenes en internet
     - Concluscion, Docker es Chroot++ como C++ es C .... ++!
     "
-  [P13: ]="\
+  [P13: Si big_file.txt tiene 2G lineas (2 miliares de lineas) de 80 characteres, este commando termina en mas o menos rapido que 1 segundo: \"cat big_file.txt | head\"? Porque ?]="\
+    Termina en menos de 1 segundo, menos de 1ms porque el commando head manda la senal BROKEN_PIPE despues de leer la cabeza, las 10 primeras lineas.
     "
-  [P14: ]="\
+  [P14: Que es el Kernel Linux?]="\
+    Ver la repuesta en las preguntas anteriores.
     "
-  [P15: ]="\
+  [P15: Que hace el simbolo \"|\" en una linea de comando BaSh? En una Regex?]="\
+    En BaSh: Es un tubo: redirige el StdOut del comando a la izquierda en el StdIn del comando a la derecha.
+    En RegEx: Es una Alternación: hace que la exprecion coincide si coincide la sub-exprecion de izquierda o la de derecha. Es un logico \"o\".
     "
-  [P16: ]="\
+  [P16: De que sirve un socket?]="\
+    Para comunicar entre diferencentes procesos. Es un convencion de tubos multi-protocolos multi-machinas.
     "
-  [P17: ]="\
+  [P17: Que significa el acronymo HTTP?]="\
+    HyperText Transfer Protoco
     "
-  [P18: ]="\
+  [P18: Cual es la diferencia entre un cliente y un servidor?]="\
+    El cliente manda ordenes cuando el usario lo pide
+    El servidor se queda escuchando (en general sobre un puerto), esperando ordenes y trabaja cuando recibe una orden.
     "
-  [P19: ]="\
+  [P19: Usando grep, muestra las lineas de /etc/passwd que terminan con \"sync\"]="\
+    grep 'sync$' /etc/passwd
     "
   [P20: ]="\
     "
@@ -123,8 +131,9 @@ __usage(){
   # shellcheck disable=SC2068  # Double quote
   for i in ${sorted_fct[@]}
   do
-    echo -e "$i"
+    :
     # TODO at final
+    # echo -e "$i"
     # if [[ "$1" == "long" ]] ; then
     #   echo "${question[$i]}"
     # fi
