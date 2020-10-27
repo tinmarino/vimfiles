@@ -114,7 +114,7 @@
   * Print 10, impresive: https://bruxy.regnet.cz/web/linux/EN/useless-bash/https://bruxy.regnet.cz/web/linux/EN/useless-bash/
   * Composing music: https://blog.robertelder.org/bash-one-liner-compose-music/
   * Super bash, Linux cheat sheet: https://bruxy.regnet.cz/web/linux/EN/bash-cheat-sheet/ (from Guru)
-  * MUsic BruXy Good reference: https://bruxy.regnet.cz/web/linux/EN/linux-demoscene/
+  * Music BruXy Good reference: https://bruxy.regnet.cz/web/linux/EN/linux-demoscene/
   * Music, with beep: https://github.com/NaWer/beep/
   * Article on one liner music: http://countercomplex.blogspot.com/2011/10/some-deep-analysis-of-one-line-music.html 2011
   * Stdin Buffering problem: http://www.pixelbeat.org/programming/stdio_buffering/

@@ -133,10 +133,6 @@ filetype plugin indent on | syntax on
     let g:vimwiki_css_name = '/Css/include.css'
 
     " Test Wiki
-    imap <tab> :echo "tab pressed"<CR>
-    let g:vimwiki_key_mappings = {}
-    let g:vimwiki_key_mappings.table_mappings = 0
-    let g:vimwiki_folding="expr"
     "let g:vimwiki_emoji_enable = 3
     " New
     "let g:vimwiki_cycle_bullets = 1
@@ -475,7 +471,7 @@ filetype plugin indent on | syntax on
     set guioptions-=m                  " Menumbar
   " Wildignore : Ignore these filenames during enhanced command line completion.
     set wildmenu
-    set wildmode=longest
+    set wildmode=longest:full
     set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz,*.dvi  " LaTeX intermediate files
     set wildignore+=*.tex.backup,*.lg,*.4ct,*.4tc,*.tmp,*.idv  " LaTeX html intermediate files
     set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images

@@ -65,10 +65,10 @@ abat << 'EHD'
   # Lo que significa que es estatico
   # Nota que (> ldd) significa "List Dynamic Dependencies\"
 
-  # Copia el ejecutable busibox en el direcotrio que vas a usar para chroot
+  # Copia el ejecutable busybox en el direcotrio que vas a usar para chroot
   mkdir ~/Test/Chroot
   cd ~/Test/Chroot
-  cp $(which busibox) .
+  cp $(which busybox) .
 
   # Ejecuta "sh" de "busybox" en el entorno con raiz cambiada con el usario "jim"
   PS1='chroot.\h:\w\n$ ' sudo chroot --userspec=jim:jim . ./busybox sh
@@ -77,6 +77,7 @@ abat << 'EHD'
 
   # Juega en el entorno chrooteado
   pwd
+  PATH=/:$PATH
   busybox
   busybox ls
   busybox echo "A new File Created in Chroot Env" > file_from_chroot.txt
@@ -106,7 +107,7 @@ ${cblue}P03: Carcel de espacio de nombres (Namespace Jail)$cend
   Como recién hemos visto, el problema de cambio de raíz es que solo aisla el sistema de archivos.
   Para aumentar el nivel de aislo, Berkley Software Distribution (BSD) ha creado una cárcel de espacio de nombres (Namespace Jail).
 
-  Los espacio de nombres son como prefijos a los nombres.
+  Los espacios de nombres son como prefijos a los nombres.
   En un sistema, pueden aplicarse a:
   1. Sistema de archivos (filesystem). Lo mismo que hace el chroot: remplaza ~/Test/Chroot por /
   2. Identificadores de Procesos (PID),
@@ -185,7 +186,7 @@ abat << 'EHD'
   docker images
 
   # Corre la imagen, creando un contenedor que desaparece al salir
-  docker run test/cowsay-dockerfile /usr/games/cowsay "Hi!"
+  docker run jim/cowsay-dockerfile /usr/games/cowsay "Hi!"
 EHD
   echo -e "
 

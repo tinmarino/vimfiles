@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-# Shell utilities to hide the misery
+# Shell utilities
+# -- dipatch => Call the function corresponding to commmand argument
+# --
+# I you want to add a subcommand, read doc/presentation.md
+# ==> No matter the altitude, what counts is the slope <==
 #
 # shellcheck disable=SC2076  # Don't quote right-hand side of =
 
@@ -151,7 +155,7 @@ get_fct_dic(){
 }
 
 print_usage_fct(){
-  `# Echo functon description`
+  `# Print functon description`
   `# :param1: format <string>: short, long`
   `# :param2: type <string>: option, function`
   `# :param3: indent <int>`
@@ -254,7 +258,7 @@ call_fct_arg(){
   fi
 
   # Init
-  # shellcheck disable=SC2034  # set_env appears unused
+  # shellcheck disable=SC2034  # fct appears unused
   if [[ -n "${args[*]}" ]] && \
       [[ ! " ${args[*]} " =~ " complete " &&  ! " ${args[*]} " =~ " --doc " ]] && \
       typeset -F __at_init > /dev/null; then
@@ -280,7 +284,7 @@ call_fct_arg(){
       switch_usage short
       exit 0;
     elif [[ "--doc" == "$arg" ]]; then
-      # shellcheck disable=SC2034  # set_env appears unused
+      # shellcheck disable=SC2034  # fct appears unused
       if typeset -f __doc > /dev/null; then
         __doc long "" "$1"
       else
@@ -309,7 +313,7 @@ call_fct_arg(){
   done
 
   # Finish
-  # shellcheck disable=SC2034  # set_env appears unused
+  # shellcheck disable=SC2034  # fct appears unused
   if [[ -n "${args[*]}" ]] && [[ ! " ${args[*]} " =~ " complete " ]] && typeset -F __at_finish > /dev/null; then
     __at_finish "$@"; ((res+=$?))
   fi
@@ -348,11 +352,22 @@ print_usage_env(){
   typeset -f __set_env | awk -v cpurple="\\$cpurple" -v cend="\\$cend" -v s_indent="$s_indent" '
     BEGIN { FS=":=" }
     /:/ {
-      gsub("^ *: *\"\\$\\{|\\}\";$", "", $0) ;
-      slen=20-length($1); if(slen < 2) slen=2 ;
-      s=sprintf("%-*s", slen , " ");
-      gsub(/ /,"-",s);
-      printf("%s%s%s%s  %s  %s\n", s_indent, cpurple, $1, cend, s, $2);
+      # Required trick
+      num = gsub("^ *`#", "", $0);
+
+      # Remove lead and trail
+      gsub("^ *: *\"\\$\\{|\\}\" *`?; *$", "", $0);
+
+      # Was it required?
+      if (num > 0) gsub("$", "  [Required]", $0);
+
+      # Padding
+      slen = 20-length($1); if(slen < 2) slen=2;
+      pad = sprintf("%-*s", slen , " ");
+      gsub(/ /, "-", pad);
+
+      # Over
+      printf("%s%s%s%s  %s  %s\n", s_indent, cpurple, $1, cend, pad, $2);
     }
   '
 }
@@ -456,7 +471,7 @@ print_script_end(){
   local sec_time=$((end_time - start_time))
   printf -v script_time '%dh:%dm:%ds' $((sec_time/3600)) $((sec_time%3600/60)) $((sec_time%60))
   echo -e "${cgreen}------------------------------------------------------"
-  echo -e "$PROJECT_NAME: $(basename "$0"): Ending at: $(date "+%Y-%m-%dT%H:%M:%S")$cend"
+  echo -e "$PROJECT_NAME: $(basename "$0"): Ending $* at: $(date "+%Y-%m-%dT%H:%M:%S")$cend"
   echo -e "  # After: $script_time"
   echo -e "${cgreen}------------------------------------------------------$cend"
 }
@@ -468,18 +483,31 @@ print_n_run(){
   # Note: The "${var@Q}" expansion quotes the variable such that it can be parsed back by bash. Since bash 4.4: 17 Sep 2016
   # -- ALMA has Bash 4.2: 2011
   # -- Link: https://stackoverflow.com/questions/12985178
-  local cmd=$(printf "'%s' " "$@" | \
+  local cmd_msg=$(printf "'%s' " "$@" | \
+    sed -e "s/';'/;/g" | \
     sed -e "s/'|'/|/g" | \
     sed -e "s/'>'/>/g" | \
     sed -e "s/'<'/</g" | \
     sed -e "s/'&&'/\&\&/g" | \
     sed -e "s/'||'/||/g" | \
     sed -e "s/'2>&1'/2>\&1/g" | \
+    sed -e "s/'<(/<('/g" | \
+    # Warning, this one is dangerous
+    sed -e "s/)'/')/g" | \
     cat
   )
-  echo -e "${cpurple}IrmJenkins: $(basename "$0"): Running:$cend $cyellow$cmd$cend"
-  echo -e "      # in '$PWD' at $(date "+%Y-%m-%dT%H:%M:%S")"
-  ((b_run)) && { eval "$@"; res=$?; }
+  IFS=" " read -r -a info <<< "$(caller 0)"
+  local line="${info[0]}"
+  local fct="${info[1]}"
+  local file="$(basename "${info[2]}")"
+  local msg="${cpurple}$PROJECT_NAME: $(basename "$0"): Running:$cend $cyellow$cmd_msg$cend"
+  msg+="\n      #"
+  msg+=" Pwd: '$PWD'"
+  msg+=" Time: '$(date "+%Y-%m-%dT%H:%M:%S")'"
+  msg+=" Function: '$fct'"
+  msg+=" File: '$file:$line'"
+  echo -e "$msg"
+  ((b_run)) && { eval "$cmd_msg"; res=$?; }
   return $res
 }
 
@@ -520,6 +548,28 @@ abat(){
   local lang="${1:-bash}"
   bat --style plain --color always --pager "" --language "$lang" - | perl -p -e 'chomp if eof';
 }
+
+read_array(){
+  `# Read array <- file`
+  `# Remove empty lines and # comments`
+  `# :param1: (out) array name`
+  `# :param2: file name`
+
+  if [[ -z "$1" ]]; then
+    echo -e "${cred}[-] Error: Missing array variable name$cend"
+    return 1
+  fi
+
+  if [[ ! -f "$2" ]]; then
+    echo -e "${cred}[-] Error: Missing filename '$2' to read array from$cend"
+    return 1
+  fi
+
+  readarray -t "$1" < <(sed -r -e 's/^ *#.*$//g' "$2" | grep -v '^$')
+
+  return 0
+}
+
 
 shellutil_main(){
   `# Main code: embeded in function for fold`
@@ -571,6 +621,10 @@ shellutil_main(){
 
   # By default, run commands
   b_run=1
+
+  # Delcare associate arrays
+  declare -gA fct_dic
+  declare -gA cmd_dic
 
   # If source, print self doc
   if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then

@@ -109,6 +109,3 @@
 	sslVerify = false
 
 # vim:ft=sh
-[user]
-	name = mtourneb
-	email = martin.tourneboeuf@alma.cl

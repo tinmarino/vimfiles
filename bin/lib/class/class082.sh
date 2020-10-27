@@ -12,7 +12,7 @@ __usage(){
 +=========================+$cend
 
 
-${cblue}P00: Ir a (goto)$cend
+${cblue}P01: Ir a (goto)$cend
   Es el mas antiguo de los controladores de flujo. Herede del salto (JUMP) en Assembly.
   Se llama \"goto\" va directamente a la linea que sigue la etiqueta \"label\") dado como argumento.
   Perl y C lo soportan.
@@ -57,6 +57,41 @@ EHD
 
   Mira, por ejemplo, del núcleo Linux, este driver (de pantalla): https://github.com/torvalds/linux/blob/3650b228f83adda7e5ee532e2b90429c03f7b9ec/drivers/hid/hid-picolcd_fb.c#L568-L578
   El enlace te muestra los labels, los goto están justo arriba. Estos multiples labels de salida estan aqui para que sea mas rápido. Por eso elije el núcleo. En un caso mas general, habrá un solo label EXIT y cada liberación va a verificar si el recurso merece realmente estar liberado
+
+
+${cblue}P02: Ciclo$cend
+  Lo ciclos son interesante para hacer múltiples veces la misma tarea.
+  Aquí un ciclo que muestra los factores de todo los enteros de 1 a 100.
+  ${cyellow}> for i in {1..100}; do factor $i; done$cend
+
+  Haga un ciclo que crea los directorios dirXX donde XX es un numero de 1 a 99
+
+  Siguiente ejercicio:
+  -->"
+abat << 'EHD'
+  # Aquí como se hace un ciclo sobre cada elemento de una table (\"array\")
+  array=(first second Third fourth)
+  for i in "${array[@]}"; do
+    echo $i;
+  done
+
+  # Aqui como se capitaliza la primera letra de una variable
+  foo=bar
+  ${foo^}
+  # OUTPUTS: Bar
+EHD
+  echo -e "
+  <--
+
+  Haga un ciclo que pone capitaliza la primera letra de cada elemento de la cuadra de entrada y escribe el resultado en StdOut.
+
+
+${cblue}P03: Condición$cend
+  Las condiciones son útiles para efectuar una tarea solo en ciertos casos.
+  Típicamente, si es posible o útil hacerla.
+
+${cblue}P04: Función$cend
+
 
 $cblue
 +==============+
