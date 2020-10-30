@@ -1,4 +1,8 @@
 # TODO
+  * Cryptografia de cesar: `echo “Make it right for once and for all” |tr [A-Za-z0-9] [N-ZA-Mn-za-m3-90-2]`
+  * Arithmetic: `printf %.10f\\n "$((10**9 * 20/7))e-9"`
+  * PS1, PS2, PS3, PS4: Hay una en el control: https://www.thegeekstuff.com/2008/09/bash-shell-take-control-of-ps1-ps2-ps3-ps4-and-prompt_command/
+    * https://ss64.com/bash/syntax-prompt.html
 
 # First week
 
@@ -64,6 +68,8 @@
   * 2/ Cgi: Php
   * 3/ Jenkins
   * Servidor jenkins
+  * Tarea: openssl for HTTPS https://serverfault.com/questions/102032/connecting-to-https-with-netcat-nc
+  * Tarea: dovecot
   * Tarea: cron
   * Idea: Web hosting, servidor web, apagche, nginx, ver capitulo 19
   * Tarea: Niceness: nice, renice
@@ -155,10 +161,12 @@
 ### Clase 8: Common programming, Regex
   * Expreciones regulares, cuantificacion, agrupacion, alternacion: https://es.wikipedia.org/wiki/Expresi%C3%B3n_regular
   * Ejercicios BaSh: https://dccn-hpc-wiki.readthedocs.io/en/latest/docs/bash/exercise_programming.html
+  * Ejercicios Shell: Collection: Muchos en frances: https://ineumann.developpez.com/tutoriels/linux/exercices-shell/
   * Historia: First function in 1945: https://en.wikipedia.org/wiki/Subroutine#History
   * Tarea: Regex : exelente juego : http://regextutorials.com/excercise.html?Floating%20point%20numbers
   * Tarea: Regex: French class: http://www.ww.exelib.net/linux/les-expressions-regulieres-regex.html
   * Tarea: Regex: Easy some examples: https://code-maven.com/slides/perl/exercise-regular-expressions
+  * Tarea: Loop: https://linuxhint.com/bash-for-loop-examples/
 
   * Djistra: Single return point : https://softwareengineering.stackexchange.com/questions/118703/where-did-the-notion-of-one-return-only-come-from
   * Turing machine Ex: https://github.com/forsooth/Turing-Machine
@@ -166,6 +174,38 @@
 
 
 ### Clase 9: Servicio y servidor
+  * Web terminal: https://anyterm.org/
+  * Web terminal (good) (it is called HTTP TTY): https://github.com/yudai/gotty
+  * Bash HTTP navigator (untested): https://gist.github.com/upperstream/b9b77429bc024541b7605aea76086ad8
+  * Bash HTTP navigator (tested): https://github.com/moshe/abache/blob/master/abache
+  * Miniwal web server using netcat: https://stackoverflow.com/questions/16640054/minimal-web-server-using-netcat
+  * Bash get with nc: https://unix.stackexchange.com/questions/336876/simple-shell-script-to-send-socket-message
+  * Bash get: https://gist.github.com/jadell/871512
+  * Netcat HTTPS (with openssl): https://serverfault.com/questions/102032/connecting-to-https-with-netcat-nc
+  * ToWiki: netcat sending message: https://superuser.com/questions/98089/sending-file-via-netcat
+  * HTTP Server list (like rosetta code): https://gist.github.com/willurd/5720255
+  * Roseta echo server: https://rosettacode.org/wiki/Echo_server#Raku
+  * ROseta HTTP Get: https://rosettacode.org/wiki/HTTP#Raku
+  * Nginx hello world (i used): https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-18-04
+
+
+
+```bash
+#!/bin/bash
+#
+# Bash must have been compiled with this ability: --enable-net-redirections
+# The device files below do not actually exist.
+# Use /dev/udp for UDP sockets
+
+exec 3<>/dev/tcp/host/port
+
+# Write to the socket as with any file descriptor
+echo "Write this to the socket" >&3
+
+# Read from the socket as with any file descriptor
+cat <&3
+```
+    
 
 
 ### Clase 10: Language zoo
@@ -174,3 +214,4 @@
   * VHDL: ex: http://www.asic-world.com/vhdl/first1.html
   * VHDL Compile: http://ghdl.free.fr/ghdl/The-hello-word-program.html
   * VHDL Reference (my) : https://www.ics.uci.edu/~jmoorkan/vhdlref/for_loop.html
+  * Tarea: FLow control ex: http://parallel.vub.ac.be/documentation/linux/unixdoc_download/exercises/Scripts.Ex.html

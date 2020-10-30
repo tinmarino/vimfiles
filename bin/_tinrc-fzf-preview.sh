@@ -13,9 +13,9 @@
 #fi
 
 input="$*"
-set -- "$(echo -- "$input" | grep -o '[a-f0-9]\{7\}')";
+set -- "$(echo -- "$input" | grep -o '\b[a-f0-9]\{7\}')";
 
-if [ $# -eq 1 ]; then
+if [[ -n "$*" ]]; then
   # missing some potential argument of git log (filter)
   git show --color=always "$1"
   exit
@@ -26,7 +26,7 @@ input="${input/#\~/$HOME}"
 # Check file
 if [[ -e "$input" ]]; then
   # Symlink
-  [[ -L "$input" ]] && input=$(readlink content)
+  [[ -L "$input" ]] && input="$(readlink "$input")"
   bat --style=numbers --color=always --line-range :500 "$input"
 else
   # TODO

@@ -85,12 +85,84 @@ EHD
 
   Haga un ciclo que pone capitaliza la primera letra de cada elemento de la cuadra de entrada y escribe el resultado en StdOut.
 
+  Aqui encontraras cuatro
+  Intenta hacer uno o dos
+
 
 ${cblue}P03: Condición$cend
   Las condiciones son útiles para efectuar una tarea solo en ciertos casos.
   Típicamente, si es posible o útil hacerla.
+  Aqui un ejemplo usando la interpolacion arithmetica.
+  Copialo en note.sh:
+  -->"
+abat << 'EHD'
+#!/bin/bash
+
+# Lee la nota del usario
+echo "Entra tu nota en 0 y 7:"
+read -r note
+
+# Averigua que esta en un buen formato
+re='^[0-7]$'
+if ! [[ $note =~ $re ]] ; then
+   echo "Error: espero un numero entero etre 0 y 7 y me diste $note" >&2; exit 1
+fi
+
+if ((note >= 6)); then
+  echo "Muy bien"
+elif ((note == 5)); then
+  echo "Bien"
+else
+  echo "Otro"
+fi
+exit 0
+EHD
+  echo -e "
+  <--
+
+  Ahora ejecuta note.sh:
+  ${cyellow}> bash note.sh$cend
+
+  Este programa te da una apreciacion en funcion de tu nota:
+  6 o mas: Muy bine
+  5: Bien
+  Sino: Otro
+
+  Agrega las condiciones siguiente:
+  Si la nota entregada es 4 => escribe Pasable
+  Si la nota entregada es 3 => escribe Rechazado
+  Si la nota entregada es inferior a 3 = (otros casos) => escribe Muy mal
+
 
 ${cblue}P04: Función$cend
+  Enciera el codigo anterio en una function que despues llamas:
+  -->"
+abat << 'EHD'
+print_note(){
+  # Aqui pega el codigo anterior, que lee la note y da la apreciacion
+  # Remplaza los "exit" por "return"
+}
+
+# Aqui la llamas
+print_note
+EHD
+  echo -e "
+  <--
+
+  Y ahora la llamamos hasta que el usario de una nota valida es decir entre 0 y 7.
+  Es decir que verificacion pasa y la function retorna 0 (exito en Linux)
+  Remplaza la llamada print_note por esta llamada repetitiva
+  -->"
+abat << 'EHD'
+while true; do
+  # Si print_note es existoso, sal del ciclo (break)
+  if print_note; then break; fi
+done
+EHD
+  echo -e "
+  <--
+
+  Prueba si funciona.
 
 
 $cblue

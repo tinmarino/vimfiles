@@ -384,14 +384,14 @@ abat << 'EHD'
 
   # Haga cambio en common.txt (probablemente nuevo)
   echo some changes in dev1 >> common.txt
-  git add . && git commit 'Changes in dev1'
+  git add . && git commit -m 'Changes in dev1'
 
   # Crea la rama dev2 y anda ahi
   git checkout -b dev2
 
   # Haga cambio en common.txt (probablemente nuevo)
   echo some changes in dev2 >> common.txt
-  git add . && git commit 'Changes in dev2'
+  git add . && git commit -m 'Changes in dev2'
 
   # Hagale un repaldo
   git branch dev2_bck

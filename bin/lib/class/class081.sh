@@ -22,9 +22,9 @@ Un idioma informático es muy básico. Tiene 50 palabras en 5..10 grupos lexical
 BaSh no es el lenguaje el mas fácil, pero si el mas accesible, rápido de llamar ya que es el lenguaje por defecto del Shell Linux.
 
 ${cblue}P01: Un ejemplo gramatical$cend
-  > if [[ 1 == 1 ]]; then let a=42; else let a=31; fi; echo $a  # Que pasa
-    ^- controlador         ^- comando         ^- variable       ^- comentario
-            ^- operador                           argumento -^
+  > if [[ 1 == 1 ]]; then let a=42; else let a=31; fi; echo \$a  # Que pasa
+    ^- controlador         ^- comando        ^- variable        ^- comentario
+            ^- operador                          argumento -^
 
 
 ${cblue}P02: Ciclo$cend
@@ -114,12 +114,12 @@ abat << 'EHD'
   cat not_present.txt > /dev/null 2&>1; echo $?
 
   # Ahora si podemos probar si un archivo existe => if; then; fi
-  if cat present.txt > /dev/null 2&>1; then
+  if cat present.txt > /dev/null 2>&1; then
     echo "File is present"
   fi
 
   # Y sino => if; then; else; fi
-  if cat not_present.txt > /dev/null 2&>1; then
+  if cat not_present.txt > /dev/null 2>&1; then
     echo "File is present"
   else
     echo "File is NOT present"
@@ -131,19 +131,19 @@ EHD
   Nota que el \"comando\" puede ser también una función.
   Pero puede ser lento crear un comando o llamar una función para solo probar:
   - si un archivo existe
-  - si dos string son iguales
+  - si dos strings son iguales
   - si un numero es inferior a otro
 
-  Por eso, vamos a recurrir a protocolos internos de bash, que, como siempre, llamamos \"interpolaciones\".
+  Por eso, vamos a recurrir a protocolos internos de BaSh, que, como siempre, llamamos \"interpolaciones\".
 "
 abat << 'EHD'
-  # Interpolacion de test con opciones heridas de la historia
+  # Interpolacion de prueba con opciones hereradas de la historia
   # -- -f = si el archivo existe
   if [[ -f present.txt ]]; then echo "File is present"; fi
   # -- ! = invierte la condicion
   if [[ ! -f not_present.txt ]]; then echo "File is not present"; fi
 
-  # Interpolacion de test para igualda
+  # Interpolacion de prueba para igualda
   var="value"
   if [[ "$var" == "value" ]]; then echo YES; else echo NO; fi
   if [[ "$var" == "not_value" ]]; then echo YES; else echo NO; fi
@@ -159,7 +159,7 @@ abat << 'EHD'
 EHD
   echo -e "
 
-  Un error frecuente es un cerrar el bloque: con \"done\", \"fi\" o \"}\" para respectivamente los ciclos, condiciones y funciones.
+  Un error frecuente es olvidar de cerrar el bloque: con \"done\", \"fi\" o \"}\" para respectivamente los ciclos, condiciones y funciones.
   Que pasa si no lo pones?
 
   Una otra palabra clase de condición es \"elif\"
@@ -182,7 +182,7 @@ EHD
 "
 abat << 'EHD'
   var=4
-  case var in
+  case $var in
     2)
       echo two
       ;;
@@ -207,7 +207,7 @@ ${cblue}P04: Funciones$cend
   Antes de 1945 todo lo que precede se hacia con saltos condicionales e incondicionales.
   El código era naturalmente espagueti.
   La invención de las subrutinas (hoy día llamada funciones) era simple, crear bloques de código llamados, así el llamador llama el código por su nombre y sabe que el código va a volver con una repuesta.
-  Nota: Antes no se sabia si un salto a volver => ver en C \"longjmp\" que todavía se usa en la terminal al hacer un comando porque a veces no vuelve, por ejemplo \"exec\").
+  Nota: Antes no se sabia si un salto iba volver => ver en C \"longjmp\" que todavía se usa en la terminal al hacer un comando porque a veces no vuelve, por ejemplo \"exec\").
 
   Asi que los \"CALL\" remplazaron unos \"JUMP\".
   En BaSh:
@@ -215,15 +215,15 @@ ${cblue}P04: Funciones$cend
 abat << 'EHD'
   # Declarar funciones
   hablar(){
-    echo "esta funcion se llama hablar"
+    echo "Esta funcion se llama hablar"
   }
   decir(){ echo "Esta funcion dice $1"; }
-  blabla(){ echo "Este bla bal $@"; }
+  blabla(){ echo "Esta funcion blabla $@"; }
 
   # Llamar las funciones
-  hablar "Este ni escuha sus argumentos"
-  decir "Hola Jaime" "No escuacha al segundo"
-  balbla "Este" "se va a comer" todo los argumentos
+  hablar "Este ni escucha sus argumentos"
+  decir "Hola Jaime" "No escucha al segundo"
+  blabla "Este" "esta repitiendo" todo los argumentos
 EHD
   echo -e "
 
@@ -235,7 +235,7 @@ EHD
   Edsger Dijkstra (1930 - 2002) formulo el patrón de la entrada única y salida única de una función.
   Eso es lo que llevo a definir las funciones como las conocemos hoy día: la llamas a su entrada y el flujo de control vuelve a ti, una vez la función ejecutada.
   Este patrón ahora es muy mal interpretado. Por ejemplo la gente viene a pensar que una función puede tener solo una palabra clave \"return\", cuando, al contrario, salida temprana es recomendada en caso de error o de no necesidad de trabajo por ejemplo.
-  Acuérdate que el patrón \"Single Entry, Single Exit\" es lo que define una función y lo usan todo los idiomas modernos (después de Fortran 1966) y en ningún caso un restricción de salir al toque.
+  Acuérdate que el patrón \"Single Entry, Single Exit\" es lo que define una función y lo usan todo los idiomas modernos (después de Fortran 1966) y en ningún caso un prohibicion de salir al toque.
 
 
 ${cblue}P05: Alan Turing (1912 - 1954)$cend
@@ -247,7 +247,7 @@ ${cblue}P05: Alan Turing (1912 - 1954)$cend
 
   ${cblue}5.1 Problema de la parada (1936)$cend
   \"En el caso general, es imposible saber si un programar va a llegar a su salida o no\" y un corolario inmediato, no se puede saber si va a ejecutar una cierta rama, y el segundo corolario, es imposible estar seguro de lo que va a hacer. Entiende bien que hablamos de un caso general y no de programas particulares, que a 99% se puede leer y predecir.
-  Este theorema de la parada de Truing (1936) es un correlario de los teoremas de incompletitud de Gödel (1931) que stipula que \"Cualquier teoría aritmética recursiva que sía consistente ye incompleta\".
+  Este theorema de la parada de Turing (1936) es un correlario de los teoremas de incompletitud de Gödel (1931) que stipula que \"Cualquier teoría aritmética recursiva que sea consistente es incompleta\".
   Ambas pruebas recursivamente absurdas, Turing copio Godel hasta en la prueba. Aqui esta la de Turing en Python:
 "
 abat << 'EHD'
@@ -331,11 +331,16 @@ Y extracción de patrones se hace mediante expresiones regulares.
 
 Muy fácil:
   AlfaNum: Los caracteres alfa numéricos como 1, 3, s, b significan estos caracteres literales, excepto si están escapados como, \\1, \\3, \\s, \\b en cual caso, toman un significado especial
-  Puntuación: La puntuación como: ., ?, (, [, * tiene un significado especial excepto si están escapado como: \\, \\? ,\\(, \\[ en cual caso, tienen un significado literal
+  Puntuación: La puntuación como: ., ?, (, [, * tiene un significado especial excepto si están escapado como: \\., \\? ,\\(, \\[ en cual caso, tienen un significado literal
 
 
 ${cblue}P01: Un ejemplo gramatical$cend
-  ${cyellow}> grep -P '^(cat|echo) .*\|.*$' abs.txt$cend
+  (Mira la pregunta siguiente [P02] para decargar abs.txt)
+"
+abat << 'EHD'
+  grep -P '^(cat|echo) .*\|.*$' abs.txt
+EHD
+  echo -e "
 
   ^  ---------  principio de linea (átomo)
   (  ---------  empezar grupo (token)
@@ -385,7 +390,7 @@ ${cblue}P24: Estar o no estar: cuantificadores (?)$cend
 
   Queremos encontrar las palabras \"sh\" o \"bash\"
   "
-  abat <<< "  grep -Pi 'b?a?sh'"
+  abat <<< "  grep -Pi 'b?a?sh' ab.txt"
   echo -e "
 
   -P: Expresión regular en formato Perl
@@ -407,7 +412,7 @@ ${cblue}P25: Regex a átomo: agrupar (())$cend
   Por eso queremos \"ba\" o nada, es decir tratar \"ba\" como un átomo.
   Eso se llamar agrupar (gruping) y se hace mediante paréntesis, como en una ecuación matemática.
   "
-  abat <<< "  grep -Pi '(ba)?sh'"
+  abat <<< "  grep -Pi '(ba)?sh' ab.txt"
   echo -e "
 
   El patrón es:
@@ -416,7 +421,7 @@ ${cblue}P25: Regex a átomo: agrupar (())$cend
 
   Así, si queremos coincidir con el SheBang #!/bin/bash
   "
-  abat <<< "  abagrep -Pi '#!\/bin\/b?a?sh' ab.txt"
+  abat <<< "  grep -Pi '#!\/bin\/b?a?sh' ab.txt"
   echo -e "
 
   Nota solamente que tubo que escapar los \"/\" -> \"\\/\" que tienen un significado especial (Principio y fin de regex)
@@ -438,11 +443,12 @@ EHD
 
 
 ${cblue}P27: Ejemplo$cend
-  Un atomo interesante para lo que sigue es \"un dígito, es decir entre 0 y 9\".
+  Un atomo interesante para lo que sigue es \"un dígito\", es decir entre 0 y 9.
   Se puede escribir, de la vieja forma como \"[0-9]\" que significa literalmente entre 0 y nueve.
   O con Perl \"\\d\" como Dígito, que es mas rápido de escribir
   "
 abat << 'EHD'
+  # Un numero cualquier cantidad de veces (el maximo possible)
   grep -Pi '\d*' ab.txt
 
   # Only match (-o)

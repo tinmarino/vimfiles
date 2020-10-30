@@ -48,7 +48,7 @@ fzf_dir(){
   pushd "$1" > /dev/null || echo "Error: Cannot cd to $1"
   out="$(rg --color always --follow --files | fzf \
     --ansi \
-    --preview "$v/bin/_tinrc-fzf-preview.sh {}")"
+    --preview "$v/bin/_tinrc-fzf-preview.sh $1/{}")"
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
   if [ -n "$file" ]; then

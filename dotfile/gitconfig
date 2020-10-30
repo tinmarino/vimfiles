@@ -109,3 +109,6 @@
 	sslVerify = false
 
 # vim:ft=sh
+[user]
+	email = tinmarino@gmail.com
+	name = Tinmarino

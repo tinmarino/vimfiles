@@ -84,7 +84,9 @@ declare -A question=(
   [P19: Usando grep, muestra las lineas de /etc/passwd que terminan con \"sync\"]="\
     grep 'sync$' /etc/passwd
     "
-  [P20: ]="\
+  [P20: Que provee el servicio Apache?]="\
+    Un Common Gateway Interface y de forma mas generica un serivico web.
+    En general Http o Https.
     "
   [P21: ]="\
     "

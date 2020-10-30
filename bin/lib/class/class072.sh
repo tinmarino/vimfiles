@@ -198,6 +198,9 @@ abat << 'EHD'
   # Especificar tus credenciales
   curl -u username:password -d status='curl is great' http://twitter.com/statuses/update.xml
 
+  # Elejir el protocolo IP (IPv4 o IPv6): Obtener tu IPv4
+  curl -4 icanhazip.com  
+
   # Para seguir, necesitamos un servicio: no encontre en la red uno que hacia solo un log de
   # -- las solicitudes. Instala netcat, el cuchillio Suisso de la red
   # -- (no confundir con netstat que es mucho mas basico)
@@ -210,6 +213,7 @@ abat << 'EHD'
 
   # NetCat Aprueba !
   # Ahora si !
+  # En otro terminal, manda los commandos que siguen
 
   # PUT: Manda datos
   # -- Mira lo que recibe el servicio
@@ -233,7 +237,7 @@ abat << 'EHD'
 
   # POST: un archivo
   # -- 1/ Escribelo
-  cat "Si estamos en HTTPS (y no HTTP), solo tu (servidor) y yo (cliente) podemos leer eso" > data.txt
+  echo "Si estamos en HTTPS (y no HTTP), solo tu (servidor) y yo (cliente) podemos leer eso" > data.txt
   # -- 2/ Mandalo
   # -- -- @ : Leer at
   curl -X POST -d "@data.txt" localhost:8080
