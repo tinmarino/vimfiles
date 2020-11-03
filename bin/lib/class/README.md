@@ -1,8 +1,23 @@
 # TODO
+  * 92, 102, 103
+  * Rename all linux_intro 00..99
   * Cryptografia de cesar: `echo “Make it right for once and for all” |tr [A-Za-z0-9] [N-ZA-Mn-za-m3-90-2]`
   * Arithmetic: `printf %.10f\\n "$((10**9 * 20/7))e-9"`
   * PS1, PS2, PS3, PS4: Hay una en el control: https://www.thegeekstuff.com/2008/09/bash-shell-take-control-of-ps1-ps2-ps3-ps4-and-prompt_command/
     * https://ss64.com/bash/syntax-prompt.html
+
+## Ideas
+  * Tarea: find, grep, hacer la generacion de un sistem de archivos, servir los resultados de stackoverflow
+
+## BigData
+
+* Contact Achal
+* Conocimiento avanzado de SQL (técnicas de optimización de querys SQL)
+* Python "basico" pero tiene que ser funcional
+* Nuve => "No nunca trabaje en la nuve las empresas lo tenian on premise con vpn"
+
+
+
 
 # First week
 
@@ -62,18 +77,10 @@
   * OK: Tarea: Demo que funciones, jumps
   * TODO: Tarea, 3 tareas sobre ciclo, funcion y rama
 9. System: Servidor
-  * email postfix, imap
-  * Class: explicar bien daemon == servicio
-  * 1/ Python: Network filesystem
+  * OK: Class: explicar bien daemon == servicio
+  * OK: 1/ Python: Network filesystem
   * 2/ Cgi: Php
   * 3/ Jenkins
-  * Servidor jenkins
-  * Tarea: openssl for HTTPS https://serverfault.com/questions/102032/connecting-to-https-with-netcat-nc
-  * Tarea: dovecot
-  * Tarea: cron
-  * Idea: Web hosting, servidor web, apagche, nginx, ver capitulo 19
-  * Tarea: Niceness: nice, renice
-  * Tarea: find, grep, hacer la generacion de un sistem de archivos, servir los resultados de stackoverflow
 10. Final: Lenguaje: Colección
   * OK: Table de idiomas de que vamos a hablar
   * OK: BlaBla: Assemby, Rust, Java, Ruby
@@ -97,6 +104,7 @@
   * Monitoring (performance and load)
   * Encoding, utf8, hex (4 bits), octal, binario, ASCII, 16 bits
   * Idea: Penetration testing con nmap, openssl
+
 
 
 # Links
@@ -177,7 +185,7 @@
   * Web terminal: https://anyterm.org/
   * Web terminal (good) (it is called HTTP TTY): https://github.com/yudai/gotty
   * Bash HTTP navigator (untested): https://gist.github.com/upperstream/b9b77429bc024541b7605aea76086ad8
-  * Bash HTTP navigator (tested): https://github.com/moshe/abache/blob/master/abache
+  * Bash HTTP navigator (tested, Abach): https://github.com/moshe/abache/blob/master/abache
   * Miniwal web server using netcat: https://stackoverflow.com/questions/16640054/minimal-web-server-using-netcat
   * Bash get with nc: https://unix.stackexchange.com/questions/336876/simple-shell-script-to-send-socket-message
   * Bash get: https://gist.github.com/jadell/871512
@@ -190,24 +198,6 @@
 
 
 
-```bash
-#!/bin/bash
-#
-# Bash must have been compiled with this ability: --enable-net-redirections
-# The device files below do not actually exist.
-# Use /dev/udp for UDP sockets
-
-exec 3<>/dev/tcp/host/port
-
-# Write to the socket as with any file descriptor
-echo "Write this to the socket" >&3
-
-# Read from the socket as with any file descriptor
-cat <&3
-```
-    
-
-
 ### Clase 10: Language zoo
   * Paradigmos : https://en.wikipedia.org/wiki/Programming_paradigm
   * Js Fast code for Web console: https://www.digitalocean.com/community/tutorials/how-to-use-the-javascript-developer-console
@@ -215,3 +205,8 @@ cat <&3
   * VHDL Compile: http://ghdl.free.fr/ghdl/The-hello-word-program.html
   * VHDL Reference (my) : https://www.ics.uci.edu/~jmoorkan/vhdlref/for_loop.html
   * Tarea: FLow control ex: http://parallel.vub.ac.be/documentation/linux/unixdoc_download/exercises/Scripts.Ex.html
+
+
+
+### Clase 11: Data analisys, the old way
+  * https://downloads.dataiku.com/public/website-additional-assets/data/orders.csv

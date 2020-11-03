@@ -57,6 +57,8 @@ _tin_complete()
   #fi
 
 } && {
+  complete -F "_tin_complete" ./irm
+  complete -F "_tin_complete" irm
   complete -F "_tin_complete" tin
   complete -F "_tin_complete" chio
   complete -F "_tin_complete" jim

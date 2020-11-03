@@ -14,7 +14,7 @@ __usage(){
 Un servicio es la operacion de servir. Aqui es un programa que hace una tarea de servicio.
 Un servidor es una machina que aloja servicios.
 
-En esta clase, usaste mis servicios (sshd) y los de wikipedia (httpd). Cuando te connecatste como cliente via ssh o http.
+En esta clase, usaste mis servicios (sshd) y los de wikipedia (httpd). Cuando te connectaste como cliente via ssh o http.
 Nota que el d significa \"demonio\" en el sentido \"sin dios ni ley\" en el sentido actua solo, sin usario => es un servicio!
 Aloja (es decir ejecuta) uno de estos y eres un servidor!
 
@@ -33,7 +33,7 @@ $cblue
 
 En informática, un servidor es una pieza de hardware o software (programa informático) que proporciona funcionalidad para otros programas o dispositivos, llamados clientes. (Wikipedia)
 
-${cblue}P01: Interface a los servicos (service):$cend
+${cblue}P01: Interface a los servicos (service o systemctl):$cend
   ${cyellow}> service$cend  # Aqui listeas los servicios presentes (ejecutandose [+] o no [-])
   Ssh : ya no conoces, permita connectarse con terminales y ejecutar commandos sobre otras machinas
   Cron: para cronological, es un servicio que ejecuta cosas (que tu defines) cada cierto tiempo. Respaldos, Synchronisacion, Compilacion. Es bakan pero hay que \"tener la mano\" sobre el servidor (tu machina) para configurarlo, lo que a veces es overkill (hay que hacer un ssh).
@@ -47,11 +47,14 @@ ${cblue}P01: Interface a los servicos (service):$cend
   Fin del Aparte
 
 
-
-${cblue}P02: Bash: Http: Servicio Hello World$cend
+${cblue}P02: Netcat: Http: Servicio Hello World$cend
   while true; do { echo -e 'HTTP/1.1 200 Hello World\r\n'; sh test; } | nc -l 8081; done
 
-  En firefox, navega: localhost:8081
+  En Firefox, navega: localhost:8081
+
+  Nota que, desafortunadamente, BaSh no tiene el poder de abrir un socket en escucha.
+  En la implementacion de BaSh, se ve que usa solo la llamada systema de interacion con scoket con \"connect\" (cliente) y no \"bind\" servidor
+  Fuente: https://unix.stackexchange.com/a/49947/257838
 
 
 ${cblue}P03: Python: Servidor Http basico:$cend
@@ -88,7 +91,7 @@ ${cblue}P05: Pagina Github$cend
 
 
 ${cblue}P06: Route$cend
-  TODO
+  Read this: https://www.cyberciti.biz/faq/ip-route-add-network-command-for-linux-explained
 
 
 ${cblue}P07.1: Nginx Instalacion$cend
@@ -250,6 +253,8 @@ $cblue
 +==========+$cend
 
 Un servicio es un componente que realiza operaciones en segundo plano sin una interfaz de usuario. (Android developers)
+Tambien se llaman demonios (daemons) porque corren en el infr mundo y no tienen ni dios ni ley.
+En Linux, a veces, su nombre acaba en \"d\". Ejemplo: sshd, httpd, uuidd, osspd. Contra ejemplo: apache, nginx, dovecot
 
 
 ${cblue}P11: Crea tu primer servicio (php)$cend
@@ -266,9 +271,17 @@ ${cblue}P12: Manipular dynamicamente los servicios$cend
 
 
 ${cblue}P13: Monitorea tu systema$cend
-  ${cyellow}> top$cend  # q para salir muestra los processsos que los mas usan recursos.
-  ${cyellow}> systemctl --type=service --state=active$cend
-  ${cyellow}> cat /proc/meminfo $cend
+  Ejecuta estos commandos uno por uno.
+"
+abat << 'EHD'
+top  # q para salir muestra los processsos que los mas usan recursos.
+sudo service --status-all  # lista los servicios
+systemctl --type=service --state=active  # Lo mismo
+cat /proc/meminfo
+EHD
+  echo -e "
+
+  Para conocer mas comandos: buscar en internet: \"linux monitor system CLI list\"
 
 
 ${cblue}P14: Interactua Nginx$cend
