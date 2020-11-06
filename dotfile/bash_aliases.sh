@@ -72,6 +72,8 @@
   # New terminal (without tmux)
   alias tnew='TMUX=1 gnome-terminal'
 
+  # TODO traw without any rc for testing
+
   # Alma
   alias alma_docker='cd ~/Program/Alma/Docker && docker-compose run centos8 bash'
 
@@ -89,6 +91,7 @@
   export pw="$v/pack/bundle/opt/wiki"
   export t="$HOME/wiki/todo"
   export vb="$v/bin"
+  export vd="$v/dotfile"
   export w="$HOME/wiki/wiki"
   export wt="$HOME/wiki/todo"
   export wa="$HOME/wiki/alma"
@@ -100,17 +103,19 @@
 
 
 # Shortcut largers
+  export TRASH="$HOME/.Trash"
+
   # Bigger for memory
   alias open='xdg-open'
   alias clip="xclip -selection c"
   #alias find="find -not -path '*/\.*'"
 
   # Utils
-  alias clean_tex='rm *.aux *.log *.fls *.fdb_latexmk *.out *synctex.gz *.tex.backup *.4ct *.4tc *.idv *.lg *.tmp *.xref *.xdv *.dvi *.bak *.toc'
+  # shellcheck disable=SC2139  # This expands when defined
+  alias clean_tex="mv -t $TRASH *.aux *.log *.fls *.fdb_latexmk *.out *synctex.gz *.tex.backup *.4ct *.4tc *.idv *.lg *.tmp *.xref *.xdv *.dvi *.bak *.toc"
   alias clip='xclip -selection c'
 
   # Safe RM
-  export TRASH="$HOME/.Trash"
   # shellcheck disable=SC2139  # This expands when defined, not when used
   alias rm="echo better use trash; mv -f -t $TRASH"
   alias rmv='command rm'
@@ -166,4 +171,3 @@
   # alias ms="marks"
   # alias mj="jump"
 
-# vim: sw=2:ft=bash

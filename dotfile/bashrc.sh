@@ -10,12 +10,46 @@
   # Set USER
   [[ -z "$USER" ]] && command -v whoami > /dev/null && USER=$(whoami) && export USER
 
-# Do I need to load .bash_profile
+# Clause: Do I need to load .bash_profile
   # shellcheck disable=SC2154  # os is referenced but not assigned
   if [[ -z "$os" && -z "$v" && -f "$HOME/.bash_profile" ]]; then
     echo Sourcing Profile
   	source "$HOME/.bash_profile"
   fi
+
+
+# Callback for Unknown command (tip: install bash-completion on tmux)
+  print_stack() {
+     STACK=""
+     local i message="${1:-""}"
+     local stack_size=${#FUNCNAME[@]}
+     # to avoid noise we start with 1 to skip the get_stack function
+     for (( i=1; i<stack_size; i++ )); do
+        local func="${FUNCNAME[$i]}"
+        [ "x$func" = x ] && func=MAIN
+        local linen="${BASH_LINENO[$(( i - 1 ))]}"
+        local src="${BASH_SOURCE[$i]}"
+        [ x"$src" = x ] && src=non_file_source
+
+        STACK+=$'\n'"   at: $func $src $linen"
+     done
+     STACK="${message}${STACK}"
+     echo "$STACK"
+  }
+  export -f print_stack
+  command_not_found_handle() {
+    # If starting with g : git
+    if [[ "${1:0:1}" == "g" ]]; then
+      # shellcheck disable=SC2086
+      git "${1:1}" $2
+    # If any shit, echo bash default errmsg
+    else
+      echo "bash(rc): $1: command not found"
+      print_stack ""
+    fi
+  }
+  export -f command_not_found_handle
+
 
 # Execute tmux
   if command -v tmux &> /dev/null \
@@ -31,6 +65,7 @@
   fi
 
 # Head
+  # I wanted to be an artists
   # clear
   # Nowrap
   printf '\e[?7l'
@@ -148,4 +183,3 @@
   bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
 
 
-# vim:sw=2:ts=2:foldignore=:
