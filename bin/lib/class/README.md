@@ -2,7 +2,6 @@
   * 92, 102, 103
   * Rename all linux_intro 00..99
   * Cryptografia de cesar: `echo “Make it right for once and for all” |tr [A-Za-z0-9] [N-ZA-Mn-za-m3-90-2]`
-  * Arithmetic: `printf %.10f\\n "$((10**9 * 20/7))e-9"`
   * PS1, PS2, PS3, PS4: Hay una en el control: https://www.thegeekstuff.com/2008/09/bash-shell-take-control-of-ps1-ps2-ps3-ps4-and-prompt_command/
     * https://ss64.com/bash/syntax-prompt.html
 
@@ -16,6 +15,9 @@
 * Python "basico" pero tiene que ser funcional
 * Nuve => "No nunca trabaje en la nuve las empresas lo tenian on premise con vpn"
 
+## ToRead
+
+* Difference iptables, route
 
 
 

@@ -66,11 +66,35 @@ ${cblue}P11: Crea un servicio CGI para ver archivos (en BaSh)$cend
   https://github.com/tinmarino/abache
 
 
-${cblue}P12: Manipular dynamicamente los servicios$cend
+${cblue}P12: Inspecta w3m con netcat$cend
+  w3m es un navegador en la terminal (aqui cliente HTTP)
+  ${cyellow}> sudo apt install w3m$cend
+
+  Quiciera ver el header de la solicitud de w3m y de firefox
+
+"
+abat << 'EHD'
+  # Inicia un servidor de escucha (en el puerto 8082)
+  nc -l 8082
+
+  # Navega con w3m (q para salir)
+  w3m http://localhost:8082/
+
+  # Reinicia el servidor (NetCat)
+  # Navega con firefox (q para salir)
+  firefox http://localhost:8082/
+EHD
+  echo -e "
+
+  Analisa las cabezas de la solicitudes.
+  En Firefox, puedes abrir la consola de desarolladores para ver las solicitudes y sus cabezas. Seran las mismas que vista desde el servidor.
+
+
+${cblue}P13: Manipular dynamicamente los servicios$cend
   TODO
 
 
-${cblue}P13: Monitorea tu systema$cend
+${cblue}P14: Monitorea tu systema$cend
   TODO
 
 ${cblue}P19: Otros$cend
@@ -79,9 +103,9 @@ ${cblue}End:$cend
   * Tarea: openssl for HTTPS https://serverfault.com/questions/102032/connecting-to-https-with-netcat-nc
   * Idea: Web hosting, servidor web, apagche, nginx, ver capitulo 19
 
+  Tag: > w3m
   "
 
-  echo -e "$msg"
 }
 
 
