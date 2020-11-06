@@ -58,7 +58,7 @@ filetype plugin indent on | syntax on
   endif
 
 
-" Plugin
+" Plugin Configuration
   " Vimwiki
     " Lazycall WikiIndex
     function! Windex(num)
@@ -120,6 +120,7 @@ filetype plugin indent on | syntax on
     " Map
     " Option
     let g:vimwiki_automatic_nested_syntaxes = 1
+    let g:vimwiki_folding = 'expr'
 
     let g:vimwiki_markdown_link_ext = 1
     let g:vimwiki_table_reduce_last_col = 1
@@ -408,7 +409,7 @@ filetype plugin indent on | syntax on
   endif
 
 
-" Appearance
+" Preferences, Aparences
   " Preferences
     set background=dark
     packadd color-tin
@@ -429,7 +430,7 @@ filetype plugin indent on | syntax on
     set autoindent  " to have auto indentation when return line
     set wrapscan
     set conceallevel=2
-    set number
+    " set number
     set modeline
     " Terminal italic
     set t_ZH=[3m
@@ -553,17 +554,17 @@ filetype plugin indent on | syntax on
     endif
 
 
-" Backup
-  set nobackup
-  set noswapfile
-  set nowritebackup
-  set undolevels=10000
-  set history=10000
+  " Backup
+    set nobackup
+    set noswapfile
+    set nowritebackup
+    set undolevels=10000
+    set history=10000
 
-  if has('persistent_undo')
-    set undodir=$v/undo
-    set undofile
-  endif
+    if has('persistent_undo')
+      set undodir=$v/undo
+      set undofile
+    endif
 
 
 " Map Leadered
@@ -928,7 +929,7 @@ filetype plugin indent on | syntax on
   "imap   <C-k>   <plug>(emmet-expand-abbr)
   " let g:jupyter_monitor_console = 1
   "let g:jupyter_verbose = 1
-  " let g:jupyter_auto_connect = 1
+  let g:jupyter_auto_connect = 1
   " let b:jupyter_exec_before = 'clear-screen'
   packadd jupyter
   packadd spector
