@@ -127,8 +127,9 @@ function! tin#fold_atom#atom_fold_text() abort
 
   " Get comment
   let comment = getline(v:foldstart + 1)
-  let comment = substitute(comment, '^\s*[`#"'']*', '', 1)
-  let comment = substitute(comment, '[`#"'']*\s*$', '', 1)
+  let comment = substitute(comment, '^\s*', '', 1)
+  let comment = substitute(comment, '^[`#"'']\+\s*', '', 1)
+  " let comment = substitute(comment, '[`#"'']*\s*$', '', 1)
 
   " String build
   let fdnfo = repeat('>', v:foldlevel) . ' ' . string(foldlinecount)
