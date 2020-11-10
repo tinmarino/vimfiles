@@ -1,12 +1,16 @@
 " From: https://vi.stackexchange.com/questions/2157/collapse-vim-folds-to-a-single-line-similar-to-atom-or-sublime-text
-"let g:regexp_blank = '^\s*$\|^\s*[#"/]'
-let g:regexp_blank = '^\s*$'
-let g:next_close = '='
-let g:fold_close =  '^\s*\(};\?\|fi\|end.*\)\s*$'
+
+function! s:declare_global()
+  " Define global variables, called at init
+  " let g:regexp_blank = '^\s*$\|^\s*[#"/]'
+  let g:regexp_blank = '^\s*$'
+  let g:next_close = '='
+  let g:fold_close =  '^\s*\(};\?\|fi\|end.*\)\s*$'
+endfunction
 
 
 function! FindIndentHere(line_number, indent_width) abort
-  " Finds the indent of a line. The indent of a blank line is the indent of the
+  " Helper: Find the indent of a line. The indent of a blank line is the indent of the
   " first non-blank line above it.
   " Regular expression for a "blank" line
   let non_blank_line = a:line_number
@@ -18,7 +22,7 @@ endfunction
 
 
 function! FindIndentNext(line_number, indent_width) abort
-  " Find next non "bad" indented line
+  " Helper: Find next non "bad" indented line
   let non_blank_line = a:line_number+1
   while non_blank_line < line('$') && getline(non_blank_line) =~ g:regexp_blank
     let non_blank_line = non_blank_line + 1
@@ -26,8 +30,9 @@ function! FindIndentNext(line_number, indent_width) abort
   return indent(non_blank_line) / a:indent_width
 endfunction
 
+
 function! tin#fold_atom#atom_fold_expr(line_number) abort
-  " 'foldexpr' for Atom-style indent folding
+  " Express fold for Atom-style indent folding
   " Indent Fold Enhanced for single line
   " -- set foldexpr=AtomStyleFolding(v:lnum)
   " TODO Read the doc if want =, -1. Comment more (important function)
@@ -110,7 +115,7 @@ endfunction
 
 
 function! tin#fold_atom#atom_fold_text() abort
-  " Hi
+  " Define the text shown in a folded section
 
   " Get number of col
   " -- fold, number 
@@ -145,7 +150,10 @@ function! tin#fold_atom#atom_fold_text() abort
   return line
 endfunction
 
+
 function! tin#fold_atom#main(...) abort
+  " Entry point
+  call s:declare_global()
   set foldmethod=expr
   set foldexpr=tin#fold_atom#atom_fold_expr(v:lnum)
   set foldtext=tin#fold_atom#atom_fold_text()

@@ -1,9 +1,9 @@
 # Include system wide settings which are ignored by default if one has their own .inputrc  
 $include /etc/inputrc
 
-# Inteligent previous command
-"\e[B": history-search-forward
+# Intelligent previous command
 "\e[A": history-search-backward 
+"\e[B": history-search-forward
 "\C-p": history-search-backward 
 "\C-n": history-search-forward
 

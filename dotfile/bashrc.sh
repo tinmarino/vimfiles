@@ -181,5 +181,3 @@
   set keyseq-timeout 10
   bind -x '"\ee":fzf_open'
   bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
-
-

@@ -3,10 +3,10 @@
 " TODO: NerdCommenter
 
 " The base
-set encoding=utf-8
-scriptencoding uft-8
-filetype plugin indent on | syntax on
-"set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.so
+  set encoding=utf-8
+  scriptencoding uft-8
+  filetype plugin indent on | syntax on
+  "set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.so
 
 
 " Variable (Perso)
@@ -409,7 +409,7 @@ filetype plugin indent on | syntax on
   endif
 
 
-" Preferences, Aparences
+" Preferences, Appearances
   " Preferences
     set background=dark
     packadd color-tin
@@ -426,8 +426,8 @@ filetype plugin indent on | syntax on
     "  autocmd FileType *.py setlocal formatoptions-=c formatoptions-=r formatoptions-=o
     "augroup END
     set diffopt+=vertical
-    set title                    " change the terminal's title, may not work
-    set autoindent  " to have auto indentation when return line
+    set title  " change the terminal's title, may not work
+    set autoindent " to have auto indentation when return line
     set wrapscan
     set conceallevel=2
     " set number
@@ -485,8 +485,8 @@ filetype plugin indent on | syntax on
   " Search
     set ignorecase
     set smartcase
-    set hlsearch      " highlight search terms
-    set incsearch     " show search matches as you type
+    set hlsearch  " highlight search terms
+    set incsearch  " show search matches as you type
   " Cursor
     set cursorline  " Enable CursorLine
     " Default Colors for CursorLine
@@ -683,8 +683,8 @@ filetype plugin indent on | syntax on
     endfunction
     nmap gx yiW:call OpenLink() <Cr><Cr>
   " Save with s
-    noremap s      :update!<CR>
-    vnoremap s    <C-C>:update!<CR>
+    noremap s :update!<CR>
+    vnoremap s <C-C>:update!<CR>
 
   " Use <C-L> to clear the highlighting of :set hlsearch and also preserve the
   " default behavior of redrawing the screen
@@ -744,6 +744,9 @@ filetype plugin indent on | syntax on
       call submode#map('window', 'n', '', '>', '10<C-w>>')
     endfunction
 
+    " TODO
+    " call SetWindowMap()
+
   " Maps for Package : On demand load
     " F8 : Colorscheme-switcher
     noremap <F8> :packadd misc<CR>:packadd colorscheme-switcher<CR><F8>
@@ -764,8 +767,6 @@ filetype plugin indent on | syntax on
 
   " Perso maps normal
     nnoremap H :set cursorline! cursorcolumn!<CR>
-      map xy :s/x/y/g<CR>
-    map yx :s/y/x/g<CR>
 
   " Copy paste to from clipboard <- ctrl+p
     if $os !=? 'termux'
