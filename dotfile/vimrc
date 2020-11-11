@@ -472,7 +472,9 @@
     set guioptions-=m                  " Menumbar
   " Wildignore : Ignore these filenames during enhanced command line completion.
     set wildmenu
-    set wildmode=longest:full
+    " Doc: That means that on first <Tab> it will complete to the longest common string and will invoke wildmenu (a horizontal and unobstructive little menu). On next <Tab> it will complete the first altenative and the will start to cycle through the rest. You can go back and forth with <Tab> and <S-Tab> respectively.
+    " From: https://stackoverflow.com/a/13043196/2544873
+    set wildmode=longest:full,full
     set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz,*.dvi  " LaTeX intermediate files
     set wildignore+=*.tex.backup,*.lg,*.4ct,*.4tc,*.tmp,*.idv  " LaTeX html intermediate files
     set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images
@@ -930,7 +932,7 @@
   "imap   <C-k>   <plug>(emmet-expand-abbr)
   " let g:jupyter_monitor_console = 1
   "let g:jupyter_verbose = 1
-  let g:jupyter_auto_connect = 1
+  "let g:jupyter_auto_connect = 1
   " let b:jupyter_exec_before = 'clear-screen'
   packadd jupyter
   packadd spector

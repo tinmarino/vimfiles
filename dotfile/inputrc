@@ -2,6 +2,7 @@
 $include /etc/inputrc
 
 # Intelligent previous command
+# bind '"\e[A": history-search-backward'; bind '"\e[B": history-search-forward'  # GREPME-BIND
 "\e[A": history-search-backward 
 "\e[B": history-search-forward
 "\C-p": history-search-backward 
