@@ -176,6 +176,14 @@
   complete -o default -F _pip_completion pip
   # pip bash completion end
 
+# Alma
+  be(){ sudo -u "alma$1" -i; }
+  complete -W "mgr op proc" be
+  alias mgr='be mgr'
+  alias op='be op'
+  alias proc='be proc'
+
+
 # Bind
   # Enable Readline not waiting for additional input when a key is pressed.
   set keyseq-timeout 10
