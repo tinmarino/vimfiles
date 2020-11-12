@@ -177,11 +177,13 @@
   # pip bash completion end
 
 # Alma
-  be(){ sudo -u "alma$1" -i; }
-  complete -W "mgr op proc" be
-  alias mgr='be mgr'
-  alias op='be op'
-  alias proc='be proc'
+  be(){ sudo -u "$1" -i; }
+  complete -W "mgr op proc root" be
+  alias mgr='be almamgr'
+  alias op='be almaop'
+  alias proc='be almaproc'
+  alias root='be root'
+  alias acse2='ssh -X mtourneb@acse2-gns.sco.alma.cl'
 
 
 # Bind
