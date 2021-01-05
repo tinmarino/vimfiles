@@ -2,7 +2,7 @@
 if exists('b:did_ftplugin')
   finish
 endif
-source $v/pack/bundle/opt/wiki/ftplugin/vimwiki.vim
+source $HOME/.vim/pack/bundle/opt/wiki/ftplugin/vimwiki.vim
 let b:did_ftplugin = 1  " Don't load another plugin for this buffer
 
 " Alias commands
