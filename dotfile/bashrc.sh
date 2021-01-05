@@ -183,7 +183,8 @@
   alias op='be almaop'
   alias proc='be almaproc'
   alias root='be root'
-  alias acse2='ssh -X mtourneb@acse2-gns.sco.alma.cl'
+  # With a tmux singleton, like it or not
+  alias acse2='ssh -X mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
 
 
 # Bind
@@ -191,3 +192,5 @@
   set keyseq-timeout 10
   bind -x '"\ee":fzf_open'
   bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
+  bind -x '"\eh":fzf_dir .'
+  bind -x '"\el":fzf_line .'

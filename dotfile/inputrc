@@ -1,3 +1,6 @@
+# Archlinux: https://wiki.archlinux.org/index.php/Readline
+# Cheatsheet: https://readline.kablamo.org/emacs.html
+
 # Include system wide settings which are ignored by default if one has their own .inputrc  
 $include /etc/inputrc
 
@@ -22,3 +25,13 @@ $include /etc/inputrc
 set colored-stats on
 # Color the matching part
 set colored-completion-prefix on
+# Set the maximum displayed prefix to 6, then -> ...
+#set completion-prefix-display-length 6
+# This line sets every completion which is a symbolic link to a directory to have a slash appended
+set mark-symlinked-directories on
+# This line sets the completions to be listed immediately instead of ringing the bell, when the completing word has more than one possible completion.
+set show-all-if-ambiguous on
+# This line sets the completions to be listed immediately instead of ringing the bell, when the completing word has more than one possible completion but no partial completion can be made.
+set show-all-if-unmodified on
+# This lines sets completions to be appended by characters that indicate their file types reported by the stat system call.
+set visible-stats on

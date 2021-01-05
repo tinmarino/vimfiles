@@ -23,7 +23,6 @@ diary/
 *.aux
 *.tar
 .Trash-1000/
-*.png
 *.backup
 
 # Java

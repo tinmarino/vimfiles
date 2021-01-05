@@ -1,3 +1,5 @@
+# vim:ft=sh
+
 [credential]
 	helper = store
 
@@ -78,7 +80,7 @@
     dww = diff --word-diff
     dn = diff --name-only
     ds = dc  # --Staged
-    kb = checkout -b
+    kb = 
     ph = push
     pl = pull
     plr = pull --rebase
@@ -110,7 +112,6 @@
 [http]
 	sslVerify = false
 
-# vim:ft=sh
 [user]
 	email = tinmarino@gmail.com
 	name = Tinmarino

@@ -102,7 +102,7 @@ echo "Sourcing bash profile at $(date)" >> /tmp/bash_profile
 
 # Preferences
   # Enable directory with $
-  shopt -s direxpand
+  # shopt -s direxpand
   # Avoid c-s freezing
   stty -ixon
 
@@ -118,7 +118,7 @@ echo "Sourcing bash profile at $(date)" >> /tmp/bash_profile
   bind 'set output-meta on'
 
   # History
-  # append instead of overwrite
+  # Append instead of overwrite
   shopt -s histappend
   export HISTSIZE=100000
   export HISTFILESIZE=100000
@@ -163,8 +163,8 @@ echo "Sourcing bash profile at $(date)" >> /tmp/bash_profile
     --bind ctrl-u:half-page-up
     --bind ctrl-d:half-page-down
     --bind ctrl-s:toggle-sort
-    --bind alt-u:preview-page-up
-    --bind alt-d:preview-page-down
+    --bind alt-u:preview-half-page-up
+    --bind alt-d:preview-half-page-down
     #--bind ctrl-y:preview-up
     #--bind ctrl-e:preview-down
   )
@@ -187,7 +187,6 @@ echo "Sourcing bash profile at $(date)" >> /tmp/bash_profile
   	  source "$HOME/.bashrc"
       fi
   fi
-
 
 
 # vim:sw=2:ts=2:foldignore=:

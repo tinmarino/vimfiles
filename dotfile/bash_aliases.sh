@@ -56,6 +56,8 @@
   malias terminal 'TMUX= alacritty'
   malias te 'TMUX= alacritty'
   malias terminal_raw 'alacritty'
+  malias traw 'alacritty -e env -i INPUTRC= bash --noprofile --norc'
+  malias tnotmux 'alacritty'
   malias vi vim
   alias ipy='jupyter-console'
   alias ira='jupyter-console --kernel=raku'
@@ -132,9 +134,9 @@
 
 # Color improve (ls, grep)
   if [ -x /usr/bin/dircolors ]; then
-      test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-      malias ls 'ls --color=auto'
-      malias grep 'grep --color=auto'
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    malias ls 'ls --color=auto'
+    malias grep 'grep --color=auto'
   fi
 
 

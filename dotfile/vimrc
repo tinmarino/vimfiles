@@ -3,9 +3,10 @@
 " TODO: NerdCommenter
 
 " The base
+  filetype plugin indent on | syntax on
   set encoding=utf-8
   scriptencoding uft-8
-  filetype plugin indent on | syntax on
+  set mouse=a " Enable mouse use in all modes
   "set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.so
 
 
@@ -122,6 +123,7 @@
     let g:vimwiki_automatic_nested_syntaxes = 1
     let g:vimwiki_folding = 'expr'
 
+    let g:vimwiki_key_mappings = {'mouse': 1}
     let g:vimwiki_markdown_link_ext = 1
     let g:vimwiki_table_reduce_last_col = 1
     let g:vimwiki_table_mappings = 0
@@ -130,10 +132,13 @@
     let g:vimwiki_hl_cb_checked = 1
     let g:vimwiki_syntax = 'markdown'
     let g:vimwiki_ext = '.md'
-    let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
+    "let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
     let g:vimwiki_css_name = '/Css/include.css'
 
     " Test Wiki
+    let g:vimwiki_syntax_list = {}
+    let g:vimwiki_syntax_list['markdown'] = {}
+    "let g:vimwiki_syntax_list['markdown']['typeface'] = {}
     "let g:vimwiki_emoji_enable = 3
     " New
     "let g:vimwiki_cycle_bullets = 1
@@ -323,6 +328,23 @@
     command! -nargs=* -bang FzfOldLines call FzfRg(
                 \ <q-args>, <bang>0, join(fzf#vim#_recent_files(), ' '))
 
+    function! FzfDir(dir)
+      " Start source list command
+      echom 'Tin in fzfdir with ' . a:dir
+      let _fzf_source = "bash -c \"cd '" . a:dir . "' && rg --color never --files '" . a:dir . "'\""
+      echom _fzf_source
+      call fzf#run(fzf#vim#with_preview(fzf#wrap({
+                \'source': _fzf_source,
+                \'sink' : 'e ',
+                \'options' : " --ansi --preview '" . $v . "/bin/_tinrc-fzf-preview.sh $1/{}'"
+                \})))
+    endfunction
+
+    command! -nargs=1 -complete=dir FzfDir call FzfDir(<args>)
+    " I don't know with r is susceptible 
+    nnoremap <A-r> :call FzfDir($h . '/wiki/rosetta/Lang')<CR>
+    nnoremap <Esc>r :call FzfDir($h . '/wiki/rosetta/Lang')<CR>
+
     function! FzfRgFileFull()
       " Start source list command
       let _fzf_source = 'bash -c "'
@@ -430,7 +452,7 @@
     set autoindent " to have auto indentation when return line
     set wrapscan
     set conceallevel=2
-    " set number
+    set number
     set modeline
     " Terminal italic
     set t_ZH=[3m
@@ -442,7 +464,6 @@
       set term=xterm-256color
     endif
     " Mouse Integration
-    set mouse=a " Enable mouse use in all modes
     set ttyfast
     set ttymouse=xterm2
   " Statusline
@@ -674,7 +695,6 @@
 
 " Map
   tnoremap <Esc> <C-W>N
-
   " NetRw Open Link
     function! OpenLink(...)
       let link = a:0 ? a:1 : expand('<cWORD>')
@@ -684,10 +704,6 @@
       exe '!xdg-open ' . link . '&'
     endfunction
     nmap gx yiW:call OpenLink() <Cr><Cr>
-  " Save with s
-    noremap s :update!<CR>
-    vnoremap s <C-C>:update!<CR>
-
   " Use <C-L> to clear the highlighting of :set hlsearch and also preserve the
   " default behavior of redrawing the screen
     if maparg('<C-S-L>', 'n') ==# ''
@@ -792,6 +808,10 @@
   " Esc <- jk or kj
     imap jk <Esc>
     imap kj <Esc>
+
+  " Save with s
+    noremap s :update!<CR>
+    vnoremap s <C-C>:update!<CR>
 
   " C-Arrow on Ubuntu
     "Get Ctrl + ARROW KEYS,because if you don't do that, the <C-Up>  (ie crtl + up ) key is notreckognise
@@ -951,6 +971,35 @@
   inoremap <C-Space> <C-x><C-o>
   inoremap <C-@> <C-x><C-o>
 
+  " copy to attached terminal using the yank(1) script:
+  " https://sunaku.github.io/tmux-yank-osc52.html
+	function! CopyToTerminal(type, ...)
+    " Prepare peace
+	  let l:sel_save = &selection
+	  let &selection = 'inclusive'
+	  let l:reg_save = @@
+
+    " Get selection
+	  if a:0  " Invoked from Visual mode, use gv command.
+	    silent exe 'normal! gvy'
+	  elseif a:type ==# 'line'
+	    silent exe "normal! '[V']y"
+	  else
+	    silent exe 'normal! `[v`]y'
+	  endif
+
+    " Call it
+    echom @@
+    let l:text = @@
+    call system($v . '/bin/_copy_to_terminal.sh', l:text)
+
+    " Restore peace
+	  let &selection = l:sel_save
+	  let @@ = l:reg_save
+  endfunction
+
+	nnoremap <silent> <leader>y :set opfunc=CopyToTerminal<CR>g@
+	vnoremap <silent> <leader>y :<C-U>call CopyToTerminal(visualmode(), 1)<CR>
 
 function! SynStack()
   if !exists('*synstack')
