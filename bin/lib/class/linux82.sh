@@ -6,7 +6,7 @@
 source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"
 
 __usage(){
-  local msg="$cblue
+  echo -e "$cblue
 +=================+
 | Servidor: Tarea |
 +=================+$cend
@@ -20,14 +20,26 @@ ${cblue}P01: Clonar un sitio (10min)$cend
 
 
 ${cblue}P02: CGI: Common Gateway Interface, BaSh examples (20min)$cend
-  Desarolla los dos primeros servicios CGI en BaSh de este sitio:
+  Desarolla los dos primeros servicios CGI en BaSh del sitio siguiente:
   http://www.yolinux.com/TUTORIALS/BashShellCgi.html
 
   Llamalos y averigua que funcionen correctamente
 
 
 ${cblue}P03: Servidor DNS (dovecot)$cend
+
   TODO
+"
+abat << 'EHD'
+  # Install Unbound
+  sudo apt install unbound
+
+  # Check if running
+  # Else run: sudo service unbound restart
+  sudo service unbound status
+
+EHD
+  echo -e "
 
 
 ${cblue}P04: Pagina Github (1h30)$cend

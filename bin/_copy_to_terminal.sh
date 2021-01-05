@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 # Copy via Operating System Command 52 ANSI escape sequence to controlling terminal
+
 # -- Used by Tmux
 # -- Ex: echo -e "\033]52;c;$(base64 <<< hellov0.1)\a"
 #
 # More for vim: https://stackoverflow.com/questions/45247929/system-clipboard-vim-within-tmux-within-ssh-session
 # 
 
-set -eu
-
 # Get In <- data either form stdin or from file
 buf=$(cat "$@")
+echo Received "$buf" >> /tmp/copy
 
 # Get len <- In buf
 buflen=$( printf %s "$buf" | wc -c )
@@ -35,5 +35,5 @@ esc="\ePtmux;\e$esc\e\\"
 #pane_active_tty=$(tmux list-panes -F "#{pane_active} #{pane_tty}" | awk '$1=="1" { print $2 }')
 #target_tty="${SSH_TTY:-$pane_active_tty}"
 
-echo -e "$esc"
-#printf "%s" "$esc"  # > "$target_tty"
+printf "%s" "$esc"
+#printf "%s" "$esc" > /dev/tty

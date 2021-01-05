@@ -39,16 +39,20 @@ fzf_open() {
     --preview "$v/bin/_tinrc-fzf-preview.sh {}")"
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
+  file="${file/#\~/$HOME}"
   if [ -n "$file" ]; then
+    [[ "$key" = ctrl-e ]] && ${EDITOR:-vim} "$file"
     [[ "$key" = ctrl-o ]] && xdg-open "$file" || ${EDITOR:-vim} "$file"
   fi
 }
 
 fzf_dir(){
   pushd "$1" > /dev/null || echo "Error: Cannot cd to $1"
+  # Follow is important for roseta
   out="$(rg --color always --follow --files | fzf \
     --ansi \
     --preview "$v/bin/_tinrc-fzf-preview.sh $1/{}")"
+  out="${out/#\~/$HOME}"
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
   if [ -n "$file" ]; then
@@ -57,12 +61,10 @@ fzf_dir(){
   popd > /dev/null || return 1
 }
 
-
-
 fzf_line() {
   # Interactive search.
   # Usage: `ff` or `ff <folder>`.
-  [[ -n "$1" ]] && cd "$1" || exit 2  # go to provided folder or noop
+  [[ -n "$1" ]] && cd "$1" || return 2  # go to provided folder or noop
   RG_DEFAULT_COMMAND="rg -i -l --hidden --no-ignore-vcs"
   
   selected=$(
