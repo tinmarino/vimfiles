@@ -18,6 +18,24 @@
   fi
 
 
+# Execute tmux
+  if command -v tmux &> /dev/null \
+      && [[ -z "$TMUX" \
+      &&  ! "$TERM" =~ screen  && ! "$TERM" =~ "screen-256color" \
+      &&  ! "$TERM" =~ tmux  &&  ! "$TERM" =~ "tmux-256color" \
+      &&  ! "$USER" == "jim" \
+      ]] ; then
+    if [[ "$HOSTNAME" =~ ^(almatin|tourny)$ ]]; then
+      # Set here the first time, then in tmux.conf then in the secondly loaded bashrc
+      # For bold and italic
+      exec env TERM=tmux-256color tmux
+    else
+      # for ALMA but some glinch in scroll vim
+      exec env TERM=xterm-256color tmux
+    fi
+  fi
+
+
 # Callback for Unknown command (tip: install bash-completion on tmux)
   print_stack() {
      STACK=""
@@ -50,22 +68,6 @@
   }
   export -f command_not_found_handle
 
-
-# Execute tmux
-  if command -v tmux &> /dev/null \
-      && [[ -z "$TMUX" \
-      &&  ! "$TERM" =~ screen  && ! "$TERM" =~ "screen-256color" \
-      &&  ! "$TERM" =~ tmux  &&  ! "$TERM" =~ "tmux-256color" \
-      &&  ! "$USER" == "jim" \
-      ]] ; then
-    if [[ "$HOSTNAME" =~ ^(almatin|tourny)$ ]]; then
-      # For bold and italic
-      exec env TERM=tmux-256color tmux
-    else
-      # for ALMA but some glinch in scroll vim
-      exec env TERM=xterm-256color tmux
-    fi
-  fi
 
 # Head
   # I wanted to be an artists
