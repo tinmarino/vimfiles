@@ -33,5 +33,5 @@ set mark-symlinked-directories on
 set show-all-if-ambiguous on
 # This line sets the completions to be listed immediately instead of ringing the bell, when the completing word has more than one possible completion but no partial completion can be made.
 set show-all-if-unmodified on
-# This lines sets completions to be appended by characters that indicate their file types reported by the stat system call.
+# Bascially adds an @ if is a symlink. This lines sets completions to be appended by characters that indicate their file types reported by the stat system call.
 set visible-stats on

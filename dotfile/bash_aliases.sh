@@ -134,11 +134,11 @@
 
 
 # Color improve (ls, grep)
-  if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    malias ls 'ls --color=auto'
-    malias grep 'grep --color=auto'
+  if command -v dircolors > /dev/null; then
+    [[ -r ~/.dircolors ]] && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
   fi
+  malias ls 'ls --color=auto'
+  malias grep 'grep --color=auto'
 
 
 # Utils
