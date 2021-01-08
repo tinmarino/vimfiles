@@ -58,10 +58,13 @@
       &&  ! "$TERM" =~ tmux  &&  ! "$TERM" =~ "tmux-256color" \
       &&  ! "$USER" == "jim" \
       ]] ; then
-    # for ALMA but some glinch in scroll vim
-    # exec env TERM=xterm-256color tmux
-    # For bold and italic
-    exec env TERM=tmux-256color tmux
+    if [[ "$HOSTNAME" =~ ^(almatin|tourny)$ ]]; then
+      # For bold and italic
+      exec env TERM=tmux-256color tmux
+    else
+      # for ALMA but some glinch in scroll vim
+      exec env TERM=xterm-256color tmux
+    fi
   fi
 
 # Head

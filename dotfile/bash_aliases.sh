@@ -32,13 +32,14 @@
 
 # Shortcut
   # Small as Huffman
+  malias f find
   malias g git
   malias v vim
   malias o xdg-open
   malias c clip
   malias m man
-  alias h="history | grep "
-  alias f="find . | grep "
+  alias h="history | rg "
+  alias fr="find . | rg "
 
   # Little longer
   malias disas 'objdump -drwC -Mintel'
