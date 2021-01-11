@@ -136,6 +136,8 @@
     let g:vimwiki_css_name = '/Css/include.css'
 
     " Test Wiki
+    " let g:vimwiki_schemes_web = ['http', 'https']
+    " let g:vimwiki_rx_todo = '\C\<\%(QUESTION\|ANSWER\|NOTE\|TODO\|DONE\|STARTED\|FIXME\|FIXED\|XXX\)\>'
     let g:vimwiki_syntax_list = {}
     let g:vimwiki_syntax_list['markdown'] = {}
     "let g:vimwiki_syntax_list['markdown']['typeface'] = {}
