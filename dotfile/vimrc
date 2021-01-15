@@ -991,9 +991,11 @@
 	  endif
 
     " Call it
-    echom @@
-    let l:text = @@
-    call system($v . '/bin/_copy_to_terminal.sh', l:text)
+    " :call Rawecho("\ePtmux;\e\e]52;c;dG90bw==\x07\e\x5c")
+    " :exe 'silent! !echo titi | _copy_to_terminal.sh'
+    let text = @@
+    let text = system($v . '/bin/_copy_to_terminal.sh', text)
+    call writefile([text], '/dev/fd/2', 'b')
 
     " Restore peace
 	  let &selection = l:sel_save
