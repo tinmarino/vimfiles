@@ -18,6 +18,14 @@
   fi
 
 
+# Variables
+  # History
+  # Append instead of overwrite
+  shopt -s histappend
+  export HISTSIZE=100000
+  export HISTFILESIZE=10000000
+  export HISTCONTROL=ignoredups
+
 # Execute tmux
   if command -v tmux &> /dev/null \
       && [[ -z "$TMUX" \
@@ -34,7 +42,6 @@
       exec env TERM=xterm-256color tmux
     fi
   fi
-
 
 # Callback for Unknown command (tip: install bash-completion on tmux)
   print_stack() {
@@ -189,7 +196,7 @@
   alias proc='be almaproc'
   alias root='be root'
   # With a tmux singleton, like it or not
-  alias acse2='ssh -X mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+  alias acse2='tmux rename-window ACSE2; ssh -X mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
 
 
 # Bind

@@ -117,14 +117,6 @@ echo "Sourcing bash profile at $(date)" >> /tmp/bash_profile
   bind 'set meta-flag on'
   bind 'set output-meta on'
 
-  # History
-  # Append instead of overwrite
-  shopt -s histappend
-  export HISTSIZE=100000
-  export HISTFILESIZE=100000
-  export HISTCONTROL=ignoredups
-
-
 # Prompt
   # Save history after each executed line
   export PROMPT_COMMAND+='history -a;'
