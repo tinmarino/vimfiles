@@ -5,7 +5,7 @@ function! s:declare_global()
   " let g:regexp_blank = '^\s*$\|^\s*[#"/]'
   let g:regexp_blank = '^\s*$'
   let g:next_close = '='
-  let g:fold_close =  '^\s*\(};\?\|fi\|end.*\)\s*$'
+  let g:fold_close =  '^\s*\(};\?\|fi\|end.*\|<\/.*\)\s*$'
 endfunction
 
 

@@ -4,6 +4,7 @@
 # shellcheck disable=SC2154  # v is referenced but not assigned
 # shellcheck disable=SC2015  # Note that A && B || C is not if-then-else. C may run when A is true
 
+alias bat="PAGER= bat"
 # Helper
   function mcomplete_cmd {
     # Get cmd: first word

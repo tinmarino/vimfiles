@@ -436,6 +436,7 @@
 
 " Preferences, Appearances
   " Preferences
+    " set clipboard=exclude:.*  " Do not connect to X, can take one sec on Ubuntu 2020.10
     set background=dark
     packadd color-tin
     set termguicolors
