@@ -11,6 +11,7 @@
 
 
 " Variable (Perso)
+  let $v = fnamemodify(resolve(expand('<sfile>:p')), ':h:h')
   let $PAGER = ''
 
   " Set v: windows gvim do NOT read .bashrc
