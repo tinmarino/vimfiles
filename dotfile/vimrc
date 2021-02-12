@@ -892,10 +892,10 @@
 " Folding
   highlight Folded ctermfg=DarkGreen ctermbg=Black
   set foldignore=
+  set foldlevel=30
   set foldlevelstart=30 "the folding at opening
   set foldmethod=indent
   set foldcolumn=0  "the number of columns on the left to show the tree, default =0
-  set foldlevelstart=30 "the folding at opening
   call tin#fold_atom#main()
   " If in timer, it overwrites vimwiki
   "if has('timers')
