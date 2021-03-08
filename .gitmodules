@@ -223,3 +223,6 @@
 [submodule "pack/bundle/opt/devicons"]
 	path = pack/bundle/opt/devicons
 	url = https://github.com/ryanoasis/vim-devicons
+[submodule "pack/bundle/opt/coc"]
+	path = pack/bundle/opt/coc
+	url = https://github.com/neoclide/coc.nvim
