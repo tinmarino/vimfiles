@@ -1,0 +1,32 @@
+priority -50
+
+snippet hello "hello"
+fn main() {
+    println!("Hello world");
+}
+endsnippet
+
+snippet cl "console log"
+web_sys::console::log_1(&(&*format!("Now {:?}", ${0:42}) as &str).into());
+
+endsnippet
+
+
+snippet args "Print arguments"
+use std::env;
+
+// Prints each argument on a separate line
+for argument in env::args() {
+    println!("{}", argument);
+}
+endsnippet
+
+snippet doc "documentation large"
+/**
+ * \brief  $1
+ * \param  $2 
+ * \return $3 
+ * \remark $4 
+ */
+endsnippet
+
