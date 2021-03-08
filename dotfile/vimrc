@@ -352,10 +352,11 @@
       " Start source list command
       let _fzf_source = 'bash -c "'
 
-      " -- Buffer list
+      " -- Buffer list (absolute)
       let _fzf_source .= 'echo -e \"' . join(map(getbufinfo(), 'v:val.name'), '\n') . '\" | sed "s?$HOME?~?g";'
-      " -- Oldfiles
-      let _fzf_source .= 'echo -e \"'.join(fzf#vim#_recent_files(), '\n').'\" | sed "s?$HOME?~?g";'
+      " -- Oldfiles (missing ./)
+      let _fzf_source .= 'echo -e \"'.join(fzf#vim#_recent_files(), '\n').'\" | sed "s?$HOME?~?g" | sed "s/^\w/.\/\0/";'
+
       " -- Current dir
       if $HOME !=# getcwd()
         let _fzf_source .= 'rg --color never --files \".\" | awk ''{print \$HOME}'';'
