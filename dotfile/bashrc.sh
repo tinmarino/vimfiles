@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Init, Variables
+# Clause In
   # If not running interactively, don't do anything
   [[ -z "$PS1" ]] && return
 
@@ -10,23 +10,6 @@
   # Set USER
   [[ -z "$USER" ]] && command -v whoami > /dev/null && USER=$(whoami) && export USER
 
-# Clause: Do I need to load .bash_profile
-  # shellcheck disable=SC2154  # os is referenced but not assigned
-  if [[ -z "$os" && -z "$v" && -f "$HOME/.bash_profile" ]]; then
-    echo Sourcing Profile
-  	source "$HOME/.bash_profile"
-  fi
-
-
-# Variables
-  # History
-  # Append instead of overwrite
-  shopt -s histappend
-  export HISTSIZE=100000
-  export HISTFILESIZE=10000000
-  export HISTCONTROL=ignoredups
-  # Save history after each executed line
-  export PROMPT_COMMAND+='history -a;'
 
 # Execute tmux
   if command -v tmux &> /dev/null \
@@ -44,6 +27,82 @@
       exec env TERM=xterm-256color tmux
     fi
   fi
+
+
+# Print Head
+  # I wanted to be an artists
+  # clear
+  # Nowrap
+  printf '\e[?7l'
+  cat << '  EOF'
+                             \  |  /
+                              \_|_/
+                  /|\     ____/   \____
+                 / | \        \___/
+                /  |  \       / | \
+               /___|___\     /  |  \
+              _____|_____
+              \_________/
+   ~~^^~~^~^~~^^~^^^^~~~~^~^~^~^^^^^^^
+
+        |\   \\\\__     o
+        | \_/    o_\    o
+        >  _  (( <_  oo
+        | / \__+___/
+        |/     |/
+
+  EOF
+  # Reset wrap
+  printf '\e[?7h'
+
+
+# Variables personal
+  # Set OS
+  export h="$HOME"
+  # shellcheck disable=SC2088
+  uname=$(uname -a)
+  uname=${uname,,}
+  case $uname in
+  *"android"*)
+    export os="termux"
+    export v="$HOME/.vim"
+    ;;
+  *"linux"*)
+    export os="unix"
+    export v="$HOME/.vim"
+    ;;
+  *"mingw"*)
+    export os="windows"
+    export v="$HOME/vimfiles"
+    ;;
+  esac
+
+  # Man
+  if [[ ! "$USER" == "jim" ]]; then
+    export PAGER="vman"
+  fi
+  export TEXMFHOME="$HOME/Program/Tlmgr"
+
+
+# Variables Bash
+  # Enable directory with $
+  # shopt -s direxpand
+  # Avoid c-s freezing
+  stty -ixon
+
+  # Vi as default `git commit`
+  export EDITOR='vim'
+  # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
+  shopt -s checkwinsize
+
+  # History
+  # Append instead of overwrite
+  shopt -s histappend
+  export HISTSIZE=100000
+  export HISTFILESIZE=10000000
+  export HISTCONTROL=ignoredups
+  # Save history after each executed line
+  export PROMPT_COMMAND+='history -a;'
 
 # Callback for Unknown command (tip: install bash-completion on tmux)
   print_stack() {
@@ -77,32 +136,6 @@
   }
   export -f command_not_found_handle
 
-
-# Head
-  # I wanted to be an artists
-  # clear
-  # Nowrap
-  printf '\e[?7l'
-  cat << '  EOF'
-                             \  |  /
-                              \_|_/
-                  /|\     ____/   \____
-                 / | \        \___/
-                /  |  \       / | \
-               /___|___\     /  |  \
-              _____|_____
-              \_________/
-   ~~^^~~^~^~~^^~^^^^~~~~^~^~^~^^^^^^^
-
-        |\   \\\\__     o
-        | \_/    o_\    o
-        >  _  (( <_  oo
-        | / \__+___/
-        |/     |/
-
-  EOF
-  # Reset wrap
-  printf '\e[?7h'
 
 # Fzf functions
   #_vim_escaped2='let out = map(fzf#vim#_recent_files(), \"substitute(v:val, \\\"\\\\\\\\~\\\", \\\"'$HOME'\\\", \\\"\\\")\")'
@@ -151,9 +184,6 @@
   export FZF_CTRL_T_OPTS="--preview '(highlight -O ansi -l {} 2> /dev/null || cat {} || tree -C {}) 2> /dev/null | head -200'"
   export FZF_CTRL_R_OPTS="--sort --exact --preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 
-# Fast
-  # Add "substitute" mnemonic, which the info file left out.
-  export PATH="/home/tourneboeuf/Program/GitFuzzy/bin:$PATH"
 
 # PS1
   # PS1, set in bashrc because debian update it in /etc/bashrc
@@ -190,37 +220,27 @@
 # Include, Source, Extension (Alias and Completion)
   ############
   # Completion
-  if [[ -f "/etc/bash_completion" ]]; then
-    source "/etc/bash_completion"
-  #elif [[ -f "$HOME/.local/usr/share/bash-completion/bash_completion" ]]; then
-  #  source "$HOME/.local/usr/share/bash-completion/bash_completion"
-  fi
+  #   maybe source "$HOME/.local/usr/share/bash-completion/bash_completion"
+  [[ -f "/etc/bash_completion" ]] && source "/etc/bash_completion"
 
   # Alias
-  if [[ -f "$HOME/.bash_aliases.sh" ]]; then
-    source "$HOME/.bash_aliases.sh"
-  fi
+  [[ -f "$HOME/.bash_aliases.sh" ]] && source "$HOME/.bash_aliases.sh"
 
-  # ShellArsenal Complete
-  if [[ -f "$v/bin/_tin_complete.sh" ]]; then
-    source "$v/bin/_tin_complete.sh"
-  fi
+  # ShellArsenal Completion
+  [[ -f "$v/bin/_tin_complete.sh" ]] && source "$v/bin/_tin_complete.sh"
 
   # Tmux completion
-  if command -v _get_comp_words_by_ref &> /dev/null && [[ -f "$v/bin/_tinrc-tmux-completion.sh" ]]; then
-    source "$v/bin/_tinrc-tmux-completion.sh"
-  fi
+  command -v _get_comp_words_by_ref &> /dev/null && [[ -f "$v/bin/_tinrc-tmux-completion.sh" ]] && source "$v/bin/_tinrc-tmux-completion.sh"
 
   # Fzf bindings
-  if [[ -f "$HOME/.fzf.bash" ]]; then
-    # Warning on termux, comment /home/tourneboeuf/Program/Fzf/shell/completion.bash
-    source "$HOME/.fzf.bash"
-  fi
+  # Warning on termux, comment /home/tourneboeuf/Program/Fzf/shell/completion.bash
+  [[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
+
+  # Rust
+  source "$HOME/.cargo/env"
 
   # Alacrity Completion
-  if [[ -f "$v/scripts/completion/alacritty" ]]; then
-    source "$v/scripts/completion/alacritty"
-  fi
+  [[ -f "$v/scripts/completion/alacritty" ]] && source "$v/scripts/completion/alacritty"
 
   # Fzf
   [[ -f "$v/bin/_tinrc-fzf-function.sh" ]] && source "$v/bin/_tinrc-fzf-function.sh"
@@ -244,6 +264,7 @@
   export PYENV_ROOT="$HOME/.pyenv"
   export PATH="$PYENV_ROOT/bin:$PATH"
 
+
 # Alma
   be(){ sudo -u "$1" -i; }
   complete -W "mgr op proc root" be
@@ -254,46 +275,6 @@
   # With a tmux singleton, like it or not
   alias acse2='tmux rename-window ACSE2; ssh -X mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
   alias ape2='tmux rename-window APE2; ssh -X mtourneb@ape2-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
-
-
-# Bind
-  # Enable Readline not waiting for additional input when a key is pressed.
-  set keyseq-timeout 10
-  bind -x '"\ee":fzf_open'
-  bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
-  bind -x '"\eh":fzf_dir .'
-  bind -x '"\el":fzf_line .'
-
-# DEBUG
-export BASHPROFILE_SOURCED=1
-echo "Sourcing bash profile at $(date)" >> /tmp/bash_profile
-
-# Init, Variables
-  # Set OS
-  export h="$HOME"
-  # shellcheck disable=SC2088
-  uname=$(uname -a)
-  uname=${uname,,}
-  case $uname in
-  *"android"*)
-    export os="termux"
-    export v="$HOME/.vim"
-    ;;
-  *"linux"*)
-    export os="unix"
-    export v="$HOME/.vim"
-    ;;
-  *"mingw"*)
-    export os="windows"
-    export v="$HOME/vimfiles"
-    ;;
-  esac
-
-  # Man
-  if [[ ! "$USER" == "jim" ]]; then
-    export PAGER="vman"
-  fi
-  export TEXMFHOME="$HOME/Program/Tlmgr"
 
 
 # Path
@@ -357,22 +338,15 @@ echo "Sourcing bash profile at $(date)" >> /tmp/bash_profile
   export PERL_MM_OPT="INSTALL_BASE=/home/tourneboeuf/perl5"
 
 
+# Bind
+  # Enable Readline not waiting for additional input when a key is pressed.
+  set keyseq-timeout 10
+  bind -x '"\ee":fzf_open'
+  bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
+  bind -x '"\eh":fzf_dir .'
+  bind -x '"\el":fzf_line .'
 
-# Preferences
-  # Enable directory with $
-  # shopt -s direxpand
-  # Avoid c-s freezing
-  stty -ixon
 
-  # Vi as default `git commit`
-  export EDITOR='vim'
-  # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
-  shopt -s checkwinsize
-
-  # French characters
-  stty cs8 -istrip -parenb
-  bind 'set convert-meta off'
-  bind 'set meta-flag on'
-  bind 'set output-meta on'
-
-  source "$HOME/.cargo/env"
+# Fast
+  # Add "substitute" mnemonic, which the info file left out.
+  export PATH="/home/tourneboeuf/Program/GitFuzzy/bin:$PATH"
