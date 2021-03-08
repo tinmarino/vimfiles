@@ -1,5 +1,20 @@
 {
 "configurations": {
+  "Rust - Launch": {
+    "adapter": "CodeLLDB",
+    "configuration": {
+      "name": "Rust: Launch current file",
+      "request": "launch",
+      "stopOnEntry": true,
+      "stopAtEntry": true,
+      "program": "${fileDirname}/${fileBasenameNoExtension}",
+      "com)program": "${workspaceRoot}/target/debug/vimspector_test",
+      "console": "externalTerminal",
+      "cwd": "${cwd}",
+      "sourceLanguages": ["rust"],
+      "debugOptions": []
+    }
+  },
   "Python - Launch": {
     "adapter": "debugpy",
     "configuration": {

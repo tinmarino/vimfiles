@@ -197,6 +197,7 @@
   alias root='be root'
   # With a tmux singleton, like it or not
   alias acse2='tmux rename-window ACSE2; ssh -X mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+  alias ape2='tmux rename-window APE2; ssh -X mtourneb@ape2-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
 
 
 # Bind
@@ -206,3 +207,9 @@
   bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
   bind -x '"\eh":fzf_dir .'
   bind -x '"\el":fzf_line .'
+source "$HOME/.cargo/env"
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+if command -v pyenv 1>/dev/null 2>&1; then
+ eval "$(pyenv init -)"
+fi

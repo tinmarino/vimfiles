@@ -51,8 +51,7 @@ echo "Sourcing bash profile at $(date)" >> /tmp/bash_profile
       PATH="$HOME/.local/bin:$PATH"
   fi
 
-  export PATH="$HOME/.cargo/bin:$PATH"
-  # Windows fast
+    # Windows fast
   export PATH="$PATH:/c/Program Files/Vim/vim82"
   # My script
   export PATH=$PATH:$HOME/.vim/bin
@@ -182,3 +181,4 @@ echo "Sourcing bash profile at $(date)" >> /tmp/bash_profile
 
 
 # vim:sw=2:ts=2:foldignore=:
+source "$HOME/.cargo/env"

@@ -29,5 +29,6 @@ function link {
 
 
 if [ $1 == 'link' ]; then
+  source ~/.bashrc
   link "${@:2}"
 fi

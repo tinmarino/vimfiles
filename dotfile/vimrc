@@ -60,7 +60,7 @@
   endif
 
 
-" Plugin Configuration
+" Plugin: Configuration
   " Vimwiki
     " Lazycall WikiIndex
     function! Windex(num)
@@ -388,8 +388,9 @@
     let g:ale_sh_shellcheck_options = si
 
 
-" PackAdd
+" Plugin: PackAdd
   " Interface: 5ms for 4plugings
+  packadd coc
   packadd fzf
   packadd fzf.vim
   packadd lastplace  " vi $VIMRUNTIME/vimrc_example.vim
@@ -416,7 +417,9 @@
     try
       python3 '42'
       " Deletes the vim intro screen
-      "packadd youcompleteme
+      let g:ycm_auto_hover = ''
+      " set omnifunc=syntaxcomplete#Complete
+      " packadd youcompleteme
     catch | endtry
     "" Ultisnip: is annoying at run time if no python
     try
@@ -774,10 +777,6 @@
     noremap <F8> :packadd misc<CR>:packadd colorscheme-switcher<CR><F8>
     map <ESC>[19;2~ <S-F8>
 
-  " Yank all buffer to system clipboard
-    map <leader>yy mtgg"+yG`t
-    map <leader>pp ggdG"+p
-
   " Indent < and >
     noremap > >>
     noremap < <<
@@ -918,19 +917,22 @@
   " AlmaSw
     "" echo | g++ -E -Wp,-v -
     "" `gcc -print-prog-name=cpp` -v  # cpp for c preprocessor
+    " System
     set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
     set path+=/usr/local/include
     set path+=/usr/include/x86_64-linux-gnu
     set path+=/usr/include
+
+    " Local
+    set path+=./../include
+    set path+=./../../include
+    set path+=./../../../include
     "" `gcc -print-prog-name=cc1plus` -v
     "set path+=/usr/include/c++/9/
     "set path+=/usr/include/c++/9
     "set path+=/usr/include/x86_64-linux-gnu/c++/9
     "set path+=/usr/include/c++/9/backward
     "set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
-    "set path+=./../include
-    "set path+=./../../*/include
-    "set path+=./../../../*/include
     "set path+=/home/tourneboeuf/AlmaSw/ACS/LGPL/CommonSoftware/**/include/
     "set path+=/home/tourneboeuf/AlmaSw/ICD/**/include/
 
@@ -1006,6 +1008,42 @@
 
 	nnoremap <silent> <leader>y :set opfunc=CopyToTerminal<CR>g@
 	vnoremap <silent> <leader>y :<C-U>call CopyToTerminal(visualmode(), 1)<CR>
+
+
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
 
 function! SynStack()
   if !exists('*synstack')
