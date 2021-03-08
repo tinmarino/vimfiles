@@ -145,7 +145,7 @@
       +'redir>>/dev/stdout | packadd fzf.vim'
       +'$_vim_escaped2'
       +'echo join(out, \\\"\\\\n\\\")'
-      +'redir END | q';
+      +'redir END | q' | sed \"s?$HOME?~?g\" | sed \"s/^\\w/.\\/\\0/\";
     rg --color always --files \\\".\\\";
     cd \\\"$HOME\\\" && rg --color always --files | awk '{print \\\"~/\\\" \\\$0}';
     cd \\\"$v\\\" && rg --color always --files | awk '{print \\\"$v/\\\" \\\$0}';
