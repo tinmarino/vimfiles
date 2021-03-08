@@ -351,18 +351,20 @@
     function! FzfRgFileFull()
       " Start source list command
       let _fzf_source = 'bash -c "'
+
       " -- Buffer list
-      let _fzf_source .= 'echo -e \"' . join(map(getbufinfo(), 'v:val.name'), '\n') . '\";'
+      let _fzf_source .= 'echo -e \"' . join(map(getbufinfo(), 'v:val.name'), '\n') . '\" | sed "s?$HOME?~?g";'
       " -- Oldfiles
-      let _fzf_source .= 'echo -e \"'.join(fzf#vim#_recent_files(), '\n').'\";'
+      let _fzf_source .= 'echo -e \"'.join(fzf#vim#_recent_files(), '\n').'\" | sed "s?$HOME?~?g";'
       " -- Current dir
       if $HOME !=# getcwd()
-        let _fzf_source .= 'rg --color never --files \".\";'
+        let _fzf_source .= 'rg --color never --files \".\" | awk ''{print \$HOME}'';'
       endif
       " -- Vim dir
-      let _fzf_source .= 'cd \"$v\" && rg --color never --files  | awk ''{print \"$v/\" \$HOME}'';'
+      let _fzf_source .= 'cd \"$v\" && rg --color never --files | awk ''{print \"~/.vim/\" \$HOME}'';'
       " -- HOME dir
       let _fzf_source .= 'cd \"$HOME\" && rg --color never --files  | awk ''{print \"~/\" \$HOME}'';'
+
       " End
       let _fzf_source .= '"'
       call fzf#run(fzf#wrap({
@@ -475,9 +477,9 @@
     set ttymouse=xterm2
   " Statusline
     function! Rc_add_path() abort
-      let dir = expand('%:h')
-      if dir ==# '' || dir ==# '.' | return '' | endif
-      return '    ' . dir . '/'
+      let path = expand('%:p')
+      if path ==# '' || path ==# '.' | return '' | endif
+      return '    ' . path
     endfunction
     set laststatus=2        " alwaus show statusline
     set statusline=         " init void
