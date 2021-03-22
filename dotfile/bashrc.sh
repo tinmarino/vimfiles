@@ -218,6 +218,7 @@
 
 
 # Include, Source, Extension (Alias and Completion)
+  try_source(){ [[ -f "$1" ]] && source "$1"; }
   ############
   # Completion
   #   maybe source "$HOME/.local/usr/share/bash-completion/bash_completion"
@@ -237,7 +238,7 @@
   [[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
 
   # Rust
-  source "$HOME/.cargo/env"
+  try_source "$HOME/.cargo/env"
 
   # Alacrity Completion
   [[ -f "$v/scripts/completion/alacritty" ]] && source "$v/scripts/completion/alacritty"
@@ -328,6 +329,8 @@
   export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
   export LD_LIBRARY_PATH=$HOME/Program/Gecode:$LD_LIBRARY_PATH
   export LD_LIBRARY_PATH=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH+=:$(rustc --print=sysroot)/lib
+
   export NDK=$HOME/Program/Ndk/Current
 
   # Perl
