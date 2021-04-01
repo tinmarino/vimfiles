@@ -2,7 +2,7 @@
 # ${cblue}Tinmarino$cend command switch
 #
 
-source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
+source "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/shellutil.sh"
 
 bin_path=$(bin_path)
 register_subcommand doc "$bin_path/tin_doc" 
@@ -20,5 +20,4 @@ args(){
   done
 }
 
-get_fct_dic
-call_fct_arg "$@"
+dispatch "$@"; exit $?;

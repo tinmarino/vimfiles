@@ -323,6 +323,12 @@
   export PATH=$PATH:$HOME/Program/Metapixel/metapixel
   # Readd
   export PATH=$PATH:$path_save
+  # IDA
+  export PATH+=:/home/tourneboeuf/Program/Ida/idafree-7.0
+  # irm
+  export PATH+=:~/Software/Jenkins/IrmJenkins/script
+
+
 
   # Lib
   export LD_LIBRARY_PATH=$HOME/Bin:$LD_LIBRARY_PATH

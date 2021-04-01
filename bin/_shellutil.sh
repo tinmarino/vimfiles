@@ -1,11 +1,37 @@
 #!/usr/bin/env bash
-# Shell utilities
-# -- dipatch => Call the function corresponding to commmand argument
-# --
-# I you want to add a subcommand, read doc/presentation.md
-# ==> No matter the altitude, what counts is the slope <==
-#
-# shellcheck disable=SC2076  # Don't quote right-hand side of =
+: << '////'
+  Shell utilities (library)
+
+  A basic dispatcher to create argument as commands with same name as function
+
+  Example:
+
+  ```bash main.sh
+  # Include me at top of file
+  source "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/shellutil.sh"
+  
+  # Register some subscript which will receive the following argument
+  register_subcommand compile "compile.sh"
+  register_subcommand deploy "deploy.sh"
+  register_subcommand recurse "main.sh"
+
+  # Declare function
+  hi() {
+    echo "Hi from main"
+  }
+
+  # Dispatch to call function according to arguments
+  dispatch "$@"; exit $?;
+  ```
+
+  $ main.sh hi             # Print hi <= run hi function
+  $ main.sh compile arg1   # Run compile.sh file with arg1
+  $ main.sh recurse recurse recurse hi
+                           # Also print hi but much slowlier
+  
+  ==> No matter the altitude, what counts is the slope <==
+////
+  #shellcheck disable=SC2076  # Don't quote right-hand side of =
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
   # If not sourced, prepare to display functions defined here
@@ -149,9 +175,9 @@ get_fct_dic(){
   done
 
   # Append --print and --help
-  fct_dic['mm_help']='Print this message'
-  fct_dic['mm_print']='Only print command instead of executing'
-  fct_dic['mm_doc']='Print documentation (longer than help)'
+  fct_dic['mm_help']='❓ Print this message'
+  fct_dic['mm_print']='🖨️  Only print command instead of executing'
+  fct_dic['mm_doc']='📖 Print documentation (longer than help)'
 }
 
 print_usage_fct(){
@@ -191,10 +217,16 @@ print_usage_fct(){
     local s_indent="$(printf "%${indent}s" "")"
   fi
 
+  # Sort function name inteligently: numbers first
   # shellcheck disable=SC2207  # Prefer mapfile
-  IFS=$'\n' sorted_fct=($(sort <<<"${!fct_dic[*]}"))
-  # shellcheck disable=SC2068  # Double quote
-  for fct in ${sorted_fct[@]}; do
+  declare -a sorted_fct=($(
+    print_fct_dic(){ for key in "${!fct_dic[@]}"; do echo "$key ${fct_dic[$key]//$'\n'/}"; done; }
+    local re='^\S+ +\d+\/'
+    print_fct_dic | sed 's/\${[^}]*}//g' | grep    -P "$re" | sort -nk2 -k1 | cut -d' ' -f1
+    print_fct_dic | sed 's/\${[^}]*}//g' | grep -v -P "$re" | sort -k1  | cut -d' ' -f1
+  ))
+
+  for fct in "${sorted_fct[@]}"; do
     arg="$fct"
     # Clause: Pass -h, --help and __set_env
     if [[ "${fct}" == "__set_env" ]]; then
@@ -308,6 +340,8 @@ call_fct_arg(){
       ((b_is_subcommand=1))
       "_$arg" "$@"; ((res+=$?))
     else
+      echo -e "${cred}ERROR: $PROJECT_NAME: $(basename "$0"): unknown argument: $arg => Ciao!"
+      echo -e "-------------------------------------------------$cend"
       exit "$E_ARG"
     fi
   done
@@ -345,11 +379,15 @@ print_usage_env(){
   `# Print Environment variables used`
   `# -- That is why they must be set in __set_env`
   `# :param3: indent`
-  local indent="${3:=0}"
+  `# :param4: value: can be default, current to print default or current value (default: default)`
+  local indent="${3:-0}"
+  local value="${4:-default}"
   local s_indent="$(printf "%${indent}s" "")"
 
   # shellcheck disable=SC2034  # set_env appears unused
-  typeset -f __set_env | awk -v cpurple="\\$cpurple" -v cend="\\$cend" -v s_indent="$s_indent" '
+  typeset -f __set_env | 
+    awk -v cpurple="\\$cpurple" -v cend="\\$cend" \
+      -v s_indent="$s_indent" -v s_value="$value" '
     BEGIN { FS=":=" }
     /:/ {
       # Required trick
@@ -367,7 +405,11 @@ print_usage_env(){
       gsub(/ /, "-", pad);
 
       # Over
-      printf("%s%s%s%s  %s  %s\n", s_indent, cpurple, $1, cend, pad, $2);
+      if (s_value == "current") {
+        printf("%s%s%s%s  %s  %s\n", s_indent, cpurple, $1, cend, pad, ENVIRON[$1]);
+      } else {
+        printf("%s%s%s%s  %s  %s\n", s_indent, cpurple, $1, cend, pad, $2);
+      }
     }
   '
 }
@@ -502,10 +544,10 @@ print_n_run(){
   local file="$(basename "${info[2]}")"
   local msg="${cpurple}$PROJECT_NAME: $(basename "$0"): Running:$cend $cyellow$cmd_msg$cend"
   msg+="\n      #"
-  msg+=" Pwd: '$PWD'"
-  msg+=" Time: '$(date "+%Y-%m-%dT%H:%M:%S")'"
-  msg+=" Function: '$fct'"
-  msg+=" File: '$file:$line'"
+  msg+=" ${cblue}Pwd:$cend '$PWD'"
+  msg+=" ${cblue}Time:$cend '$(date "+%Y-%m-%dT%H:%M:%S")'"
+  msg+=" ${cblue}Function:$cend '$fct'"
+  msg+=" ${cblue}File:$cend '$file:$line'"
   echo -e "$msg"
   ((b_run)) && { eval "$cmd_msg"; res=$?; }
   return $res
@@ -537,12 +579,6 @@ set_print(){
   `# Set option: do not run => only print command`
   b_run=0
 }
-
-bin_path(){
-  `# Print path of bin`
-  dirname "${BASH_SOURCE[0]}"
-}
-
 abat(){
   `# Alias_bat laguage < stdin > stdout`
   local lang="${1:-bash}"
@@ -600,7 +636,7 @@ shellutil_main(){
     cred=""
   fi
 
-  # Path here
+  # Path here 
   # shellcheck disable=SC2034  # bin_path appears unused
   bin_path=$(bin_path)
 
