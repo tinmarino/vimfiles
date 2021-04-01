@@ -2,7 +2,7 @@
 # ${cblue}Tinmarino$cend Test for Shell Arsenal
 #
 
-source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/shellutil.sh"
 
 bin_path=$(bin_path)
 register_subcommand class011 "$bin_path/lib/class/class011.sh"

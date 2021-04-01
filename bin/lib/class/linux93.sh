@@ -3,7 +3,7 @@
 #
 # shellcheck disable=SC2154  # cblue is referenced but not
 
-source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../../shellutil.sh"
 
 declare -A question=(
   [P01: Que es un daemon?]="\

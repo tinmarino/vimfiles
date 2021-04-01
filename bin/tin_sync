@@ -3,7 +3,7 @@
 #
 # shellcheck disable=SC2016  # Expressions don't expand in single quotes, use double quotes for that
 
-source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/shellutil.sh"
 
 _usage(){
   `# Print this message`

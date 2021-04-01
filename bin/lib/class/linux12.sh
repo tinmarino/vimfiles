@@ -6,7 +6,7 @@
 # Link: https://swcarpentry.github.io/shell-novice/04-pipefilter/index.html
 # -- Buenisimo: Molecules
 
-source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../../shellutil.sh"
 
 __usage(){
   local msg="$cblue

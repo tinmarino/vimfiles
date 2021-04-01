@@ -4,7 +4,7 @@
 # shellcheck disable=SC2154  # cblue is referenced but not
 # shellcheck disable=SC2016  # Expressions don't expand in single quotes
 
-source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../../shellutil.sh"
 
 __usage(){
   echo -e "$cblue

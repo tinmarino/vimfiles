@@ -5,7 +5,7 @@
 # shellcheck disable=SC2154  # cblue is referenced but not
 # shellcheck disable=SC2119,SC2120  # abat is called without args
 
-source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../../shellutil.sh"
 
 __usage(){
   echo -e "$cblue

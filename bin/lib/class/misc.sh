@@ -2,7 +2,7 @@
 # ${cblue}Misceláneo$cend: Recursos para las clases
 #
 
-source "$(dirname "${BASH_SOURCE[0]}")/../../_shellutil.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/../../shellutil.sh"
 
 _link(){
   declare -A array=(

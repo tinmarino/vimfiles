@@ -6,7 +6,7 @@
 # shellcheck disable=SC2059  # Don't use variables in the printf format string
 
 # Here is the magic
-source "$(dirname "${BASH_SOURCE[0]}")/_shellutil.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/shellutil.sh"
 
 bin_path=$(bin_path)
 register_subcommand game "$bin_path/tin_game" 
