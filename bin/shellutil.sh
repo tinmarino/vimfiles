@@ -607,6 +607,12 @@ read_array(){
 }
 
 
+bin_path(){
+  `# Print path of bin`
+  dirname "${BASH_SOURCE[0]}"
+}
+
+
 shellutil_main(){
   `# Main code: embeded in function for fold`
   `# Keep me last!`
