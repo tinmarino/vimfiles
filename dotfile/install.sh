@@ -99,3 +99,6 @@ try_link "$scriptpath/Xdefaults" ~/.Xdefaults
 
 # Alacritty
 try_link "$scriptpath/alacritty.yml" ~/.alacritty.yml
+
+# GDB
+try_link "$scriptpath/gdbinit.gdb" ~/.gdbinit

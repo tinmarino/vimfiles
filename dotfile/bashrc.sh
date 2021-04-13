@@ -97,10 +97,10 @@
 
   # History
   # Append instead of overwrite
+  export HISTSIZE=10000
+  export HISTFILESIZE=20000
   shopt -s histappend
-  export HISTSIZE=100000
-  export HISTFILESIZE=10000000
-  export HISTCONTROL=ignoredups
+  #export HISTCONTROL=ignoredups
   # Save history after each executed line
   export PROMPT_COMMAND+='history -a;'
 
@@ -274,6 +274,7 @@
   alias proc='be almaproc'
   alias root='be root'
   # With a tmux singleton, like it or not
+  alias acse1='tmux rename-window ACSE1; ssh -X mtourneb@acse1-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
   alias acse2='tmux rename-window ACSE2; ssh -X mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
   alias ape2='tmux rename-window APE2; ssh -X mtourneb@ape2-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
 
@@ -329,13 +330,9 @@
   export PATH+=:~/Software/Jenkins/IrmJenkins/script
 
 
-
   # Lib
-  export LD_LIBRARY_PATH=$HOME/Bin:$LD_LIBRARY_PATH
-  export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH
-  export LD_LIBRARY_PATH=$HOME/Program/Gecode:$LD_LIBRARY_PATH
-  export LD_LIBRARY_PATH=/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu:$LD_LIBRARY_PATH
-  export LD_LIBRARY_PATH+=:$(rustc --print=sysroot)/lib
+  #export LD_LIBRARY_PATH+=:/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu
+  #export LD_LIBRARY_PATH+=:$(rustc --print=sysroot)/lib
 
   export NDK=$HOME/Program/Ndk/Current
 
