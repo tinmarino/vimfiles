@@ -609,7 +609,8 @@
     endfunction
     nnoremap <Leader>ea :call Edit($alias)<CR>
     nnoremap <Leader>eb :call Edit($bashrc)<CR>
-    nnoremap <Leader>ed :call Edit($h . '/wiki/todo/done.md')<CR>
+    nnoremap <Leader>ed :call Edit($h . '/.gdbinit')<CR>
+    "nnoremap <Leader>ed :call Edit($h . '/wiki/todo/done.md')<CR>
     nnoremap <Leader>ef :e $v/ftplugin/<C-D>
     nnoremap <Leader>eg :call Edit($gitrc)<CR>
     nnoremap <Leader>ei :call Edit($h . '/.inputrc')<CR>
