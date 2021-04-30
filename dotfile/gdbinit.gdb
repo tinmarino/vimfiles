@@ -23,6 +23,14 @@ define rax
   x/20xa $rax
 end
 
+define rsp
+  x/20xa $rsp
+end
+
+define stack
+  x/20xa $rsp
+end
+
 define ret
   # fin
   finish
@@ -30,12 +38,20 @@ end
 
 define rush
   # Ignore SIGTRAP
+  # From: https://stackoverflow.com/questions/15667795
   catch signal SIGTRAP
-    commands
+  commands
+    silent
+    set $pc++
     p $_siginfo.si_code
     c
   end
   c
+end
+
+define rushend
+  # info breakpoint
+  delete
 end
 
 
@@ -49,11 +65,6 @@ define n
   # Next instruction, call is 1 instruction
   nexti
   rip
-end
-
-define stack
-  # Show stack 
-  x/20xa $rsp
 end
 
 define reg

@@ -228,7 +228,8 @@
   [[ -f "$HOME/.bash_aliases.sh" ]] && source "$HOME/.bash_aliases.sh"
 
   # ShellArsenal Completion
-  [[ -f "$v/bin/_tin_complete.sh" ]] && source "$v/bin/_tin_complete.sh"
+  # TODO
+  #[[ -f "$v/bin/_tin_complete.sh" ]] && source "$v/bin/_tin_complete.sh"
 
   # Tmux completion
   command -v _get_comp_words_by_ref &> /dev/null && [[ -f "$v/bin/_tinrc-tmux-completion.sh" ]] && source "$v/bin/_tinrc-tmux-completion.sh"
