@@ -10,6 +10,8 @@
   # Set USER
   [[ -z "$USER" ]] && command -v whoami > /dev/null && USER=$(whoami) && export USER
 
+  # Source common (Alma) config
+  [[ -e /etc/bashrc ]] && source /etc/bashrc
 
 # Execute tmux
   if command -v tmux &> /dev/null \
@@ -267,19 +269,6 @@
   export PATH="$PYENV_ROOT/bin:$PATH"
 
 
-# Alma
-  be(){ sudo -u "$1" -i; }
-  complete -W "mgr op proc root" be
-  alias mgr='be almamgr'
-  alias op='be almaop'
-  alias proc='be almaproc'
-  alias root='be root'
-  # With a tmux singleton, like it or not
-  alias acse1='tmux rename-window ACSE1; ssh -X mtourneb@acse1-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
-  alias acse2='tmux rename-window ACSE2; ssh -X mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
-  alias ape2='tmux rename-window APE2; ssh -X mtourneb@ape2-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
-
-
 # Path
   # Save
   export path_save=$PATH
@@ -352,6 +341,26 @@
   bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
   bind -x '"\eh":fzf_dir .'
   bind -x '"\el":fzf_line .'
+
+
+# Alma
+  be(){ sudo -u "$1" -i; }
+  complete -W "mgr op proc root" be
+  alias mgr='be almamgr'
+  alias op='be almaop'
+  alias proc='be almaproc'
+  alias root='be root'
+  # With a tmux singleton, like it or not
+  alias acse1='tmux rename-window ACSE1; ssh -X mtourneb@acse1-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+  alias acse2='tmux rename-window ACSE2; ssh -X mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+  alias ape2='tmux rename-window APE2; ssh -X mtourneb@ape2-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+
+  # Set completion
+  irm_complete(){
+    export COMP_CWORD
+    readarray -t COMPREPLY < <(irm complete "$1" "$2" "$3" "${COMP_WORDS[@]}")
+  }
+  complete -F "irm_complete" irm
 
 
 # Fast

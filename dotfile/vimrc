@@ -137,10 +137,11 @@
     let g:vimwiki_css_name = '/Css/include.css'
 
     " Test Wiki
+    let g:vimwiki_folding = ''
     " let g:vimwiki_schemes_web = ['http', 'https']
     " let g:vimwiki_rx_todo = '\C\<\%(QUESTION\|ANSWER\|NOTE\|TODO\|DONE\|STARTED\|FIXME\|FIXED\|XXX\)\>'
-    let g:vimwiki_syntax_list = {}
-    let g:vimwiki_syntax_list['markdown'] = {}
+    " let g:vimwiki_syntax_list = {}
+    " let g:vimwiki_syntax_list['markdown'] = {}
     "let g:vimwiki_syntax_list['markdown']['typeface'] = {}
     "let g:vimwiki_emoji_enable = 3
     " New
@@ -384,9 +385,10 @@
     let g:ale_pattern_options = {'.*\.md$': {'ale_enabled': 0}}
     " -- Ale Bash
     let si = '--exclude '
-    let si.= 'SC2155,'  " Declare and assign separately to avoid masking return values -> Prevent declare -a
-    let si.= 'SC2092,'  " Remove backticks
+    let si.= 'SC2155,'  " Declare and assign separately to avoid masking return values -> Prevent declare -a, local
+    let si.= 'SC2092,'  " Remove backticks for docstring in code
     let si.='SC1090,'  " Can't follow file location with $
+    let si.='SC2154,'  " cyellow is referenced but not assigned.
 
     let g:ale_sh_shellcheck_options = si
 
