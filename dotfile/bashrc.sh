@@ -104,6 +104,8 @@
   shopt -s histappend
   #export HISTCONTROL=ignoredups
   # Save history after each executed line
+  # Alma fix
+  [[ -n "$PROMPT_COMMAND" ]] && PROMPT_COMMAND+=";"
   export PROMPT_COMMAND+='history -a;'
 
 # Callback for Unknown command (tip: install bash-completion on tmux)
@@ -359,14 +361,6 @@
   alias ape2='tmux rename-window APE2; ssh -X mtourneb@ape2-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
 
   # Set completion
-  irm_complete(){
-    # $1 name of the command whose arguments are being completed,
-    # $2 word being completed
-    # $3 is the word preceding the word being completed
-    echo "Tin args:$1,$2,$3!" >> /tmp/tin
-    export COMP_CWORD
-    readarray -t COMPREPLY < <(irm complete "$1" "$2" "$3" "${COMP_WORDS[@]}")
-  }
   complete -C irm irm
 
 
