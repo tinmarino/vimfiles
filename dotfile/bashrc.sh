@@ -147,7 +147,7 @@
       +'redir>>/dev/stdout | packadd fzf.vim'
       +'$_vim_escaped2'
       +'echo join(out, \\\"\\\\n\\\")'
-      +'redir END | q' | sed \"s?$HOME?~?g\" | sed \"s/^\\w/.\\/\\0/\";
+      +'redir END | q' | sed -e \"s?$HOME?~?g\" | sed -e \"s/^\\w/.\\/\\0/\";
     rg --color always --files \\\".\\\";
     cd \\\"$HOME\\\" && rg --color always --files | awk '{print \\\"~/\\\" \\\$0}';
     cd \\\"$v\\\" && rg --color always --files | awk '{print \\\"$v/\\\" \\\$0}';
@@ -344,7 +344,10 @@
 
 
 # Alma
-  be(){ sudo -u "$1" -i; }
+  be(){
+    #sudo -u "$1" -i;
+    ssh "$1@localhost"
+  }
   complete -W "mgr op proc root" be
   alias mgr='be almamgr'
   alias op='be almaop'
@@ -357,10 +360,14 @@
 
   # Set completion
   irm_complete(){
+    # $1 name of the command whose arguments are being completed,
+    # $2 word being completed
+    # $3 is the word preceding the word being completed
+    echo "Tin args:$1,$2,$3!" >> /tmp/tin
     export COMP_CWORD
     readarray -t COMPREPLY < <(irm complete "$1" "$2" "$3" "${COMP_WORDS[@]}")
   }
-  complete -F "irm_complete" irm
+  complete -C irm irm
 
 
 # Fast
