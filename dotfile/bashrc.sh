@@ -105,7 +105,7 @@
   #export HISTCONTROL=ignoredups
   # Save history after each executed line
   # Alma fix
-  [[ -n "$PROMPT_COMMAND" ]] && PROMPT_COMMAND+=";"
+  [[ -n "$PROMPT_COMMAND" ]] && [[ "${PROMPT_COMMAND: -1}" != ";" ]] && PROMPT_COMMAND+=";"
   export PROMPT_COMMAND+='history -a;'
 
 # Callback for Unknown command (tip: install bash-completion on tmux)
@@ -346,20 +346,6 @@
 
 
 # Alma
-  be(){
-    #sudo -u "$1" -i;
-    ssh "$1@localhost"
-  }
-  complete -W "mgr op proc root" be
-  alias mgr='be almamgr'
-  alias op='be almaop'
-  alias proc='be almaproc'
-  alias root='be root'
-  # With a tmux singleton, like it or not
-  alias acse1='tmux rename-window ACSE1; ssh -X mtourneb@acse1-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
-  alias acse2='tmux rename-window ACSE2; ssh -X mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
-  alias ape2='tmux rename-window APE2; ssh -X mtourneb@ape2-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
-
   # Set completion
   complete -C irm irm
 

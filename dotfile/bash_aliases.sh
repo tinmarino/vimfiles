@@ -152,6 +152,26 @@ alias bat="PAGER= bat"
   # Diskspace
   alias diskspace="du -S | sort -n -r |more"
 
+# Alma
+  be(){
+    #sudo -u "$1" -i;
+    ssh "$1@localhost"
+    if command -v tmux > /dev/null; then
+      local title="${1#alma}"
+      title="${title^^}"
+      tmux rename-window "$title"
+    fi
+  }
+  complete -W "mgr op proc root" be
+  alias mgr='be almamgr'
+  alias op='be almaop'
+  alias proc='be almaproc'
+  alias root='be root'
+  # With a tmux singleton, like it or not
+  alias acse1='tmux rename-window ACSE1; ssh -X mtourneb@acse1-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+  alias acse2='tmux rename-window ACSE2; ssh -X mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+  alias ape2='tmux rename-window APE2; ssh -X mtourneb@ape2-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+
 
 # Jump marks from http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
   export MARKPATH=$HOME/.marks
