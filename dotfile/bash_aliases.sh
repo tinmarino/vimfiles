@@ -159,16 +159,16 @@ alias bat="PAGER= bat"
     if command -v tmux > /dev/null; then
       local title="${1#alma}"
       title="${title^^}"
-      tmux rename-window "$title"
+      #tmux rename-window "$title"
     fi
 
     # Connect
     ssh "$1@localhost"
 
-    # Restore tmux auto pane
-    if command -v tmux > /dev/null; then
-      tmux setw automatic-rename
-    fi
+    # # Restore tmux auto pane
+    # if command -v tmux > /dev/null; then
+    #   tmux setw automatic-rename
+    # fi
   }
   complete -W "mgr op proc root" be
   alias mgr='be almamgr'

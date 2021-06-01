@@ -31,7 +31,7 @@
   fi
 
 
-# Print Head
+# Appearance and Header
   # I wanted to be an artists
   # clear
   # Nowrap
@@ -57,6 +57,15 @@
   # Reset wrap
   printf '\e[?7h'
 
+  # Map color to nicer color scheme (rgb):
+  printf '\e]10;rgb:c5/c8/c6\a'  # foreground
+  printf '\e]11;rgb:1d/1f/21\a'  # background
+  printf '\e]4;1;rgb:cc/66/66\a'  # red
+  printf '\e]4;2;rgb:b5/bd/68\a'  # green
+  printf '\e]4;3;rgb:f0/c6/74\a'  # yellow
+  printf '\e]4;4;rgb:81/a2/be\a'  # blue
+  printf '\e]4;5;rgb:b2/94/bb\a'  # magenta
+  printf '\e]4;6;rgb:8a/be/b7\a'  # cyan
 
 # Variables personal
   # Set OS
@@ -192,7 +201,7 @@
 # PS1
   # PS1, set in bashrc because debian update it in /etc/bashrc
   parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' ;
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' 2> /dev/null;
   }
   export -f parse_git_branch
   parse_title() {
@@ -209,13 +218,11 @@
   export -f parse_title
 
   # Title: Host: CD
-  PS1='\[\e]0;\]`parse_title`\007'
+  PS1='\[\e]0;\]`parse_title`\[\007\]'
   # CD (green)
   PS1+='\[\e[32m\]\w'
   # Git Branch (yellow)
-  PS1+='\[\e[33m\]'
-  PS1+='`parse_git_branch`'
-  PS1+='\[\e[00m\]'
+  PS1+='\[\e[33m\]`parse_git_branch`\[\e[00m\]'
   # New line
   PS1+='\n$ '
   export PS1
