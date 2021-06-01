@@ -74,7 +74,12 @@ allcolors 3 9
 echo
 allcolors 4 10
 
+echo_esc() {
+  echo -n "echo -e \"$1\"  # "; echo -e "$1"
+}
+
 echo
-echo 'echo -e "\e[1m\e[38;5;13mBold Purple Fg\e[0m Normal"'
-echo 'echo -e "\e[1m\e[48;5;55mBold Purple Bg\e[0m Normal"'
-echo 'echo -e "\e[31mRed\e[0m Normal"'
+echo_esc "**\033[38;2;00;69;94mBlue Seal Fg (RGB)\e[0m**"
+echo_esc "**\e[1m\e[38;5;13mBold Purple Fg (256)\e[0m**"
+echo_esc "**\e[1m\e[48;5;55mBold Purple Bg (256)\e[0m**"
+echo_esc "**\e[31mRed\e[0m**"
