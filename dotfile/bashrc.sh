@@ -205,13 +205,13 @@
   }
   export -f parse_git_branch
   parse_title() {
-    host=$(hostname)
-    # hsot
-    if [[ "$host" == "tourny" ]]; then
+    # Host
+    if [[ "$HOSTNAME" == "tourny" ]] || [[ "$HOSTNAME" == "almatin" ]]; then
       res=''
     else
-      res="<$host>:   "
+      res="<$HOSTNAME>:   "
     fi
+    # Pwd
     res+=$(dirs +0)
     echo "$res"
   }
@@ -220,9 +220,11 @@
   # Title: Host: CD
   PS1='\[\e]0;\]`parse_title`\[\007\]'
   # CD (green)
-  PS1+='\[\e[32m\]\w'
+  PS1+='\[\e[32m\]\w '
   # Git Branch (yellow)
-  PS1+='\[\e[33m\]`parse_git_branch`\[\e[00m\]'
+  PS1+='\[\e[33m\]`parse_git_branch`'
+  # End color
+  PS1+='\[\e[0m\]'
   # New line
   PS1+='\n$ '
   export PS1
