@@ -96,6 +96,8 @@ try_link "$scriptpath/bash_aliases.sh" ~/.bash_aliases.sh
 try_link "$scriptpath/bashrc.sh" ~/.bashrc
 try_link "$scriptpath/inputrc" ~/.inputrc
 try_link "$scriptpath/Xdefaults" ~/.Xdefaults
+try_link "$scriptpath/Xresources" ~/.Xresources
+xrdb ~/.Xresources
 
 # Alacritty
 try_link "$scriptpath/alacritty.yml" ~/.alacritty.yml

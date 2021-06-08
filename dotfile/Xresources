@@ -1,0 +1,13 @@
+! Reload me with: xrdb ~/.Xresources
+*VT100.allowWindowOps: true
+*VT100.allowTitleOps: true
+*VT100.allowFontOps: true
+
+! Font
+xterm*faceName: Hack
+xterm*faceSize: 15
+
+! SiXels
+XTerm*decTerminalID: vt340
+XTerm*numColorRegisters: 256
+XTerm*maxGraphicSize: 2560x1440
