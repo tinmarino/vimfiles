@@ -262,17 +262,6 @@
     \    'eval_visual' : '<Leader>e',
     \}
 
-  " Vim Translator
-    ".vimrc
-    " language code iso 639-1
-    "? define key in visual-mode (optional)
-    let g:goog_user_conf = { 'langpair': 'en|ru', 'cmd': 'node', 'v_key': 'T' }
-
-  " AnsiEsc
-    " au BufWinEnter *.a.txt AnsiEsc
-    " au BufWinEnter *.a.txt set nowrap | echom "I saw an ansi file"
-    " au ColorScheme * AnsiEsc!
-
   " Emacs Command line
     let g:EmacsCommandLineSearchCommandLineDisable = 1
     let g:EmacsCommandLineBackwardCharDisable = 1
@@ -395,7 +384,7 @@
 
 " Plugin: PackAdd
   " Interface: 5ms for 4plugings
-  packadd coc
+  " packadd coc
   packadd fzf
   packadd fzf.vim
   packadd lastplace  " vi $VIMRUNTIME/vimrc_example.vim
