@@ -17,7 +17,9 @@ disable=invalid-name,
         useless-return,
 
         missing-function-docstring,
-        missing-module-docstring
+        missing-module-docstring,
+
+        non-ascii-name
         
 #indent-string='  '
 max-line-length=120
