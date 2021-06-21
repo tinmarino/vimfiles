@@ -23,11 +23,12 @@
     if [[ "$HOSTNAME" =~ ^(almatin|tourny)$ ]]; then
       # Set here the first time, then in tmux.conf then in the secondly loaded bashrc
       # For bold and italic
-      exec env TERM=tmux-256color tmux
+      export TERM=tmux-256color
     else
       # for ALMA but some glinch in scroll vim
-      exec env TERM=xterm-256color tmux
+      export TERM=xterm-256color
     fi
+    exec env tmux
   fi
 
 
@@ -362,3 +363,6 @@
 # Fast
   # Add "substitute" mnemonic, which the info file left out.
   export PATH="/home/tourneboeuf/Program/GitFuzzy/bin:$PATH"
+s_echo_enable='\e[?1000;1006;1015h'
+s_echo_disable='\e[?1000;1006;1015l'
+: "$s_echo_enable" "$s_echo_disable"
