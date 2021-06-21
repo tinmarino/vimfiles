@@ -27,8 +27,8 @@ if [ "$buflen" -gt "$maxlen" ]; then
 fi
 
 # Build up OSC 52 ANSI escape sequence
-esc="\e]52;c;$( printf "%s" "$buf" | head -c $maxlen | base64 | tr -d '\r\n' )\a"
+esc="\e]52;c;$( printf "%s" "$buf" | head -c $maxlen | base64 | tr -d '\r\n' )\e\\"
 esc="\ePtmux;\e$esc\e\\"
 
 # shellcheck disable=SC2059  #: Don't use variables 
-printf "$esc"
+printf "%b" "$esc"
