@@ -7,7 +7,7 @@
   set encoding=utf-8
   scriptencoding uft-8
   set mouse=a " Enable mouse use in all modes
-  "set pythonthreedll=/usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.so
+  set pythonthreedll=/usr/lib/python3.9/config-3.9-x86_64-linux-gnu/libpython3.9.so
 
 
 " Variable (Perso)
@@ -956,6 +956,8 @@
   "imap   <C-k>   <plug>(emmet-expand-abbr)
   " let g:jupyter_monitor_console = 1
   "let g:jupyter_verbose = 1
+  "
+  "let g:jupyter_cell_separators = ['##', '#toto', '.*titi']
   "let g:jupyter_auto_connect = 1
   " let b:jupyter_exec_before = 'clear-screen'
   packadd jupyter
