@@ -274,11 +274,6 @@
     let g:tex_flavor = 'latex'
     " No autoindent
     let g:vimtex_indent_enabled = 0
-    " Disable overfull/underfull \hbox
-    let g:vimtex_quickfix_latexlog = {
-        \ 'overfull' : 0,
-        \ 'underfull' : 0,
-        \}
 
   " Ultisnip
     let g:UltiSnipsSnippetDirectories = [$v . '/template/my_snippets', $v . '/pack/bundle/opt/snippets/UltiSnips']
@@ -374,11 +369,11 @@
     let g:ale_pattern_options = {'.*\.md$': {'ale_enabled': 0}}
     " -- Ale Bash
     let si = '--exclude '
-    let si.= 'SC2155,'  " Declare and assign separately to avoid masking return values -> Prevent declare -a, local
-    let si.= 'SC2092,'  " Remove backticks for docstring in code
-    let si.= 'SC1090,'  " Can't follow file location with $
-    let si.= 'SC2154,'  " cyellow is referenced but not assigned.
-    let si.= 'SC2154,'  " cyellow is referenced but not assigned.
+    let si .= 'SC2155,'  " Declare and assign separately to avoid masking return values -> Prevent declare -a, local
+    let si .= 'SC2092,'  " Remove backticks for docstring in code
+    let si .= 'SC1090,'  " Can't follow file location with $
+    let si .= 'SC2154,'  " cyellow is referenced but not assigned.
+    let si .= 'SC2154,'  " cyellow is referenced but not assigned.
 
     let g:ale_sh_shellcheck_options = si
 

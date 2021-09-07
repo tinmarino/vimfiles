@@ -15,6 +15,7 @@ call_vim(){
         --not-a-term \
         -c "map q :q!<CR> \
           | set foldlevel=30 \
+          | set nonumber \
           | set t_te=" \
         --cmd 'autocmd StdinReadPre * set nomodeline' \
         "$@"

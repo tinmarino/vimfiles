@@ -125,8 +125,8 @@
   url = https://github.com/powerman/vim-plugin-viewdoc
   ignore = all
 [submodule "pack/bundle/opt/calendar"]
-  path = pack/bundle/opt/calendar
-  url = https://github.com/mattn/calendar-vim
+	path = pack/bundle/opt/calendar
+	url = https://github.com/itchyny/calendar.vim
   ignore = all
 [submodule "template/snippets"]
   path = pack/bundle/opt/snippets

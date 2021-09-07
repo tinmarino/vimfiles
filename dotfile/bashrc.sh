@@ -118,7 +118,7 @@
   [[ -n "$PROMPT_COMMAND" ]] && [[ "${PROMPT_COMMAND: -1}" != ";" ]] && PROMPT_COMMAND+=";"
   export PROMPT_COMMAND+='history -a;'
 
-# Callback for Unknown command (tip: install bash-completion on tmux)
+# Command not found handle Callback for Unknown command (tip: install bash-completion on tmux)
   print_stack() {
      STACK=""
      local i message="${1:-""}"
@@ -139,13 +139,23 @@
   export -f print_stack
   command_not_found_handle() {
     # If starting with g : git
-    if [[ "${1:0:1}" == "g" ]]; then
+    if [[ -z "$1" ]] && [[ "${1:0:1}" == "g" ]]; then
       # shellcheck disable=SC2086
       git "${1:1}" $2
+    # If some specific binary (debian)
+    elif [[ -x /usr/lib/command-not-found ]]; then
+      /usr/lib/command-not-found -- "$1"
+      return $?
+    elif [[ -x /usr/share/command-not-found/command-not-found ]]; then
+      /usr/share/command-not-found/command-not-found -- "$1"
+      return $?
     # If any shit, echo bash default errmsg
     else
-      echo "bash(rc): $1: command not found"
-      print_stack ""
+      printf "bash(rc): %s: command not found\n" "$1" 1>&2
+      if command -v print_stack &> /dev/null; then
+        print_stack ""
+      fi
+      return 127
     fi
   }
   export -f command_not_found_handle
@@ -282,52 +292,28 @@
 
 
 # Path
-  # Save
-  export path_save=$PATH
-  export PATH=""
-  # set PATH so it includes user's private bin if it exists
-  if [ -d "$HOME/bin" ] ; then
-      PATH="$HOME/bin:$PATH"
-  fi
-  
-  # set PATH so it includes user's private bin if it exists
-  if [ -d "$HOME/.local/bin" ] ; then
-      PATH="$HOME/.local/bin:$PATH"
-  fi
-
-    # Windows fast
-  export PATH="$PATH:/c/Program Files/Vim/vim82"
+  # Windows fast
+  #export PATH="$PATH:/c/Program Files/Vim/vim82"
   # My script
-  export PATH=$PATH:$HOME/.vim/bin
-  export PATH=$PATH:$HOME/Bin
+  PATH+=:$HOME/.vim/bin
+  PATH+=:$HOME/Bin
+  PATH+=:$HOME/.cargo/bin
+  PATH+=:$HOME/.local/bin
   # Node after npm config set prefix ~/.npm
-  export PATH=$PATH:$HOME/.npm/bin
-  # Perl6
-  export RAKUDOLIB=$HOME/.raku
-  export PATH=$PATH:$HOME/Program/Raku/Doc/bin
-  export PATH=$PATH:$HOME/Program/Raku/Repo/install/bin
-  export PATH=$PATH:$HOME/Program/Raku/Repo/install/share/perl6/site/bin
-  export PATH=$PATH:$HOME/Program/Raku/Z/bin
-  export PATH=$PATH:$HOME/.raku/share/perl6/site/bin
-  export PATH=$PATH:$HOME/.raku/bin
-  # Python
-  #export PATH=$PATH:$HOME/Program/Conda/bin
-  export PATH=$PATH:$HOME/.local/usr/local/bin
+  #export PATH=$PATH:$HOME/.npm/bin
   # Rust
-  export PATH=$PATH:$HOME/.cargo/bin
-  # Android sdk
-  export PATH=$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools
-  export PATH=$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools/bin
-  export PATH=$PATH:$HOME/Program/Eclipse/eclipse
-  export ANDROID_HOME=$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796
-  export ANDROID_SDK=$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796
+  ## Android sdk
+  #export PATH=$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools
+  #export PATH=$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools/bin
+  #export PATH=$PATH:$HOME/Program/Eclipse/eclipse
+  #export ANDROID_HOME=$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796
+  #export ANDROID_SDK=$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796
   # Programs
-  export PATH=$PATH:/usr/local/cuda-10.0/bin
-  export PATH=$PATH:$HOME/Program/Metapixel/metapixel
+  #export PATH=$PATH:/usr/local/cuda-10.0/bin
+  #export PATH=$PATH:$HOME/Program/Metapixel/metapixel
   # Readd
-  export PATH=$PATH:$path_save
   # IDA
-  export PATH+=:/home/tourneboeuf/Program/Ida/idafree-7.0
+  #export PATH+=:/home/tourneboeuf/Program/Ida/idafree-7.0
   # irm
   export PATH+=:~/Software/Jenkins/IrmJenkins/script
 

@@ -45,8 +45,11 @@ alias bat="PAGER= bat"
   # Little longer
   malias disas 'objdump -drwC -Mintel'
   malias ll 'ls -lh'
+  malias gs 'git status'  # Prevent confusion with ghostscript
   malias so source
   malias ssh 'TMUX= TERM=xterm-256color ssh'
+  malias rp realpath
+  
 
   # Languages
   malias fd fdfind
@@ -176,9 +179,9 @@ alias bat="PAGER= bat"
   alias proc='be almaproc'
   alias root='be root'
   # With a tmux singleton, like it or not
-  alias acse1='tmux rename-window ACSE1; ssh -X mtourneb@acse1-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
-  alias acse2='tmux rename-window ACSE2; ssh -X mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
-  alias ape2='tmux rename-window APE2; ssh -X mtourneb@ape2-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+  alias acse1='tmux rename-window ACSE1; ssh mtourneb@acse1-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+  alias acse2='tmux rename-window ACSE2; ssh mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+  alias ape2='tmux rename-window APE2; ssh mtourneb@ape2-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
 
 
 # Jump marks from http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
