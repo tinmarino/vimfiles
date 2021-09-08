@@ -295,10 +295,12 @@
   # Windows fast
   #export PATH="$PATH:/c/Program Files/Vim/vim82"
   # My script
-  PATH+=:$HOME/.vim/bin
-  PATH+=:$HOME/Bin
-  PATH+=:$HOME/.cargo/bin
-  PATH+=:$HOME/.local/bin
+  [[ -n "$PATH" ]] \
+    && PATH=$HOME/.cargo/bin:$PATH \
+    || PATH=$HOME/.cargo/bin \
+  PATH=$HOME/Bin:$PATH
+  PATH=$HOME/.local/bin:$PATH
+  PATH=$HOME/.vim/bin:$PATH
   # Node after npm config set prefix ~/.npm
   #export PATH=$PATH:$HOME/.npm/bin
   # Rust
