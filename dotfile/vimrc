@@ -436,7 +436,7 @@
     try
       colorscheme gruvbox
     catch /E185/
-      echom 'Vimrc: Cannot load colorscheme'
+      " echom 'Vimrc: Cannot load colorscheme'
     endtry
     set t_Co=256  " For airline and nice colors
     set nrformats-=octal  " Prevent Ctrl-a: 07 -> 010
@@ -956,7 +956,7 @@
   "let g:jupyter_auto_connect = 1
   " let b:jupyter_exec_before = 'clear-screen'
   packadd jupyter
-  packadd spector
+  " packadd spector
   "packadd python-mode
   " if $os == 'unix' packadd youcompleteme endif
   "packadd raku
