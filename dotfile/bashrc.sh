@@ -109,8 +109,8 @@
 
   # History
   # Append instead of overwrite
-  export HISTSIZE=10000
-  export HISTFILESIZE=20000
+  export HISTSIZE=1000000
+  export HISTFILESIZE=2000000
   shopt -s histappend
   #export HISTCONTROL=ignoredups
   # Save history after each executed line
