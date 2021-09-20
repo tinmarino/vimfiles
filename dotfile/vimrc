@@ -330,8 +330,8 @@
 
     command! -nargs=1 -complete=dir FzfDir call FzfDir(<args>)
     " I don't know with r is susceptible 
-    nnoremap <A-r> :call FzfDir($h . '/wiki/rosetta/Lang')<CR>
-    nnoremap <Esc>r :call FzfDir($h . '/wiki/rosetta/Lang')<CR>
+    " nnoremap <A-r> :call FzfDir($h . '/wiki/rosetta/Lang')<CR>
+    " nnoremap <Esc>r :call FzfDir($h . '/wiki/rosetta/Lang')<CR>
 
     function! FzfRgFileFull()
       " Start source list command
