@@ -69,7 +69,7 @@
   ignore = all
 [submodule "pack/bundle/opt/wiki"]
 	path = pack/bundle/opt/wiki
-  url = https://github.com/tinmarino/vimwiki
+  url = https://github.com/vimwiki/vimwiki
   ignore = all
   branch = dev
 [submodule "pack/bundle/opt/vim-instant-markdown"]
@@ -166,9 +166,8 @@
   ignore = all
 [submodule "pack/bundle/opt/jupyter"]
 	path = pack/bundle/opt/jupyter
-	url = https://github.com/tinmarino/jupyter-vim
+	url = https://github.com/jupyter-vim/jupyter-vim
   ignore = all
-  branch=dev
 [submodule "pack/bundle/opt/spector"]
 	path = pack/bundle/opt/spector
 	url = https://github.com/puremourning/vimspector
