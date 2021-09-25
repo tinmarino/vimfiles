@@ -219,9 +219,12 @@
 [submodule "pack/bundle/opt/nerdtree-git-plugin"]
 	path = pack/bundle/opt/nerdtree-git-plugin
 	url = https://github.com/Xuyuanp/nerdtree-git-plugin
+  ignore = all
 [submodule "pack/bundle/opt/devicons"]
 	path = pack/bundle/opt/devicons
 	url = https://github.com/ryanoasis/vim-devicons
+  ignore = all
 [submodule "pack/bundle/opt/coc"]
 	path = pack/bundle/opt/coc
 	url = https://github.com/neoclide/coc.nvim
+  ignore = all
