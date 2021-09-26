@@ -85,6 +85,7 @@ alias bat="PAGER= bat"
   alias alma_docker='cd ~/Program/Alma/Docker && docker-compose run centos8 bash'
 
 # Fzf
+  alias fgl=fzf_git_log
   alias fo=fzf_open
   alias ff=fzf_line
   alias fl=fzf_line

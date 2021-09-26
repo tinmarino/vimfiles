@@ -72,6 +72,10 @@
     qu = "!qunstage() { cd -- ${GIT_PREFIX:-.}; git reset HEAD `git qp $1`; git qs; }; qunstage"
     qv = qe
  
+    # Fuzzy from https://github.com/mattorb/dotfiles/blob/f8ab099f8105e4700a713b75ba32df3ac723d485/git/.gitaliases#L81
+    # fuzzy add using fzf
+	  fa = "!git ls-files -m -o --exclude-standard | fzf --print0 -m --preview 'git diff {}' --preview-window=top:10:wrap | xargs -0 -t -o git add --all"
+
     # Util
     aa = add --all
     au = add --u

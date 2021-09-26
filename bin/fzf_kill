@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Vi <= Binded alt-e <= BashRc
+
+source "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/lib_fzf.sh"
+
+# Log Interface
+main() {
+  # shellcheck disable=SC2154  # v is referenced but not assigned
+  IFS=$'\n' out="$(fzf --query="$1" --exit-0 --expect=ctrl-o,ctrl-e \
+    --preview "$v/bin/_tinrc-fzf-preview.sh {}")"
+  key=$(head -1 <<< "$out")
+  file=$(head -2 <<< "$out" | tail -1)
+  file="${file/#\~/$HOME}"
+  if [ -n "$file" ]; then
+    [[ ctrl-e == "$key" ]] && ${EDITOR:-vim} "$file"
+    [[ ctrl-o == "$key" ]] && { xdg-open "$file" || ${EDITOR:-vim} "$file"; }
+  fi
+}
+
+main "$@"

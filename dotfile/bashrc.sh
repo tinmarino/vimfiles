@@ -168,11 +168,11 @@
     vim -NEs
       +'redir>>/dev/stdout | packadd fzf.vim'
       +'$_vim_escaped2'
-      +'echo join(out, \\\"\\\\n\\\")'
+      +'echo join(out, \"\\n\")'
       +'redir END | q' | sed -e \"s?$HOME?~?g\" | sed -e \"s/^\\w/.\\/\\0/\";
-    rg --color always --files \\\".\\\";
-    cd \\\"$HOME\\\" && rg --color always --files | awk '{print \\\"~/\\\" \\\$0}';
-    cd \\\"$v\\\" && rg --color always --files | awk '{print \\\"$v/\\\" \\\$0}';
+    rg --color always --files \".\";
+    # cd \\\"$HOME\\\" && rg --color always --files | awk '{print \\\"~/\\\" \\\$0}';
+    # cd \\\"$v\\\" && rg --color always --files | awk '{print \\\"$v/\\\" \\\$0}';
   \""
   export FZF_DEFAULT_COMMAND="${_fzf_cmds//$'\n'/}"
   # shellcheck disable=SC2206,SC2191
@@ -256,7 +256,7 @@
   #[[ -f "$v/bin/_tin_complete.sh" ]] && source "$v/bin/_tin_complete.sh"
 
   # Tmux completion
-  command -v _get_comp_words_by_ref &> /dev/null && [[ -f "$v/bin/_tinrc-tmux-completion.sh" ]] && source "$v/bin/_tinrc-tmux-completion.sh"
+  command -v _get_comp_words_by_ref &> /dev/null && [[ -f "$v/bin/_source_tmux_complete" ]] && source "$v/bin/_source_tmux_complete"
 
   # Fzf bindings
   # Warning on termux, comment /home/tourneboeuf/Program/Fzf/shell/completion.bash

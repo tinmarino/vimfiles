@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Vi <= Binded alt-e <= BashRc
+
+source "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/lib_fzf.sh"
+
+# Log Interface
+main() {
+  pushd "$1" > /dev/null || echo "Error: Cannot cd to $1"
+  # Follow is important for roseta
+  out="$(rg --color always --follow --files | fzf \
+    --ansi \
+    --preview "$v/bin/_tinrc-fzf-preview.sh $1/{}")"
+  out="${out/#\~/$HOME}"
+  key=$(head -1 <<< "$out")
+  file=$(head -2 <<< "$out" | tail -1)
+  [[ -n "$file" ]] && [[ ctrl-o == "$key" ]] && { xdg-open "$file" || ${EDITOR:-vim} "$file"; }
+  popd > /dev/null || return 1
+}
+
+main "$@"
