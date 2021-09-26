@@ -9,7 +9,7 @@ main() {
   # Follow is important for roseta
   out="$(rg --color always --follow --files | fzf \
     --ansi \
-    --preview "$v/bin/_tinrc-fzf-preview.sh $1/{}")"
+    --preview "$v/bin/fzf_preview $1/{}")"
   out="${out/#\~/$HOME}"
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)

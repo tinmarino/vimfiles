@@ -6,13 +6,6 @@
   _view_log_line_unfancy="$_git_log_line_to_hash | xargs -I % sh -c 'git show %'"
 
 # Variable fzf
-  # Unused
-  # _view_log_line="$_git_log_line_to_hash | xargs -I % sh -c 'git show --color=always % | diff-so-fancy'"
-  # _fzf_preview=(--preview "$v/bin/_tinrc-fzf-preview.sh {}")
-  # # TODO see filter for file
-  # _fzf_gcpreview=$'func() {
-  #   set -- \$('$_git_log_line_to_hash');
-  #   [ \$# -eq 0 ] || git show --color=always %; }; func {}'
   _fzf_base=(--ansi --no-sort --reverse "--tiebreak=index")
   _fzf_size=("--preview-window=right:50%" --height 100%)
   _fzf_bind=(

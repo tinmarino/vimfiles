@@ -324,7 +324,7 @@
       call fzf#run(fzf#vim#with_preview(fzf#wrap({
                 \'source': _fzf_source,
                 \'sink' : 'e ',
-                \'options' : " --ansi --preview '" . $v . "/bin/_tinrc-fzf-preview.sh $1/{}'"
+                \'options' : " --ansi --preview '" . $v . "/bin/fzf_preview $1/{}'"
                 \})))
     endfunction
 

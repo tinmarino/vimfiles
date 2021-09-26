@@ -7,7 +7,7 @@ source "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/lib_fzf.sh"
 main() {
   # shellcheck disable=SC2154  # v is referenced but not assigned
   IFS=$'\n' out="$(fzf --query="$1" --exit-0 --expect=ctrl-o,ctrl-e \
-    --preview "$v/bin/_tinrc-fzf-preview.sh {}")"
+    --preview "$v/bin/fzf_preview {}")"
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
   file="${file/#\~/$HOME}"

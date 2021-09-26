@@ -186,7 +186,7 @@
     # First olfiles
     #--no-sort
     --preview-window=right:50% --height 100%
-    --preview \"$v/bin/_tinrc-fzf-preview.sh {}\"
+    --preview \"$v/bin/fzf_preview {}\"
     --bind ?:toggle-preview
     --bind ctrl-space:toggle-preview
     --bind ctrl-j:down
@@ -267,10 +267,6 @@
 
   # Alacrity Completion
   [[ -f "$v/scripts/completion/alacritty" ]] && source "$v/scripts/completion/alacritty"
-
-  # Fzf
-  [[ -f "$v/bin/_tinrc-fzf-function.sh" ]] && source "$v/bin/_tinrc-fzf-function.sh"
-  #[[ -f "$h/Program/ForGit/forgit.plugin.sh" ]] && source "$h/Program/ForGit/forgit.plugin.sh"
 
   # Pip bash completion start
   _pip_completion()
