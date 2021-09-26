@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 main(){
   local plugin=$1
   local path=pack/bundle/opt/$plugin
@@ -10,19 +11,27 @@ main(){
   pushd ~/.vim || ( echo -e "Error popd" && exit 2 )
   git submodule deinit "$path"
   git rm -r "$path"
-  command rm -r ".git/modules/$path"
+  command rm -rf ".git/modules/$path"
   popd || ( echo -e "Error popd" && exit 2 )
 }
 
 complete(){
-  git submodule status | perl -sne '/pack\/bundle\/opt\/([^ ]*)/ and print "$1\n" if $1 =~ /$prefix/' -- -prefix="$prefix"
+  #git submodule status | perl -sne '/pack\/bundle\/opt\/([^ ]*)/ and print "$1\n" if $1 =~ /$prefix/' -- -prefix="$prefix"
+  #echo $prefix
+  git submodule status | perl -sne '/pack\/bundle\/opt\/([^ ]*)/ and $1 =~ /^$prefix.*/ and print "$&\n"' -- -prefix="$(print_prefix "")"
 }
 
 do_complete(){
   [[ -n "$COMP_TYPE" ]] && (( 0 != COMP_TYPE )); return $?
-  prefix=${COMP_WORDS[COMP_CWORD]}
 }
 
-do_complete && ( complete; exit 0; )
+print_prefix(){
+  eval "set -- $COMP_LINE"
+  # shellcheck disable=SC2124  # assigning array to string false positive
+  (( 1 == $# )) && return
+  echo "${@: -1}"
+}
+
+do_complete "" && { complete; exit 0; }
 
 main "$@"
