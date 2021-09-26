@@ -1,0 +1,28 @@
+#!/bin/bash
+
+main(){
+  local plugin=$1
+  local path=pack/bundle/opt/$plugin
+
+  # Clause argument defined
+  [[ -z "$plugin" ]] && ( echo "Error must give an argument" && exit 2; )
+
+  pushd ~/.vim || ( echo -e "Error popd" && exit 2 )
+  git submodule deinit "$path"
+  git rm -r "$path"
+  command rm -r ".git/modules/$path"
+  popd || ( echo -e "Error popd" && exit 2 )
+}
+
+complete(){
+  git submodule status | perl -sne '/pack\/bundle\/opt\/([^ ]*)/ and print "$1\n" if $1 =~ /$prefix/' -- -prefix="$prefix"
+}
+
+do_complete(){
+  [[ -n "$COMP_TYPE" ]] && (( 0 != COMP_TYPE )); return $?
+  prefix=${COMP_WORDS[COMP_CWORD]}
+}
+
+do_complete && ( complete; exit 0; )
+
+main "$@"
