@@ -905,7 +905,6 @@
 
 
 " Alma
-  source ~/.vim/almasw.vimrc
   " AlmaSw
     "" echo | g++ -E -Wp,-v -
     "" `gcc -print-prog-name=cpp` -v  # cpp for c preprocessor
@@ -1047,3 +1046,12 @@ function! SynGroup()
     let l:s = synID(line('.'), col('.'), 1)
     echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
 endfunction
+
+function! SourceIfExist(file)
+  let l:file = expand(a:file)
+  if filereadable(l:file)
+    exe 'source' a:file
+  endif
+endfunction
+
+call SourceIfExist('~/.vim/almasw.vimrc')

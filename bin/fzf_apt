@@ -33,10 +33,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
         tail --lines +2 | \
         # place the description on the same line
         # separate the description and the other information
-        # with a ^
-        # sd $'\n {2}([^ ])' $'^$1' | \
-        # place the package information and the package description
-        # in a table with two columns
+        perl -pe  'if ($. % 3 == 1){ s/$/ ^ / ; chomp} elsif ($. % 3 == 2){s/^\s+//; chomp}' | \
         column -t -s^ | \
         # select packages with fzf
         fzf --multi | \

@@ -11,9 +11,16 @@ main() {
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
   file="${file/#\~/$HOME}"
-  if [ -n "$file" ]; then
-    [[ ctrl-e == "$key" ]] && ${EDITOR:-vim} "$file"
-    [[ ctrl-o == "$key" ]] && { xdg-open "$file" || ${EDITOR:-vim} "$file"; }
+  if [[ -n "$file" ]]; then
+    case "$key" in
+      ctrl-e) ${EDITOR:-vim} "$file"
+        ;;
+      ctrl-o)
+        xdg-open "$file" || ${EDITOR:-vim} "$file"
+        ;;
+      *)
+        ${EDITOR:-vim} "$file"
+    esac
   fi
 }
 
