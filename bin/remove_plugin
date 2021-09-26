@@ -18,6 +18,7 @@ main(){
 complete(){
   #git submodule status | perl -sne '/pack\/bundle\/opt\/([^ ]*)/ and print "$1\n" if $1 =~ /$prefix/' -- -prefix="$prefix"
   #echo $prefix
+  cd ~/.vim || ( echo -e "Error popd" && exit 2 )
   git submodule status | perl -sne '/pack\/bundle\/opt\/([^ ]*)/ and $1 =~ /^$prefix.*/ and print "$&\n"' -- -prefix="$(print_prefix "")"
 }
 

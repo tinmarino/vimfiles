@@ -346,6 +346,7 @@
 # Alma
   # Set completion
   complete -C irm irm
+  complete -C remove_plugin remove_plugin
 
 
 # Fast
