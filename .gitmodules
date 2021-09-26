@@ -224,3 +224,6 @@
 	path = pack/bundle/opt/coc
 	url = https://github.com/neoclide/coc.nvim
   ignore = all
+[submodule "pack/bundle/opt/almasw"]
+	path = pack/bundle/opt/almasw
+	url = https://github.com/tinmarino/vim-almasw
