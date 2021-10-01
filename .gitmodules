@@ -227,3 +227,4 @@
 [submodule "pack/bundle/opt/almasw"]
 	path = pack/bundle/opt/almasw
 	url = https://github.com/tinmarino/vim-almasw
+  ignore = all

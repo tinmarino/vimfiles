@@ -390,6 +390,7 @@
 
   function! TimerPack(timer) abort
     " Lazy loader
+    packadd almasw
     " Map: 10ms for 9pg
     packadd surround  " ySS<div>
     packadd repeat  " for surround
@@ -1053,5 +1054,3 @@ function! SourceIfExist(file)
     exe 'source' a:file
   endif
 endfunction
-
-call SourceIfExist('~/.vim/almasw.vimrc')
