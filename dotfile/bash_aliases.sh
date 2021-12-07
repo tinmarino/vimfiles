@@ -183,6 +183,8 @@ alias bat="PAGER= bat"
   alias acse1='tmux rename-window ACSE1; ssh mtourneb@acse1-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
   alias acse2='tmux rename-window ACSE2; ssh mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
   alias ape2='tmux rename-window APE2; ssh mtourneb@ape2-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+  alias hil='tmux rename-window HIL; ssh mtourneb@ape-hil-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+  alias tfint='tmux rename-window TFINT; ssh mtourneb@tfint-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
 
 
 # Jump marks from http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
