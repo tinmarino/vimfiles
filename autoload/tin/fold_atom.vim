@@ -5,7 +5,7 @@ function! s:declare_global()
   " let g:regexp_blank = '^\s*$\|^\s*[#"/]'
   let g:regexp_blank = '^\s*$'
   let g:next_close = '='
-  let g:fold_close =  '^\s*\(};\?\|fi\|end.*\|<\/.*\)\s*$'
+  let g:fold_close =  '^\s*\(};\?\|fi\|done\|esac\|end.*\|<\/.*\)\s*$'
 endfunction
 
 
@@ -153,6 +153,10 @@ endfunction
 
 function! tin#fold_atom#main(...) abort
   " Entry point
+  " Clause: leave if foldexpr is already set (vimwiki)
+  "if &foldexpr == 0
+  "  return
+  "endif
   call s:declare_global()
   set foldmethod=expr
   set foldexpr=tin#fold_atom#atom_fold_expr(v:lnum)

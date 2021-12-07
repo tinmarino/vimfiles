@@ -1,0 +1,92 @@
+priority 1
+
+snippet hi "start a script"
+#!/usr/bin/env bash
+
+main(){
+  echo "--> Starting \$0 with $@"
+  $0
+}
+
+main "$@"
+endsnippet
+
+snippet for "for ... in ... "
+for ${1:i} in ${2:"$@"}; do 
+	${0:${VISUAL}}
+done
+endsnippet
+
+snippet if "if ... then (if)" b
+if ${1:true}; then
+	${0:${VISUAL}}
+fi
+endsnippet
+
+snippet parse "parse arugment in"
+while (( 0 != $# )); do
+  case \$1 in
+    -h)
+      echo "Help yourself: lint your code!"
+			shift
+      exit
+      ;;
+	  --${1:v1})
+		  $1=\$2
+			shift
+			shift
+			;;
+    *)
+      shift
+  esac
+done
+endsnippet
+
+
+snippet is_in_array "Check # From: https://stackoverflow.com/a/8574392/2544873"
+is_in_array() {
+  # Check if arg1 <string> is in rest of args
+  local match="\$1" element; shift
+  for element; do [[ "$element" == "$match" ]] && return 0; done
+  return 1
+}
+endsnippet
+
+
+snippet is_int "Check if is int  # From: https://stackoverflow.com/questions/806906, for float ^[0-9]+([.][0-9]+)?$"
+is_int(){
+  # Check is arg1 <string> is an integer (signed)
+	[[ \$1 =~ ^[+-]?[0-9]+$ ]] && return 0 || return 1
+}
+endsnippet
+
+
+snippet args "Print args"
+args(){
+  # Print input arguments, one per line
+  local cnt=1
+  for s_arg in "$@"; do
+    echo "$((cnt++))/ $s_arg"
+  done
+}
+endsnippet
+
+ 
+
+
+snippet #! "Shbang"
+#!/usr/bin/env bash
+endsnippet
+
+
+snippet (( "Context arith"
+\$((${0:${VISUAL}}))
+endsnippet
+
+snippet arr "Expand array"
+"\${${1:a_arr}[@]}"
+endsnippet
+
+snippet test "Test version"
+version1.0
+endsnippet
