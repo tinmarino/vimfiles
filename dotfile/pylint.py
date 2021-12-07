@@ -2,24 +2,27 @@
 
 disable=invalid-name,
         multiple-statements,
-        fixme,
-        broad-except,
         too-many-instance-attributes,
         too-few-public-methods,
 
         import-error,
-        wrong-import-position,
-        import-outside-toplevel,
         bare-except,
         too-many-ancestors,
 
+        # except Exception as e:
+        broad-except,
+
         redefined-outer-name,
         useless-return,
-
-        missing-function-docstring,
-        missing-module-docstring,
+        misplaced-comparison-constant,
 
         non-ascii-name
         
 #indent-string='  '
+#        missing-function-docstring,
+#        missing-module-docstring,
+#        fixme,
+#        wrong-import-position,
+#        import-outside-toplevel,
+
 max-line-length=120
