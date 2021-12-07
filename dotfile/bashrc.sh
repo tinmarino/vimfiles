@@ -60,7 +60,7 @@
 
   # Map color to nicer color scheme (rgb):
   printf '\e]10;rgb:c5/c8/c6\a'  # foreground
-  printf '\e]11;rgb:1d/1f/21\a'  # background
+  #printf '\e]11;rgb:1d/1f/21\a'  # background
   printf '\e]4;1;rgb:cc/66/66\a'  # red
   printf '\e]4;2;rgb:b5/bd/68\a'  # green
   printf '\e]4;3;rgb:f0/c6/74\a'  # yellow
@@ -351,3 +351,28 @@
 s_echo_enable='\e[?1000;1006;1015h'
 s_echo_disable='\e[?1000;1006;1015l'
 : "$s_echo_enable" "$s_echo_disable"
+
+urlencode() {
+    # Usage: urlencode "string"
+    # From: https://github.com/dylanaraps/pure-bash-bible#percent-encode-a-string
+    local LC_ALL=C
+    for (( i = 0; i < ${#1}; i++ )); do
+        : "${1:i:1}"
+        case "$_" in
+            [a-zA-Z0-9.~_-])
+                printf '%s' "$_"
+            ;;
+
+            *)
+                printf '%%%02X' "'$_"
+            ;;
+        esac
+    done
+    printf '\n'
+}
+
+urldecode() {
+    # Usage: urldecode "string"
+    : "${1//+/ }"
+    printf '%b\n' "${_//%/\\x}"
+}
