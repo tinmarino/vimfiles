@@ -228,3 +228,7 @@
 	path = pack/bundle/opt/almasw
 	url = https://github.com/tinmarino/vim-almasw
   ignore = all
+[submodule "pack/bundle/opt/slime"]
+	path = pack/bundle/opt/slime
+	url = https://github.com/jpalardy/vim-slime
+  ignore = all

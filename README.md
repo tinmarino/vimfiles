@@ -29,6 +29,13 @@ python3 install.py --clangd-completer --ts-completer --java-completer
 popd
 ```
 
+# Add plugin
+
+```bash
+git submodule add https://github.com/jpalardy/vim-slime
+```
+
+
 # Must install (Windows)
 
 * Cmder
