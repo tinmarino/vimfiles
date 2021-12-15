@@ -11,6 +11,14 @@ main(){
 main "$@"
 endsnippet
 
+snippet r "((res|=$?))"
+((res|=\$?))
+endsnippet
+
+snippet res "((res|=$?))"
+((res|=\$?))
+endsnippet
+
 snippet for "for ... in ... "
 for ${1:i} in ${2:"$@"}; do 
 	${0:${VISUAL}}
@@ -23,7 +31,7 @@ if ${1:true}; then
 fi
 endsnippet
 
-snippet parse "parse arugment in"
+snippet parse "parse argument in"
 while (( 0 != $# )); do
   case \$1 in
     -h)

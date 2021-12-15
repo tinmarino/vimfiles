@@ -16,12 +16,14 @@ disable=invalid-name,
         useless-return,
         misplaced-comparison-constant,
 
+        # When there is a TODO
+        fixme,
+
         non-ascii-name
         
 #indent-string='  '
 #        missing-function-docstring,
 #        missing-module-docstring,
-#        fixme,
 #        wrong-import-position,
 #        import-outside-toplevel,
 

@@ -1130,7 +1130,7 @@ function! BashColor()
   " syn match	shComment	contained	"#.*$"	contains=@shCommentGroup
   "syn match shFunctionOne matchgroup=shFunction start=/^\s*[A-Za-z_0-9:][-a-zA-Z_0-9:]*\s*()\_s*{/ end=/}/  contains=@shFunctionList nextgroup=shFunctionStart,shQuickComment skipwhite skipnl
   packadd wiki
-  if exists("b:current_syntax")
+  if exists('b:current_syntax')
     unlet b:current_syntax
   endif
   syn include @MarkdownScript syntax/vimwiki.vim
@@ -1140,7 +1140,7 @@ function! BashColor()
   syn cluster shCommandSubList add=MarkdownScriptEmbedded
   hi def link MarkdownCommand Type
 
-  if exists("b:current_syntax")
+  if exists('b:current_syntax')
     unlet b:current_syntax
   endif
   syn include @AWKScript syntax/awk.vim
@@ -1156,13 +1156,11 @@ command Show hi clear Hide
 let sh_minlines = 500
 
 
-let g:slime_target = "tmux"
-let g:slime_default_config = {"socket_name": "default", "target_pane": "{top-right}"}
+let g:slime_target = 'tmux'
+let g:slime_default_config = {'socket_name': 'default', 'target_pane': '{top-right}'}
 let g:slime_dont_ask_default = 1
-nnoremap <C-L> :<c-u>call slime#send(getline(".") . "\n")<cr>
-nnoremap <C-S> :<c-u>call slime#send(getline(".") . "\n")<cr>
-xmap <C-L> <Plug>SlimeRegionSend
-xmap <C-S> <Plug>SlimeRegionSend
+nnoremap <C-F> :<c-u>call slime#send(getline(".") . "\n")<cr>
+xmap <C-F> <Plug>SlimeRegionSend
 packadd slime
 
 " Fasten like vim -X
