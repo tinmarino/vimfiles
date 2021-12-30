@@ -212,15 +212,16 @@
 # PS1
   # PS1, set in bashrc because debian update it in /etc/bashrc
   parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/' 2> /dev/null;
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/' 2> /dev/null;
   }
   export -f parse_git_branch
   parse_title() {
+    local res=""
     # Host
     if [[ "$HOSTNAME" == "tourny" ]] || [[ "$HOSTNAME" == "almatin" ]]; then
-      res=''
+      :  #res=''
     else
-      res="<$HOSTNAME>:   "
+      res+="<$HOSTNAME>:   "
     fi
     # Pwd
     res+=$(dirs +0)
@@ -228,8 +229,9 @@
   }
   export -f parse_title
 
+  export PS1=''
   # Title: Host: CD
-  PS1='\[\e]0;\]`parse_title`\[\007\]'
+  PS1='\[\e]0;`parse_title`\007\]'
   # CD (green)
   PS1+='\[\e[32m\]\w '
   # Git Branch (yellow)
@@ -238,7 +240,6 @@
   PS1+='\[\e[0m\]'
   # New line
   PS1+='\n$ '
-  export PS1
 
 
 # Include, Source, Extension (Alias and Completion)

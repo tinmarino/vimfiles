@@ -8,15 +8,22 @@ $include /etc/inputrc
 # bind '"\e[A": history-search-backward'; bind '"\e[B": history-search-forward'  # GREPME-BIND
 "\e[A": history-search-backward 
 "\e[B": history-search-forward
-"\C-p": history-search-backward 
-"\C-n": history-search-forward
+#"\C-p": history-search-backward 
+#"\C-n": history-search-forward
 
 # TODO Ctrl up : move to line up
 # Ctrl arrow key
-"\e[1;5D": backward-word
+"\e[1;5A": previous-screen-line
+"\e[1;5B": next-screen-line
 "\e[1;5C": forward-word
+"\e[1;5D": backward-word
 
 # Fast
+"\e\C-M": "\C-v\C-j"
+"\C-j": "\C-v\C-j"
+
+"\C-p": previous-screen-line
+"\C-h": next-screen-line
 #"\C-h": "ctrlh-test"
 "\C-o": shell-expand-line
 #"\C-p": "$(date) \e\C-e\ef\ef\ef\ef\ef"
