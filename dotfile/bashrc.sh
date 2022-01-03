@@ -60,7 +60,7 @@
 
   # Map color to nicer color scheme (rgb):
   printf '\e]10;rgb:c5/c8/c6\a'  # foreground
-  #printf '\e]11;rgb:1d/1f/21\a'  # background
+  printf '\e]11;rgb:1d/1f/21\a'  # background
   printf '\e]4;1;rgb:cc/66/66\a'  # red
   printf '\e]4;2;rgb:b5/bd/68\a'  # green
   printf '\e]4;3;rgb:f0/c6/74\a'  # yellow
