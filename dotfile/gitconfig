@@ -7,15 +7,16 @@
     # One letter
     a = add
     b = branch
+    bc = branch --all --contains
     c = commit -m
     cc = commit
     cp = cherry-pick
-    d = diff
+    d = diff --ignore-all-space  # Same as -w
     f = pull --rebase
-    fa = fetch --all
+    pa = fetch --all  # Like pull all to avoid fuzzy
     h = push
     k = checkout
-    l = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+    l = log --no-merges --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
     r = rebase
     s = status
     t = "!gitk --all &"

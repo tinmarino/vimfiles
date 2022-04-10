@@ -118,7 +118,7 @@
   [[ -n "$PROMPT_COMMAND" ]] && [[ "${PROMPT_COMMAND: -1}" != ";" ]] && PROMPT_COMMAND+=";"
   export PROMPT_COMMAND+='history -a;'
 
-# Command not found handle Callback for Unknown command (tip: install bash-completion on tmux)
+# Function
   print_stack() {
      STACK=""
      local i message="${1:-""}"
@@ -137,6 +137,7 @@
      echo "$STACK"
   }
   export -f print_stack
+  # Command not found handle Callback for Unknown command (tip: install bash-completion on tmux)
   command_not_found_handle() {
     # If starting with g : git
     if [[ -z "$1" ]] && [[ "${1:0:1}" == "g" ]]; then
@@ -165,11 +166,13 @@
   #_vim_escaped2='let out = map(fzf#vim#_recent_files(), \"substitute(v:val, \\\"\\\\\\\\~\\\", \\\"'$HOME'\\\", \\\"\\\")\")'
   _vim_escaped2='let out = fzf#vim#_recent_files()'
   _fzf_cmds="bash -c \"
+    # Vim recents files
     vim -NEs
       +'redir>>/dev/stdout | packadd fzf.vim'
       +'$_vim_escaped2'
       +'echo join(out, \"\\n\")'
       +'redir END | q' | sed -e \"s?$HOME?~?g\" | sed -e \"s/^\\w/.\\/\\0/\";
+    # Find files in local directory
     rg --color always --files \".\";
     # cd \\\"$HOME\\\" && rg --color always --files | awk '{print \\\"~/\\\" \\\$0}';
     # cd \\\"$v\\\" && rg --color always --files | awk '{print \\\"$v/\\\" \\\$0}';
@@ -252,13 +255,6 @@
   # Alias
   [[ -f "$HOME/.bash_aliases.sh" ]] && source "$HOME/.bash_aliases.sh"
 
-  # ShellArsenal Completion
-  # TODO
-  #[[ -f "$v/bin/_tin_complete.sh" ]] && source "$v/bin/_tin_complete.sh"
-
-  # Tmux completion
-  command -v _get_comp_words_by_ref &> /dev/null && [[ -f "$v/bin/_source_tmux_complete" ]] && source "$v/bin/_source_tmux_complete"
-
   # Fzf bindings
   # Warning on termux, comment /home/tourneboeuf/Program/Fzf/shell/completion.bash
   [[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
@@ -266,6 +262,19 @@
   # Rust
   try_source "$HOME/.cargo/env"
 
+  # Pyenv
+  if command -v pyenv 1>/dev/null 2>&1; then
+   eval "$(pyenv init -)"
+  fi
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+
+# Include completion
+  # BaSh completion
+  [[ -f "$v/scripts/bash-completion" ]] && source "$v/scripts/bash-completion"
+
+  # Tmux completion
+  command -v _get_comp_words_by_ref &> /dev/null && [[ -f "$v/bin/_source_tmux_complete" ]] && source "$v/bin/_source_tmux_complete"
   # Alacrity Completion
   [[ -f "$v/scripts/completion/alacritty" ]] && source "$v/scripts/completion/alacritty"
 
@@ -279,14 +288,6 @@
   }
   complete -o default -F _pip_completion pip
   # pip bash completion end
-
-  # Pyenv
-  if command -v pyenv 1>/dev/null 2>&1; then
-   eval "$(pyenv init -)"
-  fi
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
-
 
 # Path
   # Windows fast
