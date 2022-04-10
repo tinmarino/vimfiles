@@ -87,6 +87,11 @@
     export os="windows"
     export v="$HOME/vimfiles"
     ;;
+  *)
+    export os="unknown"
+    export v="$HOME/.vim"
+    ;;
+
   esac
 
   # Man
@@ -137,8 +142,8 @@
      echo "$STACK"
   }
   export -f print_stack
-  # Command not found handle Callback for Unknown command (tip: install bash-completion on tmux)
   command_not_found_handle() {
+    ### Command not found handle Callback for Unknown command (tip: install bash-completion on tmux)
     # If starting with g : git
     if [[ -z "$1" ]] && [[ "${1:0:1}" == "g" ]]; then
       # shellcheck disable=SC2086
@@ -160,6 +165,26 @@
     fi
   }
   export -f command_not_found_handle
+  is_in_array(){
+    ### Check if arg1 <string> is in rest of args
+    ### Ref: https://stackoverflow.com/a/8574392/2544873
+    local element match="$1"; shift
+    for element; do [[ "$element" == "$match" ]] && return 0; done
+    return 1
+  }
+  export -f is_in_array
+  is_alma(){
+    local fp_sitename=/alma/ste/etc/sitename
+    [[ ! -f "$fp_sitename" ]] || return 1
+    export SITENAME=$(<"$fp_sitename")
+    case "$SITENAME" in
+      ACSE*) return 0;;
+      APE*) return 0;;
+      TFINT) return 0;;
+      *) return 1;;
+    esac
+  }
+is_alma; (( B_IS_ALMA = ! $? )); export B_IS_ALMA
 
 
 # Fzf functions
@@ -212,6 +237,78 @@
   export FZF_CTRL_R_OPTS="--sort --exact --preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview'"
 
 
+# Include, Source, Extension (Alias and Completion)
+  try_source(){ [[ -f "$1" ]] && source "$1"; }
+  ############
+  # Completion
+  #   maybe source "$HOME/.local/usr/share/bash-completion/bash_completion"
+  [[ -f "/etc/bash_completion" ]] && source "/etc/bash_completion"
+
+  # Alias
+  [[ -f "$HOME/.bash_aliases.sh" ]] && source "$HOME/.bash_aliases.sh"
+
+  # Fzf bindings
+  # Warning on termux, comment /home/tourneboeuf/Program/Fzf/shell/completion.bash
+  [[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
+
+  # Rust
+  try_source "$HOME/.cargo/env"
+
+  # Pyenv
+  if command -v pyenv 1>/dev/null 2>&1; then
+   eval "$(pyenv init -)"
+  fi
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+
+# Include completion
+  # BaSh completion
+  try_source "$v/scripts/bash-completion/bash_completion"
+
+  # Tmux completion
+  command -v _get_comp_words_by_ref &> /dev/null && try_source "$v"/scripts/completion/tmux
+  # Alacrity Completion
+  try_source "$v/scripts/completion/alacritty"
+
+  _pip_completion(){
+    mapfile -t COMPREPLY < <( \
+      COMP_WORDS="${COMP_WORDS[*]}" \
+      COMP_CWORD=$COMP_CWORD \
+      PIP_AUTO_COMPLETE=1 $1 2>/dev/null )
+  }
+  complete -o default -F _pip_completion pip
+
+# Path
+  # My script
+  [[ -n "$PATH" ]] \
+    && PATH=$HOME/.cargo/bin:$PATH \
+    || PATH=$HOME/.cargo/bin \
+  PATH=$HOME/Bin:$PATH
+  PATH=$HOME/.local/bin:$PATH
+  PATH=$HOME/.vim/bin:$PATH
+  # IRM
+  export PATH+=:~/Software/Jenkins/IrmJenkins/script
+
+
+# Bind
+  # Enable Readline not waiting for additional input when a key is pressed.
+  set keyseq-timeout 10
+  bind -x '"\ee":fzf_open'
+  bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
+  bind -x '"\eh":fzf_dir .'
+  bind -x '"\el":fzf_line .'
+
+
+# Alma
+  # Set completion
+  complete -C irm irm
+  complete -C remove_plugin remove_plugin
+  if is_alma; then
+    try_source /etc/bashrc
+    try_source /alma/ste/etc/defaultEnv
+  fi
+
+
 # PS1
   # PS1, set in bashrc because debian update it in /etc/bashrc
   parse_git_branch() {
@@ -243,138 +340,44 @@
   PS1+='\[\e[0m\]'
   # New line
   PS1+='\n$ '
-
-
-# Include, Source, Extension (Alias and Completion)
-  try_source(){ [[ -f "$1" ]] && source "$1"; }
-  ############
-  # Completion
-  #   maybe source "$HOME/.local/usr/share/bash-completion/bash_completion"
-  [[ -f "/etc/bash_completion" ]] && source "/etc/bash_completion"
-
-  # Alias
-  [[ -f "$HOME/.bash_aliases.sh" ]] && source "$HOME/.bash_aliases.sh"
-
-  # Fzf bindings
-  # Warning on termux, comment /home/tourneboeuf/Program/Fzf/shell/completion.bash
-  [[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
-
-  # Rust
-  try_source "$HOME/.cargo/env"
-
-  # Pyenv
-  if command -v pyenv 1>/dev/null 2>&1; then
-   eval "$(pyenv init -)"
+  if (( 1 == B_IS_ALMA )); then
+    # sitename is defined if is_alma
+    case "$SITENAME" in
+    APE-HIL)
+          prefix="\[\033[33m\]${SITENAME}:\[\033[0m\] " ;;  # Orange if APE-HIL
+    AP*)  prefix="\[\033[31m\]${SITENAME}:\[\033[0m\] " ;;  # Red if APE
+    *)    prefix="\[\033[32m\]${SITENAME}:\[\033[0m\] " ;;  # Green otherwise
+    esac
+    PS1="${prefix}${PS1#"$prefix"}"
+  unset prefix
   fi
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
-
-# Include completion
-  # BaSh completion
-  [[ -f "$v/scripts/bash-completion" ]] && source "$v/scripts/bash-completion"
-
-  # Tmux completion
-  command -v _get_comp_words_by_ref &> /dev/null && [[ -f "$v/bin/_source_tmux_complete" ]] && source "$v/bin/_source_tmux_complete"
-  # Alacrity Completion
-  [[ -f "$v/scripts/completion/alacritty" ]] && source "$v/scripts/completion/alacritty"
-
-  # Pip bash completion start
-  _pip_completion()
-  {
-      mapfile -t COMPREPLY < <( \
-        COMP_WORDS="${COMP_WORDS[*]}" \
-        COMP_CWORD=$COMP_CWORD \
-        PIP_AUTO_COMPLETE=1 $1 2>/dev/null )
-  }
-  complete -o default -F _pip_completion pip
-  # pip bash completion end
-
-# Path
-  # Windows fast
-  #export PATH="$PATH:/c/Program Files/Vim/vim82"
-  # My script
-  [[ -n "$PATH" ]] \
-    && PATH=$HOME/.cargo/bin:$PATH \
-    || PATH=$HOME/.cargo/bin \
-  PATH=$HOME/Bin:$PATH
-  PATH=$HOME/.local/bin:$PATH
-  PATH=$HOME/.vim/bin:$PATH
-  # Node after npm config set prefix ~/.npm
-  #export PATH=$PATH:$HOME/.npm/bin
-  # Rust
-  ## Android sdk
-  #export PATH=$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools
-  #export PATH=$PATH:$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796/tools/bin
-  #export PATH=$PATH:$HOME/Program/Eclipse/eclipse
-  #export ANDROID_HOME=$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796
-  #export ANDROID_SDK=$HOME/Program/Android/Sdk/Tools/sdk-tools-linux-4333796
-  # Programs
-  #export PATH=$PATH:/usr/local/cuda-10.0/bin
-  #export PATH=$PATH:$HOME/Program/Metapixel/metapixel
-  # Readd
-  # IDA
-  #export PATH+=:/home/tourneboeuf/Program/Ida/idafree-7.0
-  # irm
-  export PATH+=:~/Software/Jenkins/IrmJenkins/script
-
-
-  # Lib
-  #export LD_LIBRARY_PATH+=:/usr/lib/python3.7/config-3.7m-x86_64-linux-gnu
-  #export LD_LIBRARY_PATH+=:$(rustc --print=sysroot)/lib
-
-  export NDK=$HOME/Program/Ndk/Current
-
-  # Perl
-  export PATH="/home/tourneboeuf/perl5/bin${PATH:+:${PATH}}"
-  export PERL5LIB="/home/tourneboeuf/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"
-  export PERL_LOCAL_LIB_ROOT="/home/tourneboeuf/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"
-  export PERL_MB_OPT="--install_base \"/home/tourneboeuf/perl5\""
-  export PERL_MM_OPT="INSTALL_BASE=/home/tourneboeuf/perl5"
-
-
-# Bind
-  # Enable Readline not waiting for additional input when a key is pressed.
-  set keyseq-timeout 10
-  bind -x '"\ee":fzf_open'
-  bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
-  bind -x '"\eh":fzf_dir .'
-  bind -x '"\el":fzf_line .'
-
-
-# Alma
-  # Set completion
-  complete -C irm irm
-  complete -C remove_plugin remove_plugin
 
 
 # Fast
   # Add "substitute" mnemonic, which the info file left out.
   export PATH="/home/tourneboeuf/Program/GitFuzzy/bin:$PATH"
-s_echo_enable='\e[?1000;1006;1015h'
-s_echo_disable='\e[?1000;1006;1015l'
-: "$s_echo_enable" "$s_echo_disable"
 
-urlencode() {
-    # Usage: urlencode "string"
-    # From: https://github.com/dylanaraps/pure-bash-bible#percent-encode-a-string
-    local LC_ALL=C
-    for (( i = 0; i < ${#1}; i++ )); do
-        : "${1:i:1}"
-        case "$_" in
-            [a-zA-Z0-9.~_-])
-                printf '%s' "$_"
-            ;;
-
-            *)
-                printf '%%%02X' "'$_"
-            ;;
-        esac
-    done
-    printf '\n'
-}
-
-urldecode() {
-    # Usage: urldecode "string"
-    : "${1//+/ }"
-    printf '%b\n' "${_//%/\\x}"
-}
+  urlencode() {
+      # Usage: urlencode "string"
+      # From: https://github.com/dylanaraps/pure-bash-bible#percent-encode-a-string
+      local LC_ALL=C
+      for (( i = 0; i < ${#1}; i++ )); do
+          : "${1:i:1}"
+          case "$_" in
+              [a-zA-Z0-9.~_-])
+                  printf '%s' "$_"
+              ;;
+  
+              *)
+                  printf '%%%02X' "'$_"
+              ;;
+          esac
+      done
+      printf '\n'
+  }
+  
+  urldecode() {
+      # Usage: urldecode "string"
+      : "${1//+/ }"
+      printf '%b\n' "${_//%/\\x}"
+  }
