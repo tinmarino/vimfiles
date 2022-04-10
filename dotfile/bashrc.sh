@@ -175,9 +175,9 @@
   export -f is_in_array
   is_alma(){
     local fp_sitename=/alma/ste/etc/sitename
-    [[ ! -f "$fp_sitename" ]] || return 1
+    [[ -f "$fp_sitename" ]] || return 1
     export SITENAME=$(<"$fp_sitename")
-    case "$SITENAME" in
+    case $SITENAME in
       ACSE*) return 0;;
       APE*) return 0;;
       TFINT) return 0;;
