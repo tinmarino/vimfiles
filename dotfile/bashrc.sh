@@ -184,7 +184,7 @@
       *) return 1;;
     esac
   }
-is_alma; (( B_IS_ALMA = ! $? )); export B_IS_ALMA
+  is_alma; (( B_IS_ALMA = ! $? )); export B_IS_ALMA
 
 
 # Fzf functions
@@ -303,7 +303,7 @@ is_alma; (( B_IS_ALMA = ! $? )); export B_IS_ALMA
   # Set completion
   complete -C irm irm
   complete -C remove_plugin remove_plugin
-  if is_alma; then
+  if (( 1 == B_IS_ALMA )); then
     try_source /etc/bashrc
     try_source /alma/ste/etc/defaultEnv
   fi
