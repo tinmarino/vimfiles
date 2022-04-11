@@ -254,12 +254,6 @@
   # Rust
   try_source "$HOME/.cargo/env"
 
-  # Pyenv
-  if command -v pyenv 1>/dev/null 2>&1; then
-   eval "$(pyenv init -)"
-  fi
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
 
 # Include completion
   # BaSh completion
@@ -304,8 +298,17 @@
   complete -C irm irm
   complete -C remove_plugin remove_plugin
   if (( 1 == B_IS_ALMA )); then
+    PATH=/alma/ste/bin:$PATH
+    PATH=/usr/X11R6/bin:$PATH
     try_source /etc/bashrc
     try_source /alma/ste/etc/defaultEnv
+  else
+    # Pyenv
+    if command -v pyenv 1>/dev/null 2>&1; then
+     eval "$(pyenv init -)"
+    fi
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
   fi
 
 
