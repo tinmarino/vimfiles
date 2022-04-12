@@ -11,6 +11,12 @@ main(){
 main "$@"
 endsnippet
 
+
+snippet name
+[[ "${BASH_SOURCE[0]}" == "\${0}" ]] && `!v expand('%:t:r')` "$@"
+endsnippet
+
+
 snippet r "((res|=$?))"
 ((res|=\$?))
 endsnippet
@@ -53,7 +59,7 @@ endsnippet
 
 snippet is_in_array "Check # From: https://stackoverflow.com/a/8574392/2544873"
 is_in_array() {
-  # Check if arg1 <string> is in rest of args
+  ### Check if arg1 <string> is in rest of args
   local match="\$1" element; shift
   for element; do [[ "$element" == "$match" ]] && return 0; done
   return 1
@@ -63,18 +69,31 @@ endsnippet
 
 snippet is_int "Check if is int  # From: https://stackoverflow.com/questions/806906, for float ^[0-9]+([.][0-9]+)?$"
 is_int(){
-  # Check is arg1 <string> is an integer (signed)
+  ### Check is arg1 <string> is an integer (signed)
 	[[ \$1 =~ ^[+-]?[0-9]+$ ]] && return 0 || return 1
 }
 endsnippet
 
 
-snippet args "Print args"
-args(){
-  # Print input arguments, one per line
+snippet print_args "Print input argument one per line"
+print_args(){
+  ### Print input arguments, one per line
   local cnt=1
   for s_arg in "$@"; do
     echo "$((cnt++))/ $s_arg"
+  done
+}
+endsnippet
+
+
+snippet print_stack "Print stacktrace"
+print_stack(){
+  ### Print current stack trace to stderr
+  local i
+  local fstg="%1s/ %20s %20s %20s\n"
+  >&2 printf "$fstg" "" Function File Line
+  for i in "${!FUNCNAME[@]}"; do
+    >&2 printf "$fstg" "$i" "${FUNCNAME[$i]}" "${BASH_SOURCE[$i]}" "${BASH_LINENO[$i]}"
   done
 }
 endsnippet
