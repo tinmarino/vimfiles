@@ -124,6 +124,36 @@
   export PROMPT_COMMAND+='history -a;'
 
 # Function
+  is_in_array(){
+    ### Check if arg1 <string> is in rest of args
+    ### Ref: https://stackoverflow.com/a/8574392/2544873
+    local element match="$1"; shift
+    for element; do [[ "$element" == "$match" ]] && return 0; done
+    return 1
+  }
+  export -f is_in_array
+  trim_space(){
+    ### Usage: echo "   example   string    " | trim_space
+    ### From: https://github.com/dylanaraps/pure-bash-bible
+    local s=${1:-$(</dev/stdin)}
+    s=${s#"${s%%[![:space:]]*}"}
+    s=${s%"${s##*[![:space:]]}"}
+    printf '%s\n' "$s"
+  }
+  export -f trim_space
+  is_alma(){
+    ### Check if current computer is an Alma STE
+    local fp_sitename=/alma/ste/etc/sitename
+    [[ -f "$fp_sitename" ]] || return 1
+    export SITENAME=$(<"$fp_sitename")
+    case $SITENAME in
+      ACSE*) return 0 ;;
+      APE*) return 0 ;;
+      TFINT) return 0 ;;
+      *) return 1 ;;
+    esac
+  }
+  is_alma; (( B_IS_ALMA = ! $? )); export B_IS_ALMA
   print_stack() {
      STACK=""
      local i message="${1:-""}"
@@ -165,26 +195,6 @@
     fi
   }
   export -f command_not_found_handle
-  is_in_array(){
-    ### Check if arg1 <string> is in rest of args
-    ### Ref: https://stackoverflow.com/a/8574392/2544873
-    local element match="$1"; shift
-    for element; do [[ "$element" == "$match" ]] && return 0; done
-    return 1
-  }
-  export -f is_in_array
-  is_alma(){
-    local fp_sitename=/alma/ste/etc/sitename
-    [[ -f "$fp_sitename" ]] || return 1
-    export SITENAME=$(<"$fp_sitename")
-    case $SITENAME in
-      ACSE*) return 0;;
-      APE*) return 0;;
-      TFINT) return 0;;
-      *) return 1;;
-    esac
-  }
-  is_alma; (( B_IS_ALMA = ! $? )); export B_IS_ALMA
 
 
 # Fzf functions
@@ -303,6 +313,9 @@
     try_source /etc/bashrc
     try_source /alma/ste/etc/defaultEnv
   else
+    # TODO temporary, this is because I am loosing my history
+    # Backup history
+    PROMPT_COMMAND+='fc -ln -1 | trim_space >> ~/.bash_history_save;'
     # Pyenv
     if command -v pyenv 1>/dev/null 2>&1; then
      eval "$(pyenv init -)"
@@ -346,13 +359,13 @@
   if (( 1 == B_IS_ALMA )); then
     # sitename is defined if is_alma
     case "$SITENAME" in
-    APE-HIL)
-          prefix="\[\033[33m\]${SITENAME}:\[\033[0m\] " ;;  # Orange if APE-HIL
-    AP*)  prefix="\[\033[31m\]${SITENAME}:\[\033[0m\] " ;;  # Red if APE
-    *)    prefix="\[\033[32m\]${SITENAME}:\[\033[0m\] " ;;  # Green otherwise
+      APE-HIL)
+            prefix="\[\033[33m\]${SITENAME}:\[\033[0m\] " ;;  # Orange if APE-HIL
+      AP*)  prefix="\[\033[31m\]${SITENAME}:\[\033[0m\] " ;;  # Red if APE
+      *)    prefix="\[\033[32m\]${SITENAME}:\[\033[0m\] " ;;  # Green otherwise
     esac
     PS1="${prefix}${PS1#"$prefix"}"
-  unset prefix
+    unset prefix
   fi
 
 
