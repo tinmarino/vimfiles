@@ -22,8 +22,12 @@ diary/
 *.log
 *.aux
 *.tar
+*.bbl
+*.blg
+*.bcf
 .Trash-1000/
 *.backup
+*.pdf
 
 # Java
 .idea

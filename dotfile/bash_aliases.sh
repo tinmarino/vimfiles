@@ -182,8 +182,27 @@ alias bat="PAGER= bat"
   alias proc='be almaproc'
   alias root='be root'
   # With a tmux singleton, like it or not
+  #alias acse2='tmux rename-window ACSE2; ssh mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+  # tmux pipe-pane "$(declare -f tmux_pipe); tmux_pipe \"$(tty)\""
+  # shellcheck disable=SC2016  # Expressions
+  acse2(){
+    tmux rename-window ACSE2;
+    ssh mtourneb@acse2-gns.sco.alma.cl -tt '
+      source ./.bash_profile;
+      ./.local/bin/tmux new-session -A -s tin \; pipe-pane "
+        ansi=\"\\x1B\\[[0-9;?>]*[mKHhlC]\";
+        pre=\"$(tty)\";
+        pre=\${pre##/dev/};
+        exec cat - | awk -v date=\"\$(date \"+%Y-%m-%dT%H:%M:%S\")\" -v pre=\"\$pre\" -v ansi=\"\$ansi\" '"'"'{
+          gsub(/\x1B][0-9];/,\"\");
+          gsub(/\x0d/,\"\");
+          gsub(ansi,\"\");
+          print pre \" \" date \" \" \$0
+        }'"'"' >> \"$HOME\"/Test/tmux.log
+      "
+    '
+  }
   alias acse1='tmux rename-window ACSE1; ssh mtourneb@acse1-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
-  alias acse2='tmux rename-window ACSE2; ssh mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
   alias ape2='tmux rename-window APE2; ssh mtourneb@ape2-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
   alias hil='tmux rename-window HIL; ssh mtourneb@ape-hil-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
   alias tfint='tmux rename-window TFINT; ssh mtourneb@tfint-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'

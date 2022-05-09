@@ -464,6 +464,8 @@
     " Mouse Integration
     set ttyfast
     set ttymouse=xterm2
+  " Details
+    set tags=./tags,./TAGS,tags,TAGS,.tags
   " Statusline
     function! Rc_add_path() abort
       let path = expand('%:p')
@@ -479,6 +481,7 @@
     set statusline+=%P\ \   " percent through file
     set statusline+=%c,     " cursor column
     set statusline+=%l/%L   " cursor line/total lines
+
   " File format
     set fileformat=unix
     set wrap

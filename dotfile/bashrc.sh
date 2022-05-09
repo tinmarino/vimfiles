@@ -153,7 +153,21 @@
       *) return 1 ;;
     esac
   }
-  is_alma; (( B_IS_ALMA = ! $? )); export B_IS_ALMA
+  is_alma;
+  # shellcheck disable=SC2181  # Check exit code directly
+  (( B_IS_ALMA = ! $? )); export B_IS_ALMA
+
+  tmux_pipe(){
+    exec cat - \
+      | awk -v date="$(date "+%Y-%m-%dT%H:%M:%S")" -v pre="${1##/dev/}" '{
+        gsub(/\x1B][0-9];/, "");
+        gsub(/\x0d/, "");
+        gsub(/\x1B\[[0-9;?>]*[mKHhlC]/, "");
+        print pre " " date " " $0
+      }' >> "$HOME"/Test/tmux.log
+  }
+  # tmux pipe-pane "$(declare -f tmux_pipe); tmux_pipe \"$(tty)\""
+
   print_stack() {
      STACK=""
      local i message="${1:-""}"
@@ -172,6 +186,16 @@
      echo "$STACK"
   }
   export -f print_stack
+
+  print_args(){
+    ### Print argument received with their positional number, for teaching purposes'
+    local i_cnt=1
+    for s_arg in "$@"; do
+      echo "$(( i_cnt++ ))/ $s_arg"
+    done
+  }
+  export -f print_args
+
   command_not_found_handle() {
     ### Command not found handle Callback for Unknown command (tip: install bash-completion on tmux)
     # If starting with g : git
