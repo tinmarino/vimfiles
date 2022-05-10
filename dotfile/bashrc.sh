@@ -160,9 +160,13 @@
 
   alma_connect(){
     tmux rename-window "$1";
+    pipe_pane_cmd="exec cat - | \$HOME/.vim/bin/tmux-pipe #{pane_tty} >> \$HOME/tmux.log "
     ssh "$2" -tt "
       source ~/.bashrc;
-      ~/.local/bin/tmux new-session -A -s tin \; pipe-pane \"exec cat - | $HOME/.vim/bin/tmux-pipe >> \$HOME/tmux.log \"
+      ~/.local/bin/tmux new-session -A -s tin \; \
+        pipe-pane \"$pipe_pane_cmd\" \; \
+        set-hook after-split-window 'pipe-pane \"$pipe_pane_cmd\"' \; \
+        set-hook after-new-window 'pipe-pane \"$pipe_pane_cmd\"' \; \
     "
   }
 
