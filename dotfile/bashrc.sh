@@ -11,6 +11,7 @@
   [[ -z "$USER" ]] && command -v whoami > /dev/null && USER=$(whoami) && export USER
 
   # Source common (Alma) config
+  # shellcheck disable=SC1091  # Not following: /etc/bashrc
   [[ -e /etc/bashrc ]] && source /etc/bashrc
 
 # Execute tmux
@@ -157,16 +158,13 @@
   # shellcheck disable=SC2181  # Check exit code directly
   (( B_IS_ALMA = ! $? )); export B_IS_ALMA
 
-  tmux_pipe(){
-    exec cat - \
-      | awk -v date="$(date "+%Y-%m-%dT%H:%M:%S")" -v pre="${1##/dev/}" '{
-        gsub(/\x1B][0-9];/, "");
-        gsub(/\x0d/, "");
-        gsub(/\x1B\[[0-9;?>]*[mKHhlC]/, "");
-        print pre " " date " " $0
-      }' >> "$HOME"/Test/tmux.log
+  alma_connect(){
+    tmux rename-window "$1";
+    ssh "$2" -tt "
+      source ~/.bashrc;
+      ~/.local/bin/tmux new-session -A -s tin \; pipe-pane \"exec cat - | $HOME/.vim/bin/tmux-pipe >> \$HOME/tmux.log \"
+    "
   }
-  # tmux pipe-pane "$(declare -f tmux_pipe); tmux_pipe \"$(tty)\""
 
   print_stack() {
      STACK=""

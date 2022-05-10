@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+tmux_pipe(){
+  ### tmux pipe-pane "$(declare -f tmux_pipe); tmux_pipe \"$(tty)\""
+  awk -v date="$(date "+%Y-%m-%dT%H:%M:%S")" -v tty="${1##/dev/}" '{
+    gsub(/\x1B][0-9];/, "");
+    gsub(/\x0d/, "");
+    gsub(/\x1B\[[0-9;?>]*[mKHhlC]/, "");
+    print date " " tty " " $0
+  }'
+}
+
+tmux_pipe "$@"

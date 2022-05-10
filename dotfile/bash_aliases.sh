@@ -185,27 +185,30 @@ alias bat="PAGER= bat"
   #alias acse2='tmux rename-window ACSE2; ssh mtourneb@acse2-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
   # tmux pipe-pane "$(declare -f tmux_pipe); tmux_pipe \"$(tty)\""
   # shellcheck disable=SC2016  # Expressions
-  acse2(){
-    tmux rename-window ACSE2;
-    ssh mtourneb@acse2-gns.sco.alma.cl -tt '
-      source ./.bash_profile;
-      ./.local/bin/tmux new-session -A -s tin \; pipe-pane "
-        ansi=\"\\x1B\\[[0-9;?>]*[mKHhlC]\";
-        pre=\"$(tty)\";
-        pre=\${pre##/dev/};
-        exec cat - | awk -v date=\"\$(date \"+%Y-%m-%dT%H:%M:%S\")\" -v pre=\"\$pre\" -v ansi=\"\$ansi\" '"'"'{
-          gsub(/\x1B][0-9];/,\"\");
-          gsub(/\x0d/,\"\");
-          gsub(ansi,\"\");
-          print pre \" \" date \" \" \$0
-        }'"'"' >> \"$HOME\"/Test/tmux.log
-      "
-    '
-  }
-  alias acse1='tmux rename-window ACSE1; ssh mtourneb@acse1-gns.sco.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
-  alias ape2='tmux rename-window APE2; ssh mtourneb@ape2-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
-  alias hil='tmux rename-window HIL; ssh mtourneb@ape-hil-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
-  alias tfint='tmux rename-window TFINT; ssh mtourneb@tfint-gns.osf.alma.cl -t "source ./.bash_profile; ./.local/bin/tmux new-session -A -s tin"'
+  # Alma_connect(){
+  #   tmux rename-window "$1";
+  #   ssh mtourneb@acse2-gns.sco.alma.cl -tt '
+  #     source ./.bash_profile;
+  #     ./.local/bin/tmux new-session -A -s tin \; pipe-pane "
+  #       ansi=\"\\x1B\\[[0-9;?>]*[mKHhlC]\";
+  #       pre=\"$(tty)\";
+  #       pre=\${pre##/dev/};
+  #       exec cat - | awk -v date=\"\$(date \"+%Y-%m-%dT%H:%M:%S\")\" -v pre=\"\$pre\" -v ansi=\"\$ansi\" '"'"'{
+  #         gsub(/\x1B][0-9];/,\"\");
+  #         gsub(/\x0d/,\"\");
+  #         gsub(ansi,\"\");
+  #         print pre \" \" date \" \" \$0
+  #       }'"'"' >> \"$HOME\"/Test/tmux.log
+  #     "
+  #   '
+  # }
+  alias laptop='alma_connect Laptop localhost'
+  alias acse1='alma_connect ACSE1 mtourneb@acse1-gns.sco.alma.cl'
+  alias acse2='alma_connect ACSE2 mtourneb@acse2-gns.sco.alma.cl'
+  alias ape1='alma_connect APE1 mtourneb@ape1-gns.osf.alma.cl'
+  alias ape2='alma_connect APE2 mtourneb@ape2-gns.osf.alma.cl'
+  alias hil='alma_connect HIL mtourneb@ape-hil-gns.osf.alma.cl'
+  alias tfint='alma_connect HIL mtourneb@tfint-gns.osf.alma.cl'
 
 
 # Jump marks from http://jeroenjanssens.com/2013/08/16/quickly-navigate-your-filesystem-from-the-command-line.html
