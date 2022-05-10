@@ -337,8 +337,8 @@
     PATH=/alma/ste/bin:$PATH
     PATH=/usr/X11R6/bin:$PATH
     # Shadow the /alma/ste/etc/almaEnv slow Hi
-    grep(){
-      if (( ${#@} == 2 )) && [[ "$1" == "-q" ]] && [[ "$2" == "i" ]]; then
+    function grep() {
+      if (( $# == 2 )) && [[ "$1" == "-q" ]] && [[ "$2" == "i" ]]; then
         return 1
       fi
       command grep "$@"; return $?
