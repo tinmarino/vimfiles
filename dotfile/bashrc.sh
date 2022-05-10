@@ -336,10 +336,16 @@
   if (( 1 == B_IS_ALMA )); then
     PATH=/alma/ste/bin:$PATH
     PATH=/usr/X11R6/bin:$PATH
-    showRunningVersion(){ :; }  # Shadow command, is is slow
+    # Shadow the /alma/ste/etc/almaEnv slow Hi
+    grep(){
+      if (( ${#@} == 2 )) && [[ "$1" == "-q" ]] && [[ "$2" == "i" ]]; then
+        return 1
+      fi
+      command grep "$@"; return $?
+    }
     try_source /etc/bashrc
     try_source /alma/ste/etc/defaultEnv
-    unset -f showRunningVersion
+    unset -f grep
   else
     # TODO temporary, this is because I am loosing my history
     # Backup history
