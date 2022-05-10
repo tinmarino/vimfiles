@@ -6,7 +6,7 @@ tmux_pipe(){
     gsub(/\x1B][0-9];/, "");
     gsub(/\x0d/, "");
     gsub(/\x1B\[[0-9;?>]*[mKHhlC]/, "");
-    print date " " tty " " $0
+    print strftime("%Y-%m-%dT%H:%M:%S") " " tty " " $0
   }'
 }
 
