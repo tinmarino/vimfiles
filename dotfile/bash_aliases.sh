@@ -127,9 +127,10 @@ alias bat="PAGER= bat"
 
   # Safe RM
   # shellcheck disable=SC2139  # This expands when defined, not when used
-  alias rm="echo better use trash; mv -f -t $TRASH"
-  alias rmv='command rm'
-  alias trash="trash-put"
+  #alias rm="echo better use trash; mv -f -t $TRASH"
+  alias trash="mv -f -t $TRASH"
+  #alias rmv='command rm'
+  alias trash2="trash-put"
 
   # CD ..
   alias p='cd ..'
@@ -138,6 +139,8 @@ alias bat="PAGER= bat"
   alias pppp='cd ../../../..'
   alias ppppp='cd ../../../../..'
   alias pppppp='cd ../../../../../..'
+  alias ppppppp='cd ../../../../../../..'
+  alias pppppppp='cd ../../../../../../../..'
 
 
 # Color improve (ls, grep)
