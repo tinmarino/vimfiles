@@ -336,8 +336,10 @@
   if (( 1 == B_IS_ALMA )); then
     PATH=/alma/ste/bin:$PATH
     PATH=/usr/X11R6/bin:$PATH
+    showRunningVersion(){ :; }  # Shadow command, is is slow
     try_source /etc/bashrc
     try_source /alma/ste/etc/defaultEnv
+    unset -f showRunningVersion
   else
     # TODO temporary, this is because I am loosing my history
     # Backup history
