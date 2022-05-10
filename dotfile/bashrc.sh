@@ -336,9 +336,10 @@
   if (( 1 == B_IS_ALMA )); then
     PATH=/alma/ste/bin:$PATH
     PATH=/usr/X11R6/bin:$PATH
-    # Shadow the /alma/ste/etc/almaEnv slow Hi
     function grep() {
-      if (( $# == 2 )) && [[ "$1" == "-q" ]] && [[ "$2" == "i" ]]; then
+      ### Shadow the /alma/ste/etc/almaEnv slow Hi
+      ### Catch grep --color=auto -q i, to make believe I am not interactive
+      if (( $# == 3 )) && [[ "$2" == "-q" ]] && [[ "$3" == "i" ]]; then
         return 1
       fi
       command grep "$@"; return $?
