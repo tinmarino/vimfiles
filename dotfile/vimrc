@@ -7,7 +7,7 @@
   set encoding=utf-8
   scriptencoding uft-8
   set mouse=a " Enable mouse use in all modes
-  set pythonthreedll=/usr/lib/python3.9/config-3.9-x86_64-linux-gnu/libpython3.9.so
+  set pythonthreedll=/usr/lib/python3.10/config-3.10-x86_64-linux-gnu/libpython3.10.so
 
 
 " Variable (Perso)
@@ -133,7 +133,7 @@
     let g:vimwiki_hl_cb_checked = 1
     let g:vimwiki_syntax = 'markdown'
     let g:vimwiki_ext = '.md'
-    "let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
+    let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
     let g:vimwiki_css_name = '/Css/include.css'
 
     " Test Wiki
@@ -729,10 +729,37 @@
       let link = a:0 ? a:1 : expand('<cWORD>')
       if link =~? '^ICT-\d*'
         let link = 'https://ictjira.alma.cl/browse/' . link
+      elseif link =~? '^\S*=SC\d*'
+        let link = substitute(link, '\w*=\(SC\d*\)', '\1', '')
+        let link = 'https://github.com/koalaman/shellcheck/wiki/' . link
       endif
-      exe '!xdg-open ' . link . '&'
+      exe '!xdg-open ' . link . '&> /dev/null &'
     endfunction
     nmap gx yiW:call OpenLink() <Cr><Cr>
+
+  " Send to tmux right (Ctrl-f)
+    let g:slime_target = 'tmux'
+    let g:slime_default_config = {'socket_name': 'default', 'target_pane': '{bottom-right}'}
+    let g:slime_dont_ask_default = 1
+    packadd slime
+  
+    function! SendRight(...)
+      let line = a:0 ? a:1 : getline('.')
+      " Trim spaces
+      let line = substitute(line, '^\s*\`*\s*', '', '')
+      let line = substitute(line, '\s*\`*\s*$', '', '')
+      if line =~? '^ts'
+        let line = substitute(line, '^ts\s*', '', '')
+        execute '!tmux send-keys -t right ' . line . '&> /dev/null'
+      else
+        call slime#send(getline(".") . "\n")
+      endif
+    endfunction
+
+    nnoremap <C-F> :<c-u>call SendRight(getline("."))<cr><cr>
+    xmap <C-F> <Plug>SlimeRegionSend
+    "nmap <C-t> :call SendTmux() <Cr><Cr>
+
   " Use <C-L> to clear the highlighting of :set hlsearch and also preserve the
   " default behavior of redrawing the screen
     if maparg('<C-S-L>', 'n') ==# ''
@@ -1007,171 +1034,164 @@
 
 
 
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" Or use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-
-
-
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-function! SynStack()
-  if !exists('*synstack')
-    return
-  endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunction
-
-
-function! SynGroup()
-    let l:s = synID(line('.'), col('.'), 1)
-    echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
-endfunction
-
-function! SourceIfExist(file)
-  let l:file = expand(a:file)
-  if filereadable(l:file)
-    exe 'source' a:file
-  endif
-endfunction
-
-let t:is_transparent = 0
-function! Toggle_transparent_background()
-  if t:is_transparent == 0
-    hi Normal guibg=#111111 ctermbg=black
-    hi Normal ctermfg=223 ctermbg=235 guifg=#ebdbb2 guibg=#282828
-    hi CursorLine term=underline cterm=underline guibg=#3c3836
-    let t:is_transparent = 1
-  else
-    hi Normal guibg=NONE ctermbg=NONE
-    hi CursorLine guibg=NONE
-    let t:is_transparent = 0
-  endif
-endfunction
-nnoremap <F5> :call Toggle_transparent_background()<CR>
-
-let g:is_bash=1
-
-
-function! Fix()
-  let l:i_line = line('.')
-  let l:i_has_fixed = 0
-  while 1
-    let l:s_line = getline(l:i_line)
-    echom l:i_line .  l:s_line
-
-    if -1 == match(l:s_line, '^ *#')
-      " Ciao
-      if l:i_has_fixed == 1
-        break
-      endif
-      " Comment errounous line
-      call setline(l:i_line, substitute(l:s_line, '[^ ]', '# \0', ''))
-
-    elseif -1 != match(l:s_line, '^ *#\s*Fix\w*: ')
-      " Uncomment Fix
-      call setline(l:i_line, substitute(l:s_line, '#\s*Fix\w*: ', '', ''))
-      let l:i_has_fixed = 1
-
-    elseif -1 != match(l:s_line, '^ *#\s*Rem\w*:')
-      " Remove Rem from remarks
-      "call setline(l:i_line, substitute(l:s_line, '#\s*Rem\w*:\s*', '# ', ''))
-
-    else
-      " Ciao
-      if l:i_has_fixed == 1
-        break
-      endif
-
+  " Use tab for trigger completion with characters ahead and navigate.
+  " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+  inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
+  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+  
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
+  
+  " Use <c-space> to trigger completion.
+  inoremap <silent><expr> <c-space> coc#refresh()
+  
+  " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+  " Coc only does snippet and additional edit on confirm.
+  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+  " Or use `complete_info` if your vim support it, like:
+  " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+  
+  
+  
+  " Use `[g` and `]g` to navigate diagnostics
+  nmap <silent> [g <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]g <Plug>(coc-diagnostic-next)
+  
+  " Remap keys for gotos
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gr <Plug>(coc-references)
+  
+  function! SynStack()
+    if !exists('*synstack')
+      return
     endif
-
-    let l:i_line += 1
-  endwhile
-endfunction
-nnoremap <leader>f :call Fix()<CR>
-
-function! BashColor()
-  syn cluster shExprList2	add=Hide
-  syn cluster	shCommentGroup add=Hide
-  syn cluster	shFunctionList add=Hide
-  syn cluster	shLoopList add=Hide
-
-  "syn clear shComment
-  "syn clear shExpr
-  syn region Hide start=/^ *# Fix:/ end=/^\s*$/
-  " syn match Hide /# Fix:.*$/
-  hi Hide ctermfg=darkgrey ctermbg=darkgrey
-
-  " syn match	shComment		"^\s*\zs#.*$"	contains=@shCommentGroup
-  " syn match	shComment		"\s\zs#.*$"	contains=@shCommentGroup
-  " syn match	shComment	contained	"#.*$"	contains=@shCommentGroup
-  "syn match shFunctionOne matchgroup=shFunction start=/^\s*[A-Za-z_0-9:][-a-zA-Z_0-9:]*\s*()\_s*{/ end=/}/  contains=@shFunctionList nextgroup=shFunctionStart,shQuickComment skipwhite skipnl
-  packadd wiki
-  if exists('b:current_syntax')
-    unlet b:current_syntax
-  endif
-  syn include @MarkdownScript syntax/vimwiki.vim
-  "syn include @MarkdownScript syntax/markdown.vim
-  syn region MarkdownScriptCode matchgroup=MarkdownCommand start=+[=\\]\@<!'+ skip=+\\'+ end=+'+ contains=@MarkdownScript contained
-  syn region MarkdownScriptEmbedded matchgroup=MarkdownCommand start=+\<:\>+ skip=+\\$+ end=+[=\\]\@<!'+me=e-1 contains=@shIdList,@shExprList2 nextgroup=MarkdownScriptCode
-  syn cluster shCommandSubList add=MarkdownScriptEmbedded
-  hi def link MarkdownCommand Type
-
-  if exists('b:current_syntax')
-    unlet b:current_syntax
-  endif
-  syn include @AWKScript syntax/awk.vim
-  syn region AWKScriptCode matchgroup=AWKCommand start=+[=\\]\@<!'+ skip=+\\'+ end=+'+ contains=@AWKScript contained
-  syn region AWKScriptEmbedded matchgroup=AWKCommand start=+\<awk\>+ skip=+\\$+ end=+[=\\]\@<!'+me=e-1 contains=@shIdList,@shExprList2 nextgroup=AWKScriptCode
-  syn cluster shCommandSubList add=AWKScriptEmbedded
-  hi def link AWKCommand Type
-endfunction
-
-"autocmd BufReadPost,BufWinEnter *.bash call BashColor()
-command Hide call BashColor()
-command Show hi clear Hide
-let sh_minlines = 500
-
-
-let g:slime_target = 'tmux'
-let g:slime_default_config = {'socket_name': 'default', 'target_pane': '{top-right}'}
-let g:slime_dont_ask_default = 1
-nnoremap <C-F> :<c-u>call slime#send(getline(".") . "\n")<cr>
-xmap <C-F> <Plug>SlimeRegionSend
-packadd slime
-
-" Fasten like vim -X
-" TODO is 1 second dealy, kill tmux server
-" TODO make some contributions to tmux
-"https://superuser.com/questions/1450881/why-is-accessing-the-x-server-locally-from-vim-so-slow
-" See: https://stackoverflow.com/questions/14635295/vim-takes-a-very-long-time-to-start-up
-"set clipboard=exclude:.*
-"set clipboard=exclude:.*  " Do not connect to X, can take one sec on Ubuntu 2020.10
-"set notitle
-"
+    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+  endfunction
+  
+  
+  function! SynGroup()
+      let l:s = synID(line('.'), col('.'), 1)
+      echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+  endfunction
+  
+  function! SourceIfExist(file)
+    let l:file = expand(a:file)
+    if filereadable(l:file)
+      exe 'source' a:file
+    endif
+  endfunction
+  
+  let t:is_transparent = 0
+  function! Toggle_transparent_background()
+    if t:is_transparent == 0
+      hi Normal guibg=#111111 ctermbg=black
+      hi Normal ctermfg=223 ctermbg=235 guifg=#ebdbb2 guibg=#282828
+      hi CursorLine term=underline cterm=underline guibg=#3c3836
+      let t:is_transparent = 1
+    else
+      hi Normal guibg=NONE ctermbg=NONE
+      hi CursorLine guibg=NONE
+      let t:is_transparent = 0
+    endif
+  endfunction
+  nnoremap <F5> :call Toggle_transparent_background()<CR>
+  
+  let g:is_bash=1
+  
+  
+  function! Fix()
+    let l:i_line = line('.')
+    let l:i_has_fixed = 0
+    while 1
+      let l:s_line = getline(l:i_line)
+      echom l:i_line .  l:s_line
+  
+      if -1 == match(l:s_line, '^ *#')
+        " Ciao
+        if l:i_has_fixed == 1
+          break
+        endif
+        " Comment errounous line
+        call setline(l:i_line, substitute(l:s_line, '[^ ]', '# \0', ''))
+  
+      elseif -1 != match(l:s_line, '^ *#\s*Fix\w*: ')
+        " Uncomment Fix
+        call setline(l:i_line, substitute(l:s_line, '#\s*Fix\w*: ', '', ''))
+        let l:i_has_fixed = 1
+  
+      elseif -1 != match(l:s_line, '^ *#\s*Rem\w*:')
+        " Remove Rem from remarks
+        "call setline(l:i_line, substitute(l:s_line, '#\s*Rem\w*:\s*', '# ', ''))
+  
+      else
+        " Ciao
+        if l:i_has_fixed == 1
+          break
+        endif
+  
+      endif
+  
+      let l:i_line += 1
+    endwhile
+  endfunction
+  nnoremap <leader>f :call Fix()<CR>
+  
+  function! BashColor()
+    syn cluster shExprList2	add=Hide
+    syn cluster	shCommentGroup add=Hide
+    syn cluster	shFunctionList add=Hide
+    syn cluster	shLoopList add=Hide
+  
+    "syn clear shComment
+    "syn clear shExpr
+    syn region Hide start=/^ *# Fix:/ end=/^\s*$/
+    " syn match Hide /# Fix:.*$/
+    hi Hide ctermfg=darkgrey ctermbg=darkgrey
+  
+    " syn match	shComment		"^\s*\zs#.*$"	contains=@shCommentGroup
+    " syn match	shComment		"\s\zs#.*$"	contains=@shCommentGroup
+    " syn match	shComment	contained	"#.*$"	contains=@shCommentGroup
+    "syn match shFunctionOne matchgroup=shFunction start=/^\s*[A-Za-z_0-9:][-a-zA-Z_0-9:]*\s*()\_s*{/ end=/}/  contains=@shFunctionList nextgroup=shFunctionStart,shQuickComment skipwhite skipnl
+    packadd wiki
+    if exists('b:current_syntax')
+      unlet b:current_syntax
+    endif
+    syn include @MarkdownScript syntax/vimwiki.vim
+    "syn include @MarkdownScript syntax/markdown.vim
+    syn region MarkdownScriptCode matchgroup=MarkdownCommand start=+[=\\]\@<!'+ skip=+\\'+ end=+'+ contains=@MarkdownScript contained
+    syn region MarkdownScriptEmbedded matchgroup=MarkdownCommand start=+\<:\>+ skip=+\\$+ end=+[=\\]\@<!'+me=e-1 contains=@shIdList,@shExprList2 nextgroup=MarkdownScriptCode
+    syn cluster shCommandSubList add=MarkdownScriptEmbedded
+    hi def link MarkdownCommand Type
+  
+    if exists('b:current_syntax')
+      unlet b:current_syntax
+    endif
+    syn include @AWKScript syntax/awk.vim
+    syn region AWKScriptCode matchgroup=AWKCommand start=+[=\\]\@<!'+ skip=+\\'+ end=+'+ contains=@AWKScript contained
+    syn region AWKScriptEmbedded matchgroup=AWKCommand start=+\<awk\>+ skip=+\\$+ end=+[=\\]\@<!'+me=e-1 contains=@shIdList,@shExprList2 nextgroup=AWKScriptCode
+    syn cluster shCommandSubList add=AWKScriptEmbedded
+    hi def link AWKCommand Type
+  endfunction
+  
+  "autocmd BufReadPost,BufWinEnter *.bash call BashColor()
+  command Hide call BashColor()
+  command Show hi clear Hide
+  let sh_minlines = 500
+  
+  
+  " Fasten like vim -X
+  " TODO is 1 second dealy, kill tmux server
+  " TODO make some contributions to tmux
+  "https://superuser.com/questions/1450881/why-is-accessing-the-x-server-locally-from-vim-so-slow
+  " See: https://stackoverflow.com/questions/14635295/vim-takes-a-very-long-time-to-start-up
+  "set clipboard=exclude:.*
+  "set clipboard=exclude:.*  " Do not connect to X, can take one sec on Ubuntu 2020.10
+  "set notitle
+  "

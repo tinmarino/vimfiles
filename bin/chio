@@ -72,7 +72,7 @@ __ff_check_arg(){
 fftv(){
   `# Convert video for ${cblue}TeleVision$cend: ${cyellow}chio fftv archivo_in.avi archivo_out.avi$cend`
   __ff_check_arg "$@"
-  ffmpeg -i "$1"  -f avi -c:v mpeg4 -b:v 4000k -c:a libmp3lame -b:a 320k  "$2"
+  ffmpeg -i "$1" -f avi -c:v mpeg4 -b:v 4000k -c:a libmp3lame -b:a 320k "$2"
 }
 
 ffgif(){

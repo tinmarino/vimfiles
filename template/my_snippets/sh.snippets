@@ -3,12 +3,16 @@ priority 1
 snippet hi "start a script"
 #!/usr/bin/env bash
 
-main(){
-  echo "--> Starting \$0 with $@"
-  $0
+`!v expand('%:t:r')`(){
+	$1
 }
 
-main "$@"
+if ! (return 0 2>/dev/null); then
+  echo "--> \$0 starting with $*." >&2
+  `!v expand('%:t:r')` "$@"; res=\$?
+  echo "<-- \$0 returned with \$res." >&2
+	exit "$res"
+fi
 endsnippet
 
 
@@ -38,22 +42,23 @@ fi
 endsnippet
 
 snippet parse "parse argument in"
-while (( 0 != $# )); do
-  case \$1 in
-    -h)
-      echo "Help yourself: lint your code!"
-			shift
-      exit
-      ;;
-	  --${1:v1})
-		  $1=\$2
-			shift
-			shift
-			;;
-    *)
-      shift
-  esac
-done
+parse_argument(){
+	while (( 0 != $# )); do
+		case \$1 in
+			-h|--help)
+				echo "Help yourself: lint your code!"
+				return
+				;;
+			--${1:v1})
+				$1=\$2
+				shift
+				shift
+				;;
+			*)
+				shift
+		esac
+	done
+}
 endsnippet
 
 

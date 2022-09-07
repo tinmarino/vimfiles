@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC1091  # Not followin
+
 # Clause In
   # If not running interactively, don't do anything
   [[ -z "$PS1" ]] && return
@@ -177,10 +179,10 @@
      # to avoid noise we start with 1 to skip the get_stack function
      for (( i=1; i<stack_size; i++ )); do
         local func="${FUNCNAME[$i]}"
-        [ "x$func" = x ] && func=MAIN
+        [[ -z "$func" ]] && func=MAIN
         local linen="${BASH_LINENO[$(( i - 1 ))]}"
         local src="${BASH_SOURCE[$i]}"
-        [ x"$src" = x ] && src=non_file_source
+        [[ -z "$src" ]] && src=non_file_source
 
         STACK+=$'\n'"   at: $func $src $linen"
      done
@@ -331,7 +333,9 @@
 
 # Alma
   # Set completion
-  complete -C irm irm
+  export ALMASW=~/AlmaSw
+  complete -o nosort -C irm irm
+  complete -o nosort -C art art
   complete -C remove_plugin remove_plugin
   if (( 1 == B_IS_ALMA )); then
     PATH=/alma/ste/bin:$PATH
@@ -407,6 +411,8 @@
 # Fast
   # Add "substitute" mnemonic, which the info file left out.
   export PATH="/home/tourneboeuf/Program/GitFuzzy/bin:$PATH"
+  #PATH+=:/home/tourneboeuf/Program/Casa/casa-6.2.1-7-pipeline-2021.2.0.128/bin
+  PATH+=:/home/tourneboeuf/Program/Casa/casa-6.5.1-23-py3.8/bin
 
   urlencode() {
       # Usage: urlencode "string"
