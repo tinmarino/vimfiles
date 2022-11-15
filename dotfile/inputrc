@@ -18,12 +18,21 @@ $include /etc/inputrc
 "\e[1;5C": forward-word
 "\e[1;5D": backward-word
 
-# Fast
-"\e\C-M": "\C-v\C-j"
+# Newline easyer
 "\C-j": "\C-v\C-j"
 
-"\C-p": previous-screen-line
-"\C-h": next-screen-line
+# Array
+"\ea": "\"${[@]}\"\C-b\C-b\C-b\C-b\C-b"
+
+
+# WARNING, this one is mappping ctrl-up ctrl-backslash and co
+#"\C-h": "\"${[@]}\"\C-b\C-b\C-b\C-b\C-b"
+
+# Fast
+"\e\C-M": "\C-v\C-j"
+
+#"\C-p": previous-screen-line
+#"\C-h": next-screen-line
 #"\C-h": "ctrlh-test"
 "\C-o": shell-expand-line
 #"\C-p": "$(date) \e\C-e\ef\ef\ef\ef\ef"
