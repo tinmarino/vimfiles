@@ -119,6 +119,7 @@
   # Append instead of overwrite
   export HISTSIZE=1000000
   export HISTFILESIZE=2000000
+  export HISTTIMEFORMAT='%Y-%m-%dT%H:%M:%S '
   shopt -s histappend
   #export HISTCONTROL=ignoredups
   # Save history after each executed line
@@ -145,6 +146,7 @@
   }
   export -f trim_space
   is_alma(){
+    [[ tourny == "$HOSTNAME" ]] && return 1
     ### Check if current computer is an Alma STE
     local fp_sitename=/alma/ste/etc/sitename
     [[ -f "$fp_sitename" ]] || return 1
@@ -166,7 +168,7 @@
     ssh "$2" -tt "
       source ~/.bashrc;
       ~/.local/bin/tmux new-session -A -s tin \; \
-        pipe-pane \"$pipe_pane_cmd\" \; \
+        pipe-pane -o \"$pipe_pane_cmd\" \; \
         set-hook after-split-window 'pipe-pane \"$pipe_pane_cmd\"' \; \
         set-hook after-new-window 'pipe-pane \"$pipe_pane_cmd\"' \; \
     "
@@ -411,8 +413,8 @@
 # Fast
   # Add "substitute" mnemonic, which the info file left out.
   export PATH="/home/tourneboeuf/Program/GitFuzzy/bin:$PATH"
-  #PATH+=:/home/tourneboeuf/Program/Casa/casa-6.2.1-7-pipeline-2021.2.0.128/bin
-  PATH+=:/home/tourneboeuf/Program/Casa/casa-6.5.1-23-py3.8/bin
+  PATH+=:/home/tourneboeuf/Program/Casa/casa-6.2.1-7-pipeline-2021.2.0.128/bin
+  #PATH+=:/home/tourneboeuf/Program/Casa/casa-6.5.1-23-py3.8/bin
 
   urlencode() {
       # Usage: urlencode "string"
@@ -438,3 +440,5 @@
       : "${1//+/ }"
       printf '%b\n' "${_//%/\\x}"
   }
+  
+  export CVSROOT=:pserver:almasci@cvs01.osf.alma.cl:2401/project21/CVS
