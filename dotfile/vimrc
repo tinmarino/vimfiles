@@ -174,6 +174,11 @@
     let g:tex_flavor = 'latex'
     " No autoindent
     let g:vimtex_indent_enabled = 0
+    " Disable overfull/underfull \hbox
+    "let g:vimtex_quickfix_latexlog = {
+    "    \ 'overfull' : 0,
+    "    \ 'underfull' : 0,
+    "    \}
 
   " Ultisnip
     let g:UltiSnipsSnippetDirectories = [$v . '/template/my_snippets', $v . '/pack/bundle/opt/snippets/UltiSnips']
@@ -301,6 +306,7 @@
     packadd unimpaired  " 5ms  ]b (:bn) , ]<space> (add empty lines), ]q
     packadd tmux-navigator  " ]q
     packadd emacscommandline  " 3ms
+    packadd tex
     " Misc:
     packadd vader
     packadd ale

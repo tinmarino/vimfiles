@@ -4,34 +4,43 @@
 # TODO vim and fzf from git
 # TODO sudo apt install -o Dpkg::Options::="--force-overwrite" bat ripgrep
 
-# Init
-pg=()
+# Packages to install also on termux
+android=(
+# Operational
+git
+tmux
+vim
+
+fzf
+ripgrep  # faster find
+
+python3
+
+ssh
+sshd
+)
 
 pg+=(
 # Operational
-git
 gitk
 tmux
 bash-completion
 vlc
 vim-gtk  # For system clipboard
 exuberant-ctags
-ssh
 mosh
 xterm
 
 # Fzf stuff
 # See: https://github.com/sharkdp/bat/issues/938 
-fzf
 bat  # syntax hi in fzf
-ripgrep  # faster find
 fdfind  # faster find but not used
 
 # Linters
 shellcheck
 
 # Language
-python3 jupyter-console python3-pip
+jupyter-console python3-pip
 perl
 bash
 npm
@@ -60,5 +69,7 @@ linux-headers-generic
 
 # Print out
 echo -n "sudo apt install "
-for prog in "${pg[@]}" ; do echo -n "$prog " ; done
+
+for prog in "${android[@]}"; do
+  echo -n "$prog " ; done
 echo
