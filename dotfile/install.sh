@@ -36,8 +36,9 @@ convert_path_to_unix() {
 try_link() {
     target="$1"
     link="$2"
-    if [ -f "$link" ] ; then
+    if [[ -f "$link" || -L "$link" ]] ; then
         echo "[-] $link already exists"
+	unlink "$link"
     else
         if [ "$os" = "windows" ] ; then
             target=$(convert_path_to_windows "$target")
