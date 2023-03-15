@@ -10,11 +10,14 @@ android=(
 git
 tmux
 vim
+curl
+wget
 
 fzf
 ripgrep  # faster find
 
 python3
+python3-pip
 
 ssh
 sshd
@@ -38,6 +41,7 @@ fdfind  # faster find but not used
 
 # Linters
 shellcheck
+yamllint
 
 # Language
 jupyter-console python3-pip
@@ -46,7 +50,7 @@ bash
 npm
 
 # LaTex
-texlive-latex-extra latex-mk latexmk
+texlive-full latex-mk latexmk
 pandoc
 pdf2svg
 
@@ -64,6 +68,9 @@ gnome-terminal
 wine
 linux-headers-generic
 )
+
+# TODO
+# pip3 install vim-vint
 
 # npm install -g diff-so-fancy
 
