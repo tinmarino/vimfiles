@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# shellcheck disable=SC1091  # Not followin
+# shellcheck disable=SC1091  # Not following
 
 # Clause In
   # If not running interactively, don't do anything
@@ -205,7 +205,7 @@
   command_not_found_handle() {
     ### Command not found handle Callback for Unknown command (tip: install bash-completion on tmux)
     # If starting with g : git
-    if [[ -z "$1" ]] && [[ "${1:0:1}" == "g" ]]; then
+    if [[ -n "$1" ]] && [[ "${1:0:1}" == "g" ]]; then
       # shellcheck disable=SC2086
       git "${1:1}" $2
     # If some specific binary (debian)
