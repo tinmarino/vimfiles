@@ -1,6 +1,6 @@
 " From: https://vi.stackexchange.com/questions/2157/collapse-vim-folds-to-a-single-line-similar-to-atom-or-sublime-text
 
-function! s:declare_global()
+function! s:declare_global() abort
   " Define global variables, called at init
   " let g:regexp_blank = '^\s*$\|^\s*[#"/]'
   let g:regexp_blank = '^\s*$'

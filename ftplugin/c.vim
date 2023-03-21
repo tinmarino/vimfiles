@@ -1,17 +1,15 @@
-
 " FOLD
-  "set foldmethod=indent
-  "set foldexpr=FoldCMethod(v:lnum)
 
-  function! FoldCMethod(lnum)
-    let crLine = getline( a:lnum ) 
-    " check if { or }
-    if crLine =~ "\s*[{}]\s*" 
-      if crLine =~ ".*{.*"
-        return FoldMethod(a:lnum+1) "value of the next line   
-      else 
-	return FoldMethod(a:lnum-1) "value of the previous line + 0 
-      endif 
+function! FoldCMethod(lnum)
+  let crLine = getline( a:lnum ) 
+  " check if { or }
+  if crLine =~# '\s*[{}]\s*' 
+    if crLine =~# '.*{.*'
+      return FoldMethod(a:lnum+1) "value of the next line   
+    else 
+      return FoldMethod(a:lnum-1) "value of the previous line + 0 
     endif 
-    return FoldMethod( a:lnum )
-  endfunction 
+  endif 
+
+  return FoldMethod( a:lnum )
+endfunction 

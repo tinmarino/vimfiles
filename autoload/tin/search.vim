@@ -5,7 +5,7 @@
 " :Isearch > 450.20
 " :Isearch > 1000 < 1000000
 
-function! search#char_range(char, dir)
+function! search#char_range(char, dir) abort
   " Get string with range or '' if < 0 or > 9
 
   if a:dir
@@ -22,7 +22,7 @@ function! search#char_range(char, dir)
 endfunction
 
 
-function! search#isearch(num, dir, inc)
+function! search#isearch(num, dir, inc) abort
   " Search any number supp to 9
   " 
   " Number: 	(number)  Limiting the range
@@ -48,7 +48,7 @@ function! search#isearch(num, dir, inc)
   for l:c in split(l:high, '\zs')
 	" Get the higher range [-]
 	let l:range = search#char_range(l:c, a:dir)
-	if (l:range != '')
+	if !empty(l:range)
 	  let l:pat = l:pat_list[0] . l:range
 	  if (a:dir == 0 && l:pat_list[0] == l:start_of_number) 
 		let l:pat .= '\?'
@@ -80,7 +80,7 @@ function! search#isearch(num, dir, inc)
   " 1.3/ indlude rest (after .)
   for i in range(1, len(l:pat_list) - 1)
 	" The last digit is non optional (otherwise can match all)
-	if l:pat_list[i][-4:] == '\d\?'
+	if l:pat_list[i][-4:] ==# '\d\?'
 	  let l:pat_list[i] = l:pat_list[i][:-3]
 	endif
 	let l:pat_list[i] .= '\%(\.\d*\)\?\%(\ze\D\|$\)'
@@ -89,19 +89,19 @@ function! search#isearch(num, dir, inc)
 
   " 2/ Low loop
   " ~~~~~~~~~~~
-  if (len(l:low) != '')
-	let l:pat_list[0] .= '\.'
+  if !(len(l:low))
+	  let l:pat_list[0] .= '\.'
   else
-	let l:pat_list[0] .= '\.\?'
+	  let l:pat_list[0] .= '\.\?'
   endif
   for l:c in split(l:low, '\zs')
-	" Get the higher range [-]
-	let l:cp1 = string( str2nr(l:c) + 1 )
-	if (l:cp1 == 10) | break | endif
-	call add(l:pat_list, l:pat_list[0] . '[' . cp1 . '-9]\d*')
+	  " Get the higher range [-]
+	  let l:cp1 = string( str2nr(l:c) + 1 )
+	  if (l:cp1 == 10) | break | endif
+	  call add(l:pat_list, l:pat_list[0] . '[' . cp1 . '-9]\d*')
 
-	" Add to initial pattern
-	let l:pat_list[0] .= l:c
+	  " Add to initial pattern
+	  let l:pat_list[0] .= l:c
   endfor
 
   " 2.2/ A very little drop
@@ -110,30 +110,30 @@ function! search#isearch(num, dir, inc)
 
   " 3/ Add the number itself
   if a:inc
-	let l:pat = join(l:pat_list, '\|')
+	  let l:pat = join(l:pat_list, '\|')
   else
-	let l:pat = join(l:pat_list[1:], '\|')
+	  let l:pat = join(l:pat_list[1:], '\|')
   endif
 
   return l:pat
 endfunction
 
 
-function! search#wrapper(...)
+function! search#wrapper(...) abort
   let l:pat = ''
   for l:i in range(len(a:000))
 	" TODO check if there is a number after
-	if (a:000[l:i] == '>=')
-	  if (l:pat != '') | let l:pat .= '\&' | endif
+	if (a:000[l:i] ==# '>=')
+	  if (l:pat !=# '') | let l:pat .= '\&' | endif
 	  let l:pat .= '\%(' . search#isearch(a:000[l:i+1], 1, 1) . '\)'
-	elseif (a:000[l:i] == '>')
-	  if (l:pat != '') | let l:pat .= '\&' | endif
+	elseif (a:000[l:i] ==# '>')
+	  if (l:pat !=# '') | let l:pat .= '\&' | endif
 	  let l:pat .= '\%(' . search#isearch(a:000[l:i+1], 1, 0) . '\)'
-	elseif (a:000[l:i] == '<=')
-	  if (l:pat != '') | let l:pat .= '\&' | endif
+	elseif (a:000[l:i] ==# '<=')
+	  if (l:pat !=# '') | let l:pat .= '\&' | endif
 	  let l:pat .= '\%(' . search#isearch(a:000[l:i+1], 0, 1) . '\)'
-	elseif (a:000[l:i] == '<')
-	  if (l:pat != '') | let l:pat .= '\&' | endif
+	elseif (a:000[l:i] ==# '<')
+	  if (l:pat !=# '') | let l:pat .= '\&' | endif
 	  let l:pat .= '\%(' . search#isearch(a:000[l:i+1], 0, 0) . '\)'
 	endif
   endfor
