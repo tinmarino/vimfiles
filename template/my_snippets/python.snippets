@@ -1,0 +1,18 @@
+priority 1
+
+snippet hi "start a script"
+#!/usr/bin/env python3
+"""
+Title: `!v expand('%:t:r')`
+
+Description:
+"""
+
+def `!v expand('%:t:r')`():
+    """ Main """
+    print("Starting `!v expand('%:t')`")
+    $1
+
+if __name__ == '__main__':
+    `!v expand('%:t:r')`()
+endsnippet
