@@ -1,0 +1,55 @@
+---
+# Copied from previous .travis.yml by tinmarino the 2023-03-09
+
+# Commented out to avoid verbosity on github commit status
+name: "CI Dotfile"
+
+# yamllint disable-line rule:truthy
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  Typos:
+    # Copied from: https://github.com/junegunn/fzf/blob/master/
+    # -- .github/workflows/typos.yml
+    name: Typos
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: crate-ci/typos@v1.13.16
+        with:
+          config: ./test/resources/typos_config.toml
+
+
+  Yamllint:
+    # Copied from: https://github.com/junegunn/fzf/blob/master/
+    # -- .github/workflows/typos.yml
+    name: Yamllint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: .github/workflows/test-vader-action.yml
+
+
+  Vint:
+    # Copied from: https://github.com/LudvigHz/vint-action
+    # And local ./test/run_test.sh
+    name: Vint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: ludvighz/vint-action@v1
+        with:
+          path: dotfile/vimrc
+          args: --style-problem
+      - uses: ludvighz/vint-action@v1
+        with:
+          path: autoload after ftplugin ftdetect
+          args: --style-problem
