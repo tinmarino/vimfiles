@@ -19,7 +19,8 @@ jobs:
           fetch-depth: 0
       - uses: crate-ci/typos@v1.13.16
         with:
-          config: ./test/resources/typos_config.toml
+          files: dotfile/vimrc
+          config: .github/res/typos_config.toml
 
 
   Yamllint:
@@ -33,7 +34,7 @@ jobs:
           fetch-depth: 0
       - uses: ibiqlik/action-yamllint@v3
         with:
-          file_or_dir: .github/workflows/test-vader-action.yml
+          file_or_dir: .github/workflows/ci-vader-action.yml
 
 
   Vint:
@@ -51,5 +52,17 @@ jobs:
           args: --style-problem
       - uses: ludvighz/vint-action@v1
         with:
-          path: autoload after ftplugin ftdetect
+          path: autoload
+          args: --style-problem
+      - uses: ludvighz/vint-action@v1
+        with:
+          path: after
+          args: --style-problem
+      - uses: ludvighz/vint-action@v1
+        with:
+          path: ftplugin
+          args: --style-problem
+      - uses: ludvighz/vint-action@v1
+        with:
+          path: ftdetect
           args: --style-problem

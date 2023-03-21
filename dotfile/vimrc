@@ -316,7 +316,7 @@
     packadd surround  " ySS<div>
     packadd repeat  " for surround
     packadd textobj-user  " for function
-    packadd textobj-arg  " daa
+    packadd textobj-arg  " data
     packadd textobj-indent  " dai
     packadd textobj-function  " daf
     packadd unimpaired  " 5ms  ]b (:bn) , ]<space> (add empty lines), ]q
@@ -364,7 +364,7 @@
     set t_Co=256  " For airline and nice colors
     set nrformats-=octal  " Prevent Ctrl-a: 07 -> 010
     set formatoptions-=cro  " No auto comment
-    "augroup NoCommment
+    "augroup NoComment
     "  autocmd FileType *.py setlocal formatoptions-=c formatoptions-=r formatoptions-=o
     "augroup END
     set diffopt+=vertical
@@ -395,7 +395,7 @@
       if path ==# '' || path ==# '.' | return '' | endif
       return '    ' . path
     endfunction
-    set laststatus=2        " alwaus show statusline
+    set laststatus=2        " always show statusline
     set statusline=         " init void
     set statusline+=%m      " gflag modified
     set statusline+=%t      " tail of the filename
@@ -417,7 +417,7 @@
     set guioptions-=m                  " Menumbar
   " Wildignore : Ignore these filenames during enhanced command line completion.
     set wildmenu
-    " Doc: That means that on first <Tab> it will complete to the longest common string and will invoke wildmenu (a horizontal and unobstructive little menu). On next <Tab> it will complete the first altenative and the will start to cycle through the rest. You can go back and forth with <Tab> and <S-Tab> respectively.
+    " Doc: That means that on first <Tab> it will complete to the longest common string and will invoke wildmenu (a horizontal and unobstructive little menu). On next <Tab> it will complete the first alternative and the will start to cycle through the rest. You can go back and forth with <Tab> and <S-Tab> respectively.
     " From: https://stackoverflow.com/a/13043196/2544873
     set wildmode=longest:full,full
     set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz,*.dvi  " LaTeX intermediate files
@@ -448,7 +448,7 @@
     set ruler
     set backspace=2
     " set shell=H:/Program/cmder-1.2.9/Cmder.exe
-  " Viminfo rememebr last 10000 opened files
+  " Viminfo remember last 10000 opened files
   let s:viminfo=join(map(split(&viminfo, ','), {arg -> (v:val[0] == "'" ? "'10000" : v:val)}), ',')
   exe('set viminfo=' . s:viminfo)
 
@@ -578,7 +578,7 @@
       return 0
     endfunction
 
-    function! NERDTreeToogleMirror()
+    function! NERDTreeToggleMirror()
       " Removes deprecation warning devicons Vs git-plugin
       let g:NERDTreeGitStatusLogLevel = 3
       let g:NERDTreeGitStatusUseNerdFonts = 1
@@ -594,7 +594,7 @@
         NERDTreeMirror
       endif
     endfunction
-    noremap <leader>n :call NERDTreeToogleMirror()<CR>
+    noremap <leader>n :call NERDTreeToggleMirror()<CR>
   " p -> Package
     " pa -> AnsiEscape
     noremap <leader>pa :silent packadd ansiesc<CR>:AnsiEsc<CR>

@@ -47,7 +47,7 @@
         }; fct"
     # Helper: Quick PrintF: Grep file[s]
     qp = "!qprint() { \
-        `# Git alias is working in root direcotry`; \
+        `# Git alias is working in root directory`; \
         `# https://stackoverflow.com/questions/26243145`; \
         cd -- ${GIT_PREFIX:-.};  \
         `# Print the non number parameters`; \
