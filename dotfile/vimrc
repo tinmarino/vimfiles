@@ -62,21 +62,34 @@
 
 " Plugin: Configuration
   " TmuxNavigator
+    " Note: Do not map <esc> in insert mode lol
     let g:tmux_navigator_no_mappings = 1
-    nnoremap <silent> <A-Left>  :TmuxNavigateLeft<cr>
-    nnoremap <silent> <Esc>[1;3D :TmuxNavigateLeft<cr>
-    nnoremap <silent> <A-Down>  :TmuxNavigateDown<cr>
-    nnoremap <silent> <A-Up>    :TmuxNavigateUp<cr>
-    nnoremap <silent> <A-Right> :TmuxNavigateRight<cr>
-    nnoremap <silent> <Esc>[1;3C :TmuxNavigateRight<cr>
-    nnoremap <silent> <A-h>     :TmuxNavigateLeft<cr>
-    nnoremap <silent> <A-j>     :TmuxNavigateDown<cr>
-    nnoremap <silent> <A-k>     :TmuxNavigateUp<cr>
-    nnoremap <silent> <A-l>     :TmuxNavigateRight<cr>
-    nnoremap <silent> <Esc>h    :TmuxNavigateLeft<cr>
-    nnoremap <silent> <Esc>j    :TmuxNavigateDown<cr>
-    nnoremap <silent> <Esc>k    :TmuxNavigateUp<cr>
-    nnoremap <silent> <Esc>l    :TmuxNavigateRight<cr>
+    nnoremap <silent> <A-Left>    :TmuxNavigateLeft<cr>
+    nnoremap <silent> <Esc>[1;3D  :TmuxNavigateLeft<cr>
+    nnoremap <silent> <A-h>       :TmuxNavigateLeft<cr>
+    nnoremap <silent> <Esc>h      :TmuxNavigateLeft<cr>
+    inoremap <silent> <A-Left>    <Esc>:TmuxNavigateLeft<cr>a
+    inoremap <silent> <A-h>       <Esc>:TmuxNavigateLeft<cr>a
+
+    nnoremap <silent> <A-Down>    :TmuxNavigateDown<cr>
+    nnoremap <silent> <A-j>       :TmuxNavigateDown<cr>
+    nnoremap <silent> <Esc>j      :TmuxNavigateDown<cr>
+    inoremap <silent> <A-Down>    <Esc>:TmuxNavigateDown<cr>a
+    inoremap <silent> <A-j>       <Esc>:TmuxNavigateDown<cr>a
+
+    nnoremap <silent> <A-Up>      :TmuxNavigateUp<cr>
+    nnoremap <silent> <A-k>       :TmuxNavigateUp<cr>
+    nnoremap <silent> <Esc>k      :TmuxNavigateUp<cr>
+    inoremap <silent> <A-Up>      <Esc>:TmuxNavigateUp<cr>a
+    inoremap <silent> <A-k>       <Esc>:TmuxNavigateUp<cr>a
+
+    nnoremap <silent> <A-Right>   :TmuxNavigateRight<cr>
+    nnoremap <silent> <Esc>[1;3C  :TmuxNavigateRight<cr>
+    nnoremap <silent> <A-l>       :TmuxNavigateRight<cr>
+    nnoremap <silent> <Esc>l      :TmuxNavigateRight<cr>
+    inoremap <silent> <A-Right>   <Esc>:TmuxNavigateRight<cr>a
+    inoremap <silent> <A-l>       <Esc>:TmuxNavigateRight<cr>a
+
     " See: For alt keys https://stackoverflow.com/questions/6778961/alt-key-shortcuts-not-working-on-gnome-terminal-with-vim
     exe "set <A-h>=\eh"
     exe "set <A-j>=\ej"
@@ -285,7 +298,10 @@
 
 " Plugin: PackAdd
   " Interface: 5ms for 4plugings
-  " packadd coc
+  " TODO only if npm present and more
+  if 'tourny' ==# hostname()
+    packadd coc
+  endif
   packadd fzf
   packadd fzf.vim
   packadd lastplace  " vi $VIMRUNTIME/vimrc_example.vim
@@ -306,7 +322,7 @@
     packadd unimpaired  " 5ms  ]b (:bn) , ]<space> (add empty lines), ]q
     packadd tmux-navigator  " ]q
     packadd emacscommandline  " 3ms
-    packadd tex
+    "packadd tex
     " Misc:
     packadd vader
     packadd ale
@@ -369,7 +385,8 @@
     endif
     " Mouse Integration
     set ttyfast
-    set ttymouse=xterm2
+    " set ttymouse=xterm2  " Commented out as it made mouse click move cursor
+    " at the middle
   " Details
     set tags=./tags,./TAGS,tags,TAGS,.tags
   " Statusline
@@ -606,10 +623,11 @@
       nnoremap <C-y> "+y
       vnoremap <C-y> "+y
     endif
-    nnoremap <expr><C-p> pumvisible() ? "\<C-p>" : '"+p'
-    vnoremap <expr><C-p> pumvisible() ? "\<C-p>" : '"+p'
+    nnoremap <expr> <C-p> pumvisible() ? "\<C-p>" : '"+p'
+    vnoremap <expr> <C-p> pumvisible() ? "\<C-p>" : '"+p'
     " Note: `] goto end of paste
-    inoremap <expr><C-p> pumvisible() ? "\<C-p>" : '<Esc>"+p`]a'
+    " Do not map for i as I never use it and pumvisible do not work
+    " inoremap <expr> <C-p> pumvisible() ? "\<C-p>" : '<Esc>"+p`]a'
 
   " Insert mode begin, end <- c-a c-e shotcuts from gnome
     inoremap <C-A> <C-O>^
@@ -658,7 +676,7 @@
         let line = substitute(line, '^ts\s*', '', '')
         execute '!tmux send-keys -t right ' . line . '&> /dev/null'
       else
-        call slime#send(getline(".") . "\n")
+        call slime#send(getline('.') . "\n")
       endif
     endfunction
 
@@ -936,6 +954,11 @@
   let g:vimwiki_ext = '.md'
   let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
   let g:vimwiki_css_name = '/Css/include.css'
+  let g:vimwiiki_url_maxsave = 0  " Do not conceal http url
+
+  "let g:vimwiki_tag_format = {'pre_mark': '#tag1', 'post_mark': '#tag2', 'sep': '|'}
+  "let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': ' ' }
+  let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': '[#[:space:]]\+', 'in': '[^#:[:space:]]\+' }
 
   " Test Wiki
   "let g:vimwiki_folding = ''
@@ -953,6 +976,16 @@
   ""let g:vimwiki_tag_format = {'pre': '\(^[ -]*tags\s*:.*\)\@<=', 'pre_mark': '', 'post_mark': '', 'sep': '>><<'}
   ""let g:vimwiki_toc_link_format = 1
   let g:vimwiki_global_ext = 1
+  let g:vimwiki_syntaxlocal_vars = {}
+  "let g:vimwiki_syntaxlocal_vars['markdown'] = {}
+  "let g:vimwiki_syntaxlocal_vars['markdown']['yaml_metadata_block'] = [['aaa', 'aaa']]
+  " hi VimwikiHeader1 guifg=#c94f6d
+  " hi VimwikiHeader2 guifg=#ffff00
+  " hi VimwikiHeader3 guifg=#7AF8FF
+  " hi VimwikiHeader4 guifg=#f4a261
+  " hi VimwikiHeader5 guifg=#d67ad2
+  " hi VimwikiLink guifg=#719cd6 gui=underline
+  " hi VimwikiListTodo guifg=#81b29a
 
   "let g:gfm_syntax_emoji_conceal = 1
   "packadd gfm-syntax
