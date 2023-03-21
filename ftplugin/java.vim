@@ -1,4 +1,4 @@
-set nu
+set number
 set shiftwidth=4
 
 " for gf with libgdx 
