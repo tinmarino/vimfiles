@@ -235,6 +235,8 @@
 [submodule "script/bash-completion"]
 	path = scripts/bash-completion
 	url = https://github.com/scop/bash-completion
+  ignore = all
 [submodule "pack/bundle/opt/gv"]
 	path = pack/bundle/opt/gv
 	url = https://github.com/junegunn/gv.vim
+  ignore = all
