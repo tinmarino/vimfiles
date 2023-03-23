@@ -37,8 +37,7 @@ try_link() {
     target="$1"
     link="$2"
     if [[ -f "$link" || -L "$link" ]] ; then
-        echo "[-] $link already exists"
-	unlink "$link"
+        echo "[-] $link already exists, I will not remove it"
     else
         if [ "$os" = "windows" ] ; then
             target=$(convert_path_to_windows "$target")

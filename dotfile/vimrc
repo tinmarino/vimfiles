@@ -300,7 +300,7 @@
   " Interface: 5ms for 4plugings
   " TODO only if npm present and more
   if 'tourny' ==# hostname()
-    packadd coc
+    "packadd coc
   endif
   packadd fzf
   packadd fzf.vim
@@ -529,6 +529,7 @@
     nnoremap <Leader>eg :call Edit($gitrc)<CR>
     nnoremap <Leader>ei :call Edit($h . '/.inputrc')<CR>
     nnoremap <Leader>ep :call Edit($h . '/.bash_profile')<CR>
+    nnoremap <Leader>er :call Edit($h . '/.inputrc')<CR>
     nnoremap <Leader>et :call Edit($tmuxrc)<CR>
     nnoremap <Leader>ev :call Edit($vimrc)<CR>
     nnoremap <Leader>ey :call Edit($h .'/.alacritty.yml')<CR>
