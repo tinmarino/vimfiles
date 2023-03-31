@@ -8,7 +8,7 @@
 ##############################################################################
 MW=$(tput cols)
 MH=$(tput lines)
-MH=$[MH-1] # bottom line is used for info and score
+MH=$((MH-1)) # bottom line is used for info and score
 CONFIG=~/.housenka
 DEFAULT_FOOD_NUMBER=2 # reset after game over in func. new_level
 FOOD_NUMBER=0
@@ -243,4 +243,3 @@ do
 	read -rsn3 -d '' PRESS
 	KEY=${PRESS:2}
 done
-

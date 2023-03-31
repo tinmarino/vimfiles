@@ -19,7 +19,7 @@ __wget(){
     echo "[*] $check already exists"
     return
   else
-    echo "Info: $check not existing => Dowloading"
+    echo "Info: $check not existing => Downloading"
   fi
   ((n++))
   wget "$2" -O "$1" || { echo -e "[-] $1 ${cbad}Download FAILED" && return 1; }
@@ -44,7 +44,7 @@ __site(){
 
 __base(){
   `# Sychrnonize argument folder`
-  # 1: Local Diretory
+  # 1: Local Directory
   # 2: Remote URL
   # 3: Sync command: ex: "pull --rebase"
   # Set vars

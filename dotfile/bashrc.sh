@@ -256,14 +256,15 @@
     --preview-window=right:50% --height 100%
     --preview \"$v/bin/fzf_preview {}\"
     --bind ?:toggle-preview
-    --bind ctrl-space:toggle-preview
+    --bind ctrl-space:toggle-preview  # Space => Change all
     --bind ctrl-j:down
     --bind ctrl-k:up
-    --bind ctrl-u:half-page-up
-    --bind ctrl-d:half-page-down
-    --bind ctrl-s:toggle-sort
-    --bind alt-u:preview-half-page-up
-    --bind alt-d:preview-half-page-down
+    --bind ctrl-u:half-page-up     # Up
+    --bind ctrl-d:half-page-down   # Down
+    --bind ctrl-s:toggle-sort      # Sort
+    --bind ctrl-g:replace-query    # Get
+    --bind alt-u:preview-half-page-up    # Up previw (alt)
+    --bind alt-d:preview-half-page-down  # Down previw (alt)
     #--bind ctrl-y:preview-up
     #--bind ctrl-e:preview-down
   )
@@ -327,6 +328,8 @@
 # Bind
   # Enable Readline not waiting for additional input when a key is pressed.
   set keyseq-timeout 10
+  bind -x '"\ef\ef":fzf_open'
+  
   bind -x '"\ee":fzf_open'
   bind -x '"\er":fzf_dir ~/wiki/rosetta/Lang'
   bind -x '"\eh":fzf_dir .'
@@ -442,3 +445,11 @@
   }
   
   export CVSROOT=:pserver:almasci@cvs01.osf.alma.cl:2401/project21/CVS
+
+PATH="/home/mtourneb/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PERL5LIB="$HOME/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
+PERL_LOCAL_LIB_ROOT="/home/mtourneb/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+#PERL_MB_OPT='--install_base "/home/mtourneb/perl5"'; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=/home/mtourneb/perl5"; export PERL_MM_OPT;
+
+[ -f "/home/mtourneb/.ghcup/env" ] && source "/home/mtourneb/.ghcup/env" # ghcup-env

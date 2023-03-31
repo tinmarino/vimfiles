@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Implement generic preview command to use as defautl for Fzf
+# Implement generic preview command to use as default for Fzf
 #
 # From: https://github.com/junegunn/fzf/issues/1928
 # From: https://gist.github.com/junegunn/f4fca918e937e6bf5bad#gistcomment-2981199
@@ -12,23 +12,55 @@
 #  # etc
 #fi
 
-input="$*"
-set -- "$(echo -- "$input" | grep -o '\b[a-f0-9]\{7\}')";
 
-if [[ -n "$*" ]]; then
-  # missing some potential argument of git log (filter)
-  git show --color=always "$1"
-  exit
-fi
+abat(){
+  : 'Filter to color code from stdin in language (arg1), tested
+    Standalone but better install bat and perl commands or define colors variable
+    Ex: echo true bash code | bash
+  '
+  local fil=$1
+  # If command bat do not exist, just print in yellow
+  if ! command -v bat &> /dev/null || ! command -v perl &> /dev/null; then
+    cat "$fil"
+    return 0
+  fi
 
-input="${input/#\~/$HOME}"
+  # It can be alias or function. In my case bat is aliased to: PAGER= bat'
+  bat --style numbers --color always --pager "" --line-ragne :500 --theme zenburn --language "$lang" "$fil"
+}
 
-# Check file
-if [[ -e "$input" ]]; then
-  # Symlink
-  [[ -L "$input" ]] && input="$(readlink "$input")"
-  bat --style=numbers --color=always --line-range :500 "$input"
-else
-  # TODO
-  bat --style=numbers --color=always --line-range :500 "$input"
+
+fzf_preview(){
+  local input="$*"
+  input="${input/#\~/$HOME}"
+  
+  # Clause: if file, display it
+  if [[ -f "$input" && -r "$input" ]]; then
+    # If symlink, get full path
+    [[ -L "$input" ]] && input="$(readlink "$input")"
+    
+    abat "$input"
+  fi
+  
+  # Clause: if Directory, show tree
+  if [[ -d "$input" ]]; then
+    # -C for color
+    # -L for max depth
+    tree -C -L 2 "$input"
+  fi
+  
+  # Clause: if a git hash, show commit
+  set -- "$(echo -- "$input" | grep -o '\b[a-f0-9]\{7\}')";
+  if [[ -n "$*" ]]; then
+    # missing some potential argument of git log (filter)
+    git show --color=always "$1"
+    return
+  fi
+}
+
+
+if ! (return 0 2>/dev/null); then
+  fzf_preview "$@"
+  res=$?
+  exit "$res"
 fi

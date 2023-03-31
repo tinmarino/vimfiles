@@ -18,14 +18,14 @@ $include /etc/inputrc
 "\e[1;5C": forward-word
 "\e[1;5D": backward-word
 
-# Newline easyer
+# Newline easier
 "\C-j": "\C-v\C-j"
 
 # Array
 "\ea": "\"${[@]}\"\C-b\C-b\C-b\C-b\C-b"
 
 
-# WARNING, this one is mappping ctrl-up ctrl-backslash and co
+# WARNING, this one is mapping ctrl-up ctrl-backslash and co
 #"\C-h": "\"${[@]}\"\C-b\C-b\C-b\C-b\C-b"
 
 # Fast
@@ -49,5 +49,5 @@ set mark-symlinked-directories on
 set show-all-if-ambiguous on
 # This line sets the completions to be listed immediately instead of ringing the bell, when the completing word has more than one possible completion but no partial completion can be made.
 set show-all-if-unmodified on
-# Bascially adds an @ if is a symlink. This lines sets completions to be appended by characters that indicate their file types reported by the stat system call.
+# Basically adds an @ if is a symlink. This lines sets completions to be appended by characters that indicate their file types reported by the stat system call.
 set visible-stats on

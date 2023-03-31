@@ -2,16 +2,16 @@
 Startup configuration for casa with AstroUtils
 """
 
-import sys
-from astropy.io import fits
+from sys.path import append as path_append
 from logging import getLogger, DEBUG
 
-import numpy as np
+import numpy as np  # pylint: disable=unused-import
 from numpy import log2
 
+from astropy.io import fits
 import casatools as ct
 
-sys.path.append("/home/mtourneb/Casa/analysis_scripts")
+path_append("/home/mtourneb/Casa/analysis_scripts")
 import analysisUtils as aU
 
 logger = getLogger(__name__)
@@ -25,14 +25,14 @@ print('\nHi Tinmarino!\n')
 def get_pixel_scale(frequency=100e9, distance=1000):
     """ Print pixel scale and image size
     Arg1: center frequency in Hz
-    Arg2: distance in meter of the larget baseline
+    Arg2: distance in meter of the target baseline
     spr = 180 * 3600 / 3.1416  # Second Per Radian => the famous 206264
     c = 300e6  # Light speed in m/s
     """
     # Hi
     print(f'Calculating imagesize for {frequency}Hz on a {distance}m baseline')
 
-    # 1/ Get wavelenght => λ
+    # 1/ Get wavelength => λ
     # -- the inverse of the frequency considering c=1 (i.e. scaled by c)
     l = 300e6 / frequency   # In meter => 0.0012
 
@@ -150,7 +150,7 @@ def obs_inspect(vis='uid___A002_Xa16f89_X2a8c.ms.split.cal'):
 def obs_calibrate(inn='uid___A002_Xa16f89_X2a8c'):
     """ Calibrate ASDM folder in
     """
-    # Instanciate method handler
+    # Instantiate method handler
     es = aU.stuffForScienceDataReduction()
 
     # Create reduction script from ASDM of vis folder name

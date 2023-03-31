@@ -63,7 +63,7 @@ docredshift(){
 __ff_check_arg(){
   # shellcheck disable=SC2154  # cred is referenced but not assigned
   if (($# != 2 )); then
-    echo "${cred}Bad usage:$cend I need two agument: file_in and file_out"
+    echo "${cred}Bad usage:$cend I need two arguments: file_in and file_out"
     echo "And I received $# arguments"
     exit 1
   fi

@@ -3,7 +3,7 @@
   set expandtab
 
 
-" Apperance  
+" Appearance  
   set textwidth=78
   set noreadonly
   set modifiable

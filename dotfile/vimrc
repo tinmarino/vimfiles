@@ -1,1255 +1,1262 @@
 " VimRc by tinmarino
-" vim: sw=2:ts=2:
 " TODO: NerdCommenter
 
-" The base
-  filetype plugin indent on | syntax on
-  set encoding=utf-8
-  scriptencoding uft-8
-  set mouse=a " Enable mouse use in all modes
-  set pythonthreedll=/usr/lib/python3.10/config-3.10-x86_64-linux-gnu/libpython3.10.so
+" The base {{{1
+filetype plugin indent on | syntax on
+set encoding=utf-8
+scriptencoding uft-8
+set mouse=a " Enable mouse use in all modes
+set pythonthreedll=/usr/lib/python3.10/config-3.10-x86_64-linux-gnu/libpython3.10.so
 
 
-" Variable (Perso)
-  let $v = fnamemodify(resolve(expand('<sfile>:p')), ':h:h')
-  let $PAGER = ''
+" Variable (Perso) {{{1
+let $v = fnamemodify(resolve(expand('<sfile>:p')), ':h:h')
+let $PAGER = ''
 
-  " Set v: windows gvim do NOT read .bashrc
-  if has('win32') || has('win64')
-    let $v = expand('$HOME/vimfiles')
-    let $os = 'windows'
+" Set v: windows gvim do NOT read .bashrc
+if has('win32') || has('win64')
+  let $v = expand('$HOME/vimfiles')
+  let $os = 'windows'
+endif
+set runtimepath+=$v
+set packpath+=$v
+
+" Alias
+" One letter
+let $h = expand($HOME)
+let $s = expand('$v/scripts') | let $script = $s
+let $p = expand('$v/pack/bundle/opt') | let $pack = $p | let $opt = $p
+let $d = expand('$v/undo/dump') | let $dump = $d
+" RC
+let $alias = expand('$v/dotfile/bash_aliases.sh')
+let $bashrc = expand('$v/dotfile/bashrc.sh')
+let $gitrc = expand('$v/dotfile/gitconfig')
+let $vimrc = expand('$v/dotfile/vimrc')
+let $tmuxrc = expand('$v/dotfile/tmux.conf')
+let $done = expand('$h/wiki/todo/done.md')
+" Vim
+let $auto = expand('$v/autoload')
+let $ft = expand('$v/ftplugin')
+let $vim = $v
+
+
+" Variable (Vim) {{{1
+let mapleader = ','
+let maplocalleader = ','
+
+
+" Os specific {{{1
+" Termux: shotmess
+if 'termux' ==? $os
+  " Autosave
+  if expand('%') !=# ''
+    augroup Autosave
+      autocmd CursorHold,CursorHoldI *  silent update
+    augroup END
   endif
-  set runtimepath+=$v
-  set packpath+=$v
-
-  " Alias
-  " One letter
-  let $h = expand($HOME)
-  let $s = expand('$v/scripts') | let $script = $s
-  let $p = expand('$v/pack/bundle/opt') | let $pack = $p | let $opt = $p
-  let $d = expand('$v/undo/dump') | let $dump = $d
-  " RC
-  let $alias = expand('$v/dotfile/bash_aliases.sh')
-  let $bashrc = expand('$v/dotfile/bashrc.sh')
-  let $gitrc = expand('$v/dotfile/gitconfig')
-  let $vimrc = expand('$v/dotfile/vimrc')
-  let $tmuxrc = expand('$v/dotfile/tmux.conf')
-  let $done = expand('$h/wiki/todo/done.md')
-  " Vim
-  let $auto = expand('$v/autoload')
-  let $ft = expand('$v/ftplugin')
-  let $vim = $v
+  " Hide file edition message
+  set shortmess+=F
+endif
 
 
-" Variable (Vim)
-  let mapleader = ','
-  let maplocalleader = ','
+" Favorite (perso)
 
+" Plugin: Configuration {{{1
+" TmuxNavigator {{{2
+" Note: Do not map <esc> in insert mode lol
+let g:tmux_navigator_no_mappings = 1
+nnoremap <silent> <A-Left>    :TmuxNavigateLeft<cr>
+nnoremap <silent> <Esc>[1;3D  :TmuxNavigateLeft<cr>
+nnoremap <silent> <A-h>       :TmuxNavigateLeft<cr>
+nnoremap <silent> <Esc>h      :TmuxNavigateLeft<cr>
+inoremap <silent> <A-Left>    <Esc>:TmuxNavigateLeft<cr>a
+inoremap <silent> <A-h>       <Esc>:TmuxNavigateLeft<cr>a
 
-" Os specific
-  " Termux: shotmess
-  if 'termux' ==? $os
-    " Autosave
-    if expand('%') !=# ''
-      augroup Autosave
-        autocmd CursorHold,CursorHoldI *  silent update
-      augroup END
-    endif
-    " Hide file edition message
-    set shortmess+=F
+nnoremap <silent> <A-Down>    :TmuxNavigateDown<cr>
+nnoremap <silent> <A-j>       :TmuxNavigateDown<cr>
+nnoremap <silent> <Esc>j      :TmuxNavigateDown<cr>
+inoremap <silent> <A-Down>    <Esc>:TmuxNavigateDown<cr>a
+inoremap <silent> <A-j>       <Esc>:TmuxNavigateDown<cr>a
+
+nnoremap <silent> <A-Up>      :TmuxNavigateUp<cr>
+nnoremap <silent> <A-k>       :TmuxNavigateUp<cr>
+nnoremap <silent> <Esc>k      :TmuxNavigateUp<cr>
+inoremap <silent> <A-Up>      <Esc>:TmuxNavigateUp<cr>a
+inoremap <silent> <A-k>       <Esc>:TmuxNavigateUp<cr>a
+
+nnoremap <silent> <A-Right>   :TmuxNavigateRight<cr>
+nnoremap <silent> <Esc>[1;3C  :TmuxNavigateRight<cr>
+nnoremap <silent> <A-l>       :TmuxNavigateRight<cr>
+nnoremap <silent> <Esc>l      :TmuxNavigateRight<cr>
+inoremap <silent> <A-Right>   <Esc>:TmuxNavigateRight<cr>a
+inoremap <silent> <A-l>       <Esc>:TmuxNavigateRight<cr>a
+
+" See: For alt keys https://stackoverflow.com/questions/6778961/alt-key-shortcuts-not-working-on-gnome-terminal-with-vim
+exe "set <A-h>=\eh"
+exe "set <A-j>=\ej"
+exe "set <A-k>=\ek"
+exe "set <A-l>=\el"
+exe "set <A-e>=\ee"
+set ttimeout ttimeoutlen=10
+
+" YouCompleteMe {{{2
+let g:ycm_always_populate_location_list = 1 " use :lne and :lp to navigate
+let g:ycm_python_binary_path = 'python3'
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_min_num_of_chars_for_completion = 1
+
+" Pymode (package python-mode) {{{2
+let g:pymode_python = 'python3'
+" They `set nowrap` !!
+let g:pymode_options = 0
+let pymode_lint_checkers = ['pylint', 'pep8']
+" Use rope
+let g:pymode_rope = 1
+let g:pymode_rope_completion = 1
+let g:pymode_rope_complete_on_dot = 0
+let g:pymode_rope_completion_bind = '<C-Space>'
+let g:pymode_rope_autoimport = 0
+let g:pymode_rope_autoimport_modules = ['os', 'shutil', 'datetime', 'numpy']
+let g:pymode_rope_goto_definition_bind = '<C-]>'
+let g:pymode_rope_goto_definition_cmd = 'e'
+" Auto open cwindow (quickfix) if any errors have been found
+let g:pymode_lint_cwindow = 0
+" Pylint ignore
+let s = []
+" Important
+call add(s, 'E303')  " Too many blank lines
+call add(s, 'E501')  " Line too long > 80
+call add(s, 'E701')  " Multiple statement on one line
+call add(s, 'E702')  " Multiple statement on one line (colon)
+
+" For vimspector
+call add(s, 'E111')  " Indentation not a multiple of 4
+call add(s, 'E114')  " Indentation not a multiple of 4 (comment)
+call add(s, 'E201')  " Whitespace after '('
+call add(s, 'E202')  " Whitespace before ')'
+call add(s, 'E251')  " unespected space around keyword / operator =
+call add(s, 'E131')  " continuation line unaligned for hanging indent
+call add(s, 'E129')  " visually indented line with same indent as next logical line
+" For dirty cats (jupyter-vim)
+" call add(s, 'E302')  " Expected 2 blank lines, found 1
+" call add(s, 'E265')  " Block comment should start with '# '
+" call add(s, 'E305')  " Expected 2 blank lines after class or function definition, found 1
+
+let pymode_lint_ignore = s
+" Do not perform mapping in ipython (it removes my previous <c-s>
+let g:ipy_perform_mappings = 0
+" Do not highlight spaces
+let g:pymode_syntax_space_errors = 0
+" Do not overwrite my ,b map
+let g:pymode_breakpoint = 0
+" Stop harassing me
+let g:pymode_options_max_line_length = 120
+" Fast fix
+sign define Pymode' text=1
+
+" ConqueDbg, a gdb plugging {{{2
+let g:ConqueGdb_Disable = 1
+let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
+let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
+let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly
+let g:ConqueTerm_PyVersion = 3
+
+" Vdebug {{{2
+let g:vdebug_keymap = {
+\    'run' : '<F5>',
+\    'close' : '<F6>',
+\    'detach' : '<F7>',
+\    'run_to_cursor' : '<F8>',
+\    'set_breakpoint' : '<F9>',
+\    'step_over' : '<F10>',
+\    'step_into' : '<F11>',
+\    'step_out' : '<F12>',
+\    'get_context' : '<F2>',
+\    'eval_under_cursor' : '<F3>',
+\    'eval_visual' : '<Leader>e',
+\}
+
+" Emacs Command line {{{2
+let g:EmacsCommandLineSearchCommandLineDisable = 1
+let g:EmacsCommandLineBackwardCharDisable = 1
+
+" Eclim {{{2
+let g:EclimCompletionMethod = 'omnifunc'
+
+" Vimtex {{{2
+let g:tex_stylish = 1
+let g:tex_flavor = 'latex'
+" No autoindent
+let g:vimtex_indent_enabled = 0
+" Disable overfull/underfull \hbox
+"let g:vimtex_quickfix_latexlog = {
+"    \ 'overfull' : 0,
+"    \ 'underfull' : 0,
+"    \}
+
+" Ultisnip {{{2
+let g:UltiSnipsSnippetDirectories = [$v . '/template/my_snippets', $v . '/pack/bundle/opt/snippets/UltiSnips']
+" Disable search in rtp because I already gave you the path
+let g:UltiSnipsEnableSnipMate = 0
+
+let g:UltiSnipsExpandTrigger='<c-j>'
+let g:UltiSnipsUsePythonVersion = 3
+
+" Viewdoc {{{2
+let g:no_viewdoc_abbrev = 1
+let g:viewdoc_open = 'e'
+
+" Table mode {{{2
+let g:table_mode_tableize_map = ',i'
+
+" Ack to use ag {{{2
+let g:ack_qhandler='rightbelow vert copen 80'
+let g:ackprg = 'ag --vimgrep --smart-case'
+"cnoreabbrev ag Ack
+"cnoreabbrev aG Ack
+"cnoreabbrev Ag Ack
+"cnoreabbrev AG Ack
+
+" Vimspector {{{2
+let g:vimspector_enable_mappings = 'HUMAN'
+
+" Fzf {{{2
+" https://github.com/junegunn/fzf/issues/274
+let g:fzf_layout = { 'down': '100%' }
+
+function! FzfRg(query, fullscreen, files)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s ' . a:files . ' || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+command! -nargs=* -bang RG call FzfRg(<q-args>, <bang>0, '')
+command! -nargs=* -bang FzfOldLines call FzfRg(
+            \ <q-args>, <bang>0, join(fzf#vim#_recent_files(), ' '))
+
+function! FzfDir(dir)
+  " Start source list command
+  echom 'Tin in fzfdir with ' . a:dir
+  let _fzf_source = "bash -c \"cd '" . a:dir . "' && rg --color never --files '" . a:dir . "'\""
+  echom _fzf_source
+  call fzf#run(fzf#vim#with_preview(fzf#wrap({
+            \'source': _fzf_source,
+            \'sink' : 'e ',
+            \'options' : " --ansi --preview '" . $v . "/bin/fzf_preview $1/{}'"
+            \})))
+endfunction
+
+command! -nargs=1 -complete=dir FzfDir call FzfDir(<args>)
+" I don't know with r is susceptible
+" nnoremap <A-r> :call FzfDir($h . '/wiki/rosetta/Lang')<CR>
+" nnoremap <Esc>r :call FzfDir($h . '/wiki/rosetta/Lang')<CR>
+
+function! FzfRgFileFull()
+  " Start source list command
+  let _fzf_source = 'bash -c "'
+
+  " -- Buffer list (absolute)
+  let _fzf_source .= 'echo -e \"' . join(map(getbufinfo(), 'v:val.name'), '\n') . '\" | sed "s?$HOME?~?g";'
+  " -- Oldfiles (missing ./)
+  let _fzf_source .= 'echo -e \"'.join(fzf#vim#_recent_files(), '\n').'\" | sed "s?$HOME?~?g" | sed "s/^\w/.\/\0/";'
+
+  " -- Current dir
+  if $HOME !=# getcwd()
+    let _fzf_source .= 'rg --color never --files \".\" | awk ''{print \$HOME}'';'
   endif
+  " -- Vim dir
+  let _fzf_source .= 'cd \"$v\" && rg --color never --files | awk ''{print \"~/.vim/\" \$HOME}'';'
+  " -- HOME dir
+  let _fzf_source .= 'cd \"$HOME\" && rg --color never --files  | awk ''{print \"~/\" \$HOME}'';'
+
+  " End
+  let _fzf_source .= '"'
+  call fzf#run(fzf#wrap({
+            \'source': _fzf_source,
+            \'sink' : 'e ',
+            \'options' : $FZF_DEFAULT_OPTS
+            \}))
+endfunction
+command! FzfRgFileFull call FzfRgFileFull()
+
+" ALE {{{2
+" -- Ale python
+let g:ale_python_autopep8_options = '--indent-size=4  --max-line-length=120 '
+let pi = "--disable='fixme'"
+let pi .= " --argument-rgx='_?_?([xyzXYZ]+\\d?|bg|fg|id|[_a-z][A-Za-z0-9_]{2,30})$'"
+let pi .= " --variable-rgx='_?_?([xyzXYZ]+\\d?|bg|fg|id|[_a-z][A-Za-z0-9_]{2,30})$'"
+let pi .=     " --attr-rgx='_?_?([xyzXYZ]+\\d?|bg|fg|id|[_a-z][A-Za-z0-9_]{2,30})$'"
+let g:ale_python_pylint_options = pi
+
+" Removes flakes8
+let g:ale_linters = {'python': ['mypy', 'pylint', 'pyright']}
+let g:ale_pattern_options = {'.*\.md$': {'ale_enabled': 0}}
+" -- Ale Bash
+let si = '--exclude '
+let si .= 'SC2155,'  " Declare and assign separately to avoid masking return values -> Prevent declare -a, local
+let si .= 'SC2092,'  " Remove backticks for docstring in code
+let si .= 'SC1090,'  " Can't follow file location with $
+let si .= 'SC2154,'  " cyellow is referenced but not assigned.
+let si .= 'SC2154,'  " cyellow is referenced but not assigned.
 
 
-" Plugin: Configuration
-  " TmuxNavigator
-    " Note: Do not map <esc> in insert mode lol
-    let g:tmux_navigator_no_mappings = 1
-    nnoremap <silent> <A-Left>    :TmuxNavigateLeft<cr>
-    nnoremap <silent> <Esc>[1;3D  :TmuxNavigateLeft<cr>
-    nnoremap <silent> <A-h>       :TmuxNavigateLeft<cr>
-    nnoremap <silent> <Esc>h      :TmuxNavigateLeft<cr>
-    inoremap <silent> <A-Left>    <Esc>:TmuxNavigateLeft<cr>a
-    inoremap <silent> <A-h>       <Esc>:TmuxNavigateLeft<cr>a
+let g:ale_sh_shellcheck_options = si
 
-    nnoremap <silent> <A-Down>    :TmuxNavigateDown<cr>
-    nnoremap <silent> <A-j>       :TmuxNavigateDown<cr>
-    nnoremap <silent> <Esc>j      :TmuxNavigateDown<cr>
-    inoremap <silent> <A-Down>    <Esc>:TmuxNavigateDown<cr>a
-    inoremap <silent> <A-j>       <Esc>:TmuxNavigateDown<cr>a
+" COC {{{2
 
-    nnoremap <silent> <A-Up>      :TmuxNavigateUp<cr>
-    nnoremap <silent> <A-k>       :TmuxNavigateUp<cr>
-    nnoremap <silent> <Esc>k      :TmuxNavigateUp<cr>
-    inoremap <silent> <A-Up>      <Esc>:TmuxNavigateUp<cr>a
-    inoremap <silent> <A-k>       <Esc>:TmuxNavigateUp<cr>a
 
-    nnoremap <silent> <A-Right>   :TmuxNavigateRight<cr>
-    nnoremap <silent> <Esc>[1;3C  :TmuxNavigateRight<cr>
-    nnoremap <silent> <A-l>       :TmuxNavigateRight<cr>
-    nnoremap <silent> <Esc>l      :TmuxNavigateRight<cr>
-    inoremap <silent> <A-Right>   <Esc>:TmuxNavigateRight<cr>a
-    inoremap <silent> <A-l>       <Esc>:TmuxNavigateRight<cr>a
+" Plugin: PackAdd {{{1
+" Interface: 5ms for 4plugings
+" TODO only if npm present and more
+if 'tourny' ==# hostname()
+  packadd coc
+endif
+packadd fzf
+packadd fzf.vim
+packadd lastplace  " vi $VIMRUNTIME/vimrc_example.vim
+packadd submode  " Map C-W
+" Detect git dir at load: https://github.com/tpope/vim-fugitive/issues/1499
+packadd fugitive
 
-    " See: For alt keys https://stackoverflow.com/questions/6778961/alt-key-shortcuts-not-working-on-gnome-terminal-with-vim
-    exe "set <A-h>=\eh"
-    exe "set <A-j>=\ej"
-    exe "set <A-k>=\ek"
-    exe "set <A-l>=\el"
-    exe "set <A-e>=\ee"
-    set ttimeout ttimeoutlen=10
+function! TimerPack(timer) abort
+  " Lazy loader
+  packadd almasw
+  " Map: 10ms for 9pg
+  packadd surround  " ySS<div>
+  packadd repeat  " for surround
+  packadd textobj-user  " for function
+  packadd textobj-arg  " data
+  packadd textobj-indent  " dai
+  packadd textobj-function  " daf
+  packadd unimpaired  " 5ms  ]b (:bn) , ]<space> (add empty lines), ]q
+  packadd tmux-navigator  " ]q
+  packadd emacscommandline  " 3ms
+  "packadd tex
+  " Misc:
+  packadd vader
+  packadd ale
+  " Youcompleteme: is verbose at init if no python
+  try
+    python3 '42'
+    " Deletes the vim intro screen
+    let g:ycm_auto_hover = ''
+    " set omnifunc=syntaxcomplete#Complete
+    " packadd youcompleteme
+  catch | endtry
+  "" Ultisnip: is annoying at run time if no python
+  try
+    python3 '42'
+    packadd ultisnips  " 3ms
+    packadd snippets " for some ultisnips macro
+  catch | endtry
+endfunction
 
-  " YouCompleteMe
-    let g:ycm_always_populate_location_list = 1 " use :lne and :lp to navigate
-    let g:ycm_python_binary_path = 'python3'
-    let g:ycm_autoclose_preview_window_after_completion = 1
-    let g:ycm_min_num_of_chars_for_completion = 1
+" Call it
+if has('timers')
+  call timer_start(0, 'TimerPack')
+else
+  call TimerPack(42)
+endif
 
-  " Pymode (package python-mode)
-    let g:pymode_python = 'python3'
-    " They `set nowrap` !!
-    let g:pymode_options = 0
-    let pymode_lint_checkers = ['pylint', 'pep8']
-    " Use rope
-    let g:pymode_rope = 1
-    let g:pymode_rope_completion = 1
-    let g:pymode_rope_complete_on_dot = 0
-    let g:pymode_rope_completion_bind = '<C-Space>'
-    let g:pymode_rope_autoimport = 0
-    let g:pymode_rope_autoimport_modules = ['os', 'shutil', 'datetime', 'numpy']
-    let g:pymode_rope_goto_definition_bind = '<C-]>'
-    let g:pymode_rope_goto_definition_cmd = 'e'
-    " Auto open cwindow (quickfix) if any errors have been found
-    let g:pymode_lint_cwindow = 0
-    " Pylint ignore
-      let s = []
-      " Important
-      call add(s, 'E303')  " Too many blank lines
-      call add(s, 'E501')  " Line too long > 80
-      call add(s, 'E701')  " Multiple statement on one line
-      call add(s, 'E702')  " Multiple statement on one line (colon)
 
-      " For vimspector
-      call add(s, 'E111')  " Indentation not a multiple of 4
-      call add(s, 'E114')  " Indentation not a multiple of 4 (comment)
-      call add(s, 'E201')  " Whitespace after '('
-      call add(s, 'E202')  " Whitespace before ')'
-      call add(s, 'E251')  " unespected space around keyword / operator =
-      call add(s, 'E131')  " continuation line unaligned for hanging indent
-      call add(s, 'E129')  " visually indented line with same indent as next logical line
-      " For dirty cats (jupyter-vim)
-      " call add(s, 'E302')  " Expected 2 blank lines, found 1
-      " call add(s, 'E265')  " Block comment should start with '# '
-      " call add(s, 'E305')  " Expected 2 blank lines after class or function definition, found 1
+" Preferences, Appearances {{{1
+" Preferences {{{2
+" set clipboard=exclude:.*  " Do not connect to X, can take one sec on Ubuntu 2020.10 like -X
+set background=dark
+packadd color-tin
+set termguicolors
+try
+  colorscheme gruvbox
+catch /E185/
+  " echom 'Vimrc: Cannot load colorscheme'
+endtry
+set t_Co=256  " For airline and nice colors
+set nrformats-=octal  " Prevent Ctrl-a: 07 -> 010
+set formatoptions-=cro  " No auto comment
+"augroup NoComment
+"  autocmd FileType *.py setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+"augroup END
+set diffopt+=vertical
+set title  " change the terminal's title, may not work
+set autoindent " to have auto indentation when return line
+set wrapscan
+set conceallevel=2
+set number
+set modeline
+" Terminal italic
+set t_ZH=[3m
+set t_ZR=[23m
+" Terminal strikethrough
+if $os ==# 'windows'
+  set term=xterm
+else
+  set term=xterm-256color
+endif
+" Mouse Integration
+set ttyfast
+" set ttymouse=xterm2  " Commented out as it made mouse click move cursor
+" at the middle
+" Details {{{2
+set tags=./tags,./TAGS,tags,TAGS,.tags
+" Statusline {{{2
+function! Rc_add_path() abort
+  let path = expand('%:p')
+  if path ==# '' || path ==# '.' | return '' | endif
+  return '    ' . path
+endfunction
+set laststatus=2        " always show statusline
+set statusline=         " init void
+set statusline+=%m      " gflag modified
+set statusline+=%t      " tail of the filename
+set statusline+=%{Rc_add_path()} " head of path
+set statusline+=%=      " left/right separator
+set statusline+=%P\ \   " percent through file
+set statusline+=%c,     " cursor column
+set statusline+=%l/%L   " cursor line/total lines
 
-      let pymode_lint_ignore = s
-    " Do not perform mapping in ipython (it removes my previous <c-s>
-    let g:ipy_perform_mappings = 0
-    " Do not highlight spaces
-    let g:pymode_syntax_space_errors = 0
-    " Do not overwrite my ,b map
-    let g:pymode_breakpoint = 0
-    " Stop harassing me
-    let g:pymode_options_max_line_length = 120
-    " Fast fix
-    sign define Pymode' text=1
+" File format {{{2
+set fileformat=unix
+set wrap
+set expandtab
+set shiftwidth=2
+set tabstop=2
+" Gui {{{2
+set guifont=Consolas:h14:cANSI:qDRAFT
+set guioptions-=T                  " Toolbar
+set guioptions-=m                  " Menumbar
+" Wildignore : Ignore these filenames during enhanced command line completion. {{{2
+set wildmenu
+" Doc: That means that on first <Tab> it will complete to the longest common string and will invoke wildmenu (a horizontal and unobstructive little menu). On next <Tab> it will complete the first alternative and the will start to cycle through the rest. You can go back and forth with <Tab> and <S-Tab> respectively.
+" From: https://stackoverflow.com/a/13043196/2544873
+set wildmode=longest:full,full
+set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz,*.dvi  " LaTeX intermediate files
+set wildignore+=*.tex.backup,*.lg,*.4ct,*.4tc,*.tmp,*.idv  " LaTeX html intermediate files
+set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images
+set wildignore+=*.luac  " Lua byte code
+set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
+set wildignore+=*.pyc  " Python byte code
+set wildignore+=*.spl  " compiled spelling word lists
+set wildignore+=*.sw?  " Vim swap files
+set wildignore+=.git/*,undo/*  " Git, Vim undo
+" Search {{{2
+set ignorecase
+set smartcase
+set hlsearch  " highlight search terms
+set incsearch  " show search matches as you type
+" Cursor {{{2
+set cursorline  " Enable CursorLine
+" Default Colors for CursorLine
+highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
+augroup Cursor
+  "Change Color when entering Insert Mode
+  autocmd InsertEnter * highlight  CursorLine term=None cterm=None
+  " Revert Color to default when leaving Insert Mode
+  autocmd InsertLeave * highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
+augroup END
+" Window {{{2
+set ruler
+set backspace=2
+" set shell=H:/Program/cmder-1.2.9/Cmder.exe
+" Viminfo remember last 10000 opened files {{{2
+let s:viminfo=join(map(split(&viminfo, ','), {arg -> (v:val[0] == "'" ? "'10000" : v:val)}), ',')
+exe('set viminfo=' . s:viminfo)
 
-  " ConqueDbg, a gdb plugging
-    let g:ConqueGdb_Disable = 1
-    let g:ConqueTerm_Color = 2         " 1: strip color after 200 lines, 2: always with color
-    let g:ConqueTerm_CloseOnEnd = 1    " close conque when program ends running
-    let g:ConqueTerm_StartMessages = 0 " display warning messages if conqueTerm is configured incorrectly
-    let g:ConqueTerm_PyVersion = 3
+" Tabline {{{2
+" Rename tabs to show tab number.
+" Based on: http://stackoverflow.com/questions/5927952/whats-implementation-of-vims-default-tabline-function
+" Copied from: https://superuser.com/questions/331272/vim-show-the-index-of-tabs-in-the-tabline
+if exists('+showtabline')
+  function! MyTabLine()
+    let s = ''
+    let wn = ''
+    let t = tabpagenr()
+    let i = 1
+    while i <= tabpagenr('$')
+      let buflist = tabpagebuflist(i)
+      let winnr = tabpagewinnr(i)
+      let s .= '%' . i . 'T'
+      let s .= (i == t ? '%1*' : '%2*')
+      let s .= ' '
+      let wn = tabpagewinnr(i,'$')
 
-  " Vdebug
-    let g:vdebug_keymap = {
-    \    'run' : '<F5>',
-    \    'close' : '<F6>',
-    \    'detach' : '<F7>',
-    \    'run_to_cursor' : '<F8>',
-    \    'set_breakpoint' : '<F9>',
-    \    'step_over' : '<F10>',
-    \    'step_into' : '<F11>',
-    \    'step_out' : '<F12>',
-    \    'get_context' : '<F2>',
-    \    'eval_under_cursor' : '<F3>',
-    \    'eval_visual' : '<Leader>e',
-    \}
-
-  " Emacs Command line
-    let g:EmacsCommandLineSearchCommandLineDisable = 1
-    let g:EmacsCommandLineBackwardCharDisable = 1
-
-  " Eclim
-    let g:EclimCompletionMethod = 'omnifunc'
-
-  " Vimtex
-    let g:tex_stylish = 1
-    let g:tex_flavor = 'latex'
-    " No autoindent
-    let g:vimtex_indent_enabled = 0
-    " Disable overfull/underfull \hbox
-    "let g:vimtex_quickfix_latexlog = {
-    "    \ 'overfull' : 0,
-    "    \ 'underfull' : 0,
-    "    \}
-
-  " Ultisnip
-    let g:UltiSnipsSnippetDirectories = [$v . '/template/my_snippets', $v . '/pack/bundle/opt/snippets/UltiSnips']
-    " Disable search in rtp because I already gave you the path
-    let g:UltiSnipsEnableSnipMate = 0
-
-    let g:UltiSnipsExpandTrigger='<c-j>'
-    let g:UltiSnipsUsePythonVersion = 3
-
-  " Viewdoc
-    let g:no_viewdoc_abbrev = 1
-    let g:viewdoc_open = 'e'
-
-  " Table mode
-    let g:table_mode_tableize_map = ',i'
-
-  " Ack to use ag
-    let g:ack_qhandler='rightbelow vert copen 80'
-    let g:ackprg = 'ag --vimgrep --smart-case'
-    "cnoreabbrev ag Ack
-    "cnoreabbrev aG Ack
-    "cnoreabbrev Ag Ack
-    "cnoreabbrev AG Ack
-
-  " Vimspector
-    let g:vimspector_enable_mappings = 'HUMAN'
-
-  " Fzf
-    " https://github.com/junegunn/fzf/issues/274
-    let g:fzf_layout = { 'down': '100%' }
-
-    function! FzfRg(query, fullscreen, files)
-      let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s ' . a:files . ' || true'
-      let initial_command = printf(command_fmt, shellescape(a:query))
-      let reload_command = printf(command_fmt, '{q}')
-      let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-      call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-    endfunction
-    command! -nargs=* -bang RG call FzfRg(<q-args>, <bang>0, '')
-    command! -nargs=* -bang FzfOldLines call FzfRg(
-                \ <q-args>, <bang>0, join(fzf#vim#_recent_files(), ' '))
-
-    function! FzfDir(dir)
-      " Start source list command
-      echom 'Tin in fzfdir with ' . a:dir
-      let _fzf_source = "bash -c \"cd '" . a:dir . "' && rg --color never --files '" . a:dir . "'\""
-      echom _fzf_source
-      call fzf#run(fzf#vim#with_preview(fzf#wrap({
-                \'source': _fzf_source,
-                \'sink' : 'e ',
-                \'options' : " --ansi --preview '" . $v . "/bin/fzf_preview $1/{}'"
-                \})))
-    endfunction
-
-    command! -nargs=1 -complete=dir FzfDir call FzfDir(<args>)
-    " I don't know with r is susceptible
-    " nnoremap <A-r> :call FzfDir($h . '/wiki/rosetta/Lang')<CR>
-    " nnoremap <Esc>r :call FzfDir($h . '/wiki/rosetta/Lang')<CR>
-
-    function! FzfRgFileFull()
-      " Start source list command
-      let _fzf_source = 'bash -c "'
-
-      " -- Buffer list (absolute)
-      let _fzf_source .= 'echo -e \"' . join(map(getbufinfo(), 'v:val.name'), '\n') . '\" | sed "s?$HOME?~?g";'
-      " -- Oldfiles (missing ./)
-      let _fzf_source .= 'echo -e \"'.join(fzf#vim#_recent_files(), '\n').'\" | sed "s?$HOME?~?g" | sed "s/^\w/.\/\0/";'
-
-      " -- Current dir
-      if $HOME !=# getcwd()
-        let _fzf_source .= 'rg --color never --files \".\" | awk ''{print \$HOME}'';'
+      let s .= '%#TabNum#'
+      let s .= i
+      " let s .= '%*'
+      let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+      let bufnr = buflist[winnr - 1]
+      let file = bufname(bufnr)
+      let buftype = getbufvar(bufnr, 'buftype')
+      if buftype ==# 'nofile'
+        if file =~# '\/.'
+          let file = substitute(file, '.*\/\ze.', '', '')
+        endif
+      else
+        let file = fnamemodify(file, ':p:t')
       endif
-      " -- Vim dir
-      let _fzf_source .= 'cd \"$v\" && rg --color never --files | awk ''{print \"~/.vim/\" \$HOME}'';'
-      " -- HOME dir
-      let _fzf_source .= 'cd \"$HOME\" && rg --color never --files  | awk ''{print \"~/\" \$HOME}'';'
-
-      " End
-      let _fzf_source .= '"'
-      call fzf#run(fzf#wrap({
-                \'source': _fzf_source,
-                \'sink' : 'e ',
-                \'options' : $FZF_DEFAULT_OPTS
-                \}))
-    endfunction
-    command! FzfRgFileFull call FzfRgFileFull()
-
-  " ALE
-    " -- Ale python
-    let g:ale_python_autopep8_options = '--indent-size=4  --max-line-length=120 '
-    " Removes flakes8
-    let g:ale_linters = {'python': ['mypy', 'pylint', 'pyright']}
-    let g:ale_pattern_options = {'.*\.md$': {'ale_enabled': 0}}
-    " -- Ale Bash
-    let si = '--exclude '
-    let si .= 'SC2155,'  " Declare and assign separately to avoid masking return values -> Prevent declare -a, local
-    let si .= 'SC2092,'  " Remove backticks for docstring in code
-    let si .= 'SC1090,'  " Can't follow file location with $
-    let si .= 'SC2154,'  " cyellow is referenced but not assigned.
-    let si .= 'SC2154,'  " cyellow is referenced but not assigned.
-
-    let g:ale_sh_shellcheck_options = si
-
-
-" Plugin: PackAdd
-  " Interface: 5ms for 4plugings
-  " TODO only if npm present and more
-  if 'tourny' ==# hostname()
-    "packadd coc
-  endif
-  packadd fzf
-  packadd fzf.vim
-  packadd lastplace  " vi $VIMRUNTIME/vimrc_example.vim
-  packadd submode  " Map C-W
-  " Detect git dir at load: https://github.com/tpope/vim-fugitive/issues/1499
-  packadd fugitive
-
-  function! TimerPack(timer) abort
-    " Lazy loader
-    packadd almasw
-    " Map: 10ms for 9pg
-    packadd surround  " ySS<div>
-    packadd repeat  " for surround
-    packadd textobj-user  " for function
-    packadd textobj-arg  " data
-    packadd textobj-indent  " dai
-    packadd textobj-function  " daf
-    packadd unimpaired  " 5ms  ]b (:bn) , ]<space> (add empty lines), ]q
-    packadd tmux-navigator  " ]q
-    packadd emacscommandline  " 3ms
-    "packadd tex
-    " Misc:
-    packadd vader
-    packadd ale
-    " Youcompleteme: is verbose at init if no python
-    try
-      python3 '42'
-      " Deletes the vim intro screen
-      let g:ycm_auto_hover = ''
-      " set omnifunc=syntaxcomplete#Complete
-      " packadd youcompleteme
-    catch | endtry
-    "" Ultisnip: is annoying at run time if no python
-    try
-      python3 '42'
-      packadd ultisnips  " 3ms
-      packadd snippets " for some ultisnips macro
-    catch | endtry
+      if file ==# ''
+        let file = '[No Name]'
+      endif
+      let s .= ' ' . file . ' '
+      let i = i + 1
+    endwhile
+    let s .= '%T%#TabLineFill#%='
+    let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+    return s
   endfunction
+  set showtabline=2
+  set tabline=%!MyTabLine()
+  set showtabline=1
+  highlight link TabNum Special
+endif
+
+
+" Backup
+set nobackup
+set noswapfile
+set nowritebackup
+set undolevels=10000
+set history=10000
+
+if has('persistent_undo')
+  set undodir=$v/undo
+  set undofile
+endif
+
+
+" Map Leadered {{{1
+" Edit special files {{{2
+function! Edit(file)
+  try | execute 'buffer ' . a:file
+  catch | execute 'edit ' . a:file
+  endtry
+endfunction
+nnoremap <Leader>ea :call Edit($alias)<CR>
+nnoremap <Leader>eb :call Edit($bashrc)<CR>
+nnoremap <Leader>ed :call Edit($h . '/.gdbinit')<CR>
+"nnoremap <Leader>ed :call Edit($h . '/wiki/todo/done.md')<CR>
+nnoremap <Leader>ef :e $v/ftplugin/<C-D>
+nnoremap <Leader>eg :call Edit($gitrc)<CR>
+nnoremap <Leader>ei :call Edit($h . '/.inputrc')<CR>
+nnoremap <Leader>ep :call Edit($h . '/.bash_profile')<CR>
+nnoremap <Leader>er :call Edit($h . '/.inputrc')<CR>
+nnoremap <Leader>et :call Edit($tmuxrc)<CR>
+nnoremap <Leader>ev :call Edit($vimrc)<CR>
+nnoremap <Leader>ey :call Edit($h .'/.alacritty.yml')<CR>
+" a, t, w for wiki
+" b -> Backup file {{{2
+function! Backup(s)
+  " Backup path
+  let bck_file = expand('$v/undo/bck_') . strftime('%y-%m-%d-%H-%M-%S')
+  " File path
+  let bck_file .= '--' . substitute(expand('%:p:r'), '/', '_', 'g')
+  " Extension
+  let bck_file .= '-' . a:s . '.' . expand('%:e')
+  silent execute a:s . 'write! ' . bck_file
+  echom 'Backup lines ' . a:s . ' of file: $bck_file = ' . bck_file
+endfunction
+command! -range=% Backup call Backup('<line1>,<line2>')
+" :BackView to feed backup path of the day in command line
+command! -range=% BackupView call feedkeys(':e '
+            \ . expand('$v/undo/bck_') . strftime('%y-%m-%d'))
+nnoremap <leader>b :Backup<CR>
+vnoremap <leader>b :Backup<CR>
+" f -> fuzzy -> Fzf {{{2
+" Some have shortcut ,f -> C-
+nnoremap <Leader>fb :BLines<Cr>
+nnoremap <Leader>fe :FzfRgFileFull<Cr>
+nnoremap <Leader>ff :FzfOldLines " Same C-n<Cr>
+nnoremap <Leader>fn :FzfOldLines<Cr>
+nnoremap <Leader>fg :Commits<Cr>
+nnoremap <Leader>fv :call fzf#run({'options': '--reverse --prompt "VimFiles"', 'down': 20, 'dir': '~/.vim/', 'sink': 'e' })<Cr>
+nnoremap <Leader>fw :call FzfRg('', 1, $w)<Cr>
+" g -> git -> Fugitive {{{2
+map <leader>gd :Gdiff<CR>
+map <leader>gb :Gblame<CR>
+map <leader>gs :Gstatus<CR>
+map <leader>gl :Glog<CR>
+map <leader>gc :Gcommit -m ""<C-b>
+map <leader>ga :Git add
+" k -> :Calendar {{{2
+nnoremap <leader>k :packadd calendar <bar> Calendar<CR>
+" n -> :NERDTree {{{2
+function! NERDTreeExists()
+  let cr_tab = tabpagenr()
+  for i in range(1, tabpagenr('$'))
+    if i == cr_tab | continue | endif
+    if len(gettabvar(i, 'NERDTreeBufName')) | return 1 | endif
+  endfor
+  return 0
+endfunction
+
+function! NERDTreeToggleMirror()
+  " Removes deprecation warning devicons Vs git-plugin
+  let g:NERDTreeGitStatusLogLevel = 3
+  let g:NERDTreeGitStatusUseNerdFonts = 1
+  let g:NERDTreeRespectWildIgnore=1
+  "let g:NERDTreeGitStatusShowIgnored = 1
+  "packadd nerdtree-git-plugin
+  packadd devicons
+  packadd nerdtree
+  let g:NERDTreeRespectWildIgnore=1
+  if g:NERDTree.IsOpen() || exists('t:NERDTreeBufName') || !NERDTreeExists()
+    NERDTreeToggle
+  else
+    NERDTreeMirror
+  endif
+endfunction
+noremap <leader>n :call NERDTreeToggleMirror()<CR>
+" p -> Package {{{2
+" pa -> AnsiEscape
+noremap <leader>pa :silent packadd ansiesc<CR>:AnsiEsc<CR>
+" r -> Ag the silver searcher <- ack r like RipGrep {{{2
+noremap <expr> <leader>r ":update<Cr>:silent packadd ack<CR>:Ack! '"
+      \ . expand('<cword>') . "'"
+noremap <leader>ak :silent packadd ack<CR>:Ack! ''<LEFT>
+" u -> :UndotreeToggle {{{2
+noremap <leader>u :silent packadd undotree<CR>:UndotreeToggle<CR>
+
+
+" Map Ctrl, Alt {{{1
+" Unsorted {{{2
+nnoremap <C-b> :BLines<Cr>
+nnoremap <Leader>e :FzfRgFileFull<Cr>
+nnoremap <C-n> :FzfOldLines<Cr>
+
+" Copy paste to from clipboard <- ctrl+p {{{2
+if $os !=? 'termux'
+  " Disabled in termux for wheel
+  nnoremap <C-y> "+y
+  vnoremap <C-y> "+y
+endif
+nnoremap <expr> <C-p> pumvisible() ? "\<C-p>" : '"+p'
+vnoremap <expr> <C-p> pumvisible() ? "\<C-p>" : '"+p'
+" Note: `] goto end of paste
+" Do not map for i as I never use it and pumvisible do not work
+" inoremap <expr> <C-p> pumvisible() ? "\<C-p>" : '<Esc>"+p`]a'
+
+" Insert mode begin, end <- c-a c-e shotcuts from gnome {{{2
+inoremap <C-A> <C-O>^
+inoremap <C-E> <C-O>g_
+"inoremap <C-K> <C-O>D
+
+" Window more intuitive {{{2
+noremap <C-W>_ :split above<Cr>
+noremap <C-W>- <C-W>s<C-W>j
+noremap <C-W><bar> <C-W>v<C-W>l
+noremap <C-W>z <C-W><bar>
+
+
+" Map {{{1
+tnoremap <Esc> <C-W>N
+
+" Save with s {{{2
+noremap s :update!<CR>
+vnoremap s <C-C>:update!<CR>
+
+" NetRw Open Link {{{2
+function! OpenLink(...)
+  let link = a:0 ? a:1 : expand('<cWORD>')
+  if link =~? '^ICT-\d*'
+    let link = 'https://ictjira.alma.cl/browse/' . link
+  elseif link =~? '^\S*=SC\d*'
+    let link = substitute(link, '\w*=\(SC\d*\)', '\1', '')
+    let link = 'https://github.com/koalaman/shellcheck/wiki/' . link
+  endif
+  exe '!xdg-open ' . link . '&> /dev/null &'
+endfunction
+nmap gx yiW:call OpenLink() <Cr><Cr>
+
+" Send to tmux right (Ctrl-f) {{{2
+let g:slime_target = 'tmux'
+let g:slime_default_config = {'socket_name': 'default', 'target_pane': '{bottom-right}'}
+let g:slime_dont_ask_default = 1
+packadd slime
+
+function! SendRight(...)
+  let line = a:0 ? a:1 : getline('.')
+  " Trim spaces
+  let line = substitute(line, '^\s*\`*\s*', '', '')
+  let line = substitute(line, '\s*\`*\s*$', '', '')
+  if line =~? '^ts'
+    let line = substitute(line, '^ts\s*', '', '')
+    execute '!tmux send-keys -t right ' . line . '&> /dev/null'
+  else
+    call slime#send(getline('.') . "\n")
+  endif
+endfunction
+
+nnoremap <C-F> :<c-u>call SendRight(getline("."))<cr><cr>
+xmap <C-F> <Plug>SlimeRegionSend
+"nmap <C-t> :call SendTmux() <Cr><Cr>
+
+" Use <C-L> to clear the highlighting of :set hlsearch and also preserve the {{{2
+" default behavior of redrawing the screen
+if maparg('<C-S-L>', 'n') ==# ''
+    nnoremap <silent> <C-S-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
+endif
+
+" Window {{{2
+" Source: https://ddrscott.github.io/blog/2016/making-a-window-submode/
+" TODO move in autoload
+function! SetWindowMap() abort
+  if !exists('submode#map')
+    return
+  endif
+  " A message will appear in the message line when you're in a submode
+  " and stay there until the mode has existed.
+  let g:submode_timeoutlen = 4000
+  let g:submode_always_show_submode = 1
+
+  " We're taking over the default <C-w> setting. Don't worry we'll do
+  " our best to put back the default functionality.
+  call submode#enter_with('window', 'n', '', '<C-w>')
+
+  " Note: <C-c> will also get you out to the mode without this mapping.
+  " Note: <C-[> also behaves as <ESC>
+  call submode#leave_with('window', 'n', '', '<ESC>')
+
+  " Go through every letter
+  for key in ['a','b','c','d','e','f','g','h','i','j','k','l','m',
+  \           'n','o','p','q','r','s','t','u','v','w','x','y','z']
+    " maps lowercase, uppercase and <C-key>
+    call submode#map('window', 'n', '', key, '<C-w>' . key)
+    call submode#map('window', 'n', '', toupper(key), '<C-w>' . toupper(key))
+    call submode#map('window', 'n', '', '<C-' . key . '>', '<C-w>' . '<C-'.key . '>')
+  endfor
+  " Go through symbols. Sadly, '|', not supported in submode plugin.
+  for key in ['=','_','+','-','<','>']
+    call submode#map('window', 'n', '', key, '<C-w>' . key)
+  endfor
+
+  " I don't like <C-w>q, <C-w>c won't exit Vim when it's the last window.
+  call submode#map('window', 'n', '', 'q', '<C-w>c')
+  call submode#map('window', 'n', '', '<C-q>', '<C-w>c')
+
+  " <lowercase-pipe> sets the width to 80 columns, pipe (<S-\>) by default
+  " maximizes the width.
+  call submode#map('window', 'n', '', '\', ':vertical resize 80<CR>')
+
+  " Resize faster
+  call submode#map('window', 'n', '', '+', '3<C-w>+')
+  call submode#map('window', 'n', '', '-', '3<C-w>-')
+  call submode#map('window', 'n', '', '<', '10<C-w><')
+  call submode#map('window', 'n', '', '>', '10<C-w>>')
+endfunction
+
+" TODO
+" call SetWindowMap()
+
+" Maps for Package : On demand load {{{2
+" F8 : Colorscheme-switcher
+noremap <F8> :packadd misc<CR>:packadd colorscheme-switcher<CR><F8>
+map <ESC>[19;2~ <S-F8>
+
+" Indent < and > {{{2
+noremap > >>
+noremap < <<
+vnoremap > >gv
+vnoremap < <gv
+
+" select last paste in visual mode {{{2
+nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+" Perso maps normal {{{2
+nnoremap H :set cursorline! cursorcolumn!<CR>
+
+" Command : %% to expand path in command mode {{{2
+cnoremap %% <C-R>=expand('%:p:h').'/'<CR>|
+
+" Esc <- jk or kj {{{2
+imap jk <Esc>
+imap kj <Esc>
+
+" C-Arrow on Ubuntu {{{2
+"Get Ctrl + ARROW KEYS,because if you don't do that, the <C-Up>  (ie crtl + up ) key is notreckognise
+map  <Esc>[1;5A <C-Up>
+map  <Esc>[1;5B <C-Down>
+map  <Esc>[1;5D <C-Left>
+map  <Esc>[1;5C <C-Right>
+cmap <Esc>[1;5A <C-Up>
+cmap <Esc>[1;5B <C-Down>
+cmap <Esc>[1;5D <C-Left>
+cmap <Esc>[1;5C <C-Right>
+
+map  <Esc>[1;2D <S-Left>
+map  <Esc>[1;2C <S-Right>
+cmap <Esc>[1;2D <S-Left>
+cmap <Esc>[1;2C <S-Right>
+
+" Fold {{{2
+" TODO ctrl arrow to inc or decresae fold
+"nnoremap <space> za
+nnoremap <expr> <space> foldclosed('.') == -1 ? "zc" : "zO"
+vnoremap <space> zf
+map z1  :set foldlevel=0<CR><Esc>
+map z2  :set foldlevel=1<CR><Esc>
+map z3  :set foldlevel=2<CR><Esc>
+map z4  :set foldlevel=3<CR><Esc>
+map z5  :set foldlevel=4<CR><Esc>
+map z6  :set foldlevel=5<CR><Esc>
+map z7  :set foldlevel=6<CR><Esc>
+map z8  :set foldlevel=7<CR><Esc>
+map z9  :set foldlevel=8<CR><Esc>
+" And for azery
+map z& z1
+map zé z2
+map z" z3
+map z' z4
+map z( z5
+map z- z6
+map zè z7
+map z_ z8
+map zç z9
+
+" Tab {{{2
+noremap gn :tabnew<CR>
+noremap g1 :1tabnext<CR><Esc>
+noremap g2 :2tabnext<CR><Esc>
+noremap g3 :3tabnext<CR><Esc>
+noremap g4 :4tabnext<CR><Esc>
+noremap g5 :5tabnext<CR><Esc>
+noremap g6 :6tabnext<CR><Esc>
+noremap g7 :7tabnext<CR><Esc>
+noremap g8 :8tabnext<CR><Esc>
+noremap g9 :9tabnext<CR><Esc>
+" And for azery
+map g& g1
+map gé g2
+map g" g3
+map g' g4
+map g( g5
+map g- g6
+map gè g7
+map g_ g8
+map gç g9
+
+
+" Command Man {{{1
+if exists(':Man') != 2
+  com! -nargs=+ -complete=shellcmd M ru! ftplugin/man.vim | Man <args>
+else
+  com! -nargs=+ -complete=shellcmd M Man <args>
+endif
+
+
+" Folding {{{1
+highlight Folded ctermfg=DarkGreen ctermbg=Black
+set foldignore=
+set foldlevel=30
+set foldlevelstart=30 "the folding at opening
+set foldmethod=indent
+set foldcolumn=0  "the number of columns on the left to show the tree, default =0
+call tin#fold_atom#main()
+" If in timer, it overwrites vimwiki
+"if has('timers')
+"  call timer_start(0, 'tin#fold_atom#main')
+"else
+"  call tin#fold_atom#main()
+"endif
+
+
+" Filetype {{{1
+augroup FtDetect
+  au BufNewFile,BufRead *.masm      setf masm
+  au BufNewFile,BufRead *.asm       setf masm
+  au BufNewFile,BufRead *.disarm    setf disarm
+  au BufNewFile,BufRead *.kd        setf kd
+augroup END
+
+
+" Vimwiki {{{1
+" Lazycall WikiIndex
+function! Windex(num)
+  let l:nr = 1 + vimwiki#vars#get_bufferlocal('wiki_nr')
+  if &filetype !=# 'vimwiki' || l:nr != a:num
+    execute 'VimwikiIndex ' . a:num
+  endif
+endfunction
+function! VimwikiAlias()
+  " Load here and in ftpluing
+  for command in getcompletion('Vimwiki', 'command')
+    let alias = 'W' . command[7:]
+    exe ':command! -nargs=* ' . alias . ' ' . command . ' <args>'
+  endfor
+endfunction
+" Wiki
+let g:vimwiki_list = []
+let g:vimwiki_list += [{
+  \ 'path': '$h/wiki/wiki',
+  \ 'path_html': '$h/wiki/wiki_html'
+  \ }]
+noremap <leader>ww :VimwikiIndex 1<CR>
+map <leader>w<leader>w :VimwikiMakeDiaryNote 1<CR>
+noremap <leader>wg :call Windex(1)<CR>:VimwikiGoto 
+" Todo
+let g:vimwiki_list += [{
+  \ 'path': '$h/wiki/todo',
+  \ 'path_html': '$h/wiki/todo_html'
+  \ }]
+map <leader>tt :VimwikiIndex 2<CR>
+map <leader>t<leader>t :VimwikiMakeDiaryNote 2<CR>
+noremap <leader>tg :call Windex(2)<CR>:VimwikiGoto 
+noremap <leader>ta :call Windex(2)<CR>:VimwikiGoto Alma<CR>
+" Alma
+let g:vimwiki_list += [{
+  \ 'path': '$h/wiki/alki',
+  \ 'path_html': '$h/wiki/alki_html'
+  \ }]
+map <leader>aa :VimwikiIndex 3<CR>
+map <leader>a<leader>a :VimwikiMakeDiaryNote 3<CR>
+noremap <leader>ag :call Windex(3)<CR>:VimwikiGoto 
+" Stackoverflow
+let g:vimwiki_list += [{
+  \ 'path': '$h/wiki/stackoverflow',
+  \ 'path_html': '$h/wiki/stackoverflow_html'
+  \ }]
+" Test markdown syntax
+let g:vimwiki_list += [{
+  \ 'path': '$h/Test/Wiki',
+  \ 'path_html': '$h/Test/Wiki_html',
+  \ 'nested_syntaxes': {'python': 'python'}
+  \ }]
+" Test default syntax
+let g:vimwiki_list += [{
+  \ 'path': '$h/Test/WikiDefault',
+  \ 'path_html': '$h/Test/WikiDefault_html',
+  \ 'syntax': 'default',
+  \ 'ext': '.wiki',
+  \ }]
+" Test markdown syntax
+let g:vimwiki_list += [{
+  \ 'path': '$h/Test/Wiki',
+  \ 'path_html': '$h/Test/Wiki_html',
+  \ 'nested_syntaxes': {'python': 'python'}
+  \ }]
+" Test default syntax
+let g:vimwiki_list += [{
+  \ 'path': '$h/Test/WikiDefault',
+  \ 'path_html': '$h/Test/WikiDefault_html',
+  \ 'syntax': 'default',
+  \ 'ext': '.wiki',
+  \ }]
+" Filename todo -> setft vimwiki
+augroup Wiki
+  au BufNewFile,BufRead */todo      setf vimwiki
+augroup END
+" Map
+" Option
+let g:vimwiki_automatic_nested_syntaxes = 1
+let g:vimwiki_folding = 'expr'
+
+let g:vimwiki_key_mappings = {'mouse': 1}
+let g:vimwiki_markdown_link_ext = 1
+let g:vimwiki_table_reduce_last_col = 1
+let g:vimwiki_table_mappings = 0
+let g:vimwiki_table_auto_fmt = 1
+let g:vimwiki_hl_headers = 1
+let g:vimwiki_hl_cb_checked = 1
+let g:vimwiki_syntax = 'markdown'
+let g:vimwiki_ext = '.md'
+let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
+let g:vimwiki_css_name = '/Css/include.css'
+let g:vimwiiki_url_maxsave = 0  " Do not conceal http url
+
+"let g:vimwiki_tag_format = {'pre_mark': '#tag1', 'post_mark': '#tag2', 'sep': '|'}
+"let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': ' ' }
+let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': '[#[:space:]]\+', 'in': '[^#:[:space:]]\+' }
+
+" Test Wiki
+"let g:vimwiki_folding = ''
+" let g:vimwiki_schemes_web = ['http', 'https']
+" let g:vimwiki_rx_todo = '\C\<\%(QUESTION\|ANSWER\|NOTE\|TODO\|DONE\|STARTED\|FIXME\|FIXED\|XXX\)\>'
+" let g:vimwiki_syntax_list = {}
+" let g:vimwiki_syntax_list['markdown'] = {}
+"let g:vimwiki_syntax_list['markdown']['typeface'] = {}
+"let g:vimwiki_emoji_enable = 3
+" New
+"let g:vimwiki_cycle_bullets = 1
+"let g:vimwiki_bullet_types = ['-', '•', '→', '*']
+"let g:vimwiki_nested_syntaxes = {'python': 'python'}
+"let g:vimwiki_ext2syntax = {'.md': 'markdown'}
+""let g:vimwiki_tag_format = {'pre': '\(^[ -]*tags\s*:.*\)\@<=', 'pre_mark': '', 'post_mark': '', 'sep': '>><<'}
+""let g:vimwiki_toc_link_format = 1
+let g:vimwiki_global_ext = 1
+let g:vimwiki_syntaxlocal_vars = {}
+"let g:vimwiki_syntaxlocal_vars['markdown'] = {}
+"let g:vimwiki_syntaxlocal_vars['markdown']['yaml_metadata_block'] = [['aaa', 'aaa']]
+" hi VimwikiHeader1 guifg=#c94f6d
+" hi VimwikiHeader2 guifg=#ffff00
+" hi VimwikiHeader3 guifg=#7AF8FF
+" hi VimwikiHeader4 guifg=#f4a261
+" hi VimwikiHeader5 guifg=#d67ad2
+" hi VimwikiLink guifg=#719cd6 gui=underline
+" hi VimwikiListTodo guifg=#81b29a
+
+"let g:gfm_syntax_emoji_conceal = 1
+"packadd gfm-syntax
+packadd wiki " TODO remove and add autoload
+call VimwikiAlias()
+
+" Calendar
+let g:calendar_monday = 1
+
+" Alma {{{1
+" AlmaSw
+"" echo | g++ -E -Wp,-v -
+"" `gcc -print-prog-name=cpp` -v  # cpp for c preprocessor
+" System
+set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
+set path+=/usr/local/include
+set path+=/usr/include/x86_64-linux-gnu
+set path+=/usr/include
+
+" Local
+set path+=./../include
+set path+=./../../include
+set path+=./../../../include
+"" `gcc -print-prog-name=cc1plus` -v
+"set path+=/usr/include/c++/9/
+"set path+=/usr/include/c++/9
+"set path+=/usr/include/x86_64-linux-gnu/c++/9
+"set path+=/usr/include/c++/9/backward
+"set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
+"set path+=/home/tourneboeuf/AlmaSw/ACS/LGPL/CommonSoftware/**/include/
+"set path+=/home/tourneboeuf/AlmaSw/ICD/**/include/
+
+
+
+" Fastly (added) {{{1
+command! -nargs=0 -bar Helptags for p in glob('~/.vim/pack/bundle/opt/*', 1, 1) | exe 'packadd '.fnamemodify(p, ':t') | endfor | helptags ALL
+
+" packadd perlomni
+"packadd lexima " autoclose brackets
+"packadd xmledit
+"let xml_use_html = 1
+
+"imap   <C-k>   <plug>(emmet-expand-abbr)
+" packadd emmet
+" TODO emmet
+"imap   <C-k>   <plug>(emmet-expand-abbr)
+"packadd emmet
+"imap   <C-k>   <plug>(emmet-expand-abbr)
+" let g:jupyter_monitor_console = 1
+"let g:jupyter_verbose = 1
+"
+"let g:jupyter_cell_separators = ['##', '#toto', '.*titi']
+"let g:jupyter_auto_connect = 1
+" let b:jupyter_exec_before = 'clear-screen'
+packadd jupyter
+" packadd spector
+"packadd python-mode
+" if $os == 'unix' packadd youcompleteme endif
+"packadd raku
+" packadd sleuth  " Auto indent
+let g:ycm_confirm_extra_conf = 0
+" autocmd FileType python let b:jupyter_exec_before = 'clear-screen'
+
+map K :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+" Pb with gruvbox-material
+hi Comment cterm=NONE
+
+" C-Space omnicompletion
+inoremap <C-Space> <C-x><C-o>
+inoremap <C-@> <C-x><C-o>
+
+" copy to attached terminal using the yank(1) script:
+" https://sunaku.github.io/tmux-yank-osc52.html
+function! CopyToTerminal(type, ...)
+  " Prepare peace
+  let l:sel_save = &selection
+  let &selection = 'inclusive'
+  let l:reg_save = @@
+
+  " Get selection
+  if a:0  " Invoked from Visual mode, use gv command.
+    silent exe 'normal! gvy'
+  elseif a:type ==# 'line'
+    silent exe "normal! '[V']y"
+  else
+    silent exe 'normal! `[v`]y'
+  endif
 
   " Call it
-  if has('timers')
-    call timer_start(0, 'TimerPack')
-  else
-    call TimerPack(42)
+  " :call Rawecho("\ePtmux;\e\e]52;c;dG90bw==\x07\e\x5c")
+  " :exe 'silent! !echo titi | _copy_to_terminal.sh'
+  let text = @@
+  let text = system($v . '/bin/_copy_to_terminal.sh', text)
+  call writefile([text], '/dev/fd/2', 'b')
+
+  " Restore peace
+  let &selection = l:sel_save
+  let @@ = l:reg_save
+endfunction
+
+nnoremap <silent> <leader>y :set opfunc=CopyToTerminal<CR>g@
+vnoremap <silent> <leader>y :<C-U>call CopyToTerminal(visualmode(), 1)<CR>
+
+
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+function! SynStack()
+  if !exists('*synstack')
+    return
   endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunction
 
 
-" Preferences, Appearances
-  " Preferences
-    " set clipboard=exclude:.*  " Do not connect to X, can take one sec on Ubuntu 2020.10 like -X
-    set background=dark
-    packadd color-tin
-    set termguicolors
-    try
-      colorscheme gruvbox
-    catch /E185/
-      " echom 'Vimrc: Cannot load colorscheme'
-    endtry
-    set t_Co=256  " For airline and nice colors
-    set nrformats-=octal  " Prevent Ctrl-a: 07 -> 010
-    set formatoptions-=cro  " No auto comment
-    "augroup NoComment
-    "  autocmd FileType *.py setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-    "augroup END
-    set diffopt+=vertical
-    set title  " change the terminal's title, may not work
-    set autoindent " to have auto indentation when return line
-    set wrapscan
-    set conceallevel=2
-    set number
-    set modeline
-    " Terminal italic
-    set t_ZH=[3m
-    set t_ZR=[23m
-    " Terminal strikethrough
-    if $os ==# 'windows'
-      set term=xterm
+function! SynGroup()
+    let l:s = synID(line('.'), col('.'), 1)
+    echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+endfunction
+
+function! SourceIfExist(file)
+  let l:file = expand(a:file)
+  if filereadable(l:file)
+    exe 'source' a:file
+  endif
+endfunction
+
+let t:is_transparent = 0
+function! Toggle_transparent_background()
+  if t:is_transparent == 0
+    hi Normal guibg=#111111 ctermbg=black
+    hi Normal ctermfg=223 ctermbg=235 guifg=#ebdbb2 guibg=#282828
+    hi CursorLine term=underline cterm=underline guibg=#3c3836
+    let t:is_transparent = 1
+  else
+    hi Normal guibg=NONE ctermbg=NONE
+    hi CursorLine guibg=NONE
+    let t:is_transparent = 0
+  endif
+endfunction
+nnoremap <F5> :call Toggle_transparent_background()<CR>
+
+let g:is_bash=1
+
+
+function! Fix()
+  let l:i_line = line('.')
+  let l:i_has_fixed = 0
+  while 1
+    let l:s_line = getline(l:i_line)
+    echom l:i_line .  l:s_line
+
+    if -1 == match(l:s_line, '^ *#')
+      " Ciao
+      if l:i_has_fixed == 1
+        break
+      endif
+      " Comment errounous line
+      call setline(l:i_line, substitute(l:s_line, '[^ ]', '# \0', ''))
+
+    elseif -1 != match(l:s_line, '^ *#\s*Fix\w*: ')
+      " Uncomment Fix
+      call setline(l:i_line, substitute(l:s_line, '#\s*Fix\w*: ', '', ''))
+      let l:i_has_fixed = 1
+
+    elseif -1 != match(l:s_line, '^ *#\s*Rem\w*:')
+      " Remove Rem from remarks
+      "call setline(l:i_line, substitute(l:s_line, '#\s*Rem\w*:\s*', '# ', ''))
+
     else
-      set term=xterm-256color
-    endif
-    " Mouse Integration
-    set ttyfast
-    " set ttymouse=xterm2  " Commented out as it made mouse click move cursor
-    " at the middle
-  " Details
-    set tags=./tags,./TAGS,tags,TAGS,.tags
-  " Statusline
-    function! Rc_add_path() abort
-      let path = expand('%:p')
-      if path ==# '' || path ==# '.' | return '' | endif
-      return '    ' . path
-    endfunction
-    set laststatus=2        " always show statusline
-    set statusline=         " init void
-    set statusline+=%m      " gflag modified
-    set statusline+=%t      " tail of the filename
-    set statusline+=%{Rc_add_path()} " head of path
-    set statusline+=%=      " left/right separator
-    set statusline+=%P\ \   " percent through file
-    set statusline+=%c,     " cursor column
-    set statusline+=%l/%L   " cursor line/total lines
-
-  " File format
-    set fileformat=unix
-    set wrap
-    set expandtab
-    set shiftwidth=2
-    set tabstop=2
-  " Gui
-    set guifont=Consolas:h14:cANSI:qDRAFT
-    set guioptions-=T                  " Toolbar
-    set guioptions-=m                  " Menumbar
-  " Wildignore : Ignore these filenames during enhanced command line completion.
-    set wildmenu
-    " Doc: That means that on first <Tab> it will complete to the longest common string and will invoke wildmenu (a horizontal and unobstructive little menu). On next <Tab> it will complete the first alternative and the will start to cycle through the rest. You can go back and forth with <Tab> and <S-Tab> respectively.
-    " From: https://stackoverflow.com/a/13043196/2544873
-    set wildmode=longest:full,full
-    set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz,*.dvi  " LaTeX intermediate files
-    set wildignore+=*.tex.backup,*.lg,*.4ct,*.4tc,*.tmp,*.idv  " LaTeX html intermediate files
-    set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images
-    set wildignore+=*.luac  " Lua byte code
-    set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest  " compiled object files
-    set wildignore+=*.pyc  " Python byte code
-    set wildignore+=*.spl  " compiled spelling word lists
-    set wildignore+=*.sw?  " Vim swap files
-    set wildignore+=.git/*,undo/*  " Git, Vim undo
-  " Search
-    set ignorecase
-    set smartcase
-    set hlsearch  " highlight search terms
-    set incsearch  " show search matches as you type
-  " Cursor
-    set cursorline  " Enable CursorLine
-    " Default Colors for CursorLine
-    highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
-    augroup Cursor
-      "Change Color when entering Insert Mode
-      autocmd InsertEnter * highlight  CursorLine term=None cterm=None
-      " Revert Color to default when leaving Insert Mode
-      autocmd InsertLeave * highlight  CursorLine term=underline cterm=underline ctermbg=None ctermfg=None
-    augroup END
-  " Window
-    set ruler
-    set backspace=2
-    " set shell=H:/Program/cmder-1.2.9/Cmder.exe
-  " Viminfo remember last 10000 opened files
-  let s:viminfo=join(map(split(&viminfo, ','), {arg -> (v:val[0] == "'" ? "'10000" : v:val)}), ',')
-  exe('set viminfo=' . s:viminfo)
-
-  " Tabline
-    " Rename tabs to show tab number.
-    " Based on: http://stackoverflow.com/questions/5927952/whats-implementation-of-vims-default-tabline-function
-    " Copied from: https://superuser.com/questions/331272/vim-show-the-index-of-tabs-in-the-tabline
-    if exists('+showtabline')
-      function! MyTabLine()
-        let s = ''
-        let wn = ''
-        let t = tabpagenr()
-        let i = 1
-        while i <= tabpagenr('$')
-          let buflist = tabpagebuflist(i)
-          let winnr = tabpagewinnr(i)
-          let s .= '%' . i . 'T'
-          let s .= (i == t ? '%1*' : '%2*')
-          let s .= ' '
-          let wn = tabpagewinnr(i,'$')
-
-          let s .= '%#TabNum#'
-          let s .= i
-          " let s .= '%*'
-          let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
-          let bufnr = buflist[winnr - 1]
-          let file = bufname(bufnr)
-          let buftype = getbufvar(bufnr, 'buftype')
-          if buftype ==# 'nofile'
-            if file =~# '\/.'
-              let file = substitute(file, '.*\/\ze.', '', '')
-            endif
-          else
-            let file = fnamemodify(file, ':p:t')
-          endif
-          if file ==# ''
-            let file = '[No Name]'
-          endif
-          let s .= ' ' . file . ' '
-          let i = i + 1
-        endwhile
-        let s .= '%T%#TabLineFill#%='
-        let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
-        return s
-      endfunction
-      set showtabline=2
-      set tabline=%!MyTabLine()
-      set showtabline=1
-      highlight link TabNum Special
-    endif
-
-
-  " Backup
-    set nobackup
-    set noswapfile
-    set nowritebackup
-    set undolevels=10000
-    set history=10000
-
-    if has('persistent_undo')
-      set undodir=$v/undo
-      set undofile
-    endif
-
-
-" Map Leadered
-  " Edit special files
-    function! Edit(file)
-      try | execute 'buffer ' . a:file
-      catch | execute 'edit ' . a:file
-      endtry
-    endfunction
-    nnoremap <Leader>ea :call Edit($alias)<CR>
-    nnoremap <Leader>eb :call Edit($bashrc)<CR>
-    nnoremap <Leader>ed :call Edit($h . '/.gdbinit')<CR>
-    "nnoremap <Leader>ed :call Edit($h . '/wiki/todo/done.md')<CR>
-    nnoremap <Leader>ef :e $v/ftplugin/<C-D>
-    nnoremap <Leader>eg :call Edit($gitrc)<CR>
-    nnoremap <Leader>ei :call Edit($h . '/.inputrc')<CR>
-    nnoremap <Leader>ep :call Edit($h . '/.bash_profile')<CR>
-    nnoremap <Leader>er :call Edit($h . '/.inputrc')<CR>
-    nnoremap <Leader>et :call Edit($tmuxrc)<CR>
-    nnoremap <Leader>ev :call Edit($vimrc)<CR>
-    nnoremap <Leader>ey :call Edit($h .'/.alacritty.yml')<CR>
-  " a, t, w for wiki
-  " b -> Backup file
-    function! Backup(s)
-      " Backup path
-      let bck_file = expand('$v/undo/bck_') . strftime('%y-%m-%d-%H-%M-%S')
-      " File path
-      let bck_file .= '--' . substitute(expand('%:p:r'), '/', '_', 'g')
-      " Extension
-      let bck_file .= '-' . a:s . '.' . expand('%:e')
-      silent execute a:s . 'write! ' . bck_file
-      echom 'Backup lines ' . a:s . ' of file: $bck_file = ' . bck_file
-    endfunction
-    command! -range=% Backup call Backup('<line1>,<line2>')
-    " :BackView to feed backup path of the day in command line
-    command! -range=% BackupView call feedkeys(':e '
-                \ . expand('$v/undo/bck_') . strftime('%y-%m-%d'))
-    nnoremap <leader>b :Backup<CR>
-    vnoremap <leader>b :Backup<CR>
-  " f -> fuzzy -> Fzf
-    " Some have shortcut ,f -> C-
-    nnoremap <Leader>fb :BLines<Cr>
-    nnoremap <Leader>fe :FzfRgFileFull<Cr>
-    nnoremap <Leader>ff :FzfOldLines " Same C-n<Cr>
-    nnoremap <Leader>fn :FzfOldLines<Cr>
-    nnoremap <Leader>fg :Commits<Cr>
-    nnoremap <Leader>fv :call fzf#run({'options': '--reverse --prompt "VimFiles"', 'down': 20, 'dir': '~/.vim/', 'sink': 'e' })<Cr>
-    nnoremap <Leader>fw :call FzfRg('', 1, $w)<Cr>
-  " g -> git -> Fugitive
-    map <leader>gd :Gdiff<CR>
-    map <leader>gb :Gblame<CR>
-    map <leader>gs :Gstatus<CR>
-    map <leader>gl :Glog<CR>
-    map <leader>gc :Gcommit -m ""<C-b>
-    map <leader>ga :Git add
-  " k -> :Calendar
-    nnoremap <leader>k :packadd calendar <bar> Calendar<CR>
-  " n -> :NERDTree
-    function! NERDTreeExists()
-      let cr_tab = tabpagenr()
-      for i in range(1, tabpagenr('$'))
-        if i == cr_tab | continue | endif
-        if len(gettabvar(i, 'NERDTreeBufName')) | return 1 | endif
-      endfor
-      return 0
-    endfunction
-
-    function! NERDTreeToggleMirror()
-      " Removes deprecation warning devicons Vs git-plugin
-      let g:NERDTreeGitStatusLogLevel = 3
-      let g:NERDTreeGitStatusUseNerdFonts = 1
-      let g:NERDTreeRespectWildIgnore=1
-      "let g:NERDTreeGitStatusShowIgnored = 1
-      "packadd nerdtree-git-plugin
-      packadd devicons
-      packadd nerdtree
-      let g:NERDTreeRespectWildIgnore=1
-      if g:NERDTree.IsOpen() || exists('t:NERDTreeBufName') || !NERDTreeExists()
-        NERDTreeToggle
-      else
-        NERDTreeMirror
+      " Ciao
+      if l:i_has_fixed == 1
+        break
       endif
-    endfunction
-    noremap <leader>n :call NERDTreeToggleMirror()<CR>
-  " p -> Package
-    " pa -> AnsiEscape
-    noremap <leader>pa :silent packadd ansiesc<CR>:AnsiEsc<CR>
-  " r -> Ag the silver searcher <- ack r like RipGrep
-    noremap <expr> <leader>r ":update<Cr>:silent packadd ack<CR>:Ack! '"
-          \ . expand('<cword>') . "'"
-    noremap <leader>ak :silent packadd ack<CR>:Ack! ''<LEFT>
-  " u -> :UndotreeToggle
-    noremap <leader>u :silent packadd undotree<CR>:UndotreeToggle<CR>
 
+    endif
 
-" Map Ctrl, Alt
-  nnoremap <C-b> :BLines<Cr>
-  if 'termux' ==? $os
-    nnoremap <Leader>e :FzfRgFileFull<Cr>
-  else
-    "nnoremap <C-e> :FzfRgFileFull<Cr>
-    "nnoremap <A-e> :FzfRgFileFull<Cr>
-    exe "set <A-e>=\ee"
+    let l:i_line += 1
+  endwhile
+endfunction
+nnoremap <leader>f :call Fix()<CR>
+
+function! BashColor()
+  syn cluster shExprList2	add=Hide
+  syn cluster	shCommentGroup add=Hide
+  syn cluster	shFunctionList add=Hide
+  syn cluster	shLoopList add=Hide
+
+  "syn clear shComment
+  "syn clear shExpr
+  syn region Hide start=/^ *# Fix:/ end=/^\s*$/
+  " syn match Hide /# Fix:.*$/
+  hi Hide ctermfg=darkgrey ctermbg=darkgrey
+
+  " syn match	shComment		"^\s*\zs#.*$"	contains=@shCommentGroup
+  " syn match	shComment		"\s\zs#.*$"	contains=@shCommentGroup
+  " syn match	shComment	contained	"#.*$"	contains=@shCommentGroup
+  "syn match shFunctionOne matchgroup=shFunction start=/^\s*[A-Za-z_0-9:][-a-zA-Z_0-9:]*\s*()\_s*{/ end=/}/  contains=@shFunctionList nextgroup=shFunctionStart,shQuickComment skipwhite skipnl
+  packadd wiki
+  if exists('b:current_syntax')
+    unlet b:current_syntax
   endif
-  nnoremap <C-n> :FzfOldLines<Cr>
+  syn include @MarkdownScript syntax/vimwiki.vim
+  "syn include @MarkdownScript syntax/markdown.vim
+  syn region MarkdownScriptCode matchgroup=MarkdownCommand start=+[=\\]\@<!'+ skip=+\\'+ end=+'+ contains=@MarkdownScript contained
+  syn region MarkdownScriptEmbedded matchgroup=MarkdownCommand start=+\<:\>+ skip=+\\$+ end=+[=\\]\@<!'+me=e-1 contains=@shIdList,@shExprList2 nextgroup=MarkdownScriptCode
+  syn cluster shCommandSubList add=MarkdownScriptEmbedded
+  hi def link MarkdownCommand Type
 
-  " Copy paste to from clipboard <- ctrl+p
-    if $os !=? 'termux'
-      " Disabled in termux for wheel
-      nnoremap <C-y> "+y
-      vnoremap <C-y> "+y
-    endif
-    nnoremap <expr> <C-p> pumvisible() ? "\<C-p>" : '"+p'
-    vnoremap <expr> <C-p> pumvisible() ? "\<C-p>" : '"+p'
-    " Note: `] goto end of paste
-    " Do not map for i as I never use it and pumvisible do not work
-    " inoremap <expr> <C-p> pumvisible() ? "\<C-p>" : '<Esc>"+p`]a'
-
-  " Insert mode begin, end <- c-a c-e shotcuts from gnome
-    inoremap <C-A> <C-O>^
-    inoremap <C-E> <C-O>g_
-    "inoremap <C-K> <C-O>D
-
-  " Window more intuitive
-    noremap <C-W>_ :split above<Cr>
-    noremap <C-W>- <C-W>s<C-W>j
-    noremap <C-W><bar> <C-W>v<C-W>l
-    noremap <C-W>z <C-W><bar>
-
-
-" Map
-  tnoremap <Esc> <C-W>N
-
-  " Save with s
-    noremap s :update!<CR>
-    vnoremap s <C-C>:update!<CR>
-
-  " NetRw Open Link
-    function! OpenLink(...)
-      let link = a:0 ? a:1 : expand('<cWORD>')
-      if link =~? '^ICT-\d*'
-        let link = 'https://ictjira.alma.cl/browse/' . link
-      elseif link =~? '^\S*=SC\d*'
-        let link = substitute(link, '\w*=\(SC\d*\)', '\1', '')
-        let link = 'https://github.com/koalaman/shellcheck/wiki/' . link
-      endif
-      exe '!xdg-open ' . link . '&> /dev/null &'
-    endfunction
-    nmap gx yiW:call OpenLink() <Cr><Cr>
-
-  " Send to tmux right (Ctrl-f)
-    let g:slime_target = 'tmux'
-    let g:slime_default_config = {'socket_name': 'default', 'target_pane': '{bottom-right}'}
-    let g:slime_dont_ask_default = 1
-    packadd slime
-  
-    function! SendRight(...)
-      let line = a:0 ? a:1 : getline('.')
-      " Trim spaces
-      let line = substitute(line, '^\s*\`*\s*', '', '')
-      let line = substitute(line, '\s*\`*\s*$', '', '')
-      if line =~? '^ts'
-        let line = substitute(line, '^ts\s*', '', '')
-        execute '!tmux send-keys -t right ' . line . '&> /dev/null'
-      else
-        call slime#send(getline('.') . "\n")
-      endif
-    endfunction
-
-    nnoremap <C-F> :<c-u>call SendRight(getline("."))<cr><cr>
-    xmap <C-F> <Plug>SlimeRegionSend
-    "nmap <C-t> :call SendTmux() <Cr><Cr>
-
-  " Use <C-L> to clear the highlighting of :set hlsearch and also preserve the
-  " default behavior of redrawing the screen
-    if maparg('<C-S-L>', 'n') ==# ''
-        nnoremap <silent> <C-S-L> :nohlsearch<C-R>=has('diff')?'<Bar>diffupdate':''<CR><CR><C-L>
-    endif
-
-  " Window
-    " Source: https://ddrscott.github.io/blog/2016/making-a-window-submode/
-    " TODO move in autoload
-    function! SetWindowMap() abort
-      if !exists('submode#map')
-        return
-      endif
-      " A message will appear in the message line when you're in a submode
-      " and stay there until the mode has existed.
-      let g:submode_timeoutlen = 4000
-      let g:submode_always_show_submode = 1
-
-      " We're taking over the default <C-w> setting. Don't worry we'll do
-      " our best to put back the default functionality.
-      call submode#enter_with('window', 'n', '', '<C-w>')
-
-      " Note: <C-c> will also get you out to the mode without this mapping.
-      " Note: <C-[> also behaves as <ESC>
-      call submode#leave_with('window', 'n', '', '<ESC>')
-
-      " Go through every letter
-      for key in ['a','b','c','d','e','f','g','h','i','j','k','l','m',
-      \           'n','o','p','q','r','s','t','u','v','w','x','y','z']
-        " maps lowercase, uppercase and <C-key>
-        call submode#map('window', 'n', '', key, '<C-w>' . key)
-        call submode#map('window', 'n', '', toupper(key), '<C-w>' . toupper(key))
-        call submode#map('window', 'n', '', '<C-' . key . '>', '<C-w>' . '<C-'.key . '>')
-      endfor
-      " Go through symbols. Sadly, '|', not supported in submode plugin.
-      for key in ['=','_','+','-','<','>']
-        call submode#map('window', 'n', '', key, '<C-w>' . key)
-      endfor
-
-      " I don't like <C-w>q, <C-w>c won't exit Vim when it's the last window.
-      call submode#map('window', 'n', '', 'q', '<C-w>c')
-      call submode#map('window', 'n', '', '<C-q>', '<C-w>c')
-
-      " <lowercase-pipe> sets the width to 80 columns, pipe (<S-\>) by default
-      " maximizes the width.
-      call submode#map('window', 'n', '', '\', ':vertical resize 80<CR>')
-
-      " Resize faster
-      call submode#map('window', 'n', '', '+', '3<C-w>+')
-      call submode#map('window', 'n', '', '-', '3<C-w>-')
-      call submode#map('window', 'n', '', '<', '10<C-w><')
-      call submode#map('window', 'n', '', '>', '10<C-w>>')
-    endfunction
-
-    " TODO
-    " call SetWindowMap()
-
-  " Maps for Package : On demand load
-    " F8 : Colorscheme-switcher
-    noremap <F8> :packadd misc<CR>:packadd colorscheme-switcher<CR><F8>
-    map <ESC>[19;2~ <S-F8>
-
-  " Indent < and >
-    noremap > >>
-    noremap < <<
-    vnoremap > >gv
-    vnoremap < <gv
-
-  " select last paste in visual mode
-    nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
-
-  " Perso maps normal
-    nnoremap H :set cursorline! cursorcolumn!<CR>
-
-  " Command : %% to expand path in command mode
-    cnoremap %% <C-R>=expand('%:p:h').'/'<CR>|
-
-  " Esc <- jk or kj
-    imap jk <Esc>
-    imap kj <Esc>
-
-  " C-Arrow on Ubuntu
-    "Get Ctrl + ARROW KEYS,because if you don't do that, the <C-Up>  (ie crtl + up ) key is notreckognise
-    map  <Esc>[1;5A <C-Up>
-    map  <Esc>[1;5B <C-Down>
-    map  <Esc>[1;5D <C-Left>
-    map  <Esc>[1;5C <C-Right>
-    cmap <Esc>[1;5A <C-Up>
-    cmap <Esc>[1;5B <C-Down>
-    cmap <Esc>[1;5D <C-Left>
-    cmap <Esc>[1;5C <C-Right>
-
-    map  <Esc>[1;2D <S-Left>
-    map  <Esc>[1;2C <S-Right>
-    cmap <Esc>[1;2D <S-Left>
-    cmap <Esc>[1;2C <S-Right>
-
-  " Fold
-    " TODO ctrl arrow to inc or decresae fold
-    "nnoremap <space> za
-    nnoremap <expr> <space> foldclosed('.') == -1 ? "zc" : "zO"
-    vnoremap <space> zf
-    map z1  :set foldlevel=0<CR><Esc>
-    map z2  :set foldlevel=1<CR><Esc>
-    map z3  :set foldlevel=2<CR><Esc>
-    map z4  :set foldlevel=3<CR><Esc>
-    map z5  :set foldlevel=4<CR><Esc>
-    map z6  :set foldlevel=5<CR><Esc>
-    map z7  :set foldlevel=6<CR><Esc>
-    map z8  :set foldlevel=7<CR><Esc>
-    map z9  :set foldlevel=8<CR><Esc>
-    " And for azery
-    map z& z1
-    map zé z2
-    map z" z3
-    map z' z4
-    map z( z5
-    map z- z6
-    map zè z7
-    map z_ z8
-    map zç z9
-
-  " Tab
-    noremap gn :tabnew<CR>
-    noremap g1 :1tabnext<CR><Esc>
-    noremap g2 :2tabnext<CR><Esc>
-    noremap g3 :3tabnext<CR><Esc>
-    noremap g4 :4tabnext<CR><Esc>
-    noremap g5 :5tabnext<CR><Esc>
-    noremap g6 :6tabnext<CR><Esc>
-    noremap g7 :7tabnext<CR><Esc>
-    noremap g8 :8tabnext<CR><Esc>
-    noremap g9 :9tabnext<CR><Esc>
-    " And for azery
-    map g& g1
-    map gé g2
-    map g" g3
-    map g' g4
-    map g( g5
-    map g- g6
-    map gè g7
-    map g_ g8
-    map gç g9
-
-
-" Command Man
-  if exists(':Man') != 2
-    com! -nargs=+ -complete=shellcmd M ru! ftplugin/man.vim | Man <args>
-  else
-    com! -nargs=+ -complete=shellcmd M Man <args>
+  if exists('b:current_syntax')
+    unlet b:current_syntax
   endif
+  syn include @AWKScript syntax/awk.vim
+  syn region AWKScriptCode matchgroup=AWKCommand start=+[=\\]\@<!'+ skip=+\\'+ end=+'+ contains=@AWKScript contained
+  syn region AWKScriptEmbedded matchgroup=AWKCommand start=+\<awk\>+ skip=+\\$+ end=+[=\\]\@<!'+me=e-1 contains=@shIdList,@shExprList2 nextgroup=AWKScriptCode
+  syn cluster shCommandSubList add=AWKScriptEmbedded
+  hi def link AWKCommand Type
+endfunction
+
+"autocmd BufReadPost,BufWinEnter *.bash call BashColor()
+command Hide call BashColor()
+command Show hi clear Hide
+let sh_minlines = 500
 
 
-" Folding
-  highlight Folded ctermfg=DarkGreen ctermbg=Black
-  set foldignore=
-  set foldlevel=30
-  set foldlevelstart=30 "the folding at opening
-  set foldmethod=indent
-  set foldcolumn=0  "the number of columns on the left to show the tree, default =0
-  call tin#fold_atom#main()
-  " If in timer, it overwrites vimwiki
-  "if has('timers')
-  "  call timer_start(0, 'tin#fold_atom#main')
-  "else
-  "  call tin#fold_atom#main()
-  "endif
+" Fasten like vim -X
+" TODO is 1 second dealy, kill tmux server
+" TODO make some contributions to tmux
+"https://superuser.com/questions/1450881/why-is-accessing-the-x-server-locally-from-vim-so-slow
+" See: https://stackoverflow.com/questions/14635295/vim-takes-a-very-long-time-to-start-up
+"set clipboard=exclude:.*
+"set clipboard=exclude:.*  " Do not connect to X, can take one sec on Ubuntu 2020.10
+"set notitle
+"
 
-
-" Filetype
-  augroup FtDetect
-    au BufNewFile,BufRead *.masm      setf masm
-    au BufNewFile,BufRead *.asm       setf masm
-    au BufNewFile,BufRead *.disarm    setf disarm
-    au BufNewFile,BufRead *.kd        setf kd
-  augroup END
-
-
-" Vimwiki
-  " Lazycall WikiIndex
-  function! Windex(num)
-    let l:nr = 1 + vimwiki#vars#get_bufferlocal('wiki_nr')
-    if &filetype !=# 'vimwiki' || l:nr != a:num
-      execute 'VimwikiIndex ' . a:num
-    endif
-  endfunction
-  function! VimwikiAlias()
-    " Load here and in ftpluing
-    for command in getcompletion('Vimwiki', 'command')
-      let alias = 'W' . command[7:]
-      exe ':command! -nargs=* ' . alias . ' ' . command . ' <args>'
-    endfor
-  endfunction
-  " Wiki
-  let g:vimwiki_list = []
-  let g:vimwiki_list += [{
-    \ 'path': '$h/wiki/wiki',
-    \ 'path_html': '$h/wiki/wiki_html'
-    \ }]
-  noremap <leader>ww :VimwikiIndex 1<CR>
-  map <leader>w<leader>w :VimwikiMakeDiaryNote 1<CR>
-  noremap <leader>wg :call Windex(1)<CR>:VimwikiGoto 
-  " Todo
-  let g:vimwiki_list += [{
-    \ 'path': '$h/wiki/todo',
-    \ 'path_html': '$h/wiki/todo_html'
-    \ }]
-  map <leader>tt :VimwikiIndex 2<CR>
-  map <leader>t<leader>t :VimwikiMakeDiaryNote 2<CR>
-  noremap <leader>tg :call Windex(2)<CR>:VimwikiGoto 
-  noremap <leader>ta :call Windex(2)<CR>:VimwikiGoto Alma<CR>
-  " Alma
-  let g:vimwiki_list += [{
-    \ 'path': '$h/wiki/alki',
-    \ 'path_html': '$h/wiki/alki_html'
-    \ }]
-  map <leader>aa :VimwikiIndex 3<CR>
-  map <leader>a<leader>a :VimwikiMakeDiaryNote 3<CR>
-  noremap <leader>ag :call Windex(3)<CR>:VimwikiGoto 
-  " Stackoverflow
-  let g:vimwiki_list += [{
-    \ 'path': '$h/wiki/stackoverflow',
-    \ 'path_html': '$h/wiki/stackoverflow_html'
-    \ }]
-  " Test markdown syntax
-  let g:vimwiki_list += [{
-    \ 'path': '$h/Test/Wiki',
-    \ 'path_html': '$h/Test/Wiki_html',
-    \ 'nested_syntaxes': {'python': 'python'}
-    \ }]
-  " Test default syntax
-  let g:vimwiki_list += [{
-    \ 'path': '$h/Test/WikiDefault',
-    \ 'path_html': '$h/Test/WikiDefault_html',
-    \ 'syntax': 'default',
-    \ 'ext': '.wiki',
-    \ }]
-  " Test markdown syntax
-  let g:vimwiki_list += [{
-    \ 'path': '$h/Test/Wiki',
-    \ 'path_html': '$h/Test/Wiki_html',
-    \ 'nested_syntaxes': {'python': 'python'}
-    \ }]
-  " Test default syntax
-  let g:vimwiki_list += [{
-    \ 'path': '$h/Test/WikiDefault',
-    \ 'path_html': '$h/Test/WikiDefault_html',
-    \ 'syntax': 'default',
-    \ 'ext': '.wiki',
-    \ }]
-  " Filename todo -> setft vimwiki
-  augroup Wiki
-    au BufNewFile,BufRead */todo      setf vimwiki
-  augroup END
-  " Map
-  " Option
-  let g:vimwiki_automatic_nested_syntaxes = 1
-  let g:vimwiki_folding = 'expr'
-
-  let g:vimwiki_key_mappings = {'mouse': 1}
-  let g:vimwiki_markdown_link_ext = 1
-  let g:vimwiki_table_reduce_last_col = 1
-  let g:vimwiki_table_mappings = 0
-  let g:vimwiki_table_auto_fmt = 1
-  let g:vimwiki_hl_headers = 1
-  let g:vimwiki_hl_cb_checked = 1
-  let g:vimwiki_syntax = 'markdown'
-  let g:vimwiki_ext = '.md'
-  let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
-  let g:vimwiki_css_name = '/Css/include.css'
-  let g:vimwiiki_url_maxsave = 0  " Do not conceal http url
-
-  "let g:vimwiki_tag_format = {'pre_mark': '#tag1', 'post_mark': '#tag2', 'sep': '|'}
-  "let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': ' ' }
-  let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': '[#[:space:]]\+', 'in': '[^#:[:space:]]\+' }
-
-  " Test Wiki
-  "let g:vimwiki_folding = ''
-  " let g:vimwiki_schemes_web = ['http', 'https']
-  " let g:vimwiki_rx_todo = '\C\<\%(QUESTION\|ANSWER\|NOTE\|TODO\|DONE\|STARTED\|FIXME\|FIXED\|XXX\)\>'
-  " let g:vimwiki_syntax_list = {}
-  " let g:vimwiki_syntax_list['markdown'] = {}
-  "let g:vimwiki_syntax_list['markdown']['typeface'] = {}
-  "let g:vimwiki_emoji_enable = 3
-  " New
-  "let g:vimwiki_cycle_bullets = 1
-  "let g:vimwiki_bullet_types = ['-', '•', '→', '*']
-  "let g:vimwiki_nested_syntaxes = {'python': 'python'}
-  "let g:vimwiki_ext2syntax = {'.md': 'markdown'}
-  ""let g:vimwiki_tag_format = {'pre': '\(^[ -]*tags\s*:.*\)\@<=', 'pre_mark': '', 'post_mark': '', 'sep': '>><<'}
-  ""let g:vimwiki_toc_link_format = 1
-  let g:vimwiki_global_ext = 1
-  let g:vimwiki_syntaxlocal_vars = {}
-  "let g:vimwiki_syntaxlocal_vars['markdown'] = {}
-  "let g:vimwiki_syntaxlocal_vars['markdown']['yaml_metadata_block'] = [['aaa', 'aaa']]
-  " hi VimwikiHeader1 guifg=#c94f6d
-  " hi VimwikiHeader2 guifg=#ffff00
-  " hi VimwikiHeader3 guifg=#7AF8FF
-  " hi VimwikiHeader4 guifg=#f4a261
-  " hi VimwikiHeader5 guifg=#d67ad2
-  " hi VimwikiLink guifg=#719cd6 gui=underline
-  " hi VimwikiListTodo guifg=#81b29a
-
-  "let g:gfm_syntax_emoji_conceal = 1
-  "packadd gfm-syntax
-  packadd wiki " TODO remove and add autoload
-  call VimwikiAlias()
-
-  " Calendar
-  let g:calendar_monday = 1
-
-" Alma
-  " AlmaSw
-    "" echo | g++ -E -Wp,-v -
-    "" `gcc -print-prog-name=cpp` -v  # cpp for c preprocessor
-    " System
-    set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
-    set path+=/usr/local/include
-    set path+=/usr/include/x86_64-linux-gnu
-    set path+=/usr/include
-
-    " Local
-    set path+=./../include
-    set path+=./../../include
-    set path+=./../../../include
-    "" `gcc -print-prog-name=cc1plus` -v
-    "set path+=/usr/include/c++/9/
-    "set path+=/usr/include/c++/9
-    "set path+=/usr/include/x86_64-linux-gnu/c++/9
-    "set path+=/usr/include/c++/9/backward
-    "set path+=/usr/lib/gcc/x86_64-linux-gnu/9/include
-    "set path+=/home/tourneboeuf/AlmaSw/ACS/LGPL/CommonSoftware/**/include/
-    "set path+=/home/tourneboeuf/AlmaSw/ICD/**/include/
-
-
-
-" Fastly (added)
-  command! -nargs=0 -bar Helptags for p in glob('~/.vim/pack/bundle/opt/*', 1, 1) | exe 'packadd '.fnamemodify(p, ':t') | endfor | helptags ALL
-
-  " packadd perlomni
-  "packadd lexima " autoclose brackets
-  "packadd xmledit
-  "let xml_use_html = 1
-
-  "imap   <C-k>   <plug>(emmet-expand-abbr)
-  " packadd emmet
-  " TODO emmet
-  "imap   <C-k>   <plug>(emmet-expand-abbr)
-  "packadd emmet
-  "imap   <C-k>   <plug>(emmet-expand-abbr)
-  " let g:jupyter_monitor_console = 1
-  "let g:jupyter_verbose = 1
-  "
-  "let g:jupyter_cell_separators = ['##', '#toto', '.*titi']
-  "let g:jupyter_auto_connect = 1
-  " let b:jupyter_exec_before = 'clear-screen'
-  packadd jupyter
-  " packadd spector
-  "packadd python-mode
-  " if $os == 'unix' packadd youcompleteme endif
-  "packadd raku
-  " packadd sleuth  " Auto indent
-  let g:ycm_confirm_extra_conf = 0
-  " autocmd FileType python let b:jupyter_exec_before = 'clear-screen'
-
-  map K :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
-  " Pb with gruvbox-material
-  hi Comment cterm=NONE
-
-  " C-Space omnicompletion
-  inoremap <C-Space> <C-x><C-o>
-  inoremap <C-@> <C-x><C-o>
-
-  " copy to attached terminal using the yank(1) script:
-  " https://sunaku.github.io/tmux-yank-osc52.html
-	function! CopyToTerminal(type, ...)
-    " Prepare peace
-	  let l:sel_save = &selection
-	  let &selection = 'inclusive'
-	  let l:reg_save = @@
-
-    " Get selection
-	  if a:0  " Invoked from Visual mode, use gv command.
-	    silent exe 'normal! gvy'
-	  elseif a:type ==# 'line'
-	    silent exe "normal! '[V']y"
-	  else
-	    silent exe 'normal! `[v`]y'
-	  endif
-
-    " Call it
-    " :call Rawecho("\ePtmux;\e\e]52;c;dG90bw==\x07\e\x5c")
-    " :exe 'silent! !echo titi | _copy_to_terminal.sh'
-    let text = @@
-    let text = system($v . '/bin/_copy_to_terminal.sh', text)
-    call writefile([text], '/dev/fd/2', 'b')
-
-    " Restore peace
-	  let &selection = l:sel_save
-	  let @@ = l:reg_save
-  endfunction
-
-	nnoremap <silent> <leader>y :set opfunc=CopyToTerminal<CR>g@
-	vnoremap <silent> <leader>y :<C-U>call CopyToTerminal(visualmode(), 1)<CR>
-
-
-
-  " Use tab for trigger completion with characters ahead and navigate.
-  " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-  inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-  
-  function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
-  endfunction
-  
-  " Use <c-space> to trigger completion.
-  inoremap <silent><expr> <c-space> coc#refresh()
-  
-  " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-  " Coc only does snippet and additional edit on confirm.
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-  " Or use `complete_info` if your vim support it, like:
-  " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-  
-  
-  
-  " Use `[g` and `]g` to navigate diagnostics
-  nmap <silent> [g <Plug>(coc-diagnostic-prev)
-  nmap <silent> ]g <Plug>(coc-diagnostic-next)
-  
-  " Remap keys for gotos
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
-  
-  function! SynStack()
-    if !exists('*synstack')
-      return
-    endif
-    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-  endfunction
-  
-  
-  function! SynGroup()
-      let l:s = synID(line('.'), col('.'), 1)
-      echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
-  endfunction
-  
-  function! SourceIfExist(file)
-    let l:file = expand(a:file)
-    if filereadable(l:file)
-      exe 'source' a:file
-    endif
-  endfunction
-  
-  let t:is_transparent = 0
-  function! Toggle_transparent_background()
-    if t:is_transparent == 0
-      hi Normal guibg=#111111 ctermbg=black
-      hi Normal ctermfg=223 ctermbg=235 guifg=#ebdbb2 guibg=#282828
-      hi CursorLine term=underline cterm=underline guibg=#3c3836
-      let t:is_transparent = 1
-    else
-      hi Normal guibg=NONE ctermbg=NONE
-      hi CursorLine guibg=NONE
-      let t:is_transparent = 0
-    endif
-  endfunction
-  nnoremap <F5> :call Toggle_transparent_background()<CR>
-  
-  let g:is_bash=1
-  
-  
-  function! Fix()
-    let l:i_line = line('.')
-    let l:i_has_fixed = 0
-    while 1
-      let l:s_line = getline(l:i_line)
-      echom l:i_line .  l:s_line
-  
-      if -1 == match(l:s_line, '^ *#')
-        " Ciao
-        if l:i_has_fixed == 1
-          break
-        endif
-        " Comment errounous line
-        call setline(l:i_line, substitute(l:s_line, '[^ ]', '# \0', ''))
-  
-      elseif -1 != match(l:s_line, '^ *#\s*Fix\w*: ')
-        " Uncomment Fix
-        call setline(l:i_line, substitute(l:s_line, '#\s*Fix\w*: ', '', ''))
-        let l:i_has_fixed = 1
-  
-      elseif -1 != match(l:s_line, '^ *#\s*Rem\w*:')
-        " Remove Rem from remarks
-        "call setline(l:i_line, substitute(l:s_line, '#\s*Rem\w*:\s*', '# ', ''))
-  
-      else
-        " Ciao
-        if l:i_has_fixed == 1
-          break
-        endif
-  
-      endif
-  
-      let l:i_line += 1
-    endwhile
-  endfunction
-  nnoremap <leader>f :call Fix()<CR>
-  
-  function! BashColor()
-    syn cluster shExprList2	add=Hide
-    syn cluster	shCommentGroup add=Hide
-    syn cluster	shFunctionList add=Hide
-    syn cluster	shLoopList add=Hide
-  
-    "syn clear shComment
-    "syn clear shExpr
-    syn region Hide start=/^ *# Fix:/ end=/^\s*$/
-    " syn match Hide /# Fix:.*$/
-    hi Hide ctermfg=darkgrey ctermbg=darkgrey
-  
-    " syn match	shComment		"^\s*\zs#.*$"	contains=@shCommentGroup
-    " syn match	shComment		"\s\zs#.*$"	contains=@shCommentGroup
-    " syn match	shComment	contained	"#.*$"	contains=@shCommentGroup
-    "syn match shFunctionOne matchgroup=shFunction start=/^\s*[A-Za-z_0-9:][-a-zA-Z_0-9:]*\s*()\_s*{/ end=/}/  contains=@shFunctionList nextgroup=shFunctionStart,shQuickComment skipwhite skipnl
-    packadd wiki
-    if exists('b:current_syntax')
-      unlet b:current_syntax
-    endif
-    syn include @MarkdownScript syntax/vimwiki.vim
-    "syn include @MarkdownScript syntax/markdown.vim
-    syn region MarkdownScriptCode matchgroup=MarkdownCommand start=+[=\\]\@<!'+ skip=+\\'+ end=+'+ contains=@MarkdownScript contained
-    syn region MarkdownScriptEmbedded matchgroup=MarkdownCommand start=+\<:\>+ skip=+\\$+ end=+[=\\]\@<!'+me=e-1 contains=@shIdList,@shExprList2 nextgroup=MarkdownScriptCode
-    syn cluster shCommandSubList add=MarkdownScriptEmbedded
-    hi def link MarkdownCommand Type
-  
-    if exists('b:current_syntax')
-      unlet b:current_syntax
-    endif
-    syn include @AWKScript syntax/awk.vim
-    syn region AWKScriptCode matchgroup=AWKCommand start=+[=\\]\@<!'+ skip=+\\'+ end=+'+ contains=@AWKScript contained
-    syn region AWKScriptEmbedded matchgroup=AWKCommand start=+\<awk\>+ skip=+\\$+ end=+[=\\]\@<!'+me=e-1 contains=@shIdList,@shExprList2 nextgroup=AWKScriptCode
-    syn cluster shCommandSubList add=AWKScriptEmbedded
-    hi def link AWKCommand Type
-  endfunction
-  
-  "autocmd BufReadPost,BufWinEnter *.bash call BashColor()
-  command Hide call BashColor()
-  command Show hi clear Hide
-  let sh_minlines = 500
-  
-  
-  " Fasten like vim -X
-  " TODO is 1 second dealy, kill tmux server
-  " TODO make some contributions to tmux
-  "https://superuser.com/questions/1450881/why-is-accessing-the-x-server-locally-from-vim-so-slow
-  " See: https://stackoverflow.com/questions/14635295/vim-takes-a-very-long-time-to-start-up
-  "set clipboard=exclude:.*
-  "set clipboard=exclude:.*  " Do not connect to X, can take one sec on Ubuntu 2020.10
-  "set notitle
-  "
+" vim: sw=2:ts=2:fdm=marker

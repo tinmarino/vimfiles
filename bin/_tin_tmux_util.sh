@@ -7,7 +7,7 @@
 function link {
   # Link to an existing termux window
   # Identified by its name
-  # Calle me like _tin_tmux_util,sh link TO_DO 9 "$HOME/wiki/todo" "vi -c'call Windex(2)'" _TIN_TMUX_WINDOW_TO_DO
+  # Call me like _tin_tmux_util,sh link TO_DO 9 "$HOME/wiki/todo" "vi -c'call Windex(2)'" _TIN_TMUX_WINDOW_TO_DO
   window_name="$1" ; window_number="$2" ; start_directory="$3" ; cmd="$4" ; variable_name="$5"
 
   # If window is in current section, Select it
@@ -15,20 +15,20 @@ function link {
     tmux select-window -t "$window_name"
   else
     # If window was created once, link to it (mirror)
-    if tmux show-environment -g $variable_name &> /dev/null && tmux has-session -t "${!variable_name}" > /dev/null 2>&1 ; then
+    if tmux show-environment -g "$variable_name" &> /dev/null && tmux has-session -t "${!variable_name}" > /dev/null 2>&1; then
       tmux link-window -s "${!variable_name}"
-      tmux move-window -t $window_number
+      tmux move-window -t "$window_number"
     # Else, window not existingm create it
     else
       tmux new-window -c "$start_directory" -n "$window_name" "$cmd"
-      tmux move-window -t $window_number
+      tmux move-window -t "$window_number"
       tmux run-shell "tmux set-environment -g $variable_name '#S:#W'"
     fi
   fi
 }
 
 
-if [ $1 == 'link' ]; then
+if [[ "$1" == link ]]; then
   source ~/.bashrc
   link "${@:2}"
 fi

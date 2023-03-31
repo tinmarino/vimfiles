@@ -44,6 +44,6 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
         xargs --max-args 1 --no-run-if-empty printf "%q ")"
 
     if [[ -n "${packages}" ]]; then
-        insert_stdin "# apt ${@}" "${packages}"
+        insert_stdin "# apt ${*}" "${packages}"
     fi
 fi

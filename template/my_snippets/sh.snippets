@@ -17,7 +17,9 @@ endsnippet
 
 
 snippet name
-[[ "${BASH_SOURCE[0]}" == "\${0}" ]] && `!v expand('%:t:r')` "$@"
+if [[ "\${BASH_SOURCE[0]}" == "\${0}" ]]; then
+  `!v expand('%:t:r')` "$@"
+fi
 endsnippet
 
 
@@ -106,7 +108,7 @@ endsnippet
  
 
 
-snippet #! "Shbang"
+snippet #! "Shebang"
 #!/usr/bin/env bash
 endsnippet
 

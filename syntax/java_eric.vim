@@ -2,7 +2,7 @@
 " Maintainer:	Claudio Fleiner <claudio@fleiner.com>
 " URL:		http://www.fleiner.com/vim/syntax/java.vim
 " Last Change:	2011 Dec 30
-" tinmarino copyed from https://github.com/sentientmachine/erics_vim_syntax_and_color_highlighting/blob/master/syntax/java.vim
+" tinmarino copied from https://github.com/sentientmachine/erics_vim_syntax_and_color_highlighting/blob/master/syntax/java.vim
 
 " Please check :help java.vim for comments on some of the options available.
 

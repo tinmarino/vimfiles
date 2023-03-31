@@ -1,13 +1,27 @@
 #!/usr/bin/env bash
 # Vi <= Binded alt-e <= BashRc
 
-source "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/lib_fzf.sh"
-
 # Log Interface
-main() {
-  # shellcheck disable=SC2154  # v is referenced but not assigned
-  IFS=$'\n' out="$(fzf --query="$1" --exit-0 --expect=ctrl-o,ctrl-e \
-    --preview "$v/bin/fzf_preview {}")"
+fzf_open() {
+  local dir=${1:-.}
+
+  # Declare command
+  local -a a_find_cmd=(
+    fdfind
+    --exclude 'Test'
+    "$dir"
+  )
+  local -a a_fzf_cmd=(
+    fzf
+    #--query="$dir"
+    --exit-0
+    --expect='ctrl-o,ctrl-e'
+    --preview "$v/bin/fzf_preview {}"
+  )
+
+  # Run fzf
+  IFS=$'\n' out=$("${a_find_cmd[@]}" | "${a_fzf_cmd[@]}")
+
   key=$(head -1 <<< "$out")
   file=$(head -2 <<< "$out" | tail -1)
   file="${file/#\~/$HOME}"
@@ -24,4 +38,9 @@ main() {
   fi
 }
 
-main "$@"
+
+# Launch
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  source "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/lib_fzf.sh"
+  fzf_open "$@"
+fi

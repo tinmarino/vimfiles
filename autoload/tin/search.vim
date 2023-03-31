@@ -1,6 +1,6 @@
 " Search for all numbers in a range
 "
-" Source me then (better put the last command defintion in your vimrc, then
+" Source me then (better put the last command definition in your vimrc, then
 "
 " :Isearch > 450.20
 " :Isearch > 1000 < 1000000
@@ -33,7 +33,7 @@ function! search#isearch(num, dir, inc) abort
   let l:start_of_number = '\%([^0-9.]\zs\|^\)'
   let l:pat_list = [l:start_of_number]
   
-  " Get hight and low
+  " Get high and low
   let l:list = split(a:num, '\.')
   let l:high = l:list[0]
   if (len(l:list) > 1)

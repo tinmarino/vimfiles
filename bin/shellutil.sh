@@ -115,7 +115,7 @@ add_tag(){
 }
 
 get_file_header(){
-  `# Read first line of scritp to retrieve it header`
+  `# Read first line of script to retrieve it header`
   `# :param1: filename`
   `# :param2: format long or short`
   local file="$1"
@@ -139,7 +139,7 @@ get_fct_dic(){
   declare -a post_fct=$(typeset -F -p | cut -d " " -f 3)
   local nl=$'\n'
 
-  # Purge funtions defined before
+  # Purge functions defined before
   # See copy: https://stackoverflow.com/questions/19417015/how-to-copy-an-array-in-bash
   # See delete: https://stackoverflow.com/questions/16860877/remove-an-element-from-a-bash-array
   tps=("${post_fct[@]}")
@@ -181,7 +181,7 @@ get_fct_dic(){
 }
 
 print_usage_fct(){
-  `# Print functon description`
+  `# Print function description`
   `# :param1: format <string>: short, long`
   `# :param2: type <string>: option, function`
   `# :param3: indent <int>`
@@ -508,7 +508,7 @@ print_script_start(){
 
 print_script_end(){
   `# Print: script ending + time elapsed => for log`
-  # Calcultate time
+  # Calculate time
   local end_time=$(date +%s)
   local sec_time=$((end_time - start_time))
   printf -v script_time '%dh:%dm:%ds' $((sec_time/3600)) $((sec_time%3600/60)) $((sec_time%60))
@@ -580,7 +580,7 @@ set_print(){
   b_run=0
 }
 abat(){
-  `# Alias_bat laguage < stdin > stdout`
+  `# Alias_bat language < stdin > stdout`
   local lang="${1:-bash}"
   bat --style plain --color always --pager "" --theme zenburn --language "$lang" - | perl -p -e 'chomp if eof';
 }
@@ -614,7 +614,7 @@ bin_path(){
 
 
 shellutil_main(){
-  `# Main code: embeded in function for fold`
+  `# Main code: embedded in function for fold`
   `# Keep me last!`
   PROJECT_NAME=ShellUtil
 
@@ -664,7 +664,7 @@ shellutil_main(){
   # By default, run commands
   b_run=1
 
-  # Delcare associate arrays
+  # Declare associate arrays
   declare -gA fct_dic
   declare -gA cmd_dic
 
