@@ -71,7 +71,7 @@ run_test(){
   parse_argument "$@"; ((res |= $?))
   execute_test_argument; ((res |= $?))
 
-  # Print ellapsed time (after calculate it)
+  # Print elapsed time (after calculate it)
   end_time=$(date +%s)
   sec_time=$((end_time - start_time))
   printf -v script_time '%dh:%dm:%ds' $((sec_time/3600)) $((sec_time%3600/60)) $((sec_time%60))
