@@ -1,5 +1,9 @@
 # Vimfiles and dotfiles
 
+[![github-actions](https://github.com/tinmarino/vimfiles/workflows/CI%20Dotfile/badge.svg)](https://github.com/tinmarino/vimfiles/actions)
+
+---
+
 Commands to run in vimfiles directory (`~/vim`):
 
 ```sh
