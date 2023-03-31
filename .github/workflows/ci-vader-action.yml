@@ -67,18 +67,16 @@ jobs:
           path: ftdetect
           args: --style-problem
 
+
   Vader:
-    name: Check ${{ matrix.opt }}
+    name: "Vader: ${{ matrix.os }} ${{ matrix.opt }}"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         opt: [
-          # "vint",
-
           "-n vim_8.1.0519",
-          "-n v9.0.1396",
-
+          "-n vim_9.0.1396",
           "-n nvim_0.3.8",
 
           # Cannot quote as it is expanded from $OPT after quote removal
@@ -87,6 +85,7 @@ jobs:
           "-n vim_7.4.1546 -f 'l*.vader'",
           "-n vim_8.0.0027 -f '[m-z]*.vader'",
         ]
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       # This action is required to fetch the code to test
       - uses: actions/checkout@v3

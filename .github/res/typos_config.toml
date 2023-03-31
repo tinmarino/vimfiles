@@ -1,6 +1,38 @@
-files.extend-exclude = ["test", "autoload/vimwiki/emoji.vim",  "doc/vimwiki-emoji.txt"]
+# See syntax at: https://github.com/crate-ci/typos/blob/master/docs/reference.md
+
+files.extend-exclude = [
+  "scripts",
+  "pack",
+  "syntax",  # Old shit + some acronym tokens
+  "bin/lib/class/",  # Spanish
+  "template/gitignore",
+  "autoload/vimwiki/emoji.vim",
+  "doc/vimwiki-emoji.txt",
+  ".github/res/typos_config.toml",  # Do not verify self
+]
+
+[default.extend-ignore-identifiers]
+BaSh = "BaSh"
+
+default.extend-ignore-identifiers-re = [
+  "B.*",
+  ".*",
+]
+
+# Respect ignore files.
+files.ignore-files = true
+
+default.extend-exclude = [
+  "*"
+]
+
+default.extend-ignore-re = [
+  "-ane",
+  "BaSh",
+]
 
 [default.extend-words]
 # For the fo-table
 fo = "fo"
 Gude = "Gude"
+BaSh = "BaSh"
