@@ -42,7 +42,9 @@ jobs:
         run: |
           pushd test || exit 101
 
-          docker create --name=bash_container bash_image || exit 103
+          # -d = --detach so that I do not dye when bash exits
+          # -t = --tty so that bash do not avort
+          docker run --detach --tty --name=bash_container bash_image || exit 103
           docker cp bash_test.sh bash_container:/bash_test.sh || exit 104
           docker exec bash_container bash /bash_test.sh || exit 105
 
