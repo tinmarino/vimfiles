@@ -1,7 +1,5 @@
 # Vimfiles and dotfiles
 
-[![github-actions](https://github.com/tinmarino/vimfiles/workflows/CI%20Dotfile/badge.svg)](https://github.com/tinmarino/vimfiles/actions)
-
 ---
 
 Commands to run in vimfiles directory (`~/vim`):
@@ -44,3 +42,11 @@ git submodule add https://github.com/jpalardy/vim-slime
 * Cmder
 * Gvim
 * Python3 (choose good version)
+
+# CI Status
+
+
+[![CI: Vader](https://github.com/tinmarino/vimfiles/workflows/Vader/badge.svg)](https://github.com/tinmarino/vimfiles/actions)<br/>
+[![CI: Vint](https://github.com/tinmarino/vimfiles/workflows/Vint/badge.svg)](https://github.com/tinmarino/vimfiles/actions)<br/>
+[![CI: Typos](https://github.com/tinmarino/vimfiles/workflows/Typos/badge.svg)](https://github.com/tinmarino/vimfiles/actions)<br/>
+[![CI: Bash](https://github.com/tinmarino/vimfiles/workflows/Bash/badge.svg)](https://github.com/tinmarino/vimfiles/actions)<br/>
