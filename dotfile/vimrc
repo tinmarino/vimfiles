@@ -311,7 +311,7 @@ let g:ale_sh_shellcheck_options = si
 " Interface: 5ms for 4plugings
 " TODO only if npm present and more
 if 'tourny' ==# hostname()
-  packadd coc
+  "packadd coc
 endif
 packadd fzf
 packadd fzf.vim
