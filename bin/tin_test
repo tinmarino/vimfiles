@@ -9,7 +9,7 @@ register_subcommand class011 "$bin_path/lib/class/class011.sh"
 register_subcommand class061 "$bin_path/lib/class/class061.sh"
 
 args(){
-  : 'Debug: Print ${cblue}Arguments$cend passed'
+  : 'Debug: Print Arguments passed'
   echo "Full command: $0 args $*"
   i=1
   for var in "$@"; do

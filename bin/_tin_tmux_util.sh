@@ -29,6 +29,7 @@ function link {
 
 
 if [[ "$1" == link ]]; then
+  # shellcheck disable=SC1090  # Follow non cosntant source
   source ~/.bashrc
   link "${@:2}"
 fi

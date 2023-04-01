@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 
 function work {
   echo -e "echo -e \"\n\n---------\nSync: $1\""

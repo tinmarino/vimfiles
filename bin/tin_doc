@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 # Print ${cblue}Documentation$cend on command, utils, self-scripts
-# shellcheck disable=SC2092  # Remove backticks
+# shellcheck disable=SC2154  # Referenced but not asssigned
 
 declare scriptdir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
 source "$scriptdir/shellutil.sh"
+
 
 _usage(){
   : 'Print this message'
   print_title "Documentation"
   print_usage_fct
 }
+
 
 _sed(){
   : 'Print Stream EDitor command info'
@@ -19,11 +21,13 @@ _sed(){
   echo; echo 'w Sed  # for my wiki file'; echo
 }
 
+
 _color(){
   : 'Print Ansi Escape color list colorized'
   `# Long string`
   "$(dirname "$0")/tin_color_256_show.sh"
 }
+
 
 self(){
   : 'Print description of all commands in current directory'
