@@ -20,13 +20,13 @@ abat(){
   '
   local fil=$1
   # If command bat do not exist, just print in yellow
-  if ! command -v bat &> /dev/null || ! command -v perl &> /dev/null; then
+  if ! command -v bat &> /dev/null; then
     cat "$fil"
     return 0
   fi
 
   # It can be alias or function. In my case bat is aliased to: PAGER= bat'
-  bat --style numbers --color always --pager "" --line-ragne :500 --theme zenburn --language "$lang" "$fil"
+  bat --style numbers --color always --pager "" --line-range :500 --theme zenburn "$fil"
 }
 
 

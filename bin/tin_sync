@@ -3,16 +3,17 @@
 #
 # shellcheck disable=SC2016  # Expressions don't expand in single quotes, use double quotes for that
 
-source "$(dirname "${BASH_SOURCE[0]}")/shellutil.sh"
+declare scriptdir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+source "$scriptdir/shellutil.sh"
 
 _usage(){
-  `# Print this message`
+  : 'Print this message'
   print_title "Synchronization"
   print_usage_common
 }
 
 __wget(){
-  `# Wget wrapper`
+  : 'Wget wrapper'
   check="$1"
   check="${check%%.tar.bz2}"
   if [[ -e "$check" ]]; then
@@ -35,7 +36,7 @@ __wget(){
 }
 
 __site(){
-  `# Get online documentation`
+  : 'Get online documentation'
   echo -e "${ctitle}--->  SITES  =================================================\e[0m"
   __wget "$1/Bash/bash_reference.html" "https://www.gnu.org/software/bash/manual/bash.html"
   __wget "$1/Bash/bash_advanced_bash_scripting.html" "https://tldp.org/LDP/abs/html/abs-guide.html"
@@ -43,7 +44,7 @@ __site(){
 }
 
 __base(){
-  `# Sychrnonize argument folder`
+  : 'Sychrnonize argument folder'
   # 1: Local Directory
   # 2: Remote URL
   # 3: Sync command: ex: "pull --rebase"
@@ -57,7 +58,7 @@ __base(){
   echo -e "${ctitle}--->  $title  =================================================\e[0m"
   mkdir "$1" 2> /dev/null && echo "[*] Created directory $1"
   pushd "$1" > /dev/null || {
-    echo "\e[E] Cannot pushd $1"
+    echo -e "[E] Cannot pushd $1"
     return 1
   }
 
@@ -91,29 +92,29 @@ __base(){
 
   # Popd && Ret
   popd > /dev/null || {
-    echo "\e[E] Cannot popd"
+    echo "[E] Cannot popd"
     return 1
   }
   return $ret
 }
 
 __sync(){
-  `# Proxy counting errors`
+  : 'Proxy counting errors'
   ((n++)); __base "$1" "$2" "$3"  && ((ok++))
 }
 
 site(){
-  `# Site: Sync ~/wiki/html folder: dump of pages`
+  : 'Site: Sync ~/wiki/html folder: dump of pages'
   __site ~/wiki/html
 }
 wiki(){
-  `# Wiki: Sync ~/wiki/ default wiki: set by default, reset by -r`
+  : 'Wiki: Sync ~/wiki/ default wiki: set by default, reset by -r'
   __sync ~/wiki/todo      https://gitlab.com/tinmarino/todo.git
   __sync ~/wiki/wiki      https://github.com/tinmarino/wiki
   __sync ~/wiki/alki      https://gitlab.com/tinmarino/alki.git
 }
 tag(){
-  `# Tag: Generate Wiki links for autocomplete`
+  : 'Tag: Generate Wiki links for autocomplete'
   # `vim -Es` like execute silent, but must load my vimrc (-u) and nocompatible (-N)
   # TODO get a time stamp and do it once a day
   cp -r ~/wiki/wiki/Css/* ~/wiki/wiki_html/Css/
@@ -131,26 +132,26 @@ tag(){
 
 
 rosetta(){
-  `# Rosetta: Sync Rosetta Stone code ~/wiki/rosetta`
+  : 'Rosetta: Sync Rosetta Stone code ~/wiki/rosetta'
   __sync ~/wiki/rosetta   https://github.com/acmeism/RosettaCodeData "git pull --rebase"
 }
 
 cheat(){
-  `# Cheatsheets: Sync: www.github/rstacruz -> ~/wiki/cheatsheet`
+  : 'Cheatsheets: Sync: www.github/rstacruz -> ~/wiki/cheatsheet'
   __sync ~/wiki/cheat https://github.com/rstacruz/cheatsheets "git pull --rebase"
 }
 html(){
-  `# Html: Sync ~/wiki/*_html generated folders`
+  : 'Html: Sync ~/wiki/*_html generated folders'
   __sync ~/wiki/wiki_html https://github.com/tinmarino/wiki_html
   __sync ~/wiki/alki_html https://gitlab.com/tinmarino/alki_html.git
 }
 _vim(){
-  `# Vim: Sync ~/.vim folder`
+  : 'Vim: Sync ~/.vim folder'
   # shellcheck disable=SC2154
   __sync "$v"             https://github.com/tinmarino/vimfiles
 }
 all(){
-  `# All: Sync all except vim, tag`
+  : 'All: Sync all except vim, tag'
   wiki; rosetta; html; site;
   cheat;
 }
@@ -166,13 +167,13 @@ cgood="\e[1m\e[38;5;46m"
 cbad="\e[1m\e[38;5;196m"
 
 __at_init(){
-  `# Print Hi`
+  : 'Print Hi'
   # shellcheck disable=SC2154  # cend referenced but not assigned
   echo -e "${chi}---> Synchronizing from internet$cend"
 }
 
 __at_finish(){
-  `# Print Low`
+  : 'Print Low'
   cout="$cbad"
   if ((ok == n)); then
     cout="$cgood"

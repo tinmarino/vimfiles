@@ -94,8 +94,11 @@
     export os="unknown"
     export v="$HOME/.vim"
     ;;
-
   esac
+  
+  export H=$h
+  export V=$v
+  export OS=$os
 
   # Man
   if [[ ! "$USER" == "jim" ]]; then

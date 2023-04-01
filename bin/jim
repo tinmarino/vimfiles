@@ -33,7 +33,7 @@ register_subcommand linux93 "$bin_path/lib/class/linux93.sh"
 register_subcommand misc "$bin_path/lib/class/misc.sh"
 
 sync(){
-  `# ${cblue}Sinconizacion$cend: de la clase`
+  : 'Sinconizacion: de la clase'
   pushd ~/.vim || exit 2
   git pull --rebase \
     && echo -e "${cgreen}[+] Synchronization SUCCESS$cend" \

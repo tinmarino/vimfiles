@@ -1,18 +1,23 @@
 #!/usr/bin/env bash
 # Vi <= Binded alt-e <= BashRc
 
-source "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/lib_fzf.sh"
+declare scriptdir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+source "$scriptdir/lib_fzf.sh"
 
 # Log Interface
 main() {
-  local branches branch
-  branches=$(git --no-pager branch -vv && git --no-pager branch -rvv) &&
-  branch=$(echo "$branches" |
+  local filter=''
+  if [[ -n "$*" ]] && [[ -f "$*" ]]; then
+    filter="-- $*"
+  fi
+
+  local branches=$(git --no-pager branch -vv && git --no-pager branch -rvv) &&
+  local branch=$(echo "$branches" |
     fzf +m \
-      "${_fzf_base[@]}" \
+      "${_FZF_BASE[@]}" \
       --preview "f() { set -- \$(echo -- \$@ | grep -o '[a-f0-9]\{7\}'); [ \$# -eq 0 ] || git show --color=always \$1 $filter; }; f {}" \
-      "${_fzf_size[@]}" \
-      "${_fzf_bind[@]}"
+      "${_FZF_SIZE[@]}" \
+      "${_FZF_BIND[@]}"
   ) &&
   git checkout "$(echo "$branch" | awk '{print $1}' | sed "s/.* //")"
 }

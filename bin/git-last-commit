@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 # From: https://bhupesh.gitbook.io/notes/git/get-last-commit-date-of-file
 
+# shellcheck disable=SC2059
+
 format="| %-12s | %-100s | %s | %s |\n" 
 printf "$format" Date File Message  Author
+
 for file in $(du --exclude='.git' -a . | awk '{ print $2 }'); do
   if [[ -f "${file:2}" ]]; then
     commit_date=$(git log --follow -q -- "${file:2}" | awk '/Date:/ { print $6,$3,$4 }' | head -1)

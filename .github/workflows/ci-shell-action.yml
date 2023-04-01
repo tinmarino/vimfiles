@@ -19,5 +19,6 @@ jobs:
         with:
           version: v0.9.0
           ignore_paths: >-
-            './lib'
+            './bin/lib'
+            './bin/shellutil.sh'
           scandir: './bin'

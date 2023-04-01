@@ -2,17 +2,17 @@
 # Print ${cblue}Documentation$cend on command, utils, self-scripts
 # shellcheck disable=SC2092  # Remove backticks
 
-# shellcheck disable=SC1090  # Can't follow non-constant source
-source "$(dirname "${BASH_SOURCE[0]}")/shellutil.sh"
+declare scriptdir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+source "$scriptdir/shellutil.sh"
 
 _usage(){
-  `# Print this message`
+  : 'Print this message'
   print_title "Documentation"
   print_usage_fct
 }
 
 _sed(){
-  `# Print Stream EDitor command info`
+  : 'Print Stream EDitor command info'
   print_title "SED: Stream EDitor"
   info sed "Command and Option Index" | \
     sed -n '/\*/s/ s c/ s \(substitute\) c/;s/command[:,].*//p'
@@ -20,13 +20,14 @@ _sed(){
 }
 
 _color(){
-  `# Print Ansi Escape color list colorized`
+  : 'Print Ansi Escape color list colorized'
   `# Long string`
   "$(dirname "$0")/tin_color_256_show.sh"
 }
 
 self(){
-  `# Print description of all commands in current directory`
+  : 'Print description of all commands in current directory'
+  # shellcheck disable=SC2010  # Don't use ls | grep
   for cmd in $(ls -p | grep -v /); do
     desc=$(awk 'NR == 2' "$cmd")
     desc=${desc###}; desc=${desc## }

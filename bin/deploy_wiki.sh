@@ -14,14 +14,14 @@ make_clone() {
   dir=$1
   url=$2
   echo -e "\n[*] Working with $dir"
-  [ -d $dir ] \
-    && cd $dir \
-    && git clone  $url . \
+  [[ -d "$dir" ]] \
+    && cd "$dir" \
+    && git clone "$url" . \
     && echo "[+] $dir cloned from $url" \
     || echo "[-] $dir not cloned maybe create the dir with function create_dir in this file"
 }
 
-pushd ~
+pushd ~ || exit 2
 mkdir .Trash
 
 create_dir
@@ -30,4 +30,4 @@ make_clone ~/wiki/wiki_html https://github.com/tinmarino/wiki_html.git
 make_clone ~/wiki/todo https://gitlab.com/tinmarino/todo.git 
 make_clone ~/wiki/html https://gitlab.com/tinmarino/html.git
 
-popd
+popd || exit 2
