@@ -11,8 +11,11 @@ jobs:
     name: Shellcheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Run ShellCheck
+      - name: Checkout
+        uses: actions/checkout@v3
+
+
+      - name: ShellCheck bin
         uses: ludeeus/action-shellcheck@master
         env:
           SHELLCHECK_OPTS: --exclude=SC1091,SC2155
@@ -22,3 +25,12 @@ jobs:
             ./bin/lib/*
             ./bin/shellutil.sh
           scandir: './bin'
+
+
+      - name: ShellCheck bashrc
+        uses: ludeeus/action-shellcheck@master
+        env:
+          SHELLCHECK_OPTS: --exclude=SC1091,SC2155
+        with:
+          version: v0.9.0
+          scandir: ./dotfile/bashrc

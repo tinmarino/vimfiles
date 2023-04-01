@@ -1,5 +1,4 @@
-" VimRc by tinmarino
-" TODO: NerdCommenter
+" VimRc by Tinmarino
 
 " The base {{{1
 filetype plugin indent on | syntax on

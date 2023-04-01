@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# BashRc by Tinmarino
 
 # shellcheck disable=SC1091  # Not following
 
