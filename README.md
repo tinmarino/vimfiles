@@ -4,6 +4,7 @@
 [![CI: Vint](https://github.com/tinmarino/vimfiles/workflows/Vint/badge.svg)](https://github.com/tinmarino/vimfiles/actions)
 [![CI: Typos](https://github.com/tinmarino/vimfiles/workflows/Typos/badge.svg)](https://github.com/tinmarino/vimfiles/actions)
 [![CI: Bash](https://github.com/tinmarino/vimfiles/workflows/Bash/badge.svg)](https://github.com/tinmarino/vimfiles/actions)
+[![CI: Yamllint](https://github.com/tinmarino/vimfiles/workflows/Yamllint/badge.svg)](https://github.com/tinmarino/vimfiles/actions)
 
 ---
 
