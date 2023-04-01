@@ -24,7 +24,6 @@ _sed(){
 
 _color(){
   : 'Print Ansi Escape color list colorized'
-  `# Long string`
   "$(dirname "$0")/tin_color_256_show.sh"
 }
 
