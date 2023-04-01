@@ -1,10 +1,12 @@
 # Vimfiles and dotfiles
 
-[![CI: Vader](https://github.com/tinmarino/vimfiles/workflows/Vader/badge.svg)](https://github.com/tinmarino/vimfiles/actions/workflows/bash.yml)
+[![CI: Vader](https://github.com/tinmarino/vimfiles/workflows/Vader/badge.svg)](https://github.com/tinmarino/vimfiles/actions/workflows/vader.yml)
+[![CI: Bash](https://github.com/tinmarino/vimfiles/workflows/Bash/badge.svg)](https://github.com/tinmarino/vimfiles/actions/workflows/bash.yml)
+<br/>
 [![CI: Vint](https://github.com/tinmarino/vimfiles/workflows/Vint/badge.svg)](https://github.com/tinmarino/vimfiles/actions/workflows/vint.yml)
 [![CI: Typos](https://github.com/tinmarino/vimfiles/workflows/Typos/badge.svg)](https://github.com/tinmarino/vimfiles/actions/workflows/typos.yml)
-[![CI: Bash](https://github.com/tinmarino/vimfiles/workflows/Bash/badge.svg)](https://github.com/tinmarino/vimfiles/actions/workflows/bash.yml)
 [![CI: Yamllint](https://github.com/tinmarino/vimfiles/workflows/Yamllint/badge.svg)](https://github.com/tinmarino/vimfiles/actions/workflows/yamllint.yml)
+[![CI: Shellcheck](https://github.com/tinmarino/vimfiles/workflows/Shellcheck/badge.svg)](https://github.com/tinmarino/vimfiles/actions/workflows/shellcheck.yml)
 
 ---
 
