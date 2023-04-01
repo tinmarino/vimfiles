@@ -1,4 +1,4 @@
-if exists("b:current_syntax")
+if exists('b:current_syntax')
   finish
 endif
 
@@ -13,7 +13,13 @@ let b:current_syntax = 'sh'
   unlet b:current_syntax
   syntax include @shSedScript syntax/sed.vim
 
-  if ! exists("b:is_wiki_loaded")
+function! CommentAsVimwiki()
+  " Clause: I need vimwiki package
+  if ! filereadable('$HOME/.vim/pack/bundle/opt/wiki/plugin/vimwiki.vim')
+    return
+  endif
+
+  if ! exists('b:is_wiki_loaded')
     let b:is_wiki_loaded = 1
     source ~/.vim/pack/bundle/opt/wiki/plugin/vimwiki.vim
     source ~/.vim/pack/bundle/opt/wiki/autoload/vimwiki/base.vim
@@ -28,14 +34,14 @@ let b:current_syntax = 'sh'
   endif
 
 
-" TODO
-syn clear bashStatement
-syn clear shFunctionOne
-syn clear shExpr
+  " TODO
+  syn clear bashStatement
+  syn clear shFunctionOne
+  syn clear shExpr
 
-" TODO python
+  " TODO python
 
-" Define Wiki
+  " Define Wiki
   " Define Wiki region
   "syntax region pythonCode matchgroup=Snip start="\\begin{python}" end="\\end{python}" containedin=@TeX contains=@Python
   " syntax region shWikiCode matchgroup=shWikiCommand start=+: '+ skip=+\\'+ end=+'+ contains=@shWikiScript contained skipwhite skipempty
@@ -54,13 +60,21 @@ syn clear shExpr
   syntax cluster shCommandSubList add=shWikiScriptEmbedded
 
 
+  " Link
+  hi link shWikiCommand Statement
+  hi link shWikiExpression shSetOption
+endfunction
+
+call CommentAsVimwiki()
+
+
 " Define Perl
-  " Define perl region
-  syntax match shPerlLineContinuation "\\\s*$" contained skipempty nextgroup=shPerlExpression
-  syntax match shPerlExpression "\%(^\|\_s\+\)-\a*e\a*\_s\+" contained nextgroup=shPerlScriptCode
-  syntax region shPerlScriptCode matchgroup=shPerlCommand start=+[=\\]\@<!'+ skip=+\\'+ end=+'+ contains=@shPerlScript contained skipwhite skipempty nextgroup=shPerlLineContinuation,shPerlExpression
-  syntax region shPerlScriptEmbedded matchgroup=shPerlCommand start=+\<perl\>+ skip=+\\$+ end=+[=\\]\@<!'+me=e-1 contains=@shIdList,@shExprList2 nextgroup=shPerlScriptCode
-  syntax cluster shCommandSubList add=shPerlScriptEmbedded
+" Define perl region
+syntax match shPerlLineContinuation "\\\s*$" contained skipempty nextgroup=shPerlExpression
+syntax match shPerlExpression "\%(^\|\_s\+\)-\a*e\a*\_s\+" contained nextgroup=shPerlScriptCode
+syntax region shPerlScriptCode matchgroup=shPerlCommand start=+[=\\]\@<!'+ skip=+\\'+ end=+'+ contains=@shPerlScript contained skipwhite skipempty nextgroup=shPerlLineContinuation,shPerlExpression
+syntax region shPerlScriptEmbedded matchgroup=shPerlCommand start=+\<perl\>+ skip=+\\$+ end=+[=\\]\@<!'+me=e-1 contains=@shIdList,@shExprList2 nextgroup=shPerlScriptCode
+syntax cluster shCommandSubList add=shPerlScriptEmbedded
 
 
 "" Define Sed
@@ -70,15 +84,12 @@ syn clear shExpr
 "  syntax cluster shCommandSubList add=shSedScriptEmbedded
 "
 
-" Link
-  hi link shWikiCommand Statement
-  hi link shWikiExpression shSetOption
-  " Perl
-  hi def link shPerlCommand Statement
-  hi def link shPerlExpression shSetOption
-  " Sed
-  hi def link shSedCommand Statement
-  hi def link shSedExpression shSetOption
+" Perl
+hi def link shPerlCommand Statement
+hi def link shPerlExpression shSetOption
+" Sed
+hi def link shSedCommand Statement
+hi def link shSedExpression shSetOption
 
 " Restore peace
   let b:current_syntax = 'sh'
