@@ -83,7 +83,7 @@ try_link "$scriptpath/ipython_config.py" ~/.ipython/profile_default/ipython_conf
 try_link "$scriptpath/ipython_kernel_config.py" ~/.ipython/profile_default/ipython_kernel_config.py
 mkdir ~/.jupyter
 try_link "$scriptpath/jupyter_console_config.py" ~/.jupyter/jupyter_console_config.py
-try_link "$scriptpath/pylint.py" ~/.pylintrc
+try_link "$scriptpath/pylint.toml" ~/.pylintrc
 
 # Perl
 try_link "$scriptpath/replyrc" ~/.replyrc

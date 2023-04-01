@@ -1,6 +1,13 @@
+#!/usr/bin/env python3
+
+"""
+Configuration for jupyter kernel
+"""
+
 from pygments.token import Token
 
 # See other output
+# pylint: disable=undefined-variable
 c = get_config()
 c.ZMQTerminalInteractiveShell.include_other_output = True
 

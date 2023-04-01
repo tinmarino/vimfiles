@@ -1,5 +1,7 @@
 # Configuration file for ipython-kernel.
 
+# pylint: disable=all
+
 #------------------------------------------------------------------------------
 # ConnectionFileMixin(LoggingConfigurable) configuration
 #------------------------------------------------------------------------------

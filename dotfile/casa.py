@@ -1,6 +1,10 @@
+#!/usr/bin/env python3
+
 """
 Startup configuration for casa with AstroUtils
 """
+
+# pylint: disable=all
 
 from sys.path import append as path_append
 from logging import getLogger, DEBUG

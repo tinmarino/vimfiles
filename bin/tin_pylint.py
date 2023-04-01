@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # Insert comment in python code to ignore pylint errors
+
+# pylint: disable=line-too-long
 """
 https://stackoverflow.com/questions/2028268/invoking-pylint-programmatically
 
@@ -26,6 +28,7 @@ from pylint.reporters.collecting_reporter import CollectingReporter
 
 # Define helpers
 def create_temporary_copy(path):
+    """ copy file """
     temp_dir = tempfile.gettempdir()
     temp_path = os.path.join(temp_dir, 'temp_file_name')
     shutil.copy2(path, temp_path)
@@ -55,7 +58,7 @@ filename_in = create_temporary_copy(filename)
 
 # Read file
 lines_in = []
-with open(filename_in, "r") as myfile:
+with open(filename_in, mode="r", encoding='utf-8') as myfile:
     lines_in = myfile.readlines()
 
 # Parse: Lint
@@ -93,7 +96,7 @@ for i, line in enumerate(lines_in):
 
 
 # Write out
-with open(filename, "w") as myfile:
+with open(filename, mode="w", encoding='utf-8') as myfile:
     myfile.writelines(lines_out)
 
 pp.pprint(run.linter.stats)
