@@ -4,6 +4,7 @@
 Configuration for jupyter kernel
 """
 
+# pylint: disable=import-error
 from pygments.token import Token
 
 # See other output
