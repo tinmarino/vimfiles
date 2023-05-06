@@ -47,7 +47,45 @@ git submodule add https://github.com/jpalardy/vim-slime
 
 # Git workflow for Josito
 
+[![asciicast](https://asciinema.org/a/583025.svg)](https://asciinema.org/a/583025)
 
+```bash
+# Get me
+wget -O .gitconfig https://github.com/tinmarino/vimfiles/blob/master/dotfile/gitconfig
+
+g s      # Status <= small as used a lot (huffman rule), see also a for add or c for commit -m
+type g   # Also used a lot, g=>git v=>vim, py=>python
+gs       # I often forget to type the space
+type gs  # This is to overide ghostscript, but where there is no command, I have a better trick
+
+# Command not found trick
+g qs     # Quick status
+gqs      # See, all my git aliases work without the space to separe from the g command but I did not redefine bash alias for each git alias, try to catch the trick
+type command_not_found_handle
+unset -f command_not_found_handle
+gqs      # Oups not working anymore
+exec bash  # And we're back
+
+g qd 3  # Quick diff
+g qd 1..3,5  # Accept any perl expresion
+g qe 3  # Quick edit, with vim + fugitive so I can select lines to add with TUI
+
+gc "Doc: Add placeholder for git show of"
+
+g qd 4..9
+
+g qd 9
+g qa 9  # Quick Add <= OK I want it
+gc "VimRc: add shelcheck ignore diretives"
+
+# Admire your work without gitk small font
+fgl     # Fuzzy Git Log
+
+gf      # Fetch (and rebase above)
+g h     # PusH
+
+echo Bye
+```
 
 
 # Must install (Windows)
