@@ -45,6 +45,10 @@ popd
 git submodule add https://github.com/jpalardy/vim-slime
 ```
 
+# Git workflow for Josito
+
+
+
 
 # Must install (Windows)
 
