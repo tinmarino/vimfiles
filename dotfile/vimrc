@@ -280,6 +280,7 @@ endfunction
 command! FzfRgFileFull call FzfRgFileFull()
 
 " ALE {{{2
+let g:ale_virtualtext_cursor=0
 " -- Ale python
 let g:ale_python_autopep8_options = '--indent-size=4  --max-line-length=120 '
 let pi = "--disable='fixme'"
@@ -297,6 +298,10 @@ let si .= 'SC2155,'  " Declare and assign separately to avoid masking return val
 let si .= 'SC2092,'  " Remove backticks for docstring in code
 let si .= 'SC1090,'  " Can't follow file location with $
 let si .= 'SC2317,'  " Command unreachable
+let si .= 'SC2016,'  " Expressions don't expand in single quotes
+let si .= 'SC3043,'  " In POSIX sh, 'local' is undefined.
+let si .= 'SC2059,'  " Don't use variables in the printf format string
+" let si .= 'SC3024,'  " In POSIX sh, += is undefined
 let si .= ' '  " Can't follow file location with $
 
 let si .= '--source-path=SCRIPTDIR '
@@ -954,7 +959,7 @@ let g:vimwiki_key_mappings = {'mouse': 1}
 let g:vimwiki_markdown_link_ext = 1
 let g:vimwiki_table_reduce_last_col = 1
 let g:vimwiki_table_mappings = 0
-let g:vimwiki_table_auto_fmt = 1
+let g:vimwiki_table_auto_fmt = 0
 let g:vimwiki_hl_headers = 1
 let g:vimwiki_hl_cb_checked = 1
 let g:vimwiki_syntax = 'markdown'
