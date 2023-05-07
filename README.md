@@ -47,6 +47,8 @@ git submodule add https://github.com/jpalardy/vim-slime
 
 # Git workflow for Josito
 
+Demo to show the use of numbering in git status in order to add by number and not having to copy/paste the full path.
+
 [![asciicast](https://asciinema.org/a/583025.svg)](https://asciinema.org/a/583025)
 
 ```bash
