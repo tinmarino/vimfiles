@@ -9,101 +9,103 @@ unset PAGER
 
 # Helper:0 Final: Call vim with arguments
 call_vim(){
-    # Use --cmd because it is done before first file read
-    vim \
-        -R \
-        --not-a-term \
-        -c "map q :q!<CR> \
-          | set foldlevel=30 \
-          | set nonumber \
-          | set t_te=" \
-        --cmd 'autocmd StdinReadPre * set nomodeline' \
-        "$@"
+  # Use --cmd because it is done before first file read
+  vim \
+    -R \
+    --not-a-term \
+    -c "map q :q!<CR> \
+      | set foldlevel=30 \
+      | set nonumber \
+      | set t_te=" \
+    -c "silent! /^\(\e\[\d*m\)*--- a\/.*$/" \
+    -c "nnoremap n nzt<C-y><C-y>" \
+    --cmd 'autocmd StdinReadPre * set nomodeline' \
+    "$@"
 }
 
 # Helper:1 for manpages (prefix by col)
 man_col(){
-    col -b -x | call_vim \
-        -c "set ft=man nomod nolist \
-          | set sw=3 | set foldmethod=indent" \
-        -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' \
-        -
+  col -b -x | call_vim \
+    -c "set ft=man nomod nolist \
+     | set sw=3 | set foldmethod=indent" \
+    -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' \
+    -
 }
 
 # Helper:2 As before but with - -> $1 (i.e. STDIN -> ARG_1)
 man_cat_col(){
-    less "$1" | man_col
+  less "$1" | man_col
 }
 
 # Helper:1 PAGER for git diff files (Ansi-Escaped)
 man_ansi() {
-    call_vim -c "packadd ansiesc | AnsiEsc" -c "\
-      hi ansiGreenFg guifg=Green | \
-      hi ansiRedFg guifg=Red" -
+  call_vim -c "packadd ansiesc | AnsiEsc" -c "\
+    hi ansiGreenFg guifg=Green | \
+    hi ansiRedFg guifg=Red" -
 }
 
 
 # Discrimintate size of stdin to pipe in (vim | less | cat)
 man_select(){
-    buffer=$(mktemp)
-    rows="${LINES:=$(tput lines)}"
-    cols="${COLUMNS:=$(tput cols)}"
-    while true; do
-        # Read
-        IFS= read -r some_data
-        eof=$?        # 1 if EOF, 0 if normal, successful read.
+  buffer=$(mktemp)
+  rows="${LINES:=$(tput lines)}"
+  cols="${COLUMNS:=$(tput cols)}"
+  while true; do
+    # Read
+    IFS= read -r some_data
+    eof=$?        # 1 if EOF, 0 if normal, successful read.
 
-        # Write to buffer
-        printf "%s" "$some_data" >> "$buffer"
-        if [ "$eof" = 0 ]; then
-            printf "\n" >> "$buffer"
-        fi
+    # Write to buffer
+    printf "%s" "$some_data" >> "$buffer"
+    if [ "$eof" = 0 ]; then
+      printf "\n" >> "$buffer"
+    fi
 
-        # If Small
-        n_virt=$(fold -w"$cols" "$buffer" | wc -l)
-        if [ "$n_virt" -lt "$rows" ]; then
-            if [ "$eof" != 0 ]; then
-                less "$buffer"
-            else
-                # If not finished continue reading
-                continue
-            fi
+    # If Small
+    n_virt=$(fold -w"$cols" "$buffer" | wc -l)
+    if [ "$n_virt" -lt "$rows" ]; then
+      if [ "$eof" != 0 ]; then
+        less "$buffer"
+      else
+        # If not finished continue reading
+        continue
+      fi
 
-        # Elif Large
-        else
-            # But with EOF so cat
-            if [ "$eof" != 0 ]; then
-                "${PAGER:="less"}" < "$buffer"
-            # So work
-            else
-                # Choose PAGER according to AnsiEsc detection
-                man_cmd="man_col"
-                perl -ne 'exit 42 if m/\e\[[0-9;]*[mG]/' "$buffer"
-                [ $? = 42 ] && man_cmd="man_ansi"
-                # Concatenate buffer (size of the screen) and stdin (-)
-                less "$buffer" - |
-                # Go in Vim
-                "${PAGER:="$man_cmd"}" "$@"
-            fi
-        fi
-        break
-    done
-    rm "$buffer"
+    # Elif Large
+    else
+      # But with EOF so cat
+      if [ "$eof" != 0 ]; then
+        "${PAGER:="less"}" < "$buffer"
+      # So work
+      else
+        # Choose PAGER according to AnsiEsc detection
+        man_cmd="man_col"
+        perl -ne 'exit 42 if m/\e\[[0-9;]*[mG]/' "$buffer"
+        [ $? = 42 ] && man_cmd="man_ansi"
+        # Concatenate buffer (size of the screen) and stdin (-)
+        less "$buffer" - |
+        # Go in Vim
+        "${PAGER:="$man_cmd"}" "$@"
+      fi
+    fi
+    break
+  done
+  rm "$buffer"
 }
 
 
 man_main() {
-    # See if argument commes from stdin (unix) or file first argument (man on termux)
-    # shellcheck disable=SC2199
-    if [[ -z "$1" ]]; then
-        man_select
-    elif [[ " $@ " =~ " --select "  ]]; then
-        delete='--select'
-        args=( "${@/$delete}" )
-        man_select "${args[@]}"
-    else
-        man_cat_col "$@"
-    fi
+  # See if argument commes from stdin (unix) or file first argument (man on termux)
+  # shellcheck disable=SC2199
+  if [[ -z "$1" ]]; then
+    man_select
+  elif [[ " $@ " =~ " --select "  ]]; then
+    delete='--select'
+    args=( "${@/$delete}" )
+    man_select "${args[@]}"
+  else
+    man_cat_col "$@"
+  fi
 }
 
 man_main "$@"
