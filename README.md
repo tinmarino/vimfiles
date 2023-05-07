@@ -11,6 +11,15 @@ Lint: [![CI: Vint](https://github.com/tinmarino/vimfiles/workflows/Vint/badge.sv
 
 ---
 
+| Chapter              | Content  |
+| ---                  | --- |
+| [Install](#install) | install my dotfiles on other computer, git and bash |
+| [Git alias](#git)  | demo on how to use my git numbered alias |
+
+
+# Install <a name="install"></a>
+
+
 Commands to run in vimfiles directory (`~/vim`):
 
 ```sh
@@ -39,13 +48,19 @@ python3 install.py --clangd-completer --ts-completer --java-completer
 popd
 ```
 
-# Add plugin
+Add plugin
 
 ```bash
 git submodule add https://github.com/jpalardy/vim-slime
 ```
 
-# Git workflow for Josito
+Must install (Windows)
+
+* Cmder
+* Gvim
+* Python3 (choose good version)
+
+# Git workflow for Josito <a name="git"></a>
 
 Demo to show the use of numbering in git status in order to add by number and not having to copy/paste the full path.
 
@@ -88,10 +103,3 @@ g h     # PusH
 
 echo Bye
 ```
-
-
-# Must install (Windows)
-
-* Cmder
-* Gvim
-* Python3 (choose good version)
