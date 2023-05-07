@@ -63,9 +63,6 @@ Must install (Windows)
 # Git workflow for Josito <a name="git"></a>
 
 Demo to show the use of numbering in git status in order to add by number and not having to copy/paste the full path.
-Those quick alias are defined [here in my gitconfig](https://github.com/tinmarino/vimfiles/blob/9e82a04fb98453196528421238a0895f2cb79b54/dotfile/gitconfig#L32-L74)
-
-Demo to show the use of numbering in git status in order to add by number and not having to copy/paste the full path.
 
 [![asciicast](https://asciinema.org/a/583025.svg)](https://asciinema.org/a/583025)
 
