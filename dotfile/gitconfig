@@ -35,16 +35,7 @@
     # Helper: Keep only numbers
     funcremovenumber = "!fct() { echo $@ | perl -ane '$OFS=\" \"; print join \" \", grep(!/^[\\d,\\.]*$/, @F); print \" \";' -;}; fct"
     funckeepnumber = "!fct() { echo $@ | perl -ane '$OFS=\" \"; print grep(/^[\\d,\\.]*$/, @F)' -; }; fct"
-    funcdiff = "!fct() { \
-            cd -- ${GIT_PREFIX:-.}; \
-            if [ -x \"$(command -v diff-so-fancy)\" ]; then \
-                git diff --color-words $@; \
-                `#Some bug with AnsiEsc`; \
-                `#git diff $@ | diff-so-fancy | vman -c 'set nowrap' --select ;`; \
-            else \
-                git diff --color-words $@; \
-            fi \
-        }; fct"
+    funcdiff = "!fct() { cd -- ${GIT_PREFIX:-.}; git diff --color-words $@; }; fct"
     # Helper: Quick PrintF: Grep file[s]
     qp = "!qprint() { \
         `# Git alias is working in root directory`; \
