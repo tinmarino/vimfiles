@@ -126,10 +126,6 @@
   export HISTTIMEFORMAT='%Y-%m-%dT%H:%M:%S '
   shopt -s histappend
   #export HISTCONTROL=ignoredups
-  # Save history after each executed line
-  # Alma fix
-  [[ -n "$PROMPT_COMMAND" ]] && [[ "${PROMPT_COMMAND: -1}" != ";" ]] && PROMPT_COMMAND+=";"
-  export PROMPT_COMMAND+='history -a;'
 
 # Function
   is_in_array(){
@@ -207,7 +203,7 @@
   export -f print_args
 
   command_not_found_handle() {
-    ### Command not found handle Callback for Unknown command (tip: install bash-completion on tmux)
+    # Command not found handle Callback for Unknown command
     # If starting with g : git
     if [[ -n "$1" ]] && [[ "${1:0:1}" == "g" ]]; then
       # shellcheck disable=SC2086
@@ -293,7 +289,7 @@
   [[ -f "$HOME/.bash_aliases.sh" ]] && source "$HOME/.bash_aliases.sh"
 
   # Fzf bindings
-  # Warning on termux, comment /home/tourneboeuf/Program/Fzf/shell/completion.bash
+  # Warning on termux, comment $HOME/Program/Fzf/shell/completion.bash
   [[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
 
   # Rust
@@ -326,7 +322,9 @@
   PATH=$HOME/.local/bin:$PATH
   PATH=$HOME/.vim/bin:$PATH
   # IRM
-  export PATH+=:~/Software/Jenkins/IrmJenkins/script
+  PATH+=:~/Software/Bash/LibDispatch
+  PATH+=:/home/mtourneb/Program/Dragons/gempy/scripts
+  PATH+=:/home/mtourneb/Program/Dragons/recipe_system/scripts
 
 
 # Bind
@@ -345,6 +343,8 @@
   export ALMASW=~/AlmaSw
   complete -o nosort -C irm irm
   complete -o nosort -C art art
+  complete -o nosort -C ./dispatch ./dispatch
+  complete -o nosort -C dispatch dispatch
   complete -C remove_plugin remove_plugin
   if (( 1 == B_IS_ALMA )); then
     PATH=/alma/ste/bin:$PATH
@@ -363,7 +363,6 @@
   else
     # TODO temporary, this is because I am loosing my history
     # Backup history
-    PROMPT_COMMAND+='fc -ln -1 | trim_space >> ~/.bash_history_save;'
     # Pyenv
     if command -v pyenv 1>/dev/null 2>&1; then
      eval "$(pyenv init -)"
@@ -375,10 +374,17 @@
 
 # PS1
   # PS1, set in bashrc because debian update it in /etc/bashrc
+
+  # PROMPT
+  # Save history after each executed line
+  [[ -n "$PROMPT_COMMAND" ]] && [[ "${PROMPT_COMMAND: -1}" != ";" ]] && PROMPT_COMMAND+=";" # Alma fix
+  export PROMPT_COMMAND+='history -a;'
+    PROMPT_COMMAND+='fc -ln -1 | trim_space >> ~/.bash_history_save;'
   parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/' 2> /dev/null;
   }
   export -f parse_git_branch
+
   parse_title() {
     local res=""
     # Host
@@ -419,9 +425,8 @@
 
 # Fast
   # Add "substitute" mnemonic, which the info file left out.
-  export PATH="/home/tourneboeuf/Program/GitFuzzy/bin:$PATH"
-  PATH+=:/home/tourneboeuf/Program/Casa/casa-6.2.1-7-pipeline-2021.2.0.128/bin
-  #PATH+=:/home/tourneboeuf/Program/Casa/casa-6.5.1-23-py3.8/bin
+  export PATH="$HOME/Program/GitFuzzy/bin:$PATH"
+  PATH+=":$HOME/Program/Casa/casa-6.2.1-7-pipeline-2021.2.0.128/bin"
 
   urlencode() {
       # Usage: urlencode "string"

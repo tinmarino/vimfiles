@@ -46,6 +46,7 @@ alias bat="PAGER= bat"
   malias disas 'objdump -drwC -Mintel'
   malias ll 'ls -lh'
   malias gs 'git status'  # Prevent confusion with ghostscript
+  malias gc 'git commit -m'  # Prevent confusion with count graph components
   malias so source
   malias ssh 'TMUX= TERM=xterm-256color ssh'
   malias rp realpath
@@ -96,13 +97,15 @@ alias bat="PAGER= bat"
 
 # Path variable
   # shopt -s direxpand
-  export b="$v/bin" ; export bin="$b"
-  export p="$v/pack/bundle/opt/" ; export pack="$p"
+  export b="$v/bin"
+  export p="$v/pack/bundle/opt/"
   export pw="$v/pack/bundle/opt/wiki"
   export t="$HOME/wiki/todo"
+  export w="$HOME/wiki/wiki"
+
+  # MARK: Deprecation: never used
   export vb="$v/bin"
   export vd="$v/dotfile"
-  export w="$HOME/wiki/wiki"
   export wt="$HOME/wiki/todo"
   export wa="$HOME/wiki/alma"
 
