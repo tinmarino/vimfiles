@@ -8,9 +8,8 @@ name: "Vader"
 on: [push, pull_request, workflow_dispatch]
 
 jobs:
-  Vader:
+  vader:
     name: "Vader: ${{ matrix.os }} ${{ matrix.opt }}"
-    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -26,6 +25,7 @@ jobs:
           "-n vim_8.0.0027 -f '[m-z]*.vader'",
         ]
         os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       # This action is required to fetch the code to test
       - uses: actions/checkout@v3
