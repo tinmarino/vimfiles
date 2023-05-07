@@ -7,6 +7,10 @@ define rip
   x/15i $pc
 end
 
+define p
+  rip
+end
+
 define rdi
   x/20xa $rdi
 end

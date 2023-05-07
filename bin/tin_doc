@@ -28,6 +28,14 @@ _color(){
 }
 
 
+_syscall(){
+  # TODO
+  local -a a_sys=(
+    :
+  )
+}
+
+
 self(){
   : 'Print description of all commands in current directory'
   # shellcheck disable=SC2010  # Don't use ls | grep
