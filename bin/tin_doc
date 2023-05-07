@@ -13,12 +13,6 @@ _usage(){
 }
 
 
-_aws(){
-  : 'Print my most used AWS CLI commands'
-  cat ~/wiki/wiki/AWS-Cheat.md
-}
-
-
 _sed(){
   : 'Print Stream EDitor command info'
   print_title "SED: Stream EDitor"
@@ -36,10 +30,9 @@ _color(){
 
 _syscall(){
   # TODO
-  :
-  #local -a a_sys=(
-  #  :
-  #)
+  local -a a_sys=(
+    :
+  )
 }
 
 
