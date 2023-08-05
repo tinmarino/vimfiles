@@ -462,3 +462,5 @@ PERL_LOCAL_LIB_ROOT="/home/mtourneb/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LI
 PERL_MM_OPT="INSTALL_BASE=/home/mtourneb/perl5"; export PERL_MM_OPT;
 
 [ -f "/home/mtourneb/.ghcup/env" ] && source "/home/mtourneb/.ghcup/env" # ghcup-env
+
+export PATH+=:/home/mtourneb/Program/Eso/install/bin
