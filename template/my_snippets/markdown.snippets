@@ -1,5 +1,20 @@
 priority -50
 
+
+# See https://pandoc.org/MANUAL.html#metadata-variables
+snippet hi
+---
+title: ${1:`!v expand('%:t:r')`}
+subtitle:
+description:
+date: 
+author: Martin Tourneboeuf
+keywords: 
+header-includes: |
+  \usepackage[a4paper, margin={1.5cm}]{geometry}
+---
+endsnippet
+
 snippet test
 from here $0 to here
 endsnippet
@@ -80,12 +95,12 @@ tags: $3
 $0
 endsnippet
 
-snippet hi
+snippet wiki
 ---
 title: ${1:`!v expand('%:t:r')`}
-category: $2
 wiki_css: Css/color_dark_solarized.css, Css/layout_toc.css
 header-includes: <script type="text/javascript" src="Css/js_masonry_desandro.js"></script>
 wiki_pandoc: --toc
 ---
 endsnippet
+

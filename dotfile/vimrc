@@ -316,7 +316,7 @@ let g:ale_sh_shellcheck_options = si
 " Interface: 5ms for 4plugings
 " TODO only if npm present and more
 if 'tourny' ==# hostname()
-  "packadd coc
+  packadd coc
 endif
 packadd fzf
 packadd fzf.vim
@@ -849,6 +849,11 @@ else
 endif
 
 
+" Language {{{1
+" Cpp {{{2
+  if isdirectory('/usr/include/c++/11')
+    set path+=/usr/include/c++/11/
+  endif
 " Folding {{{1
 highlight Folded ctermfg=DarkGreen ctermbg=Black
 set foldignore=
@@ -946,6 +951,12 @@ let g:vimwiki_list += [{
   \ 'syntax': 'default',
   \ 'ext': '.wiki',
   \ }]
+
+let g:vimwiki_list += [{
+  \ 'path': '$h/Program/Vimwikiwiki/wiki',
+  \ 'path_html': '$h/Program/Vimwikiwiki/docs',
+  \ 'auto_toc': 1,
+  \ }]
 " Filename todo -> setft vimwiki
 augroup Wiki
   au BufNewFile,BufRead */todo      setf vimwiki
@@ -958,27 +969,40 @@ let g:vimwiki_folding = 'expr'
 let g:vimwiki_key_mappings = {'mouse': 1}
 let g:vimwiki_markdown_link_ext = 1
 let g:vimwiki_table_reduce_last_col = 1
-let g:vimwiki_table_mappings = 0
-let g:vimwiki_table_auto_fmt = 0
+let g:vimwiki_table_mappings = 1
+let g:vimwiki_table_auto_fmt = 1
 let g:vimwiki_hl_headers = 1
 let g:vimwiki_hl_cb_checked = 1
 let g:vimwiki_syntax = 'markdown'
 let g:vimwiki_ext = '.md'
-let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
+"let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
 let g:vimwiki_css_name = '/Css/include.css'
 let g:vimwiiki_url_maxsave = 0  " Do not conceal http url
 
 "let g:vimwiki_tag_format = {'pre_mark': '#tag1', 'post_mark': '#tag2', 'sep': '|'}
 "let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': ' ' }
-let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': '[#[:space:]]\+', 'in': '[^#:[:space:]]\+' }
+"let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': '[#[:space:]]\+', 'in': '[^#:[:space:]]\+' }
 
 " Test Wiki
+"let g:vimwiki_folding = 'list'
+"if (!exists('g:vimwiki_syntax_list'))                     
+"	let g:vimwiki_syntax_list = {}                        
+"endif                                                     
+"if (!has_key(g:vimwiki_syntax_list, 'markdown'))          
+"	let g:vimwiki_syntax_list['markdown'] = {}            
+"endif                                                     
+"let g:vimwiki_syntax_list['markdown']['rxTableSep'] = '│' 
+"let g:vimwiki_listsym_rejected = '-><'
+"let g:vimwiki_listing_hl = 1
+"let g:vimwiki_listing_hl_command = 'pygmentize -f html -O style=default -O noclasses=True'
+"let g:vimwiki_listing_hl_command = 'cat'
 "let g:vimwiki_folding = ''
 " let g:vimwiki_schemes_web = ['http', 'https']
 " let g:vimwiki_rx_todo = '\C\<\%(QUESTION\|ANSWER\|NOTE\|TODO\|DONE\|STARTED\|FIXME\|FIXED\|XXX\)\>'
+" let g:vimwiki_maxhi = 1
 " let g:vimwiki_syntax_list = {}
 " let g:vimwiki_syntax_list['markdown'] = {}
-"let g:vimwiki_syntax_list['markdown']['typeface'] = {}
+" let g:vimwiki_syntax_list['markdown']['typeface'] = {'bold': [], 'italic': [], 'underline': [], 'bold_italic': [], 'code': [], 'del':  [], 'sup':  [], 'sub':  [], 'eq': []}
 "let g:vimwiki_emoji_enable = 3
 " New
 "let g:vimwiki_cycle_bullets = 1
@@ -1105,16 +1129,16 @@ vnoremap <silent> <leader>y :<C-U>call CopyToTerminal(visualmode(), 1)<CR>
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
+function! Check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ Check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()

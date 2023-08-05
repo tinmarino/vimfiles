@@ -1,24 +1,39 @@
-priority -50
+priority 0
 
-snippet hello "start a script"
-#include<stdio.h>
+extends c
+
+# We want to overwrite everything in parent ft.
+priority 1
+
+snippet hi "start a script"
+#include <iostream>
+using namespace std;
 
 int main(int argc, char* argv[]){
-	printf("--> Starting %s\n", argv[0]);
+	cout << "--> Starting " <<  argv[0] << endl;
 
 	${1:// My code}
 
-	printf("<-- Ending %s\n", argv[0]);
+	cout << "<-- Ending " << argv[0] << endl;
 	return 0;
 }
 endsnippet
 
+snippet ia "Include All"
+#include <bits/stdc++.h>  // Include them all
+using namespace std;
+endsnippet
+
+
 snippet doc "documentation large"
 /**
- * \brief  $1
- * \param  $2 
- * \return $3 
- * \remark $4 
+ * @brief: $1
+ * @param: $2 
+ * @return: $3 
+ * @remark: $4 
  */
 endsnippet
 
+snippet p "Print"
+System.out.println(${1:"Tin 1"});
+endsnippet

@@ -1,5 +1,21 @@
+snippet hi "start a script"
+/*
+Title: `!v expand('%:t:r')`
 
-snippet hello "start a script"
+Description: Print Hello world
+*/
+
+// Print Hello World
+public class `!v expand('%:t:r')` { 
+
+public static void main(String args[]) { 
+		System.out.println("Hello World"); 
+} 
+
+}
+endsnippet
+
+snippet gui "start a script"
 import javax.swing.JFrame;  //Importing class JFrame
 import javax.swing.JLabel;  //Importing class JLabel
 public class HelloWorld {
