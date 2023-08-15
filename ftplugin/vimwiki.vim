@@ -2,7 +2,8 @@
 if exists('b:did_ftplugin')
   finish
 endif
-source $HOME/.vim/pack/bundle/opt/wiki/ftplugin/vimwiki.vim
+"source $HOME/.vim/pack/bundle/opt/wiki/ftplugin/vimwiki.vim
+source $v/plugged/vimwiki/ftplugin/vimwiki.vim
 let b:did_ftplugin = 1  " Don't load another plugin for this buffer
 
 " Alias commands
@@ -13,7 +14,7 @@ call VimwikiAlias()
 
 " Ultisnip
 if exists('did_plugin_ultisnips')
-    UltiSnipsAddFiletypes markdown
+  UltiSnipsAddFiletypes markdown
 endif
 
 " Preference

@@ -311,6 +311,159 @@ let g:ale_sh_shellcheck_options = si
 
 " COC {{{2
 
+" Slime: Send to tmux right (Ctrl-f) {{{2
+let g:slime_target = 'tmux'
+let g:slime_default_config = {'socket_name': 'default', 'target_pane': '{bottom-right}'}
+let g:slime_dont_ask_default = 1
+
+function! SendRight(...)
+  let line = a:0 ? a:1 : getline('.')
+  " Trim spaces
+  let line = substitute(line, '^\s*\`*\s*', '', '')
+  let line = substitute(line, '\s*\`*\s*$', '', '')
+  if line =~? '^ts'
+    let line = substitute(line, '^ts\s*', '', '')
+    execute '!tmux send-keys -t right ' . line . '&> /dev/null'
+  else
+    call slime#send(getline('.') . "\n")
+  endif
+endfunction
+
+nnoremap <C-F> :<c-u>call SendRight(getline("."))<cr><cr>
+xmap <C-F> <Plug>SlimeRegionSend
+"nmap <C-t> :call SendTmux() <Cr><Cr>
+
+" Vimwiki {{{1
+" Lazycall WikiIndex
+function! Windex(num)
+  let l:nr = 1 + vimwiki#vars#get_bufferlocal('wiki_nr')
+  if &filetype !=# 'vimwiki' || l:nr != a:num
+    execute 'VimwikiIndex ' . a:num
+  endif
+endfunction
+function! VimwikiAlias()
+  " Load here and in ftpluing
+  for command in getcompletion('Vimwiki', 'command')
+    let alias = 'W' . command[7:]
+    exe ':command! -nargs=* ' . alias . ' ' . command . ' <args>'
+  endfor
+endfunction
+" Wiki
+let g:vimwiki_list = []
+let g:vimwiki_list += [{
+  \ 'path': '$h/wiki/wiki',
+  \ 'path_html': '$h/wiki/wiki_html'
+  \ }]
+noremap <leader>ww :VimwikiIndex 1<CR>
+map <leader>w<leader>w :VimwikiMakeDiaryNote 1<CR>
+noremap <leader>wg :call Windex(1)<CR>:VimwikiGoto 
+" Todo
+let g:vimwiki_list += [{
+  \ 'path': '$h/wiki/todo',
+  \ 'path_html': '$h/wiki/todo_html'
+  \ }]
+map <leader>tt :VimwikiIndex 2<CR>
+map <leader>t<leader>t :VimwikiMakeDiaryNote 2<CR>
+noremap <leader>tg :call Windex(2)<CR>:VimwikiGoto 
+noremap <leader>ta :call Windex(2)<CR>:VimwikiGoto Alma<CR>
+" Alma
+let g:vimwiki_list += [{
+  \ 'path': '$h/wiki/alki',
+  \ 'path_html': '$h/wiki/alki_html'
+  \ }]
+map <leader>aa :VimwikiIndex 3<CR>
+map <leader>a<leader>a :VimwikiMakeDiaryNote 3<CR>
+noremap <leader>ag :call Windex(3)<CR>:VimwikiGoto 
+" Stackoverflow
+let g:vimwiki_list += [{
+  \ 'path': '$h/wiki/stackoverflow',
+  \ 'path_html': '$h/wiki/stackoverflow_html'
+  \ }]
+" Test markdown syntax
+let g:vimwiki_list += [{
+  \ 'path': '$h/Test/Wiki',
+  \ 'path_html': '$h/Test/Wiki_html',
+  \ 'nested_syntaxes': {'python': 'python'}
+  \ }]
+" Test default syntax
+let g:vimwiki_list += [{
+  \ 'path': '$h/Test/WikiDefault',
+  \ 'path_html': '$h/Test/WikiDefault_html',
+  \ 'syntax': 'default',
+  \ 'ext': '.wiki',
+  \ }]
+" Test markdown syntax
+let g:vimwiki_list += [{
+  \ 'path': '$h/Test/Wiki',
+  \ 'path_html': '$h/Test/Wiki_html',
+  \ 'nested_syntaxes': {'python': 'python'}
+  \ }]
+" Test default syntax
+let g:vimwiki_list += [{
+  \ 'path': '$h/Test/WikiDefault',
+  \ 'path_html': '$h/Test/WikiDefault_html',
+  \ 'syntax': 'default',
+  \ 'ext': '.wiki',
+  \ }]
+" Filename todo -> setft vimwiki
+augroup Wiki
+  au BufNewFile,BufRead */todo      setf vimwiki
+augroup END
+" Map
+" Option
+let g:vimwiki_automatic_nested_syntaxes = 1
+let g:vimwiki_folding = 'expr'
+
+let g:vimwiki_key_mappings = {'mouse': 1}
+let g:vimwiki_markdown_link_ext = 1
+let g:vimwiki_table_reduce_last_col = 1
+let g:vimwiki_table_mappings = 0
+let g:vimwiki_table_auto_fmt = 0
+let g:vimwiki_hl_headers = 1
+let g:vimwiki_hl_cb_checked = 1
+let g:vimwiki_syntax = 'markdown'
+let g:vimwiki_ext = '.md'
+let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
+let g:vimwiki_css_name = '/Css/include.css'
+let g:vimwiiki_url_maxsave = 0  " Do not conceal http url
+
+"let g:vimwiki_tag_format = {'pre_mark': '#tag1', 'post_mark': '#tag2', 'sep': '|'}
+"let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': ' ' }
+let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': '[#[:space:]]\+', 'in': '[^#:[:space:]]\+' }
+
+" Test Wiki
+"let g:vimwiki_folding = ''
+" let g:vimwiki_schemes_web = ['http', 'https']
+" let g:vimwiki_rx_todo = '\C\<\%(QUESTION\|ANSWER\|NOTE\|TODO\|DONE\|STARTED\|FIXME\|FIXED\|XXX\)\>'
+" let g:vimwiki_syntax_list = {}
+" let g:vimwiki_syntax_list['markdown'] = {}
+"let g:vimwiki_syntax_list['markdown']['typeface'] = {}
+"let g:vimwiki_emoji_enable = 3
+" New
+"let g:vimwiki_cycle_bullets = 1
+"let g:vimwiki_bullet_types = ['-', '•', '→', '*']
+"let g:vimwiki_nested_syntaxes = {'python': 'python'}
+"let g:vimwiki_ext2syntax = {'.md': 'markdown'}
+""let g:vimwiki_tag_format = {'pre': '\(^[ -]*tags\s*:.*\)\@<=', 'pre_mark': '', 'post_mark': '', 'sep': '>><<'}
+""let g:vimwiki_toc_link_format = 1
+let g:vimwiki_global_ext = 1
+let g:vimwiki_syntaxlocal_vars = {}
+"let g:vimwiki_syntaxlocal_vars['markdown'] = {}
+"let g:vimwiki_syntaxlocal_vars['markdown']['yaml_metadata_block'] = [['aaa', 'aaa']]
+" hi VimwikiHeader1 guifg=#c94f6d
+" hi VimwikiHeader2 guifg=#ffff00
+" hi VimwikiHeader3 guifg=#7AF8FF
+" hi VimwikiHeader4 guifg=#f4a261
+" hi VimwikiHeader5 guifg=#d67ad2
+" hi VimwikiLink guifg=#719cd6 gui=underline
+" hi VimwikiListTodo guifg=#81b29a
+
+"let g:gfm_syntax_emoji_conceal = 1
+"packadd gfm-syntax
+call VimwikiAlias()
+
+" Calendar
+let g:calendar_monday = 1
 
 " Plugin: PackAdd {{{1
 " Interface: 5ms for 4plugings
@@ -318,8 +471,19 @@ let g:ale_sh_shellcheck_options = si
 if 'tourny' ==# hostname()
   packadd coc
 endif
-Plug farmergreg/vim-lastplace  " Open vim at last edition place on file
-Plug tpope/fugitive
+call plug#begin()
+
+Plug 'farmergreg/vim-lastplace'  " Open vim at last edition place on file
+Plug 'tpope/vim-fugitive'  " :Gitdiffsplit
+Plug 'jpalardy/vim-slime'  " ctrl-f to send to left pane
+Plug 'vimwiki/vimwiki', { 'branch': 'dev' }  " my notes
+Plug 'tinmarino/vim-color'   " my colors
+Plug 'dense-analysis/ale'   " Lint
+Plug 'scrooloose/nerdtree'   " Navigate File system
+Plug 'mbbill/undotree'   " Navigate history
+Plug 'christoomey/vim-tmux-navigator'   " Navigate tmux panes
+
+call plug#end()
 
 
 
@@ -327,7 +491,6 @@ Plug tpope/fugitive
 " Preferences {{{2
 " set clipboard=exclude:.*  " Do not connect to X, can take one sec on Ubuntu 2020.10 like -X
 set background=dark
-packadd color-tin
 set termguicolors
 try
   colorscheme gruvbox
@@ -630,29 +793,6 @@ function! OpenLink(...)
 endfunction
 nmap gx yiW:call OpenLink() <Cr><Cr>
 
-" Send to tmux right (Ctrl-f) {{{2
-let g:slime_target = 'tmux'
-let g:slime_default_config = {'socket_name': 'default', 'target_pane': '{bottom-right}'}
-let g:slime_dont_ask_default = 1
-packadd slime
-
-function! SendRight(...)
-  let line = a:0 ? a:1 : getline('.')
-  " Trim spaces
-  let line = substitute(line, '^\s*\`*\s*', '', '')
-  let line = substitute(line, '\s*\`*\s*$', '', '')
-  if line =~? '^ts'
-    let line = substitute(line, '^ts\s*', '', '')
-    execute '!tmux send-keys -t right ' . line . '&> /dev/null'
-  else
-    call slime#send(getline('.') . "\n")
-  endif
-endfunction
-
-nnoremap <C-F> :<c-u>call SendRight(getline("."))<cr><cr>
-xmap <C-F> <Plug>SlimeRegionSend
-"nmap <C-t> :call SendTmux() <Cr><Cr>
-
 " Use <C-L> to clear the highlighting of :set hlsearch and also preserve the {{{2
 " default behavior of redrawing the screen
 if maparg('<C-S-L>', 'n') ==# ''
@@ -836,158 +976,6 @@ augroup FtDetect
 augroup END
 
 
-" Vimwiki {{{1
-" Lazycall WikiIndex
-function! Windex(num)
-  let l:nr = 1 + vimwiki#vars#get_bufferlocal('wiki_nr')
-  if &filetype !=# 'vimwiki' || l:nr != a:num
-    execute 'VimwikiIndex ' . a:num
-  endif
-endfunction
-function! VimwikiAlias()
-  " Load here and in ftpluing
-  for command in getcompletion('Vimwiki', 'command')
-    let alias = 'W' . command[7:]
-    exe ':command! -nargs=* ' . alias . ' ' . command . ' <args>'
-  endfor
-endfunction
-" Wiki
-let g:vimwiki_list = []
-let g:vimwiki_list += [{
-  \ 'path': '$h/wiki/wiki',
-  \ 'path_html': '$h/wiki/wiki_html'
-  \ }]
-noremap <leader>ww :VimwikiIndex 1<CR>
-map <leader>w<leader>w :VimwikiMakeDiaryNote 1<CR>
-noremap <leader>wg :call Windex(1)<CR>:VimwikiGoto 
-" Todo
-let g:vimwiki_list += [{
-  \ 'path': '$h/wiki/todo',
-  \ 'path_html': '$h/wiki/todo_html'
-  \ }]
-map <leader>tt :VimwikiIndex 2<CR>
-map <leader>t<leader>t :VimwikiMakeDiaryNote 2<CR>
-noremap <leader>tg :call Windex(2)<CR>:VimwikiGoto 
-noremap <leader>ta :call Windex(2)<CR>:VimwikiGoto Alma<CR>
-" Alma
-let g:vimwiki_list += [{
-  \ 'path': '$h/wiki/alki',
-  \ 'path_html': '$h/wiki/alki_html'
-  \ }]
-map <leader>aa :VimwikiIndex 3<CR>
-map <leader>a<leader>a :VimwikiMakeDiaryNote 3<CR>
-noremap <leader>ag :call Windex(3)<CR>:VimwikiGoto 
-" Stackoverflow
-let g:vimwiki_list += [{
-  \ 'path': '$h/wiki/stackoverflow',
-  \ 'path_html': '$h/wiki/stackoverflow_html'
-  \ }]
-" Test markdown syntax
-let g:vimwiki_list += [{
-  \ 'path': '$h/Test/Wiki',
-  \ 'path_html': '$h/Test/Wiki_html',
-  \ 'nested_syntaxes': {'python': 'python'}
-  \ }]
-" Test default syntax
-let g:vimwiki_list += [{
-  \ 'path': '$h/Test/WikiDefault',
-  \ 'path_html': '$h/Test/WikiDefault_html',
-  \ 'syntax': 'default',
-  \ 'ext': '.wiki',
-  \ }]
-" Test markdown syntax
-let g:vimwiki_list += [{
-  \ 'path': '$h/Test/Wiki',
-  \ 'path_html': '$h/Test/Wiki_html',
-  \ 'nested_syntaxes': {'python': 'python'}
-  \ }]
-" Test default syntax
-let g:vimwiki_list += [{
-  \ 'path': '$h/Test/WikiDefault',
-  \ 'path_html': '$h/Test/WikiDefault_html',
-  \ 'syntax': 'default',
-  \ 'ext': '.wiki',
-  \ }]
-
-let g:vimwiki_list += [{
-  \ 'path': '$h/Program/Vimwikiwiki/wiki',
-  \ 'path_html': '$h/Program/Vimwikiwiki/docs',
-  \ 'auto_toc': 1,
-  \ }]
-" Filename todo -> setft vimwiki
-augroup Wiki
-  au BufNewFile,BufRead */todo      setf vimwiki
-augroup END
-" Map
-" Option
-let g:vimwiki_automatic_nested_syntaxes = 1
-let g:vimwiki_folding = 'expr'
-
-let g:vimwiki_key_mappings = {'mouse': 1}
-let g:vimwiki_markdown_link_ext = 1
-let g:vimwiki_table_reduce_last_col = 1
-let g:vimwiki_table_mappings = 1
-let g:vimwiki_table_auto_fmt = 1
-let g:vimwiki_hl_headers = 1
-let g:vimwiki_hl_cb_checked = 1
-let g:vimwiki_syntax = 'markdown'
-let g:vimwiki_ext = '.md'
-"let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
-let g:vimwiki_css_name = '/Css/include.css'
-let g:vimwiiki_url_maxsave = 0  " Do not conceal http url
-
-"let g:vimwiki_tag_format = {'pre_mark': '#tag1', 'post_mark': '#tag2', 'sep': '|'}
-"let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': ' ' }
-"let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': '[#[:space:]]\+', 'in': '[^#:[:space:]]\+' }
-
-" Test Wiki
-"let g:vimwiki_folding = 'list'
-"if (!exists('g:vimwiki_syntax_list'))                     
-"	let g:vimwiki_syntax_list = {}                        
-"endif                                                     
-"if (!has_key(g:vimwiki_syntax_list, 'markdown'))          
-"	let g:vimwiki_syntax_list['markdown'] = {}            
-"endif                                                     
-"let g:vimwiki_syntax_list['markdown']['rxTableSep'] = '│' 
-"let g:vimwiki_listsym_rejected = '-><'
-"let g:vimwiki_listing_hl = 1
-"let g:vimwiki_listing_hl_command = 'pygmentize -f html -O style=default -O noclasses=True'
-"let g:vimwiki_listing_hl_command = 'cat'
-"let g:vimwiki_folding = ''
-" let g:vimwiki_schemes_web = ['http', 'https']
-" let g:vimwiki_rx_todo = '\C\<\%(QUESTION\|ANSWER\|NOTE\|TODO\|DONE\|STARTED\|FIXME\|FIXED\|XXX\)\>'
-" let g:vimwiki_maxhi = 1
-" let g:vimwiki_syntax_list = {}
-" let g:vimwiki_syntax_list['markdown'] = {}
-" let g:vimwiki_syntax_list['markdown']['typeface'] = {'bold': [], 'italic': [], 'underline': [], 'bold_italic': [], 'code': [], 'del':  [], 'sup':  [], 'sub':  [], 'eq': []}
-"let g:vimwiki_emoji_enable = 3
-" New
-"let g:vimwiki_cycle_bullets = 1
-"let g:vimwiki_bullet_types = ['-', '•', '→', '*']
-"let g:vimwiki_nested_syntaxes = {'python': 'python'}
-"let g:vimwiki_ext2syntax = {'.md': 'markdown'}
-""let g:vimwiki_tag_format = {'pre': '\(^[ -]*tags\s*:.*\)\@<=', 'pre_mark': '', 'post_mark': '', 'sep': '>><<'}
-""let g:vimwiki_toc_link_format = 1
-let g:vimwiki_global_ext = 1
-let g:vimwiki_syntaxlocal_vars = {}
-"let g:vimwiki_syntaxlocal_vars['markdown'] = {}
-"let g:vimwiki_syntaxlocal_vars['markdown']['yaml_metadata_block'] = [['aaa', 'aaa']]
-" hi VimwikiHeader1 guifg=#c94f6d
-" hi VimwikiHeader2 guifg=#ffff00
-" hi VimwikiHeader3 guifg=#7AF8FF
-" hi VimwikiHeader4 guifg=#f4a261
-" hi VimwikiHeader5 guifg=#d67ad2
-" hi VimwikiLink guifg=#719cd6 gui=underline
-" hi VimwikiListTodo guifg=#81b29a
-
-"let g:gfm_syntax_emoji_conceal = 1
-"packadd gfm-syntax
-packadd wiki " TODO remove and add autoload
-call VimwikiAlias()
-
-" Calendar
-let g:calendar_monday = 1
-
 " Alma {{{1
 " AlmaSw
 "" echo | g++ -E -Wp,-v -
@@ -1038,7 +1026,7 @@ command! -nargs=0 -bar Helptags for p in glob('~/.vim/pack/bundle/opt/*', 1, 1) 
 "let g:jupyter_cell_separators = ['##', '#toto', '.*titi']
 "let g:jupyter_auto_connect = 1
 " let b:jupyter_exec_before = 'clear-screen'
-packadd jupyter
+"packadd jupyter
 " packadd spector
 "packadd python-mode
 " if $os == 'unix' packadd youcompleteme endif
