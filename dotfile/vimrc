@@ -318,52 +318,9 @@ let g:ale_sh_shellcheck_options = si
 if 'tourny' ==# hostname()
   packadd coc
 endif
-packadd fzf
-packadd fzf.vim
-packadd lastplace  " vi $VIMRUNTIME/vimrc_example.vim
-packadd submode  " Map C-W
-" Detect git dir at load: https://github.com/tpope/vim-fugitive/issues/1499
-packadd fugitive
+Plug farmergreg/vim-lastplace  " Open vim at last edition place on file
+Plug tpope/fugitive
 
-function! TimerPack(timer) abort
-  " Lazy loader
-  packadd almasw
-  " Map: 10ms for 9pg
-  packadd surround  " ySS<div>
-  packadd repeat  " for surround
-  packadd textobj-user  " for function
-  packadd textobj-arg  " data
-  packadd textobj-indent  " dai
-  packadd textobj-function  " daf
-  packadd unimpaired  " 5ms  ]b (:bn) , ]<space> (add empty lines), ]q
-  packadd tmux-navigator  " ]q
-  packadd emacscommandline  " 3ms
-  "packadd tex
-  " Misc:
-  packadd vader
-  packadd ale
-  " Youcompleteme: is verbose at init if no python
-  try
-    python3 '42'
-    " Deletes the vim intro screen
-    let g:ycm_auto_hover = ''
-    " set omnifunc=syntaxcomplete#Complete
-    " packadd youcompleteme
-  catch | endtry
-  "" Ultisnip: is annoying at run time if no python
-  try
-    python3 '42'
-    packadd ultisnips  " 3ms
-    packadd snippets " for some ultisnips macro
-  catch | endtry
-endfunction
-
-" Call it
-if has('timers')
-  call timer_start(0, 'TimerPack')
-else
-  call TimerPack(42)
-endif
 
 
 " Preferences, Appearances {{{1
@@ -401,7 +358,7 @@ else
 endif
 " Mouse Integration
 set ttyfast
-" set ttymouse=xterm2  " Commented out as it made mouse click move cursor
+set ttymouse=xterm2  " Commented out as it made mouse click move cursor, uncommented back on dreamlab
 " at the middle
 " Details {{{2
 set tags=./tags,./TAGS,tags,TAGS,.tags
@@ -1045,6 +1002,11 @@ set path+=/usr/include
 set path+=./../include
 set path+=./../../include
 set path+=./../../../include
+" DreamLab cross compile for windows
+"set path+=/usr/share/mingw-w64/include
+" Note: Unused: ale_c_clangd_options ale_c_cppcheck_options ale_c_cpplint_options
+"let g:ale_c_cc_options="-I/usr/share/mingw-w64/include"
+
 "" `gcc -print-prog-name=cc1plus` -v
 "set path+=/usr/include/c++/9/
 "set path+=/usr/include/c++/9
