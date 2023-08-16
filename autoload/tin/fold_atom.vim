@@ -5,6 +5,7 @@ function! s:declare_global() abort
   " let g:regexp_blank = '^\s*$\|^\s*[#"/]'
   let g:regexp_blank = '^\s*$'
   let g:next_close = '='
+  let g:fold_open =  '^{\s*$'
   let g:fold_close =  '^\s*\();\?\|\];\?\|};\?\|fi\|done\|esac\|end.*\|<\/.*\)\s*$'
 endfunction
 
@@ -54,9 +55,7 @@ function! tin#fold_atom#atom_fold_expr(line_number) abort
   " Find the indent of the next line
   let indent_below = FindIndentNext(a:line_number, indent_width)
 
-
   " Calculate indent level
-
   if getline(a:line_number) =~# g:regexp_blank
     if getline(a:line_number+1) =~# g:regexp_blank
       return '='
@@ -69,6 +68,10 @@ function! tin#fold_atom#atom_fold_expr(line_number) abort
   " TODO more complicated, mus close
   "if getline(a:line_number) =~# g:fold_close
     "return indent+1
+  " Consider opening leading braces (see below)
+  if getline(a:line_number) =~# g:fold_open
+    return '='
+  endif
 
   if indent_below > indent
     " If next indent increases increases: Take it
@@ -108,7 +111,12 @@ function! tin#fold_atom#atom_fold_expr(line_number) abort
 
     return res
 
+  " Same indent
   else
+    " Consider opening leading braces
+    if getline(a:line_number+1) =~# g:fold_open
+      return '>' . (indent_below+1)
+    endif
     return indent
   endif
 endfunction
@@ -132,6 +140,9 @@ function! tin#fold_atom#atom_fold_text() abort
 
   " Get comment
   let comment = getline(v:foldstart + 1)
+  if comment =~# g:fold_open
+    let comment .= getline(v:foldstart + 2)
+  endif
   let comment = substitute(comment, '^\s*', '', 1)
   let comment = substitute(comment, '^[`#"'']\+\s*', '', 1)
   " let comment = substitute(comment, '[`#"'']*\s*$', '', 1)
@@ -139,7 +150,6 @@ function! tin#fold_atom#atom_fold_text() abort
   " String build
   let fdnfo = repeat('>', v:foldlevel) . ' ' . string(foldlinecount)
   let name =  strpart(getline(v:foldstart), 0 , winwd - len(fdnfo))
-  "echom 'Tin name ' len(name) .','. len(fdnfo)
   let comment_start = max([len(name)+2, comment_col+2])
   let comment_width = max([0, winwd - len(fdnfo) - 4 - comment_start])
   let comment = comment[0: comment_width -1]
