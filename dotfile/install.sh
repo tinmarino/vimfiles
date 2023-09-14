@@ -53,11 +53,6 @@ try_link() {
 # Trash
 mkdir "$HOME/.Trash"
 
-# Opencode
-try_link "$scriptpath/opencode" ~/.config/opencode
-try_link ~/.config/opencode/commands ~/.claude/commands
-try_link ~/.config/opencode/skills ~/.claude/skills
-
 # Git
 try_link "$scriptpath/gitconfig"  ~/.gitconfig
 try_link "$scriptpath/gitignore"  ~/.gitignore
@@ -109,9 +104,6 @@ try_link "$scriptpath/alacritty.yml" ~/.alacritty.yml
 
 # GDB
 try_link "$scriptpath/gdbinit.gdb" ~/.gdbinit
-
-# Ruby
-try_link "$scriptpath/irbrc.rb" ~/.irbrc
 
 # Windows Powershell
 if [ "$os" = "windows" ] ; then

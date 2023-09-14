@@ -521,7 +521,7 @@ set t_ZH=[3m
 set t_ZR=[23m
 " Terminal strikethrough
 if $os ==# 'windows'
-  set term=xterm
+  " set term=xterm
 else
   set term=xterm-256color
 endif
