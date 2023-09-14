@@ -104,3 +104,9 @@ try_link "$scriptpath/alacritty.yml" ~/.alacritty.yml
 
 # GDB
 try_link "$scriptpath/gdbinit.gdb" ~/.gdbinit
+
+# Windows Powershell
+if [ "$os" = "windows" ] ; then
+  mkdir ~/Documents/WindowsPowerShell
+  try_link "$scriptpath/Microsoft.PowerShell_profile.ps1" ~/Documents/WindowsPowerShell/Microsoft.PowerShell_profile.ps1
+fi
