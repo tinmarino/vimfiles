@@ -281,7 +281,10 @@ command! FzfRgFileFull call FzfRgFileFull()
 
 " ALE {{{2
 let g:ale_virtualtext_cursor=0
-" -- Ale python
+let g:ale_linters = {'python': ['mypy', 'pylint', 'pyright'], 'asm': 'nasm'}
+let g:ale_pattern_options = {'.*\.md$': {'ale_enabled': 0}}
+
+" AlE python {{{3
 let g:ale_python_autopep8_options = '--indent-size=4  --max-line-length=120 '
 let pi = "--disable='fixme'"
 let pi .= " --argument-rgx='_?_?([xyzXYZ]+\\d?|bg|fg|id|[_a-z][A-Za-z0-9_]{2,30})$'"
@@ -290,8 +293,6 @@ let pi .=     " --attr-rgx='_?_?([xyzXYZ]+\\d?|bg|fg|id|[_a-z][A-Za-z0-9_]{2,30}
 let g:ale_python_pylint_options = pi
 
 " Removes flakes8
-let g:ale_linters = {'python': ['mypy', 'pylint', 'pyright']}
-let g:ale_pattern_options = {'.*\.md$': {'ale_enabled': 0}}
 " -- Ale Bash
 let si = '--exclude '
 let si .= 'SC2155,'  " Declare and assign separately to avoid masking return values -> Prevent declare -a, local
@@ -307,7 +308,10 @@ let si .= ' '  " Can't follow file location with $
 let si .= '--source-path=SCRIPTDIR '
 let si .= '--check-sourced '
 
+" AlE bash {{{3
 let g:ale_sh_shellcheck_options = si
+
+" AlE asm {{{3
 
 " COC {{{2
 
@@ -418,7 +422,7 @@ let g:vimwiki_key_mappings = {'mouse': 1}
 let g:vimwiki_markdown_link_ext = 1
 let g:vimwiki_table_reduce_last_col = 1
 let g:vimwiki_table_mappings = 0
-let g:vimwiki_table_auto_fmt = 0
+let g:vimwiki_table_auto_fmt = 1
 let g:vimwiki_hl_headers = 1
 let g:vimwiki_hl_cb_checked = 1
 let g:vimwiki_syntax = 'markdown'
@@ -477,11 +481,13 @@ Plug 'farmergreg/vim-lastplace'  " Open vim at last edition place on file
 Plug 'tpope/vim-fugitive'  " :Gitdiffsplit
 Plug 'jpalardy/vim-slime'  " ctrl-f to send to left pane
 Plug 'vimwiki/vimwiki', { 'branch': 'dev' }  " my notes
-Plug 'tinmarino/vim-color'   " my colors
-Plug 'dense-analysis/ale'   " Lint
-Plug 'scrooloose/nerdtree'   " Navigate File system
-Plug 'mbbill/undotree'   " Navigate history
+Plug 'tinmarino/vim-color' " my colors
+Plug 'dense-analysis/ale'  " Lint
+Plug 'scrooloose/nerdtree' " Navigate File system
+Plug 'mbbill/undotree'     " Navigate history
 Plug 'christoomey/vim-tmux-navigator'   " Navigate tmux panes
+Plug 'SirVer/ultisnips'    " Expand snippets
+Plug 'powerman/vim-plugin-AnsiEsc'    " Ansi escape sequence for PAGER
 
 call plug#end()
 
@@ -1224,8 +1230,8 @@ function! BashColor()
 endfunction
 
 "autocmd BufReadPost,BufWinEnter *.bash call BashColor()
-command Hide call BashColor()
-command Show hi clear Hide
+command! Hide call BashColor()
+command! Show hi clear Hide
 let sh_minlines = 500
 
 

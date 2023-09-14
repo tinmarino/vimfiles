@@ -325,6 +325,7 @@
   PATH+=:~/Software/Bash/LibDispatch
   PATH+=:/home/mtourneb/Program/Dragons/gempy/scripts
   PATH+=:/home/mtourneb/Program/Dragons/recipe_system/scripts
+  PATH+=:~/Program/idafree-8.3
 
 
 # Bind
@@ -462,5 +463,18 @@ PERL_LOCAL_LIB_ROOT="/home/mtourneb/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LI
 PERL_MM_OPT="INSTALL_BASE=/home/mtourneb/perl5"; export PERL_MM_OPT;
 
 [ -f "/home/mtourneb/.ghcup/env" ] && source "/home/mtourneb/.ghcup/env" # ghcup-env
+
+
+unhexify(){
+  : 'Convert hex string (arg1) to binary stream (stdout): see README'
+  escaped='' rest="$(IFS=; echo "$*")"
+  while [ -n "$rest" ]; do
+    tail="${rest#??}"
+    escaped="$escaped\\$(printf "%o" 0x"${rest%"$tail"}")"
+    rest="$tail"
+  done
+  printf "$escaped"
+}
+
 
 export PATH+=:/home/mtourneb/Program/Eso/install/bin

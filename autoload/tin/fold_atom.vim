@@ -6,7 +6,7 @@ function! s:declare_global() abort
   let g:regexp_blank = '^\s*$'
   let g:next_close = '='
   let g:fold_open =  '^{\s*$'
-  let g:fold_close =  '^\s*\();\?\|\];\?\|};\?\|fi\|done\|esac\|end.*\|<\/.*\)\s*$'
+  let g:fold_close =  '^\s*\();\?\|\];\?\|};\?\|#endif\|fi\|done\|esac\|end.*\|<\/.*\)\s*$'
 endfunction
 
 
