@@ -105,6 +105,9 @@ try_link "$scriptpath/alacritty.yml" ~/.alacritty.yml
 # GDB
 try_link "$scriptpath/gdbinit.gdb" ~/.gdbinit
 
+# Ruby
+try_link "$scriptpath/irbrc.rb" ~/.irbrc
+
 # Windows Powershell
 if [ "$os" = "windows" ] ; then
   mkdir ~/Documents/WindowsPowerShell
