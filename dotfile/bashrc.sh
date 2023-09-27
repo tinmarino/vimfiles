@@ -316,16 +316,16 @@
 # Path
   # My script
   [[ -n "$PATH" ]] \
-    && PATH=$HOME/.cargo/bin:$PATH \
-    || PATH=$HOME/.cargo/bin \
-  PATH=$HOME/Bin:$PATH
-  PATH=$HOME/.local/bin:$PATH
-  PATH=$HOME/.vim/bin:$PATH
+    && PATH="$HOME/.cargo/bin:$PATH" \
+    || PATH="$HOME/.cargo/bin" \
+  PATH="$HOME/Bin:$PATH"
+  PATH="$HOME/.local/bin:$PATH"
+  PATH="$HOME/.vim/bin:$PATH"
   # IRM
-  PATH+=:~/Software/Bash/LibDispatch
-  PATH+=:/home/mtourneb/Program/Dragons/gempy/scripts
-  PATH+=:/home/mtourneb/Program/Dragons/recipe_system/scripts
-  PATH+=:~/Program/idafree-8.3
+  PATH+=:"$HOME/Software/Bash/LibDispatch"
+  PATH+=:"$HOME/Program/Dragons/gempy/scripts"
+  PATH+=:"$HOME/Program/Dragons/recipe_system/scripts"
+  PATH+=:"$HOME/Program/idafree-8.3"
 
 
 # Bind
@@ -456,13 +456,13 @@
   
   export CVSROOT=:pserver:almasci@cvs01.osf.alma.cl:2401/project21/CVS
 
-PATH="/home/mtourneb/perl5/bin${PATH:+:${PATH}}"; export PATH;
+PATH="$HOME/perl5/bin${PATH:+:${PATH}}"; export PATH;
 PERL5LIB="$HOME/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
-PERL_LOCAL_LIB_ROOT="/home/mtourneb/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
-#PERL_MB_OPT='--install_base "/home/mtourneb/perl5"'; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/home/mtourneb/perl5"; export PERL_MM_OPT;
+PERL_LOCAL_LIB_ROOT="$HOME/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"; export PERL_LOCAL_LIB_ROOT;
+#PERL_MB_OPT='--install_base "$HOME/perl5"'; export PERL_MB_OPT;
+PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
 
-[ -f "/home/mtourneb/.ghcup/env" ] && source "/home/mtourneb/.ghcup/env" # ghcup-env
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
 
 unhexify(){
@@ -477,4 +477,4 @@ unhexify(){
 }
 
 
-export PATH+=:/home/mtourneb/Program/Eso/install/bin
+export PATH+=:$HOME/Program/Eso/install/bin

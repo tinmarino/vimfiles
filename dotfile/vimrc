@@ -562,7 +562,7 @@ set wildmenu
 " Doc: That means that on first <Tab> it will complete to the longest common string and will invoke wildmenu (a horizontal and unobstructive little menu). On next <Tab> it will complete the first alternative and the will start to cycle through the rest. You can go back and forth with <Tab> and <S-Tab> respectively.
 " From: https://stackoverflow.com/a/13043196/2544873
 set wildmode=longest:full,full
-set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.pdf,*.fls,*.synctex.gz,*.dvi  " LaTeX intermediate files
+set wildignore+=*.aux,*.out,*.toc,*.fdb_latexmk,*.fls,*.synctex.gz,*.dvi  " LaTeX intermediate files
 set wildignore+=*.tex.backup,*.lg,*.4ct,*.4tc,*.tmp,*.idv  " LaTeX html intermediate files
 set wildignore+=*.jpg,*.bmp,*.gif,*.png  " binary images
 set wildignore+=*.luac  " Lua byte code
