@@ -488,6 +488,8 @@ Plug 'mbbill/undotree'     " Navigate history
 Plug 'christoomey/vim-tmux-navigator'   " Navigate tmux panes
 Plug 'SirVer/ultisnips'    " Expand snippets
 Plug 'powerman/vim-plugin-AnsiEsc'    " Ansi escape sequence for PAGER
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 
 call plug#end()
 
