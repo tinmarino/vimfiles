@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+(
+
+myfd(){
+  fdfind -t f --strip-cwd-prefix --base-directory "$@"
+}
+
+from_msf(){
+  local dir=$1
+  # Payload staged
+  [[ -d $dir/payloads/stagers ]] &&
+  while read line; do
+    prefix_dir=${line%/*}
+    suffix_stager=${line##*/}
+    stage_dir="$dir/payloads/stages/$prefix_dir"
+
+    [ -d "$stage_dir" ] && myfd "$stage_dir" | sed -e "s|^|$prefix_dir/|;" -e "s|\.rb\$|/$suffix_stager|"
+  done < <(
+    myfd "$dir/payloads/stagers" | sed -e "s|.rb||"
+  )
+
+  # All single payloads
+  myfd "$dir/payloads/singles" | sed -e "s|^|payloads/|"
+
+  # All except payloads
+  myfd "$dir" --exclude payloads
+}
+
+from_msf ~/.msf4/modules
+from_msf /opt/metasploit-framework/embedded/framework/modules
+
+) | sed -e "s|.rb||" | fzf

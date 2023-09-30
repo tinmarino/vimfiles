@@ -326,6 +326,7 @@
   PATH+=:"$HOME/Program/Dragons/gempy/scripts"
   PATH+=:"$HOME/Program/Dragons/recipe_system/scripts"
   PATH+=:"$HOME/Program/idafree-8.3"
+  PATH+=:"$HOME/go/bin"
 
 
 # Bind
