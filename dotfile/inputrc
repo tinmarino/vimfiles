@@ -37,6 +37,15 @@ $include /etc/inputrc
 "\C-o": shell-expand-line
 #"\C-p": "$(date) \e\C-e\ef\ef\ef\ef\ef"
 
+# Perform file completion in a case insensitive fashion
+set completion-ignore-case on
+
+# Treat hyphens and underscores as equivalent
+set completion-map-case on
+
+# Immediately add a trailing slash when autocompleting symlinks to directories
+set mark-symlinked-directories on
+
 # enables color for tab completion to show different colors for executable files, directories, etc., 
 set colored-stats on
 # Color the matching part

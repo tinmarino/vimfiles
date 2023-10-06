@@ -370,14 +370,20 @@ map <leader>tt :VimwikiIndex 2<CR>
 map <leader>t<leader>t :VimwikiMakeDiaryNote 2<CR>
 noremap <leader>tg :call Windex(2)<CR>:VimwikiGoto 
 noremap <leader>ta :call Windex(2)<CR>:VimwikiGoto Alma<CR>
+" DreamlAb son of Alma that is why I keep the a
+" Futhermore the D is destroying tmux by default better no to get used to it
+let g:vimwiki_list += [{
+  \ 'path': '$h/wiki/dreamki',
+  \ 'path_html': '$h/wiki/dream_html'
+  \ }]
+map <leader>aa :VimwikiIndex 3<CR>
+map <leader>a<leader>a :VimwikiMakeDiaryNote 3<CR>
+noremap <leader>ag :call Windex(3)<CR>:VimwikiGoto 
 " Alma
 let g:vimwiki_list += [{
   \ 'path': '$h/wiki/alki',
   \ 'path_html': '$h/wiki/alki_html'
   \ }]
-map <leader>aa :VimwikiIndex 3<CR>
-map <leader>a<leader>a :VimwikiMakeDiaryNote 3<CR>
-noremap <leader>ag :call Windex(3)<CR>:VimwikiGoto 
 " Stackoverflow
 let g:vimwiki_list += [{
   \ 'path': '$h/wiki/stackoverflow',

@@ -1,24 +1,50 @@
 #!/usr/bin/env bash
 
-(
+
+preview(){
+  local file_base=$1
+  file_base=${file_base//payloads/payloads\/**}.rb
+  local file_base2=${file_base%/*}.rb
+
+  local a_cmd_bat=(
+    batcat -l ruby --color always --style=header --wrap character
+  )
+
+
+  local file=$(compgen -G ~/.msf4/modules/"$file_base")
+  [[ -f "$file" ]] && "${a_cmd_bat[@]}" "$file" && return
+  
+  file=$(compgen -G ~/.msf4/modules/"$file_base2")
+  [[ -f "$file" ]] && "${a_cmd_bat[@]}" "$file" && return
+
+  file=$(compgen -G /opt/metasploit-framework/embedded/framework/modules/"$file_base")
+  [[ -r "$file" ]] && "${a_cmd_bat[@]}" "$file" && return
+
+  file=$(compgen -G /opt/metasploit-framework/embedded/framework/modules/"$file_base2")
+  [[ -r "$file" ]] && "${a_cmd_bat[@]}" "$file" && return
+}
+
 
 myfd(){
   fdfind -t f --strip-cwd-prefix --base-directory "$@"
 }
 
+
 from_msf(){
   local dir=$1
+  local dir2=~/.msf4/modules
   # Payload staged
   [[ -d $dir/payloads/stagers ]] &&
   while read line; do
     prefix_dir=${line%/*}
     suffix_stager=${line##*/}
     stage_dir="$dir/payloads/stages/$prefix_dir"
-
-    [ -d "$stage_dir" ] && myfd "$stage_dir" | sed -e "s|^|$prefix_dir/|;" -e "s|\.rb\$|/$suffix_stager|"
+    stage_dir2="$dir2/payloads/stages/$prefix_dir"
+    [ -d "$stage_dir" ] && myfd "$stage_dir" | sed -e "s|^|$prefix_dir/|" -e "s|\.rb\$|/$suffix_stager|"
+    [ -d "$stage_dir2" ] && myfd "$stage_dir2" | sed -e "s|^|$prefix_dir/|" -e "s|\.rb\$|/$suffix_stager|"
   done < <(
-    myfd "$dir/payloads/stagers" | sed -e "s|.rb||"
-  )
+    myfd "$dir/payloads/stagers"
+  ) | sed -e "s|^|payloads/|"
 
   # All single payloads
   myfd "$dir/payloads/singles" | sed -e "s|^|payloads/|"
@@ -27,7 +53,8 @@ from_msf(){
   myfd "$dir" --exclude payloads
 }
 
+
+(
 from_msf ~/.msf4/modules
 from_msf /opt/metasploit-framework/embedded/framework/modules
-
-) | sed -e "s|.rb||" | fzf
+) | sed -e "s|.rb||" | fzf --preview "bash -c '$(declare -f preview); preview {}'"

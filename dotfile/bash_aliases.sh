@@ -65,6 +65,7 @@ alias bat="PAGER= bat"
   malias traw 'alacritty -e env -i INPUTRC= bash --noprofile --norc'
   malias tnotmux 'alacritty'
   malias vi vim
+  malias vimm vim
   alias ipy='jupyter-console'
   alias ira='jupyter-console --kernel=raku'
   alias ija='jupyter-console --kernel=java'

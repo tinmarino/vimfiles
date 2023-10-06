@@ -101,7 +101,7 @@ window:
 # Font configuration
 font:
   # The size to use.
-  size: 12
+  size: 20
   # The normal (roman) font face to use.
   normal:
     family: Hack
