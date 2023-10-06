@@ -290,10 +290,12 @@
 
   # Fzf bindings
   # Warning on termux, comment $HOME/Program/Fzf/shell/completion.bash
-  [[ -f "$HOME/.fzf.bash" ]] && source "$HOME/.fzf.bash"
+  try_source "$HOME/.vim/bin/fzf_bash_completion"
+  try_source "$HOME/.vim/bin/fzf_bash_keybindings"
 
   # Rust
   try_source "$HOME/.cargo/env"
+
 
 
 # Include completion
