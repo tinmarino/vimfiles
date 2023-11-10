@@ -1,4 +1,12 @@
 # Custom
+*.lof
+*.lot
+*.toc
+
+# Generic
+#########
+
+# Custom
 donotgit/
 
 # For ripgrep
