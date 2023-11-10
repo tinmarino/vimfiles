@@ -374,16 +374,11 @@ noremap <leader>ta :call Windex(2)<CR>:VimwikiGoto Alma<CR>
 " Futhermore the D is destroying tmux by default better no to get used to it
 let g:vimwiki_list += [{
   \ 'path': '$h/wiki/dreamki',
-  \ 'path_html': '$h/wiki/dream_html'
+  \ 'path_html': '$h/wiki/dreamki_html'
   \ }]
 map <leader>aa :VimwikiIndex 3<CR>
 map <leader>a<leader>a :VimwikiMakeDiaryNote 3<CR>
 noremap <leader>ag :call Windex(3)<CR>:VimwikiGoto 
-" Alma
-let g:vimwiki_list += [{
-  \ 'path': '$h/wiki/alki',
-  \ 'path_html': '$h/wiki/alki_html'
-  \ }]
 " Stackoverflow
 let g:vimwiki_list += [{
   \ 'path': '$h/wiki/stackoverflow',
@@ -424,6 +419,7 @@ augroup END
 let g:vimwiki_automatic_nested_syntaxes = 1
 let g:vimwiki_folding = 'expr'
 
+let g:vimwiki_fold_expr_block = 1
 let g:vimwiki_key_mappings = {'mouse': 1}
 let g:vimwiki_markdown_link_ext = 1
 let g:vimwiki_table_reduce_last_col = 1
@@ -496,6 +492,8 @@ Plug 'SirVer/ultisnips'    " Expand snippets
 Plug 'powerman/vim-plugin-AnsiEsc'    " Ansi escape sequence for PAGER
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'lervag/vimtex'  " LaTeX
+Plug 'ap/vim-css-color'  " LaTeX
 
 call plug#end()
 
@@ -579,6 +577,7 @@ set wildignore+=*.pyc  " Python byte code
 set wildignore+=*.spl  " compiled spelling word lists
 set wildignore+=*.sw?  " Vim swap files
 set wildignore+=.git/*,undo/*  " Git, Vim undo
+set wildignore+=*.gen.*,*.nav,*.snm,*.vrb,*.lof,*.lot  " My preprocesor
 " Search {{{2
 set ignorecase
 set smartcase
