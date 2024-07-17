@@ -291,9 +291,9 @@ let pi .= " --argument-rgx='_?_?([xyzXYZ]+\\d?|bg|fg|id|[_a-z][A-Za-z0-9_]{2,30}
 let pi .= " --variable-rgx='_?_?([xyzXYZ]+\\d?|bg|fg|id|[_a-z][A-Za-z0-9_]{2,30})$'"
 let pi .=     " --attr-rgx='_?_?([xyzXYZ]+\\d?|bg|fg|id|[_a-z][A-Za-z0-9_]{2,30})$'"
 let g:ale_python_pylint_options = pi
-
 " Removes flakes8
-" -- Ale Bash
+
+" ALE bash {{{3
 let si = '--exclude '
 let si .= 'SC2155,'  " Declare and assign separately to avoid masking return values -> Prevent declare -a, local
 let si .= 'SC2092,'  " Remove backticks for docstring in code
@@ -304,14 +304,28 @@ let si .= 'SC3043,'  " In POSIX sh, 'local' is undefined.
 let si .= 'SC2059,'  " Don't use variables in the printf format string
 " let si .= 'SC3024,'  " In POSIX sh, += is undefined
 let si .= ' '  " Can't follow file location with $
-
 let si .= '--source-path=SCRIPTDIR '
 let si .= '--check-sourced '
-
-" AlE bash {{{3
 let g:ale_sh_shellcheck_options = si
 
-" AlE asm {{{3
+
+" ALE asm {{{3
+" ALE C Clang {{{3
+"let g:ale_c_parse_makefile = 1 
+
+let ci = '-I/usr/x86_64-w64-mingw32/include'  " Commented out as they are just a few symlinks
+" let ci = '-I/usr/share/mingw-w64/include'  " For Winddows transcompilation with mingw
+" let g:ale_c_cc_options =  ci
+" let g:ale_c_gcc_options =  ci
+" let g:ale_cpp_cc_options =  ci
+" let g:ale_cpp_gcc_options =  ci
+" let g:ale_c_clangd_options = ci
+" let g:ale_c_clangcheck_options = ci
+" let g:ale_c_clangtidy_options = ci
+" let g:ale_cpp_clangd_options = ci
+" let g:ale_cpp_clangcheck_options = ci
+" let g:ale_cpp_clangtidy_options = ci
+
 
 " COC {{{2
 
@@ -321,19 +335,24 @@ let g:slime_default_config = {'socket_name': 'default', 'target_pane': '{bottom-
 let g:slime_dont_ask_default = 1
 
 function! SendRight(...)
+  " Get optional input or current line
   let line = a:0 ? a:1 : getline('.')
   " Trim spaces
   let line = substitute(line, '^\s*\`*\s*', '', '')
   let line = substitute(line, '\s*\`*\s*$', '', '')
+
+  " Send to tmux command is start with ts
   if line =~? '^ts'
     let line = substitute(line, '^ts\s*', '', '')
     execute '!tmux send-keys -t right ' . line . '&> /dev/null'
+  " Send to slime otherwise
   else
     call slime#send(getline('.') . "\n")
   endif
 endfunction
 
 nnoremap <C-F> :<c-u>call SendRight(getline("."))<cr><cr>
+vnoremap <C-F> :<C-u>call SendRight(GetVisualSelection())<CR><CR>
 xmap <C-F> <Plug>SlimeRegionSend
 "nmap <C-t> :call SendTmux() <Cr><Cr>
 
@@ -419,6 +438,7 @@ augroup END
 let g:vimwiki_automatic_nested_syntaxes = 1
 let g:vimwiki_folding = 'expr'
 
+" set tw=80
 let g:vimwiki_fold_expr_block = 1
 let g:vimwiki_key_mappings = {'mouse': 1}
 let g:vimwiki_markdown_link_ext = 1
@@ -431,7 +451,8 @@ let g:vimwiki_syntax = 'markdown'
 let g:vimwiki_ext = '.md'
 let g:vimwiki_custom_wiki2html = '$h/wiki/wiki/wiki2html.sh'
 let g:vimwiki_css_name = '/Css/include.css'
-let g:vimwiiki_url_maxsave = 0  " Do not conceal http url
+let g:vimwiki_url_maxsave = 0  " Do not conceal http url
+let g:vimwiki_open_link_add_ext = 0  " Do not conceal http url
 
 "let g:vimwiki_tag_format = {'pre_mark': '#tag1', 'post_mark': '#tag2', 'sep': '|'}
 "let g:vimwiki_tag_format = {'pre_mark': '#\w\@=', 'post_mark': '', 'sep': ' ' }
@@ -490,10 +511,14 @@ Plug 'mbbill/undotree'     " Navigate history
 Plug 'christoomey/vim-tmux-navigator'   " Navigate tmux panes
 Plug 'SirVer/ultisnips'    " Expand snippets
 Plug 'powerman/vim-plugin-AnsiEsc'    " Ansi escape sequence for PAGER
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf'   " Fuzzy finder
 Plug 'junegunn/fzf.vim'
 Plug 'lervag/vimtex'  " LaTeX
-Plug 'ap/vim-css-color'  " LaTeX
+Plug 'ap/vim-css-color'  " Css color
+Plug 'neoclide/coc.nvim', {'branch': 'release'} " Commander of completion
+
+Plug 'vim-scripts/DrawIt'
+Plug 'michaeljsmith/vim-indent-object'
 
 call plug#end()
 
@@ -502,6 +527,7 @@ call plug#end()
 " Preferences, Appearances {{{1
 " Preferences {{{2
 " set clipboard=exclude:.*  " Do not connect to X, can take one sec on Ubuntu 2020.10 like -X
+set iskeyword+=-  " The ":" is already set in ruby.vim ftplugin
 set background=dark
 set termguicolors
 try
@@ -964,6 +990,13 @@ endif
   if isdirectory('/usr/include/c++/11')
     set path+=/usr/include/c++/11/
   endif
+  " if isdirectory('/usr/share/mingw-w64/include')  " For Windows
+  "   set path+=/usr/share/mingw-w64/include
+  " endif
+  if isdirectory('/usr/x86_64-w64-mingw32/include')
+    set path+=/usr/x86_64-w64-mingw32/include
+  endif
+
 " Folding {{{1
 highlight Folded ctermfg=DarkGreen ctermbg=Black
 set foldignore=
@@ -989,8 +1022,7 @@ augroup FtDetect
 augroup END
 
 
-" Alma {{{1
-" AlmaSw
+" Include PATH {{{1
 "" echo | g++ -E -Wp,-v -
 "" `gcc -print-prog-name=cpp` -v  # cpp for c preprocessor
 " System
@@ -1167,7 +1199,7 @@ function! Fix()
   let l:i_has_fixed = 0
   while 1
     let l:s_line = getline(l:i_line)
-    echom l:i_line .  l:s_line
+    " echom l:i_line .  l:s_line  " Debug
 
     if -1 == match(l:s_line, '^ *#')
       " Ciao
@@ -1197,7 +1229,6 @@ function! Fix()
     let l:i_line += 1
   endwhile
 endfunction
-nnoremap <leader>f :call Fix()<CR>
 
 function! BashColor()
   syn cluster shExprList2	add=Hide
@@ -1239,6 +1270,11 @@ endfunction
 "autocmd BufReadPost,BufWinEnter *.bash call BashColor()
 command! Hide call BashColor()
 command! Show hi clear Hide
+command! Fix call Fix()
+nnoremap <leader>f :Fix<CR>
+nnoremap <leader>h :Hide<CR>
+nnoremap <leader>s :Show<CR>
+nnoremap <leader>q :call SendRight('ts q BSpace') \| sleep 100m \| call SendRight('ts clear ENTER')<CR><CR><CR>
 let sh_minlines = 500
 
 
@@ -1251,5 +1287,6 @@ let sh_minlines = 500
 "set clipboard=exclude:.*  " Do not connect to X, can take one sec on Ubuntu 2020.10
 "set notitle
 "
+inoreabbrev cdate <C-r>=strftime("%F")<CR>
 
 " vim: sw=2:ts=2:fdm=marker
