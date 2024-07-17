@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
+set -u
+
 # Read Stdin as a PAGER 
 # <- Pager <- Vim: https://vim.fandom.com/wiki/Using_vim_as_a_man-page_viewer_under_Unix
 # <- Check size <- https://unix.stackexchange.com/questions/245064/what-is-the-best-way-to-pipe-the-output-of-a-command-through-a-pager-if-and-onl
 # <- Pass argument dynamically <- https://unix.stackexchange.com/questions/459367/using-shell-variables-for-command-options
 # Require perl, tput (in ncurses-utils), less
 
-unset PAGER
 
 # Helper:0 Final: Call vim with arguments
 call_vim(){
@@ -24,7 +25,7 @@ call_vim(){
 }
 
 # Helper:1 for manpages (prefix by col)
-man_col(){
+vman_col(){
   col -b -x | call_vim \
     -c "set ft=man nomod nolist \
      | set sw=3 | set foldmethod=indent" \
@@ -33,12 +34,12 @@ man_col(){
 }
 
 # Helper:2 As before but with - -> $1 (i.e. STDIN -> ARG_1)
-man_cat_col(){
-  less "$1" | man_col
+vman_cat_col(){
+  less "$1" | vman_col
 }
 
 # Helper:1 PAGER for git diff files (Ansi-Escaped)
-man_ansi() {
+vman_ansi() {
   call_vim -c "packadd ansiesc | AnsiEsc" -c "\
     hi ansiGreenFg guifg=Green | \
     hi ansiRedFg guifg=Red" -
@@ -46,7 +47,7 @@ man_ansi() {
 
 
 # Discrimintate size of stdin to pipe in (vim | less | cat)
-man_select(){
+vman_select(){
   buffer=$(mktemp)
   rows="${LINES:=$(tput lines)}"
   cols="${COLUMNS:=$(tput cols)}"
@@ -79,13 +80,13 @@ man_select(){
       # So work
       else
         # Choose PAGER according to AnsiEsc detection
-        man_cmd="man_col"
+        vman_cmd=vman_col
         perl -ne 'exit 42 if m/\e\[[0-9;]*[mG]/' "$buffer"
-        [ $? = 42 ] && man_cmd="man_ansi"
+        [ $? = 42 ] && vman_cmd=vman_ansi
         # Concatenate buffer (size of the screen) and stdin (-)
         less "$buffer" - |
         # Go in Vim
-        "${PAGER:="$man_cmd"}" "$@"
+        "${PAGER:="$vman_cmd"}" "$@"
       fi
     fi
     break
@@ -94,18 +95,24 @@ man_select(){
 }
 
 
-man_main() {
+vman_main() {
   # See if argument commes from stdin (unix) or file first argument (man on termux)
+
   # shellcheck disable=SC2199
-  if [[ -z "$1" ]]; then
-    man_select
+  if (($# < 1)) || [[ -z "$1" ]]; then
+    vman_select
   elif [[ " $@ " =~ " --select "  ]]; then
     delete='--select'
     args=( "${@/$delete}" )
-    man_select "${args[@]}"
+    vman_select "${args[@]}"
   else
-    man_cat_col "$@"
+    vman_cat_col "$@"
   fi
 }
 
-man_main "$@"
+
+if ! (return 0 2>/dev/null); then
+  unset PAGER
+  vman_main "$@"
+  exit "$?"
+fi
