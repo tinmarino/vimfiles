@@ -582,7 +582,10 @@ set_print(){
 abat(){
   `# Alias_bat language < stdin > stdout`
   local lang="${1:-bash}"
-  bat --style plain --color always --pager "" --theme zenburn --language "$lang" - | perl -p -e 'chomp if eof';
+  local cmd=cat
+  command -v bat &> /dev/null && cmd=bat
+  command -v batcat &> /dev/null && cmd=batcat
+  "$cmd" --style plain --color always --pager "" --theme zenburn --language "$lang" - | perl -p -e 'chomp if eof';
 }
 
 read_array(){

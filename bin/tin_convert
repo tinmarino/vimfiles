@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# ${cblue}Convert$cend stdin urlencode or base64, etc
+# shellcheck disable=SC2154  # Referenced but not asssigned
+
+declare scriptdir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
+source "$scriptdir/shellutil.sh"
+
+
+_usage(){
+  : 'Print this message'
+  print_title "Convert stdin"
+  print_usage_fct
+}
+
+
+_urlencode(){
+  : 'Encode all character in url
+    From: https://unix.stackexchange.com/a/187256/257838
+    See also:
+      jq => https://gist.github.com/sergeiwaigant/f0cf816e143114b6a7d81a901b5d3ce6
+  '
+  local length="${#1}"
+  for (( i = 0; i < length; i++ )); do
+      local c="${1:i:1}"
+      case $c in
+          #[a-zA-Z0-9.~_-]) printf "$c" ;;
+          *) printf '%%%02X' "'$c" ;;
+      esac
+  done
+}
+
+_urldecode(){
+  : 'Decode all character in url
+    From: https://unix.stackexchange.com/a/187256/257838
+  '
+  local url_encoded="${1//+/ }"
+  printf '%b' "${url_encoded//%/\\x}"
+}
+
+
+get_fct_dic
+call_fct_arg "$@"
+# vim:sw=2:ts=2:

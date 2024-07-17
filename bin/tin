@@ -6,6 +6,7 @@ declare scriptdir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
 source "$scriptdir/shellutil.sh"
 
 bin_path=$(bin_path)
+register_subcommand conv "$bin_path/tin_convert" 
 register_subcommand doc "$bin_path/tin_doc" 
 register_subcommand game "$bin_path/tin_game" 
 register_subcommand sync "$bin_path/tin_sync" 
