@@ -2,15 +2,16 @@ priority 1
 
 snippet hi "start a script"
 #!/usr/bin/env bash
+set -u
 
-`!v expand('%:t:r')`(){
-	$1
+`!v substitute(expand('%:t:r'), '-', '_', 'g')`_main(){
+	${1::}
 }
 
 if ! (return 0 2>/dev/null); then
-  echo "--> \$0 starting with $*." >&2
-  `!v expand('%:t:r')` "$@"; res=\$?
-  echo "<-- \$0 returned with \$res." >&2
+  >&2 echo "--> \$0 starting with $*."
+  `!v substitute(expand('%:t:r'), '-', '_', 'g')`_main "$@"; res=\$?
+  >&2 echo "<-- \$0 returned with \$res."
 	exit "$res"
 fi
 endsnippet
@@ -43,6 +44,17 @@ if ${1:true}; then
 fi
 endsnippet
 
+snippet case "switch"
+case \$1 in
+	a|add) shift; add "$@"; return $?;;
+	*) echo "Error: Unkown command: $*"; return 1;;
+esac
+endsnippet
+
+snippet date "My date format"
+date +'%Y-%m-%dT%H:%M:%S'
+endsnippet
+
 snippet parse "parse argument in"
 parse_argument(){
 	while (( 0 != $# )); do
@@ -73,7 +85,6 @@ is_in_array() {
 }
 endsnippet
 
-
 snippet is_int "Check if is int  # From: https://stackoverflow.com/questions/806906, for float ^[0-9]+([.][0-9]+)?$"
 is_int(){
   ### Check is arg1 <string> is an integer (signed)
@@ -87,7 +98,7 @@ print_args(){
   ### Print input arguments, one per line
   local cnt=1
   for s_arg in "$@"; do
-    echo "$((cnt++))/ $s_arg"
+    echo "$((cnt++))/ $s_arg!"
   done
 }
 endsnippet
@@ -105,8 +116,6 @@ print_stack(){
 }
 endsnippet
 
- 
-
 
 snippet #! "Shebang"
 #!/usr/bin/env bash
@@ -117,10 +126,35 @@ snippet (( "Context arith"
 \$((${0:${VISUAL}}))
 endsnippet
 
+snippet a "Expand array"
+"\${${1:a_arr}[@]}"
+endsnippet
+
 snippet arr "Expand array"
 "\${${1:a_arr}[@]}"
 endsnippet
 
+
 snippet test "Test version"
 version1.0
+endsnippet
+
+snippet ts "Trick for presentation"
+local ts=${file##"$path_task/"}; ts=${ts%%.task}
+local task=$(< "$file"); task=${task//$'\n'/<br />}
+endsnippet
+
+
+snippet assert "Small assert command"
+assert(){
+  local b_not=0; [[ not == "\$1" ]] && { b_not=1; shift ; }
+  out=$("$@"); local res=$((b_not ? !$? : $?))
+  echo "[$res] $* => $out"
+}
+endsnippet
+
+snippet usage "Usage function reading file docstring"
+usage(){
+  sed -n "/^: '/,/^'/p" "\${BASH_SOURCE[0]}" | sed '1d;\$d'
+}
 endsnippet

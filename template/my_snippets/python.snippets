@@ -16,3 +16,11 @@ def `!v expand('%:t:r')`():
 if __name__ == '__main__':
     `!v expand('%:t:r')`()
 endsnippet
+
+snippet parse "Parse argument in"
+from argparse import ArgumentParser
+parser = ArgumentParser(description="Example script to parse arguments")
+parser.add_argument('positional', type=str, help='A positional argument')
+parser.add_argument('-o', '--optional', type=str, default='default_value', help='An optional argument')
+args = parser.parse_args()
+endsnippet
