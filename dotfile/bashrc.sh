@@ -36,6 +36,9 @@
   fi
 
 
+# Internal util
+  try_source(){ [[ -f "$1" ]] && source "$1"; }
+
 # Appearance and Header
   # I wanted to be an artists
   # clear
@@ -197,7 +200,7 @@
     ### Print argument received with their positional number, for teaching purposes'
     local i_cnt=1
     for s_arg in "$@"; do
-      echo "$(( i_cnt++ ))/ $s_arg"
+      echo "$(( i_cnt++ ))/ $s_arg!"
     done
   }
   export -f print_args
@@ -279,7 +282,6 @@
 
 
 # Include, Source, Extension (Alias and Completion)
-  try_source(){ [[ -f "$1" ]] && source "$1"; }
   ############
   # Completion
   #   maybe source "$HOME/.local/usr/share/bash-completion/bash_completion"
@@ -329,6 +331,7 @@
   PATH+=:"$HOME/Program/Dragons/recipe_system/scripts"
   PATH+=:"$HOME/Program/idafree-8.3"
   PATH+=:"$HOME/go/bin"
+  PATH+=:"$HOME/Dreamlab/Pentest"
 
 
 # Bind
@@ -345,8 +348,10 @@
 # Alma
   # Set completion
   export ALMASW=~/AlmaSw
+  #complete -o nosort -C tin tin
+  #complete -o nosort -C jim jim
   complete -o nosort -C irm irm
-  complete -o nosort -C art art
+  complete -o nosort -C art ./art
   complete -o nosort -C ./dispatch ./dispatch
   complete -o nosort -C dispatch dispatch
   complete -C remove_plugin remove_plugin
@@ -481,3 +486,22 @@ unhexify(){
 
 
 export PATH+=:$HOME/Program/Eso/install/bin
+
+# Fast Mano
+s_cli_list="help print_database add_employee remove_employee get_employee list_employees add_job remove_job get_job list_jobs add_department remove_department get_department list_departments last_employee last_job last_department debug_print_employee" 
+
+alias cli="wine bin/labhr_database_cli.exe"
+complete -W "$s_cli_list" wine
+complete -W "$s_cli_list" cli
+export LANGUAGE=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+alias feroxburster="~/Program/Feroxburster/feroxbuster --extract-links --user-agent Dreamlab-Martin-Tourneboeuf"
+
+
+restart_ollama(){
+  sudo systemctl stop ollama.service
+  sudo rmmod -f nvidia_uvm && sudo modprobe nvidia_uvm  # Restart driver
+  sudo systemctl start ollama.service
+}
+
+try_source ~/.vim/bin/rc/complete_shellgpt.sh

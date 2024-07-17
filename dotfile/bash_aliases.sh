@@ -33,13 +33,15 @@ alias bat="PAGER= bat"
 
 # Shortcut
   # Small as Huffman
+  alias h="history | rg "
+  malias c clip
   malias f find
   malias g git
-  malias v vim
-  malias o xdg-open
-  malias c clip
   malias m man
-  alias h="history | rg "
+  malias o xdg-open
+  malias v vim
+  malias s sgpt
+
   alias fr="find . | rg "
 
   # Little longer
@@ -126,7 +128,7 @@ alias bat="PAGER= bat"
 
   # Utils
   # shellcheck disable=SC2139  # This expands when defined
-  alias clean_tex="mv -t $TRASH *.aux *.log *.fls *.fdb_latexmk *.out *synctex.gz *.tex.backup *.4ct *.4tc *.idv *.lg *.tmp *.xref *.xdv *.dvi *.bak *.toc"
+  alias clean_tex="mv -t $TRASH *.aux *.log *.fls *.fdb_latexmk *.out *synctex.gz *.tex.backup *.4ct *.4tc *.idv *.lg *.tmp *.xref *.xdv *.dvi *.bak *.toc *.nav *.snm"
   alias clip='xclip -selection c'
 
   # Safe RM

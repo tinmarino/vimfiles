@@ -1,5 +1,6 @@
 # Archlinux: https://wiki.archlinux.org/index.php/Readline
 # Cheatsheet: https://readline.kablamo.org/emacs.html
+# Reload with: bind -f ~/.inputrc
 
 # Include system wide settings which are ignored by default if one has their own .inputrc  
 $include /etc/inputrc
@@ -19,9 +20,11 @@ $include /etc/inputrc
 "\e[1;5D": backward-word
 
 # Newline easier
-"\C-j": "\C-v\C-j"
+# -- Warning this messes stdout in reverse shell
+#"\C-j": "\C-v\C-j"
+#"\ej": "\C-v\C-j"
 
-# Array
+# Bash Array
 "\ea": "\"${[@]}\"\C-b\C-b\C-b\C-b\C-b"
 
 
@@ -34,7 +37,7 @@ $include /etc/inputrc
 #"\C-p": previous-screen-line
 #"\C-h": next-screen-line
 #"\C-h": "ctrlh-test"
-"\C-o": shell-expand-line
+#"\C-o": shell-expand-line
 #"\C-p": "$(date) \e\C-e\ef\ef\ef\ef\ef"
 
 # Perform file completion in a case insensitive fashion

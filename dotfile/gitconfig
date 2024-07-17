@@ -113,6 +113,11 @@
 [http]
 	sslVerify = false
 
+[init]
+  defaultBranch = main
+
 [user]
 	email = tinmarino@gmail.com
 	name = Tinmarino
+[safe]
+	directory = /var/www/prontus
