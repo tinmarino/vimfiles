@@ -104,3 +104,165 @@ wiki_pandoc: --toc
 ---
 endsnippet
 
+# Latex helpers (DreamLab)
+snippet book
+\`\`\`{=latex}
+\book{
+\`\`\`
+endsnippet
+
+snippet tex "Tex snippet"
+\`\`\`{=latex}
+$1
+\`\`\`
+endsnippet
+
+snippet tb "Textblock"
+\begin{textblock}{1}(0.05, 0.05)
+$1
+\end{textblock}
+endsnippet
+
+snippet svg "Include svg in Latex"
+\`\`\`{=latex}
+\begin{center}
+\includesvg[width=\textwidth]{res/img/$1.svg}
+\end{center}
+\`\`\`
+endsnippet
+
+snippet vs "Vertical space for slides"
+\slide{\vspace{${1:-0.6cm}}}
+endsnippet
+
+snippet col "Column and columns for Markdown Pandoc"
+<!-- Column 1 -->
+::: columns
+:::: {.column width=50%}
+
+::::
+
+<!-- Column 2 -->
+:::: {.column width=50%}
+
+::::
+:::
+endsnippet
+
+snippet multicol "Multicols latex, automatically break"
+\`\`\`{=latex}
+\begin{multicols}{2}
+\`\`\`
+
+\`\`\`{=latex}
+\end{multicols}
+\`\`\`
+endsnippet
+
+snippet code "Change code size"
+\slide{\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\\\\{\\},fontsize=\fontsize{12}{11}\selectfont}}
+endsnippet
+
+snippet snippet "Embed code from other file"
+\`\`\`{.python include="code/interpreting/parse_raw_file.py"}
+\`\`\`
+endsnippet
+
+snippet img "Add a full screen image from chatGpt"
+![\\ ](res/img/$1){width=80%}
+endsnippet
+
+snippet off "Turn miniframe off"
+\`\`\`{=latex}
+\book{\begin{frame}}
+\end{frame}
+\miniframesoff
+\slide{\begin{frame}<0| handout:0>}
+\`\`\`
+endsnippet
+
+snippet on "Turn miniframe on"
+\`\`\`{=latex}
+\book{\begin{frame}}
+\end{frame}
+\miniframeson
+\slide{\begin{frame}<0| handout:0>}
+\`\`\`
+endsnippet
+
+snippet fn "Footnote"
+\renewcommand{\myfootnote}{\footnote{}}
+\book{\protect\myfootnote}
+\slide{\myfootnote}
+endsnippet
+
+snippet wf "WrapFig"
+\book{\begin{wrapfigure}{Rt}{5cm}}
+\book{\end{wrapfigure}}
+endsnippet
+
+snippet mp "minipage"
+\`\`\`{=latex}
+\slide{
+	\begin{center}
+	\begin{minipage}[7]{0.7\textwidth}\centering
+}
+\`\`\`
+
+\`\`\`{=latex}
+\slide{
+  \end{minipage}
+  \end{center}
+}
+\`\`\`
+endsnippet
+
+snippet bb "begin book"
+\`\`\`{=latex}
+\book{\begin{frame}}
+\end{frame}
+\begin{bookenv}
+\`\`\`
+endsnippet
+
+snippet eb "end book"
+\`\`\`{=latex}
+\end{bookenv}
+\slide{\begin{frame}<0| handout:0>}
+\`\`\`
+endsnippet
+
+snippet aslr "ASLR mitigation"
+Address Space Layout Randomization
+endsnippet
+
+snippet dep "DEP mitigation"
+Data Execution Prevention
+endsnippet
+
+snippet cfi "CFI mitigation"
+Control Flow Integrity
+endsnippet
+
+snippet ssl "SSL"
+Secure Sockets Layer
+endsnippet
+
+snippet b "begingroup"
+\begingroup
+endsnippet
+
+snippet e "egroup"
+\endgroup
+endsnippet
+
+snippet airo "airodump-ng"
+airodump-ng --band abg --wps -w capture wlan0
+endsnippet
+
+snippet wlan "Set monitor mode"
+wlan=wlan0;
+ip link set "$wlan" down;
+iw dev "$wlan" set monitor none;
+ip link set "$wlan" up;
+endsnippet

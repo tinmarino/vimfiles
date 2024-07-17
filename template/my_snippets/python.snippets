@@ -17,48 +17,10 @@ if __name__ == '__main__':
     `!v expand('%:t:r')`()
 endsnippet
 
-
-snippet pylint "Disable warning"
-# -- pylint: disable=${1:line-too-long}
-endsnippet
-
-snippet dump "Dump string to file"
-with open(f"{s_out_dir_01}/{rut}.json", "w", encoding="utf8") as file:
-		file.write(str(json))
-endsnippet
-
-snippet slurp "Slurp file to string"
-with open(f"$1", "r", encoding="utf8") as file:
-		stg = file.read()
-endsnippet
-
-
-snippet argparse "Parse argument in"
-from sys import argv as sys_argv   # Help argparse detect no argument
-from argparse import ArgumentParser, RawTextHelpFormatter  # Parse input arguments
-
-parser = ArgumentParser(description=__doc__, formatter_class=RawTextHelpFormatter)
-
-# Positional
+snippet parse "Parse argument in"
+from argparse import ArgumentParser
+parser = ArgumentParser(description="Example script to parse arguments")
 parser.add_argument('positional', type=str, help='A positional argument')
-
-# Flag
-parser.add_argument('--test', action='store_true', help='Run non regression test')
-
-# String 1
 parser.add_argument('-o', '--optional', type=str, default='default_value', help='An optional argument')
-
-# Create rut
-parser.add_argument('--generate-rut', nargs=2, help='Generate Rutn from <rut1: int> to <rut2: int>')
-
-# Clause: Leave now if no argument
-if not sys_argv[1:]:
-		return parser, parser.parse_args(['--help'])
-
-# Parse arguments from Stdin
-args = parser.parse_args(args=None)
-endsnippet
-
-snippet #! "Shebang"
-#!/usr/bin/env python3
+args = parser.parse_args()
 endsnippet
