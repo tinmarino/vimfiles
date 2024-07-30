@@ -4,6 +4,8 @@
 #InteractiveShellApp(Configurable)configuration
 #------------------------------------------------------------------------------
 
+c = get_config()
+
 ##AMixinforapplicationsthatstartInteractiveShellinstances.
 #
 #Providesconfigurablesforloadingextensionsandexecutingfilesaspartof
@@ -616,3 +618,9 @@
 ##IfTrue,any%store-dvariableswillbeautomaticallyrestoredwhenIPython
 #starts.
 #c.StoreMagics.autorestore=False
+
+c.InteractiveShellApp.exec_lines = [
+"import numpy as np",
+"def sigmoid(x): return 1 / (1 + np.exp(-x))",
+"def relu(x): return np.maximum(0, x)",
+        ]

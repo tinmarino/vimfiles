@@ -39,28 +39,23 @@ __complete_sgpt(){
     --version     : Show version
     --help        : Show this message and exit
     -------- Assistance : -----------------------------------
-    --shell       : Interface to denerate and execute shell commands
-    -s            : --shell
+    --shell       : Interface to generate and execute shell commands [-s]
     --interaction     : Interactive mode for --shell option. [default: interaction]
     --no-interaction  : No Interaction
-    --describe-shell  : Describe a shell command
-    -d                : --describe-shell
-    --code            : Generate only code
-    -c                : --code
+    --describe-shell  : Describe a shell command [-d]
+    --code            : Generate only code [-c]
     --functions       : Allow function calls. [default: functions]
     --no-functions    : No functions
     -------------- Chat : -----------------------------------
     --chat        : TEXT  Follow conversation with id, use "temp" for quick session. [default: None]
     --repl        : TEXT  Start a REPL (Read–eval–print loop) session. [default: None]
     --show-chat   : TEXT  Show all messages from provided chat id. [default: None]
-    --list-chats  : List all existing chat ids
-    -lc           : --list-chats
+    --list-chats  : List all existing chat ids [-lc]
     -------------- Role : -----------------------------------
     --role        : TEXT  System role for GPT model. [default: None]
     --create-role  : TEXT  Create role. [default: None]
     --show-role    : TEXT  Show role. [default: None]
-    --list-roles   : List roles
-    -lr            : --list-roles
+    --list-roles   : List roles [-lr]
   '
 
   case $arg_before in
@@ -68,20 +63,27 @@ __complete_sgpt(){
       while IFS= read -r line; do
         filter_prefix "$arg_prefix" "$line"
       done < <(sgpt --list-chats | sed 's|^.*/||')
-      return
       ;;
     --show-role|--role)
       while IFS= read -r line; do
-        filter_prefix "$arg_prefix" "$line"
-      done < <(sgpt --list-chats | sed 's|^.*/||')
-      return
+        local possible_arg="${line%% : *}"
+        filter_prefix "$arg_prefix" "$possible_arg"
+      done < <(
+        while IFS= read -r role_path; do
+          role_name=${role_path##*/}
+          role_name=${role_name%%.json}
+          role_desc=$(jq '.role' < "$role_path")
+          echo "$role_name : $role_desc"
+        done < <(sgpt --list-roles)
+      )
       ;;
+    *)
+      while IFS= read -r line; do
+        local possible_arg="${line%% : *}"
+        filter_prefix "$arg_prefix" "$possible_arg"
+      done <<< "$doc"
   esac
 
-  while IFS= read -r line; do
-    local possible_arg="${line%% : *}"
-    filter_prefix "$arg_prefix" "$possible_arg"
-  done <<< "$doc"
 
   # If Only one completion: clean it
   if (( 1 == ${#COMPREPLY[*]} )); then
@@ -90,7 +92,8 @@ __complete_sgpt(){
   elif (( 0 < ${#COMPREPLY[*]} )); then
     local line_dash=$(printf '%.0s-' $(seq 1 $(( COLUMNS/2 + 2 ))))
     local line_title="ShellGPT: a terminal REPL client for AI large language models (LLM) chats"
-    #COMPREPLY=("$line_title" "$line_dash" "${COMPREPLY[@]}" "$line_dash")
+    local line_url="Source: https://github.com/TheR1D/shell_gpt"
+    COMPREPLY=("$line_title" "$line_url" "$line_dash" "${COMPREPLY[@]}" "$line_dash")
   fi
 
   # Print solutions and comments
