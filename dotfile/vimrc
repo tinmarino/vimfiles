@@ -210,7 +210,9 @@ let g:table_mode_tableize_map = ',i'
 
 " Ack to use ag {{{2
 let g:ack_qhandler='rightbelow vert copen 80'
-let g:ackprg = 'ag --vimgrep --smart-case'
+if executable('rg')
+  let g:ackprg = 'rg --vimgrep'
+endif
 "cnoreabbrev ag Ack
 "cnoreabbrev aG Ack
 "cnoreabbrev Ag Ack
@@ -519,6 +521,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'} " Commander of completion
 
 Plug 'vim-scripts/DrawIt'
 Plug 'michaeljsmith/vim-indent-object'
+
+Plug 'mileszs/ack.vim'
 
 call plug#end()
 
