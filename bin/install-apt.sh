@@ -83,5 +83,5 @@ run(){
 
 
 for prog in "${android[@]}"; do
-  run sudo apt install --upgrade --yes "$prog"
+  run apt install --upgrade --yes "$prog"
 done
