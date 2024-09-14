@@ -75,8 +75,13 @@ linux-headers-generic
 # npm install -g diff-so-fancy
 
 # Print out
-echo -n "sudo apt install "
+run(){
+  printf %s "\nRunning: $*"
+  "$@"
+  return $?
+}
+
 
 for prog in "${android[@]}"; do
-  echo -n "$prog " ; done
-echo
+  run sudo apt install --upgrade --yes "$prog"
+done
