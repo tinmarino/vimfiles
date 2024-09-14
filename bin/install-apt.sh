@@ -23,7 +23,7 @@ ssh
 sshd
 )
 
-pg=(
+pg+=(
 # Operational
 gitk
 tmux
@@ -82,17 +82,6 @@ run(){
 }
 
 
-run apt update
-
-a_ok=()
-a_bad=()
 for prog in "${android[@]}"; do
-  if run apt install --upgrade --yes "$prog"; then
-    a_ok+=("$prog")
-  else
-    a_bad+=("$prog")
-  fi
+  run sudo apt install --upgrade --yes "$prog"
 done
-
-echo "Package installed: ${a_ok[*]}"
-echo "Package with error: ${a_ok[*]}"

@@ -75,6 +75,13 @@ parse_argument(){
 }
 endsnippet
 
+snippet run "print and run command in"
+run(){
+  printf %s "\nRunning: $*"
+  "$@"
+	return $?
+}
+endsnippet
 
 snippet is_in_array "Check # From: https://stackoverflow.com/a/8574392/2544873"
 is_in_array() {
