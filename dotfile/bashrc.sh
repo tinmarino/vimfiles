@@ -415,6 +415,8 @@
   PS1+='\[\e[32m\]\w '
   # Git Branch (yellow)
   PS1+='\[\e[33m\]`parse_git_branch`'
+  # Exit status (blue)
+  PS1+='\[\e[34m\][aa$?]'
   # End color
   PS1+='\[\e[0m\]'
   # New line
