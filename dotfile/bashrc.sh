@@ -122,6 +122,9 @@ export EDITOR='vim'
 # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+# Permit ** to expand
+shopt -s globstar
+
 # History
 # Append instead of overwrite
 export HISTSIZE=1000000
@@ -271,6 +274,19 @@ restart_ollama(){
   sudo systemctl start ollama.service
 }
 
+print_dic(){
+  local -n dict=$1
+  for key in "${!dict[@]}"; do echo "$key: ${dict[$key]}"; done
+}
+
+urldecode(){
+  # Tk Moises Castillo
+  python3 -c "import sys; from urllib.parse import unquote; print(unquote(sys.stdin.read()))"
+}
+
+urlencode(){
+  python3 -c "import sys; from urllib.parse import quote_plus; print(quote_plus(sys.stdin.read()))"
+}
 
 
 
@@ -500,3 +516,4 @@ alias feroxburster="~/Program/Feroxburster/feroxbuster --extract-links --user-ag
 
 try_source ~/.vim/bin/rc/complete_shellgpt.sh
 # vim: sw=2:ts=2:fdm=marker
+. "$HOME/.cargo/env"
