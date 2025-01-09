@@ -11,3 +11,4 @@ export HISTFILESIZE=2000000
 export HISTTIMEFORMAT='%Y-%m-%dT%H:%M:%S'
   
 shopt -s histappend
+. "$HOME/.cargo/env"

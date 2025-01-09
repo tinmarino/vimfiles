@@ -571,6 +571,8 @@ set tags=./tags,./TAGS,tags,TAGS,.tags
 function! Rc_add_path() abort
   let path = expand('%:p')
   if path ==# '' || path ==# '.' | return '' | endif
+  " Remove the home prefix
+  let path = substitute(expand('%:p'), "^" . $HOME, "~", '')
   return '    ' . path
 endfunction
 set laststatus=2        " always show statusline

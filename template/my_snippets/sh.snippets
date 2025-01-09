@@ -77,7 +77,7 @@ endsnippet
 
 snippet run "print and run command in"
 run(){
-  printf %s "\nRunning: $*"
+  >&2 printf '\n%s\n' "Running: $*"
   "$@"
 	return $?
 }
