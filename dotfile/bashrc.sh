@@ -213,7 +213,7 @@ command_not_found_handle() {
   # If starting with g : git
   if [[ -n "$1" ]] && [[ "${1:0:1}" == "g" ]]; then
     # shellcheck disable=SC2086
-    git "${1:1}" $2
+    echo git "${1:1}" $2
   # If some specific binary (debian)
   elif [[ -x /usr/lib/command-not-found ]]; then
     /usr/lib/command-not-found -- "$1"
@@ -517,3 +517,6 @@ alias feroxburster="~/Program/Feroxburster/feroxbuster --extract-links --user-ag
 try_source ~/.vim/bin/rc/complete_shellgpt.sh
 # vim: sw=2:ts=2:fdm=marker
 . "$HOME/.cargo/env"
+export PYTHONPATH=/home/mtourneboeuf/Software/Python/CountryStudy
+export PYTHONPATH+=:/home/mtourneboeuf/Software/Python/Recon
+export ELASTIC_API_KEY="amhqcGc1UUJLSG5PcXRjb19odW06b1FJSk5rd2hRREt4QnR6UkQwQ3Vzdw=="
