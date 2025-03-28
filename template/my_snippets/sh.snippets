@@ -75,8 +75,34 @@ parse_argument(){
 }
 endsnippet
 
+snippet color
+declare -g cfend=$'\e[39m'           # Normal foreground
+declare -g cend=$'\e[0m'             # Reset all
+declare -g cbold=$'\e[1m'            # Bold, can be added to colors
+declare -g cunderline=$'\e[4m'       # Underline, can be added to colors
+declare -g cred=$'\e[38;5;124m'      # Error
+declare -g cgreen=$'\e[38;5;34m'     # Ok
+declare -g cyellow=$'\e[1m\e[38;5;208m'   # Warning, Code
+declare -g cblue=$'\e[38;5;39m'      # Info, Bold
+declare -g cpurple=$'\e[38;5;135m'   # Titles
+endsnippet
+
+snippet script_path
+  declare -g script_path=$(readlink -f "${BASH_SOURCE[0]}")
+endsnippet
+
+snippet pinfo
+pinfo(){ >&2 echo -n "\e[1m\e[38;5;208mInfo: "; >&2 printf "%b\n" "${@}"; >&2 echo -n "\e[0m"; }
+endsnippet
+
+snippet perr
+perr(){ >&2 echo -n "\e[38;5;124mError: "; >&2 printf "%b\n" "${@}"; >&2 echo -n "\e[0m"; }
+endsnippet
+
+
 snippet run "print and run command in"
 run(){
+  : "Helper: Print and execute input arguments"
   >&2 printf '\n%s\n' "Running: $*"
   "$@"
 	return $?
