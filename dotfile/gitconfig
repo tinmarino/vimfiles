@@ -12,9 +12,9 @@
     cc = commit
     cp = cherry-pick
     d = diff --ignore-all-space  # Same as -w
-    f = pull --rebase
+    f = pull --rebase  # Fetch
     fa = fetch --all  # Like pull all to avoid fuzzy
-    h = push
+    h = push  # pusH
     k = checkout
     l = log --no-merges --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
     r = rebase
@@ -70,7 +70,7 @@
 
     # Util
     aa = add --all
-    au = add --u
+    au = add --update
     cm = commit -m
     ca = commit --amend
     cam = commit --amend -m
@@ -112,6 +112,8 @@
 
 [http]
 	sslVerify = false
+	version = HTTP/1.1
+	postBuffer = 157286400
 
 [init]
   defaultBranch = main

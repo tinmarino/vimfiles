@@ -15,6 +15,7 @@ donotgit/
 # Python
 .ropeproject
 jupyter.log
+__pycache__/
 
 # Ctag
 tags

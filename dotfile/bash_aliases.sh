@@ -42,7 +42,7 @@ alias bat="PAGER= bat"
   malias v vim
   malias s sgpt
   malias t translate
-
+  malias x "xsel --input --clipboard"
   alias fr="find . | rg "
 
   # Little longer
