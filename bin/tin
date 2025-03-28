@@ -11,5 +11,6 @@ register_subcommand doc "$bin_path/tin_doc"
 register_subcommand game "$bin_path/tin_game" 
 register_subcommand sync "$bin_path/tin_sync" 
 register_subcommand cheat "$bin_path/tin_cheat" 
+register_subcommand aws "$bin_path/tin_aws" 
 
 dispatch "$@"; exit $?;
