@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# 1/ AWS 🤹: Utility functions to manage my personal AWS
+# Ex: tin aws dashboard
+
+set -u
+[[ ! -v gi_source_lib_misc ]] && {
+  [[ ! -v gs_root_path ]] && { gs_root_path=$(readlink -f "${BASH_SOURCE[0]}"); gs_root_path=$(dirname "$gs_root_path"); gs_root_path=$(dirname "$gs_root_path"); }
+  # shellcheck disable=SC1091  # Not following
+  : "${gs_libdispatch_path:=}"  # Silence shellcheck
+  source "$gs_libdispatch_path"/script/lib_misc.sh
+}
+
+: "${g_dispatch_b_complete:=0}"  # Silence shellcheck
+
+
+dashboard(){
+  : 'EC2 Dashboard'
+
+  {
+    echo '| Name | IP | ID | State | Instance |'
+    echo '| ---  | --- | --- | --- | --- |'
+    #aws ec2 describe-instances | 
+    cat /home/mtourneboeuf/Test/Json/aws-instance.json |
+      jq -r '
+        .Reservations[].Instances[] |
+        {InstanceId: .InstanceId, State: .State.Name, InstanceType: .InstanceType, Name: (.Tags[] | select(.Key == "Name") | .Value), PublicIpAddress: .PublicIpAddress} |
+        "| \(.Name // "N/A") | \(.PublicIpAddress) | \(.InstanceId) | \(.State) | \(.InstanceType) |"'
+  } | awk -F '|' '
+    { 
+      # Trim leading and trailing spaces for each field
+      for (i=1; i<=NF; i++) {
+        gsub(/^[[:blank:]]+|[[:blank:]]+$/, "", $i);  # Remove leading and trailing spaces
+      }
+      
+
+      # Format print all fields in a line
+      printf "| %-15s | %-15s | %-20s | %-10s |\n", $2, $3, $4, $5
+    }
+  '
+      
+}
+
+start(){
+  aws ec2 start-instances --instance-ids "$1"
+}
+
+stop(){
+  aws ec2 stop-instances --instance-ids "$1"
+}
+
+sync_ctf(){
+  : 'Synchronize libreriaCTF to my personal AWS'
+  rsync -avz \
+    -e 'ssh -i /home/mtourneboeuf/Secret/aws-tin-key.pem -o StrictHostKeyChecking=no' \
+    /home/mtourneboeuf/Software/Pentest/libreriactf/ \
+    ubuntu@ctf.tinmarino.com:libreriactf/
+}
+
+connect(){
+  : 'SSH Connect with AWS credencials and ubuntu user'
+  ssh -i ~/Secret/aws-tin-key.pem -o StrictHostKeyChecking=no "ubuntu@$1"
+}
+
+__connect(){
+  echo ctf
+}
+
+if [[ -v BASH_SOURCE ]] && (( ${#BASH_SOURCE[@]} > 0 )) && [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  dispatch "$@"; exit $?;
+fi

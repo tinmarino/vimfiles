@@ -1,16 +1,30 @@
 #!/usr/bin/env bash
-# ${cblue}Tinmarino$cend command switch
-#
+# ♾️ Tinmarino dispatcher
 
-declare scriptdir=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")
-source "$scriptdir/shellutil.sh"
+export g_dispatch_project_name=TIN
 
-bin_path=$(bin_path)
-register_subcommand conv "$bin_path/tin_convert" 
-register_subcommand doc "$bin_path/tin_doc" 
-register_subcommand game "$bin_path/tin_game" 
-register_subcommand sync "$bin_path/tin_sync" 
-register_subcommand cheat "$bin_path/tin_cheat" 
-register_subcommand aws "$bin_path/tin_aws" 
+# Source lib
+: "${gs_root_path:=$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")}"
+source ~/Software/Bash/LibDispatch/script/lib_dispatch.sh
 
-dispatch "$@"; exit $?;
+
+declare -A g_dispatch_d_cmd=(
+  [aws]="$gs_root_path/tin_aws"
+  [doc]="$gs_root_path/tin_doc"
+  [game]="$gs_root_path/tin_game"
+  [sync]="$gs_root_path/tin_sync"
+)
+
+: "${g_dispatch_d_cmd[@]}"  # Silence shellcheck
+register_subcommand_from_gd_cmd
+
+
+__default(){
+  print_usage_main --help
+}
+
+
+# If executed and not sourced, print self doc
+if [[ -v BASH_SOURCE ]] && (( ${#BASH_SOURCE[@]} > 0 )) && [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  dispatch "$@"; exit $?;
+fi
