@@ -13,37 +13,28 @@ set -u
 : "${g_dispatch_b_complete:=0}"  # Silence shellcheck
 
 
-dashboard_ctf(){
-  bash ~/Software/Pentest/libreriactf/script/puc2025-dashboard.sh
-}
-
-dashboard_bp()(
-  source ~/Software/Pentest/libreriactf/script/common.sh
-  dashboard_bp
-)
-
-
 dashboard(){
   : 'EC2 Dashboard'
 
   {
     echo '| Name | IP | ID | State | Instance |'
     echo '| ---  | --- | --- | --- | --- |'
-    aws ec2 describe-instances | 
-    #cat /home/mtourneboeuf/Test/Json/aws-instance.json |
+    #aws ec2 describe-instances | 
+    cat /home/mtourneboeuf/Test/Json/aws-instance.json |
       jq -r '
         .Reservations[].Instances[] |
         {InstanceId: .InstanceId, State: .State.Name, InstanceType: .InstanceType, Name: (.Tags[] | select(.Key == "Name") | .Value), PublicIpAddress: .PublicIpAddress} |
         "| \(.Name // "N/A") | \(.PublicIpAddress) | \(.InstanceId) | \(.State) | \(.InstanceType) |"'
   } | awk -F '|' '
-    {
+    { 
       # Trim leading and trailing spaces for each field
       for (i=1; i<=NF; i++) {
         gsub(/^[[:blank:]]+|[[:blank:]]+$/, "", $i);  # Remove leading and trailing spaces
       }
+      
 
       # Format print all fields in a line
-      printf "| %-15s | %-15s | %-20s | %-7s | %-10s |\n", $2, $3, $4, $5, $6
+      printf "| %-15s | %-15s | %-20s | %-10s |\n", $2, $3, $4, $5
     }
   '
       
@@ -57,106 +48,21 @@ stop(){
   aws ec2 stop-instances --instance-ids "$1"
 }
 
-sync_ciberlab(){
-  : 'Synchronize libreriaCTF to Ciberlab volume'
-  run rsync -avz \
-    -e 'ssh -i /home/mtourneboeuf/Secret/aws-ciberlab-dreamlab.pem -o StrictHostKeyChecking=no' \
-    --exclude='.git/' \
-    ~/Software/Pentest/libreriactf/ \
-    ubuntu@crat.tinmarino.com:/data/libreriactf/
-}
-
 sync_ctf(){
   : 'Synchronize libreriaCTF to my personal AWS'
   rsync -avz \
     -e 'ssh -i /home/mtourneboeuf/Secret/aws-tin-key.pem -o StrictHostKeyChecking=no' \
-    ~/Software/Pentest/libreriactf/ \
+    /home/mtourneboeuf/Software/Pentest/libreriactf/ \
     ubuntu@ctf.tinmarino.com:libreriactf/
-}
-
-_test(){
-  run echo toto
-}
-
-sync_rat(){
-  : 'Synchronize libreriaCTF to my personal AWS'
-  run rsync -avz \
-    -e 'ssh -i /home/mtourneboeuf/Secret/aws-tin-key.pem -o StrictHostKeyChecking=no' \
-    ~/Software/Pentest/libreriactf/ \
-    ubuntu@rat.tinmarino.com:libreriactf/
-}
-
-sync_ctfd(){
-  : 'Synchronize CTFd to my personal AWS'
-  rsync -avz \
-    -e 'ssh -i /home/mtourneboeuf/Secret/aws-tin-key.pem -o StrictHostKeyChecking=no' \
-    ~/Program/CTFd/ \
-    ubuntu@ctf.tinmarino.com:CTFd/
 }
 
 connect(){
   : 'SSH Connect with AWS credencials and ubuntu user'
-  # Clause: Require host argument
-  if (( 1 > $# )); then
-    perr "Error: No host argument provided.\nUsage: connect <host>"
-    return 1
-  fi
-
-  host=$1
-  [[ ctf == "$host" ]] && host=ctf.tinmarino.com
-  [[ rat == "$host" ]] && host=rat.tinmarino.com
-  ssh -i ~/Secret/aws-tin-key.pem -o StrictHostKeyChecking=no "ubuntu@$host"
+  ssh -i ~/Secret/aws-tin-key.pem -o StrictHostKeyChecking=no "ubuntu@$1"
 }
 
-price(){
-  local -a a_table=(
-    # Name          CPU  RAM (GB)  Dollar per hour   Comment
-    't3a.nano       2	   0.5		   0.0047            Rat'
-    't3a.micro      2    1         0.0094            Nice'
-    't3a.small      2    2         0.0188            Still OK'
-    't3a.medium     2	   4	       0.0376            Think twice'
-    't3a.large      4	   8	       0.0752            Install CTFd'
-    't3a.xlarge     8	  16	       0.3008            Just reference'
-    'c6a.xlarge     4    8         0.153             Shut me down'
-    'c6a.2xlarge    8   16         0.306             Shut me today'
-    'c6a.4xlarge   16   32         0.612             Dont even use'
-  )
-
-  local s="\e[34m|\e[0m"   # Separator blue
-  local t="|"              # Place holder
-  local u="\e[34m|\e[33m"  # Separator blue
-  local h="\e[35m"         # High light purple
-  local e="\e[0m"          # End
-  fmt="$u %-20s "
-  sep="\e[34m| %-20s "
-  dec="$s $h%-20s$e "
-  #  inst   cpu    ram     hour   day   month  year  cmt
-  fmt+="$u %-3s $u %-3s $u %-6s $u %-6s $u %-6s $u %-7s $u %s $u\n"
-  sep+="$t %-3s $t %-3s $t %-6s $t %-6s $t %-6s $t %-7s $t %s $t\e[0m\n"
-  dec+="$s %-3s $s %-3s $s %.4f $s %6.3f $s %6.2f $s %7.2f $s %s $s\n"
-  printf "$fmt" Instance CPU RAM Hour Day Month Year Cmt
-  printf "$sep" ---      --- --- ---  --- ---   ---  ---
-  # Iterate over the array
-  for line in "${a_table[@]}"; do
-      # Read the values from the array
-      read -r instance cpu ram price_per_hour comment <<< "$line"
-  
-      # Calculate price per day, month, and year
-      price_per_day=$(echo "$price_per_hour * 24" | bc)
-      price_per_month=$(echo "$price_per_hour * 24 * 30" | bc)  # Assuming 30 days in a month
-      price_per_year=$(echo "$price_per_hour * 24 * 365" | bc) # Assuming 365 days in a year
-  
-      # Output the results
-      printf "$dec" "$instance" "$cpu" "$ram" "$price_per_hour" "$price_per_day" "$price_per_month" "$price_per_year" "$comment"
-  done
-
-  url=https://aws.amazon.com/ec2/pricing/on-demand
-  echo
-  echo -e "See more at: \e[34m$url\e[0m"
-}
-
-__complete_connect(){
-  printf '%s\n' ctf rat
+__connect(){
+  echo ctf
 }
 
 if [[ -v BASH_SOURCE ]] && (( ${#BASH_SOURCE[@]} > 0 )) && [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
