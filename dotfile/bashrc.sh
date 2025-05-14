@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# vim: sw=2:ts=2:fdm=marker
 # BashRc by Tinmarino
 
 # shellcheck disable=SC1091  # Not following
@@ -151,34 +152,6 @@ trim_space(){
   printf '%s\n' "$s"
 }
 export -f trim_space
-is_alma(){
-  [[ tourny == "$HOSTNAME" ]] && return 1
-  ### Check if current computer is an Alma STE
-  local fp_sitename=/alma/ste/etc/sitename
-  [[ -f "$fp_sitename" ]] || return 1
-  export SITENAME=$(<"$fp_sitename")
-  case $SITENAME in
-    ACSE*) return 0 ;;
-    APE*) return 0 ;;
-    TFINT) return 0 ;;
-    *) return 1 ;;
-  esac
-}
-is_alma;
-# shellcheck disable=SC2181  # Check exit code directly
-(( B_IS_ALMA = ! $? )); export B_IS_ALMA
-
-alma_connect(){
-  tmux rename-window "$1";
-  pipe_pane_cmd="exec cat - | \$HOME/.vim/bin/tmux-pipe #{pane_tty} >> \$HOME/tmux.log "
-  ssh "$2" -tt "
-    source ~/.bashrc;
-    ~/.local/bin/tmux new-session -A -s tin \; \
-      pipe-pane -o \"$pipe_pane_cmd\" \; \
-      set-hook after-split-window 'pipe-pane \"$pipe_pane_cmd\"' \; \
-      set-hook after-new-window 'pipe-pane \"$pipe_pane_cmd\"' \; \
-  "
-}
 
 print_stack() {
    STACK=""
@@ -410,39 +383,10 @@ bind -x '"\eh":fzf_dir .'
 bind -x '"\el":fzf_line .'
 
 
-# Alma {{{1
+# Completion {{{1
 # Set completion
-export ALMASW=~/AlmaSw
 complete -o nosort -C tin tin
-complete -o nosort -C ./dispatch ./dispatch
 complete -o nosort -C dispatch dispatch
-complete -C remove_plugin remove_plugin
-if (( 1 == B_IS_ALMA )); then
-  PATH=/alma/ste/bin:$PATH
-  PATH=/usr/X11R6/bin:$PATH
-  PATH=/usr/X11R6/bin:$PATH
-  #grep(){
-  #  ### Shadow the /alma/ste/etc/almaEnv slow Hi
-  #  ### Catch grep --color=auto -q i, to make believe I am not interactive
-  #  if (( $# == 3 )) && [[ "$2" == "-q" ]] && [[ "$3" == "i" ]]; then
-  #    return 1
-  #  fi
-  #  command grep "$@"; return $?
-  #}
-  try_source /etc/bashrc
-  try_source /alma/ste/etc/defaultEnv
-  unset -f grep
-else
-  # TODO temporary, this is because I am loosing my history
-  # Backup history
-  # Pyenv
-  if command -v pyenv 1>/dev/null 2>&1; then
-   eval "$(pyenv init -)"
-  fi
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
-fi
-
 
 # PS1 And PROMPT_COMMAND {{{1
 # PS1, set in bashrc because debian update it in /etc/bashrc
@@ -473,26 +417,12 @@ PS1+='printf "\[\e[34m\]"; printf " [$STATUS]"; '
 PS1+='printf "\[\e[0m\]"; '
 # New line
 PS1+='printf "\n$ "; )'
-if (( 1 == B_IS_ALMA )); then
-  # sitename is defined if is_alma
-  case "$SITENAME" in
-    APE-HIL)
-          prefix="\[\033[33m\]${SITENAME}:\[\033[0m\] " ;;  # Orange if APE-HIL
-    AP*)  prefix="\[\033[31m\]${SITENAME}:\[\033[0m\] " ;;  # Red if APE
-    *)    prefix="\[\033[32m\]${SITENAME}:\[\033[0m\] " ;;  # Green otherwise
-  esac
-  PS1="${prefix}${PS1#"$prefix"}"
-  unset prefix
-fi
-
 
 # Fast {{{1
 # Add "substitute" mnemonic, which the info file left out.
 export PATH="$HOME/Program/GitFuzzy/bin:$PATH"
 PATH+=":$HOME/Program/Casa/casa-6.2.1-7-pipeline-2021.2.0.128/bin"
 
-
-export CVSROOT=:pserver:almasci@cvs01.osf.alma.cl:2401/project21/CVS
 
 PATH="$HOME/perl5/bin${PATH:+:${PATH}}"; export PATH;
 PERL5LIB="$HOME/perl5/lib/perl5${PERL5LIB:+:${PERL5LIB}}"; export PERL5LIB;
@@ -518,8 +448,6 @@ alias feroxburster="~/Program/Feroxburster/feroxbuster --extract-links --user-ag
 
 try_source ~/.vim/bin/rc/complete_shellgpt.sh
 try_source ~/Secret/env.sh
-# vim: sw=2:ts=2:fdm=marker
-try_source "$HOME/.cargo/env"
 export PYTHONPATH=/home/mtourneboeuf/Software/Python/CountryStudy
 export PYTHONPATH+=:/home/mtourneboeuf/Software/Python/Recon
 export ELASTIC_API_KEY="amhqcGc1UUJLSG5PcXRjb19odW06b1FJSk5rd2hRREt4QnR6UkQwQ3Vzdw=="
