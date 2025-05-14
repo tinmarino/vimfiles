@@ -9,9 +9,9 @@ set -u
 }
 
 if ! (return 0 2>/dev/null); then
-  >&2 echo "--> \$0 starting with $*."
+  >&2 echo "--> \$0 starting with $*!"
   `!v substitute(expand('%:t:r'), '-', '_', 'g')`_main "$@"; res=\$?
-  >&2 echo "<-- \$0 returned with \$res."
+  >&2 echo "<-- \$0 returned with \$res!"
 	exit "$res"
 fi
 endsnippet
@@ -167,6 +167,9 @@ snippet arr "Expand array"
 "\${${1:a_arr}[@]}"
 endsnippet
 
+snippet dic "Expand dic"
+"\${!${1:d_dic}[@]}"
+endsnippet
 
 snippet test "Test version"
 version1.0

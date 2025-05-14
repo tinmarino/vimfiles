@@ -136,13 +136,10 @@ snippet vs "Vertical space for slides"
 endsnippet
 
 snippet col "Column and columns for Markdown Pandoc"
-<!-- Column 1 -->
 ::: columns
 :::: {.column width=50%}
 
 ::::
-
-<!-- Column 2 -->
 :::: {.column width=50%}
 
 ::::
@@ -169,10 +166,26 @@ snippet snippet "Embed code from other file"
 endsnippet
 
 snippet img "Add a full screen image from chatGpt"
-![\\ ](res/img/$1){width=80%}
+![](res/$1){height=70%}
 endsnippet
 
 snippet off "Turn miniframe off"
+\`\`\`{=latex}
+\end{frame}
+\miniframesoff
+\begin{frame}<0| handout:0>
+\`\`\`
+endsnippet
+
+snippet on "Turn miniframe on"
+\`\`\`{=latex}
+\end{frame}
+\miniframeson
+\begin{frame}<0| handout:0>
+\`\`\`
+endsnippet
+
+snippet off2 "Turn miniframe off"
 \`\`\`{=latex}
 \book{\begin{frame}}
 \end{frame}
@@ -181,7 +194,7 @@ snippet off "Turn miniframe off"
 \`\`\`
 endsnippet
 
-snippet on "Turn miniframe on"
+snippet on2 "Turn miniframe on"
 \`\`\`{=latex}
 \book{\begin{frame}}
 \end{frame}
@@ -265,4 +278,30 @@ wlan=wlan0;
 ip link set "$wlan" down;
 iw dev "$wlan" set monitor none;
 ip link set "$wlan" up;
+endsnippet
+
+snippet session "Session for PUC"
+#### Sesión $1
+\framesubtitle{(Módulo $2)}
+
+![](res/ai/${3:single-levi-ratatack.jpg}){height=60%}
+
+endsnippet
+
+snippet toc
+
+| S | Nombre        | Descripción |
+| - | ---           | --- |
+| 1 | | |
+| 2 | | |
+| 3 | | |
+| 4 | | |
+
+endsnippet
+
+snippet module "Module for PUC"
+#### Módulo $2
+
+![](res/ai/${2:single-levi-ratatack.jpg}){height=70%}
+
 endsnippet

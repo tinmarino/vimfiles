@@ -54,6 +54,8 @@ alias bat="PAGER= bat"
   malias ssh 'TMUX= TERM=xterm-256color ssh'
   malias rp realpath
   
+  # Tin
+  malias ta tin aws
 
   # Languages
   malias fd fdfind

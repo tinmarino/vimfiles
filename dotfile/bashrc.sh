@@ -108,7 +108,7 @@ export OS=$os
 if [[ ! "$USER" == "jim" ]]; then
   export PAGER="vman"
 fi
-export TEXMFHOME="$HOME/Program/Tlmgr"
+#export TEXMFHOME="$HOME/Program/Tlmgr"
 
 
 # Variables Bash {{{1
@@ -393,6 +393,10 @@ PATH+=:"$HOME/Program/Dragons/recipe_system/scripts"
 PATH+=:"$HOME/Program/idafree-8.3"
 PATH+=:"$HOME/go/bin"
 PATH+=:"$HOME/Dreamlab/Pentest"
+PATH+=:"/usr/local/texlive/2025/bin/x86_64-linux"
+
+MANPATH+=/usr/local/texlive/2025/texmf-dist/doc/man
+INFOPATH+=/usr/local/texlive/2025/texmf-dist/doc/info
 
 
 # Bind {{{1
@@ -409,15 +413,13 @@ bind -x '"\el":fzf_line .'
 # Alma {{{1
 # Set completion
 export ALMASW=~/AlmaSw
-#complete -o nosort -C tin tin
-#complete -o nosort -C jim jim
-complete -o nosort -C irm irm
-complete -o nosort -C art ./art
+complete -o nosort -C tin tin
 complete -o nosort -C ./dispatch ./dispatch
 complete -o nosort -C dispatch dispatch
 complete -C remove_plugin remove_plugin
 if (( 1 == B_IS_ALMA )); then
   PATH=/alma/ste/bin:$PATH
+  PATH=/usr/X11R6/bin:$PATH
   PATH=/usr/X11R6/bin:$PATH
   #grep(){
   #  ### Shadow the /alma/ste/etc/almaEnv slow Hi
@@ -515,8 +517,10 @@ alias feroxburster="~/Program/Feroxburster/feroxbuster --extract-links --user-ag
 
 
 try_source ~/.vim/bin/rc/complete_shellgpt.sh
+try_source ~/Secret/env.sh
 # vim: sw=2:ts=2:fdm=marker
-. "$HOME/.cargo/env"
+try_source "$HOME/.cargo/env"
 export PYTHONPATH=/home/mtourneboeuf/Software/Python/CountryStudy
 export PYTHONPATH+=:/home/mtourneboeuf/Software/Python/Recon
 export ELASTIC_API_KEY="amhqcGc1UUJLSG5PcXRjb19odW06b1FJSk5rd2hRREt4QnR6UkQwQ3Vzdw=="
+alias apktool='java -jar ~/Iso/Jar/apktool_2.11.1.jar'

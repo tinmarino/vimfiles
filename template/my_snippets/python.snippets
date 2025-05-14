@@ -17,11 +17,23 @@ if __name__ == '__main__':
     `!v expand('%:t:r')`()
 endsnippet
 
-snippet parse "Parse argument in"
-from argparse import ArgumentParser
-parser = ArgumentParser(description="Example script to parse arguments")
+snippet parser "Parse argument in"
+from argparse import ArgumentParser, RawTextHelpFormatter
+
+parser = ArgumentParser(description=__doc__, formatter_class=RawTextHelpFormatter)
+
+# Positional
 parser.add_argument('positional', type=str, help='A positional argument')
+
+# Flag
+parser.add_argument('--test', action='store_true', help='Run non regression test')
+
+# String 1
 parser.add_argument('-o', '--optional', type=str, default='default_value', help='An optional argument')
+
+# Create rut
+parser.add_argument('--generate-rut', nargs=2, help='Generate Rutn from <rut1: int> to <rut2: int>')
+
 args = parser.parse_args()
 endsnippet
 

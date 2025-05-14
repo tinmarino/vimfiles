@@ -13,14 +13,24 @@ set -u
 : "${g_dispatch_b_complete:=0}"  # Silence shellcheck
 
 
+dashboard_ctf(){
+  bash ~/Software/Pentest/libreriactf/script/puc2025-dashboard.sh
+}
+
+dashboard_bp()(
+  source ~/Software/Pentest/libreriactf/script/common.sh
+  dashboard_bp
+)
+
+
 dashboard(){
   : 'EC2 Dashboard'
 
   {
     echo '| Name | IP | ID | State | Instance |'
     echo '| ---  | --- | --- | --- | --- |'
-    #aws ec2 describe-instances | 
-    cat /home/mtourneboeuf/Test/Json/aws-instance.json |
+    aws ec2 describe-instances | 
+    #cat /home/mtourneboeuf/Test/Json/aws-instance.json |
       jq -r '
         .Reservations[].Instances[] |
         {InstanceId: .InstanceId, State: .State.Name, InstanceType: .InstanceType, Name: (.Tags[] | select(.Key == "Name") | .Value), PublicIpAddress: .PublicIpAddress} |
@@ -34,7 +44,7 @@ dashboard(){
       
 
       # Format print all fields in a line
-      printf "| %-15s | %-15s | %-20s | %-10s |\n", $2, $3, $4, $5
+      printf "| %-15s | %-15s | %-20s | %-7s | %-10s |\n", $2, $3, $4, $5, $6
     }
   '
       
@@ -48,21 +58,89 @@ stop(){
   aws ec2 stop-instances --instance-ids "$1"
 }
 
+sync_ciberlab(){
+  : 'Synchronize libreriaCTF to Ciberlab volume'
+  run rsync -avz \
+    -e 'ssh -i /home/mtourneboeuf/Secret/aws-ciberlab-dreamlab.pem -o StrictHostKeyChecking=no' \
+    --exclude='.git/' \
+    ~/Software/Pentest/libreriactf/ \
+    ubuntu@crat.tinmarino.com:/data/libreriactf/
+}
+
 sync_ctf(){
   : 'Synchronize libreriaCTF to my personal AWS'
   rsync -avz \
     -e 'ssh -i /home/mtourneboeuf/Secret/aws-tin-key.pem -o StrictHostKeyChecking=no' \
-    /home/mtourneboeuf/Software/Pentest/libreriactf/ \
+    ~/Software/Pentest/libreriactf/ \
     ubuntu@ctf.tinmarino.com:libreriactf/
+}
+
+_test(){
+  run echo toto
+}
+
+sync_rat(){
+  : 'Synchronize libreriaCTF to my personal AWS'
+  run rsync -avz \
+    -e 'ssh -i /home/mtourneboeuf/Secret/aws-tin-key.pem -o StrictHostKeyChecking=no' \
+    ~/Software/Pentest/libreriactf/ \
+    ubuntu@rat.tinmarino.com:libreriactf/
+}
+
+sync_ctfd(){
+  : 'Synchronize CTFd to my personal AWS'
+  rsync -avz \
+    -e 'ssh -i /home/mtourneboeuf/Secret/aws-tin-key.pem -o StrictHostKeyChecking=no' \
+    ~/Program/CTFd/ \
+    ubuntu@ctf.tinmarino.com:CTFd/
 }
 
 connect(){
   : 'SSH Connect with AWS credencials and ubuntu user'
-  ssh -i ~/Secret/aws-tin-key.pem -o StrictHostKeyChecking=no "ubuntu@$1"
+  # Clause: Require host argument
+  if (( 1 > $# )); then
+    perr "Error: No host argument provided.\nUsage: connect <host>"
+    return 1
+  fi
+
+  host=$1
+  [[ ctf == "$host" ]] && host=ctf.tinmarino.com
+  [[ rat == "$host" ]] && host=rat.tinmarino.com
+  ssh -i ~/Secret/aws-tin-key.pem -o StrictHostKeyChecking=no "ubuntu@$host"
 }
 
-__connect(){
-  echo ctf
+price(){
+  local -a a_table=(
+    # Name          CPU  RAM (GB)  Dollar per hour   Comment
+    't3a.nano       2	   0.5		   0.0047            Rat'
+    't3a.micro      2    1         0.0094            Nice'
+    't3a.small      2    2         0.0188            Still OK'
+    't3a.medium     2	   4	       0.0376            Think twice'
+    'c6a.xlarge     4    8         0.1530            Shut me down'
+  )
+
+  #       inst   cpu    ram     hour   day     month  year  cmt
+  fmt="| %-20s | %-3s | %-3s | %-6s | %-5s | %-6s | %-7s | %s |\n"
+  dec="| %-20s | %-3s | %-3s | %.4f | %.3f | %6.2f | %7.2f | %s |\n"
+  printf "$fmt" Instance CPU RAM Hour Day Month Year Cmt
+  printf "$fmt" ---      --- --- ---  --- ---   ---  ---
+  # Iterate over the array
+  for line in "${a_table[@]}"; do
+      # Read the values from the array
+      read -r instance cpu ram price_per_hour comment <<< "$line"
+  
+      # Calculate price per day, month, and year
+      price_per_day=$(echo "$price_per_hour * 24" | bc)
+      price_per_month=$(echo "$price_per_hour * 24 * 30" | bc)  # Assuming 30 days in a month
+      price_per_year=$(echo "$price_per_hour * 24 * 365" | bc) # Assuming 365 days in a year
+  
+      # Output the results
+      printf "$dec" "$instance" "$cpu" "$ram" "$price_per_hour" "$price_per_day" "$price_per_month" "$price_per_year" "$comment"
+  done
+}
+
+__complete_connect(){
+  printf '%s\n' ctf rat
 }
 
 if [[ -v BASH_SOURCE ]] && (( ${#BASH_SOURCE[@]} > 0 )) && [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
