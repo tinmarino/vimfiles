@@ -563,7 +563,7 @@ else
 endif
 " Mouse Integration
 set ttyfast
-set ttymouse=xterm2  " Commented out as it made mouse click move cursor, uncommented back on dreamlab
+" set ttymouse=xterm2  " Commented out as it made mouse click move cursor, uncommented back on dreamlab commented back on 9.1
 " at the middle
 " Details {{{2
 set tags=./tags,./TAGS,tags,TAGS,.tags
