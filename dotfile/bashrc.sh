@@ -47,7 +47,8 @@ try_source(){ [[ -f "$1" ]] && source "$1"; }
 # clear
 # Nowrap
 printf '\e[?7l'
-cat << 'EOF'
+# Echo is 0ms whereas cat is 4ms
+echo '
                            \  |  /
                             \_|_/
                 /|\     ____/   \____
@@ -64,7 +65,7 @@ cat << 'EOF'
       | / \__+___/
       |/     |/
 
-EOF
+'
 # Reset wrap
 printf '\e[?7h'
 
@@ -136,7 +137,7 @@ shopt -s histappend
 #export HISTCONTROL=ignoredups
 
 # Function {{{1
-is_in_array(){
+is_in_array(){  # {{{2
   ### Check if arg1 <string> is in rest of args
   ### Ref: https://stackoverflow.com/a/8574392/2544873
   local element match="$1"; shift
@@ -144,7 +145,8 @@ is_in_array(){
   return 1
 }
 export -f is_in_array
-trim_space(){
+
+trim_space(){  # {{{2
   ### Usage: echo "   example   string    " | trim_space
   ### From: https://github.com/dylanaraps/pure-bash-bible
   local s=${1:-$(</dev/stdin)}
@@ -154,7 +156,7 @@ trim_space(){
 }
 export -f trim_space
 
-print_stack() {
+print_stack() {  # {{{2
    STACK=""
    local i message="${1:-""}"
    local stack_size=${#FUNCNAME[@]}
@@ -173,7 +175,7 @@ print_stack() {
 }
 export -f print_stack
 
-print_args(){
+print_args(){  # {{{2
   ### Print argument received with their positional number, for teaching purposes'
   local i_cnt=1
   for s_arg in "$@"; do
@@ -182,7 +184,7 @@ print_args(){
 }
 export -f print_args
 
-command_not_found_handle() {
+command_not_found_handle() {  # {{{2
   # Command not found handle Callback for Unknown command
   # If starting with g : git
   if (($# > 0)) && [[ "${1:0:1}" == "g" ]]; then
@@ -206,7 +208,7 @@ command_not_found_handle() {
 }
 export -f command_not_found_handle
 
-urlencode(){
+urlencode(){  # {{{2
   # Usage: urlencode "string"
   # From: https://github.com/dylanaraps/pure-bash-bible#percent-encode-a-string
   local LC_ALL=C
@@ -225,13 +227,13 @@ urlencode(){
   printf '\n'
 }
 
-urldecode(){
+urldecode(){  # {{{2
   # Usage: urldecode "string"
   : "${1//+/ }"
   printf '%b\n' "${_//%/\\x}"
 }
 
-unhexify(){
+unhexify(){  # {{{2
   : 'Convert hex string (arg1) to binary stream (stdout): see README'
   escaped='' rest="$(IFS=; echo "$*")"
   while [ -n "$rest" ]; do
@@ -242,23 +244,23 @@ unhexify(){
   printf "$escaped"
 }
 
-restart_ollama(){
+restart_ollama(){  # {{{2
   sudo systemctl stop ollama.service
   sudo rmmod -f nvidia_uvm && sudo modprobe nvidia_uvm  # Restart driver
   sudo systemctl start ollama.service
 }
 
-print_dic(){
+print_dic(){  # {{{2
   local -n dict=$1
   for key in "${!dict[@]}"; do echo "$key: ${dict[$key]}"; done
 }
 
-urldecode(){
+urldecode(){  # {{{2
   # Tk Moises Castillo
   python3 -c "import sys; from urllib.parse import unquote; print(unquote(sys.stdin.read()))"
 }
 
-urlencode(){
+urlencode(){  # {{{2
   python3 -c "import sys; from urllib.parse import quote_plus; print(quote_plus(sys.stdin.read()))"
 }
 
@@ -345,14 +347,9 @@ command -v _get_comp_words_by_ref &> /dev/null && try_source "$v"/scripts/comple
 # Alacrity Completion
 #try_source "$v/scripts/completion/alacritty"
 
-_pip_completion(){
-  mapfile -t COMPREPLY < <( \
-    COMP_WORDS="${COMP_WORDS[*]}" \
-    COMP_CWORD=$COMP_CWORD \
-    PIP_AUTO_COMPLETE=1 $1 2>/dev/null )
-}
-complete -o default -F _pip_completion pip
-
+#try_source ~/.ghcup/env
+#try_source ~/.vim/bin/rc/complete_shellgpt.sh
+#try_source ~/Secret/env.sh
 
 # Path {{{1
 # My script
@@ -433,23 +430,13 @@ PERL_LOCAL_LIB_ROOT="$HOME/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"
 #PERL_MB_OPT='--install_base "$HOME/perl5"'; export PERL_MB_OPT;
 PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
 
-[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
-
-
-export PATH+=:$HOME/Program/Eso/install/bin
 
 # Fast Mano
-s_cli_list="help print_database add_employee remove_employee get_employee list_employees add_job remove_job get_job list_jobs add_department remove_department get_department list_departments last_employee last_job last_department debug_print_employee" 
-
-complete -W "$s_cli_list" wine
-complete -W "$s_cli_list" cli
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 alias feroxburster="~/Program/Feroxburster/feroxbuster --extract-links --user-agent CyScope Tinmarino, Dreamlab Martin Tourneboeuf"
 
 
-#try_source ~/.vim/bin/rc/complete_shellgpt.sh
-#try_source ~/Secret/env.sh
 export PYTHONPATH=/home/mtourneboeuf/Software/Python/CountryStudy
 export PYTHONPATH+=:/home/mtourneboeuf/Software/Python/Recon
 export ELASTIC_API_KEY="amhqcGc1UUJLSG5PcXRjb19odW06b1FJSk5rd2hRREt4QnR6UkQwQ3Vzdw=="
