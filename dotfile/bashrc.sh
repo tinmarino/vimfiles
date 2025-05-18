@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # vim: sw=2:ts=2:fdm=marker
-# BashRc by Tinmarino
+# BashRc
+# Author: Tinmarino
 
 # shellcheck disable=SC1091  # Not following
 
