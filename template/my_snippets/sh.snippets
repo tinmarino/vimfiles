@@ -17,6 +17,11 @@ fi
 endsnippet
 
 
+snippet sc "shellcheck ignore"
+# shellcheck disable=
+endsnippet
+
+
 snippet name
 if [[ "\${BASH_SOURCE[0]}" == "\${0}" ]]; then
   `!v expand('%:t:r')` "$@"

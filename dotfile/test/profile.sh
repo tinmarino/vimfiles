@@ -1,3 +1,11 @@
+#!/bin/bash
+
+exec 3>&2 2> >( tee /tmp/sample.log |
+                  sed -u 's/^.*$/now/' |
+                  date -f - +%s.%N >/tmp/sample.tim)
+set -x
+
+
 #!/usr/bin/env bash
 # vim: sw=2:ts=2:fdm=marker
 # BashRc by Tinmarino
@@ -37,12 +45,11 @@ if command -v tmux &> /dev/null \
 fi
 
 
-# Declare Internal util function try_source {{{1
+# Internal util {{{1
 try_source(){ [[ -f "$1" ]] && source "$1"; }
 
 # Appearance and Header {{{1
 # I wanted to be an artists
-# 
 # clear
 # Nowrap
 printf '\e[?7l'
@@ -107,6 +114,9 @@ export V=$v
 export OS=$os
 
 # Man
+if [[ ! "$USER" == "jim" ]]; then
+  export PAGER="vman"
+fi
 #export TEXMFHOME="$HOME/Program/Tlmgr"
 
 
@@ -116,8 +126,6 @@ export OS=$os
 # Avoid c-s freezing
 stty -ixon
 
-# Vim as PAGER
-export PAGER="vman"
 # Vi as default `git commit`
 export EDITOR='vim'
 # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
@@ -184,7 +192,7 @@ export -f print_args
 command_not_found_handle() {
   # Command not found handle Callback for Unknown command
   # If starting with g : git
-  if (($# > 0)) && [[ "${1:0:1}" == "g" ]]; then
+  if [[ -n "$1" ]] && [[ "${1:0:1}" == "g" ]]; then
     # shellcheck disable=SC2086
     echo git "${1:1}" $2
   # If some specific binary (debian)
@@ -263,8 +271,8 @@ urlencode(){
 
 
 
-# Fzf_functions {{{1
-# _vim_escaped2='let out = map(fzf#vim#_recent_files(), \"substitute(v:val, \\\"\\\\\\\\~\\\", \\\"'$HOME'\\\", \\\"\\\")\")'
+# Fzf functions {{{1
+#_vim_escaped2='let out = map(fzf#vim#_recent_files(), \"substitute(v:val, \\\"\\\\\\\\~\\\", \\\"'$HOME'\\\", \\\"\\\")\")'
 _vim_escaped2='let out = fzf#vim#_recent_files()'
 _fzf_cmds="bash -c \"
   # Vim recents files
@@ -318,12 +326,11 @@ export FZF_CTRL_R_OPTS="--sort --exact --preview 'echo {}' --preview-window down
 ############
 # Completion
 #   maybe source "$HOME/.local/usr/share/bash-completion/bash_completion"
-# Required for function malias to wotk
-try_source /etc/bash_completion
+[[ -f "/etc/bash_completion" ]] && source "/etc/bash_completion"
 
 # Alias
-try_source ~/.bash_aliases.sh
-
+try_source "$HOME/.bash_aliases.sh"
+#
 ## Fzf bindings
 ## Warning on termux, comment $HOME/Program/Fzf/shell/completion.bash
 #try_source "$HOME/.vim/bin/fzf_bash_completion"
@@ -339,7 +346,7 @@ try_source ~/.bash_aliases.sh
 #try_source "$v/scripts/bash-completion/bash_completion"
 
 # Tmux completion
-command -v _get_comp_words_by_ref &> /dev/null && try_source "$v"/scripts/completion/tmux.completion.sh
+command -v _get_comp_words_by_ref &> /dev/null && try_source "$v"/scripts/completion/tmux
 # Alacrity Completion
 #try_source "$v/scripts/completion/alacritty"
 
@@ -439,11 +446,12 @@ export PATH+=:$HOME/Program/Eso/install/bin
 # Fast Mano
 s_cli_list="help print_database add_employee remove_employee get_employee list_employees add_job remove_job get_job list_jobs add_department remove_department get_department list_departments last_employee last_job last_department debug_print_employee" 
 
+alias cli="wine bin/labhr_database_cli.exe"
 complete -W "$s_cli_list" wine
 complete -W "$s_cli_list" cli
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-alias feroxburster="~/Program/Feroxburster/feroxbuster --extract-links --user-agent CyScope Tinmarino, Dreamlab Martin Tourneboeuf"
+alias feroxburster="~/Program/Feroxburster/feroxbuster --extract-links --user-agent Dreamlab-Martin-Tourneboeuf"
 
 
 #try_source ~/.vim/bin/rc/complete_shellgpt.sh
@@ -452,3 +460,6 @@ export PYTHONPATH=/home/mtourneboeuf/Software/Python/CountryStudy
 export PYTHONPATH+=:/home/mtourneboeuf/Software/Python/Recon
 export ELASTIC_API_KEY="amhqcGc1UUJLSG5PcXRjb19odW06b1FJSk5rd2hRREt4QnR6UkQwQ3Vzdw=="
 alias apktool='java -jar ~/Iso/Jar/apktool_2.11.1.jar'
+
+set +x
+exec 2>&3 3>&-
