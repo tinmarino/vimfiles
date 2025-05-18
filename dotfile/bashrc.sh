@@ -319,6 +319,7 @@ export FZF_CTRL_R_OPTS="--sort --exact --preview 'echo {}' --preview-window down
 # Completion
 #   maybe source "$HOME/.local/usr/share/bash-completion/bash_completion"
 # Required for function malias to wotk
+# Just a redir: . /usr/share/bash-completion/bash_completion
 try_source /etc/bash_completion
 
 # Alias

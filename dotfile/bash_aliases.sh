@@ -22,6 +22,7 @@ mcomplete_cmd(){
   # Return function
   echo "$fct"
 }
+export -f mcomplete_cmd
 
 malias(){
   # shellcheck disable=SC2139  # This expands when defined => OK
@@ -30,21 +31,22 @@ malias(){
   fct="$(mcomplete_cmd "$2")"
   [ -n "$fct" ] && complete -F "$fct" "$1" > /dev/null 2>&1
 }
-
+export -f malias
 
 
 # Shortcut {{{1
 # With completion {{{2
-malias f find
-malias g git
-malias m man
-malias o xdg-open
-malias v vim
-malias s sgpt
+alias g=git  # Time: 15 ms for malias g git
+complete -o bashdefault -o default -o nospace -F __git_wrap__git_main g
+malias m man  # Time: 3 ms
 
 # Small as Huffman {{{2
+alias f=find
 alias h="history | rg "
+alias o=xdg-open
 alias t=translate
+alias v=vim
+alias s=sgpt
 alias x="xsel --input --clipboard"
 alias fr="find . | rg "
 
