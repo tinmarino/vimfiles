@@ -171,3 +171,4 @@ alias tks='tmux kill-session -t'
 
 
 # Fast
+# lctf="python3 ~/Software/Pentest/libreriactf/lctf.py"
