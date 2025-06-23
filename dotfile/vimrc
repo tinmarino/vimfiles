@@ -5,7 +5,7 @@ filetype plugin indent on | syntax on
 set encoding=utf-8
 scriptencoding uft-8
 set mouse=a " Enable mouse use in all modes
-set pythonthreedll=/usr/lib/python3.10/config-3.10-x86_64-linux-gnu/libpython3.10.so
+set pythonthreedll=/usr/lib/python3.12/config-3.12-x86_64-linux-gnu/libpython3.12.so
 
 
 " Variable (Perso) {{{1
@@ -286,6 +286,8 @@ let g:ale_virtualtext_cursor=0
 let g:ale_linters = {'python': ['mypy', 'pylint', 'pyright'], 'asm': 'nasm'}
 let g:ale_pattern_options = {'.*\.md$': {'ale_enabled': 0}}
 
+" ALE Yaml
+let g:ale_yaml_yamllint_options='-d "{extends: relaxed, rules: {line-length: disable}}"'
 " AlE python {{{3
 let g:ale_python_autopep8_options = '--indent-size=4  --max-line-length=120 '
 let pi = "--disable='fixme'"

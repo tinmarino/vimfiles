@@ -324,6 +324,7 @@ export FZF_CTRL_R_OPTS="--sort --exact --preview 'echo {}' --preview-window down
 # Required for function malias to wotk
 # Just a redir: . /usr/share/bash-completion/bash_completion
 try_source /etc/bash_completion
+try_source ~/.bash-completion
 
 # Alias
 try_source ~/.bash_aliases.sh
@@ -344,12 +345,14 @@ try_source ~/.bash_aliases.sh
 
 # Tmux completion
 command -v _get_comp_words_by_ref &> /dev/null && try_source "$v"/scripts/completion/tmux.completion.sh
+
 # Alacrity Completion
 #try_source "$v/scripts/completion/alacritty"
 
 #try_source ~/.ghcup/env
 #try_source ~/.vim/bin/rc/complete_shellgpt.sh
-#try_source ~/Secret/env.sh
+try_source ~/Secret/env.sh
+
 
 # Path {{{1
 # My script
@@ -438,6 +441,9 @@ alias feroxburster="~/Program/Feroxburster/feroxbuster --extract-links --user-ag
 
 
 export PYTHONPATH=/home/mtourneboeuf/Software/Python/CountryStudy
+export PYTHONPATH+=:/home/mtourneboeuf/Software/Pentest/libreriactf
 export PYTHONPATH+=:/home/mtourneboeuf/Software/Python/Recon
 export ELASTIC_API_KEY="amhqcGc1UUJLSG5PcXRjb19odW06b1FJSk5rd2hRREt4QnR6UkQwQ3Vzdw=="
 alias apktool='java -jar ~/Iso/Jar/apktool_2.11.1.jar'
+alias lctf=/home/mtourneboeuf/Software/Pentest/libreriactf/lctf.py
+alias rat='ssh -i ~/Secret/aws-key-ciberlab-ctf.pem -o StrictHostKeyChecking=no ubuntu@rat.tinmarino.com'
