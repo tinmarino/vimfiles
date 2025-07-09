@@ -1,14 +1,7 @@
 #!/usr/bin/env bash
 set -u
 
-# Read Stdin as a PAGER 
-# <- Pager <- Vim: https://vim.fandom.com/wiki/Using_vim_as_a_man-page_viewer_under_Unix
-# <- Check size <- https://unix.stackexchange.com/questions/245064/what-is-the-best-way-to-pipe-the-output-of-a-command-through-a-pager-if-and-onl
-# <- Pass argument dynamically <- https://unix.stackexchange.com/questions/459367/using-shell-variables-for-command-options
-# Require perl, tput (in ncurses-utils), less
-# https://github.com/vim/vim/issues/2823
-
-# Helper:0 Final: Call vim with arguments
+# Call vim with arguments
 call_vim(){
   # Use --cmd because it is done before first file read
     #-cmd 'silent! autocmd StdinReadPre * set nomodeline'
@@ -28,60 +21,11 @@ call_vim(){
   "${a_shell_vim[@]}"
 }
 
-vman_vim_manpager(){
-  call_vim -
-}
-
-
-vman_select(){
-  : 'Discrimintate size of stdin to pipe in (vim | less | cat)'
-
-  # Set local vars
-  buffer=$(mktemp)
-  rows=${LINES:=$(tput lines)}
-  cols=${COLUMNS:=$(tput cols)}
-
-  # Read to discriminate and pipe to correct command
-  while true; do
-    # Read
-    IFS= read -r some_data
-    eof=$?        # 1 if EOF, 0 if normal, successful read.
-
-    # Write to buffer
-    printf "%s" "$some_data" >> "$buffer"
-    if (( ! eof )) ; then
-      printf "\n" >> "$buffer"
-    fi
-
-    # Clause: If Small use less
-    n_virt=$(fold -w"$cols" "$buffer" | wc -l)
-    if (( n_virt < 2 * rows )); then
-      if (( eof )); then
-        cat "$buffer"
-        break
-      else
-        # If not finished continue reading
-        continue
-      fi
-    fi
-
-    # So work
-    # Choose PAGER according to AnsiEsc detection
-    vman_cmd=vman_vim_manpager
-    # perl -ne 'exit 42 if m/\e\[[0-9;]*[mG]/' "$buffer"
-    #(( 42 == $? )) && vman_cmd=vman_vim_manpager
-    # Concatenate buffer (size of the screen) and stdin (-)
-    less "$buffer" - |
-    # Go in Vim
-    "${PAGER:="$vman_cmd"}" "$@"
-    break
-  done
-  rm "$buffer"
-}
-
-
 if ! (return 0 2>/dev/null); then
-  unset PAGER
-  vman_select "$@"
+  if (($# < 1)) || [[ -z "$1" ]]; then
+    call_vim -
+  else
+    man "$@" | call_vim -
+  fi
   exit "$?"
 fi
