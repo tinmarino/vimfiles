@@ -8,16 +8,6 @@ set -u
 # Require perl, tput (in ncurses-utils), less
 # https://github.com/vim/vim/issues/2823
 
-bck(){
-  # Use --cmd because it is done before first file read
-  export GROFF_NO_SGR=1
-  vim \
-    -M \
-    "$@"
-}
-
-
-
 # Helper:0 Final: Call vim with arguments
 call_vim(){
   # Use --cmd because it is done before first file read
@@ -38,51 +28,20 @@ call_vim(){
   "${a_shell_vim[@]}"
 }
 
-# Helper:1 for manpages (prefix by col)
-vman_col(){
-  col -b -x | call_vim \
-    -c "set nomod nolist nonu \
-     | set sw=3 | set foldmethod=indent" \
-    -c 'nmap K :Man <C-R>=expand(\\\"<cword>\\\")<CR><CR>' \
-    -
-}
-
-
-join_by(){
-  : 'Join array string elements (args[2:]) with (by) a delimiter (arg1)
-    Standalone
-    From: https://stackoverflow.com/a/17841619/2544873
-    Ex: join_by , a b c => a,b,c
-  '
-  local d=${1-} f=${2-}
-  if shift 2; then
-    printf %s "$f" "${@/#/$d}"
-  fi
-}
-
-
-# Helper:2 As before but with - -> $1 (i.e. STDIN -> ARG_1)
-vman_cat_col(){
-  less "$1" | vman_col
-}
-
-# Helper:1 PAGER for git diff files (Ansi-Escaped)
-vman_ansi() {
-  call_vim -c "packadd ansiesc | AnsiEsc" -c "\
-    hi ansiGreenFg guifg=Green | \
-    hi ansiRedFg guifg=Red" -
-}
-
 vman_vim_manpager(){
   call_vim -
 }
 
 
-# Discrimintate size of stdin to pipe in (vim | less | cat)
 vman_select(){
+  : 'Discrimintate size of stdin to pipe in (vim | less | cat)'
+
+  # Set local vars
   buffer=$(mktemp)
-  rows="${LINES:=$(tput lines)}"
-  cols=$((2 * ${COLUMNS:=$(tput cols)}))
+  rows=${LINES:=$(tput lines)}
+  cols=${COLUMNS:=$(tput cols)}
+
+  # Read to discriminate and pipe to correct command
   while true; do
     # Read
     IFS= read -r some_data
@@ -90,61 +49,39 @@ vman_select(){
 
     # Write to buffer
     printf "%s" "$some_data" >> "$buffer"
-    if (( ! eof )); then
+    if (( ! eof )) ; then
       printf "\n" >> "$buffer"
     fi
 
     # Clause: If Small use less
     n_virt=$(fold -w"$cols" "$buffer" | wc -l)
-    if (( n_virt < rows )); then
-      if [ "$eof" != 0 ]; then
-        less "$buffer"
+    if (( n_virt < 2 * rows )); then
+      if (( eof )); then
+        cat "$buffer"
+        break
       else
         # If not finished continue reading
         continue
       fi
-
-    # Elif Large
-    else
-      # But with EOF so cat
-      if [ "$eof" != 0 ]; then
-        "${PAGER:="less"}" < "$buffer"
-      # So work
-      else
-        # Choose PAGER according to AnsiEsc detection
-        vman_cmd=vman_col
-        perl -ne 'exit 42 if m/\e\[[0-9;]*[mG]/' "$buffer"
-        (( 42 == $? )) && vman_cmd=vman_vim_manpager
-        # Concatenate buffer (size of the screen) and stdin (-)
-        less "$buffer" - |
-        # Go in Vim
-        "${PAGER:="$vman_cmd"}" "$@"
-      fi
     fi
+
+    # So work
+    # Choose PAGER according to AnsiEsc detection
+    vman_cmd=vman_vim_manpager
+    # perl -ne 'exit 42 if m/\e\[[0-9;]*[mG]/' "$buffer"
+    #(( 42 == $? )) && vman_cmd=vman_vim_manpager
+    # Concatenate buffer (size of the screen) and stdin (-)
+    less "$buffer" - |
+    # Go in Vim
+    "${PAGER:="$vman_cmd"}" "$@"
     break
   done
   rm "$buffer"
 }
 
 
-vman_main() {
-  # See if argument commes from stdin (unix) or file first argument (man on termux)
-
-  # shellcheck disable=SC2199
-  if (($# < 1)) || [[ -z "$1" ]]; then
-    vman_select
-  elif [[ " $@ " =~ " --select "  ]]; then
-    delete='--select'
-    args=( "${@/$delete}" )
-    vman_select "${args[@]}"
-  else
-    vman_cat_col "$@"
-  fi
-}
-
-
 if ! (return 0 2>/dev/null); then
   unset PAGER
-  vman_main "$@"
+  vman_select "$@"
   exit "$?"
 fi
