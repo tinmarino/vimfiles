@@ -16,26 +16,18 @@ ensure_window() {
   if tmux list-windows -F '#{window_name}' | grep -qx "$name"; then
     return 0        # already there → no-op
   fi
-  # Start an interactive bash shell first, then send the command to it.
-  # This way ~/.bashrc is sourced (PATH, aliases, env) AND when the
-  # command exits the shell stays alive — the user can restart the
-  # command without destroying the pane.
-  tmux new-window -n "$name" -c "$OCINIT_CWD"
-  tmux send-keys -t "$name" "$cmd" Enter
+  tmux new-window -n "$name" -c "$OCINIT_CWD" "$cmd"
 }
 
 PROMPT_VIM="vim \
-    -c 'edit doc/ai-todo.md | vsplit doc/ai-done.md | wincmd h' \
-    -c 'tabnew doc/idea.md' \
+    -c 'edit doc/idea.md | vsplit doc/ai-todo.md' \
+    -c 'tabnew doc/ai-done.md' \
     -c 'tabnew doc/ai-feedback.md' \
     -c 'tabfirst'"
 
-# Rename the tmux session to the project directory basename (e.g. ".vim")
-# only if it still has the default numeric name (0, 1, 2, …).
-SESSION_NAME="$(tmux display-message -p '#{session_name}')"
-if [[ "$SESSION_NAME" =~ ^[0-9]+$ ]]; then
-  tmux rename-session "$(basename "$OCINIT_CWD")"
-fi
+# Rename the current window (index 0) to SHELL — rename-window with the same
+# name is a silent no-op, so this is idempotent by itself.
+tmux rename-window -t 1 SHELL
 
 # Create windows
 ensure_window VIM      "vim"
