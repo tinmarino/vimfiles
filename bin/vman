@@ -5,27 +5,33 @@ set -u
 call_vim(){
   # Use --cmd because it is done before first file read
     #-cmd 'silent! autocmd StdinReadPre * set nomodeline'
-  a_shell_vim=(
-    vim
-    -c "silent! MANPAGER"
-    -c "map q :q!<CR>"
-    -c "set foldlevel=30"
-    -c "set nonumber"
-    -c "set t_te="
+  a_shell_vim=(vim)
+  if (($# >= 1)) && [[ MANPAGER == "$1" ]]; then 
+    a_shell_vim+=( -c "silent! MANPAGER" )
+  fi
+
+  a_shell_vim+=(
+    -c "map q :q!<CR> | set foldlevel=30 | set nonumber | set nomod | set nolist | set sw=3 | set foldmethod=indent | set t_te="
     -c "silent! nnoremap n nzt<C-y><C-y>"
-    -c "silent! /^\(\e\[\d*m\)*--- a\/.*$/"
     -c "silent! autocmd StdinReadPre * set nomodeline"
-    -c 'silent! autocmd StdinReadPre * set nomodeline'
-    "$@"
   )
-  "${a_shell_vim[@]}"
+
+  if (($# < 1)) || [[ MANPAGER != "$1" ]]; then 
+    a_shell_vim+=(
+      -c "packadd ansiesc | AnsiEsc"
+      -c "hi ansiGreenFg guifg=Green | hi ansiRedFg guifg=Red"
+      -c "silent! /^\(\e\[\d*m\)*--- a\/.*$/"
+    )
+  fi
+
+  "${a_shell_vim[@]}" -
 }
 
 if ! (return 0 2>/dev/null); then
-  if (($# < 1)) || [[ -z "$1" ]]; then
-    call_vim -
+  if (($# < 1)) || [[ -z "$1" ]] || [[ MANPAGER == "$1" ]]; then
+    call_vim "$@"
   else
-    man "$@" | call_vim -
+    man "$@" | call_vim "$@"
   fi
   exit "$?"
 fi
