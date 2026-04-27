@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# tmuxstop: gracefully try to close every pane in the current tmux session.
+#
+# For each pane we look at `pane_current_command` and send a shutdown
+# sequence that fits the foreground program:
+#
+#   vim / nvim / vi / view -> Escape then ':q<CR>'
+#   ipython / ipython3     -> Ctrl-D twice (confirms the exit prompt)
+#   opencode               -> Ctrl-D twice
+#   bash / zsh / sh / ...  -> Ctrl-D
+#   anything else          -> Ctrl-D as a best-effort fallback
+#
+# The pane hosting tmuxstop itself is skipped so we don't kill the shell
+# that invoked the script. Pair with `ocstop` to fully tear the session
+# back down once panes have released their state.
+set -euo pipefail
+
+if [[ -z "${TMUX:-}" ]]; then
+  echo "tmuxstop: not inside a tmux session" >&2
+  exit 1
+fi
+
+SELF=$(tmux display-message -p '#{session_name}:#{window_index}.#{pane_index}')
+
+# Read "target<TAB>command" one line per pane.
+while IFS=$'\t' read -r target cmd; do
+  [[ "$target" == "$SELF" ]] && continue
+
+  case "$cmd" in
+    vim|nvim|vi|view)
+      # Leave any mode (insert/visual/command) first, then quit.
+      tmux send-keys -t "$target" Escape
+      tmux send-keys -t "$target" ':q' Enter
+      ;;
+    ipython|ipython3)
+      tmux send-keys -t "$target" C-d
+      sleep 0.1
+      tmux send-keys -t "$target" C-d
+      ;;
+    opencode)
+      tmux send-keys -t "$target" C-d
+      sleep 0.1
+      tmux send-keys -t "$target" C-d
+      ;;
+    bash|zsh|sh|fish|dash|ksh)
+      tmux send-keys -t "$target" C-d
+      ;;
+    *)
+      tmux send-keys -t "$target" C-d
+      ;;
+  esac
+done < <(tmux list-panes -s -F '#{session_name}:#{window_index}.#{pane_index}	#{pane_current_command}')
