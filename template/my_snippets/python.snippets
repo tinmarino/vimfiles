@@ -17,8 +17,25 @@ if __name__ == '__main__':
     `!v expand('%:t:r')`()
 endsnippet
 
-snippet parser "Parse argument in"
-from argparse import ArgumentParser, RawTextHelpFormatter
+
+snippet pylint "Disable warning"
+# -- pylint: disable=${1:line-too-long}
+endsnippet
+
+snippet dump "Dump string to file"
+with open(f"{s_out_dir_01}/{rut}.json", "w", encoding="utf8") as file:
+		file.write(str(json))
+endsnippet
+
+snippet slurp "Slurp file to string"
+with open(f"$1", "r", encoding="utf8") as file:
+		stg = file.read()
+endsnippet
+
+
+snippet argparse "Parse argument in"
+from sys import argv as sys_argv   # Help argparse detect no argument
+from argparse import ArgumentParser, RawTextHelpFormatter  # Parse input arguments
 
 parser = ArgumentParser(description=__doc__, formatter_class=RawTextHelpFormatter)
 
@@ -34,7 +51,12 @@ parser.add_argument('-o', '--optional', type=str, default='default_value', help=
 # Create rut
 parser.add_argument('--generate-rut', nargs=2, help='Generate Rutn from <rut1: int> to <rut2: int>')
 
-args = parser.parse_args()
+# Clause: Leave now if no argument
+if not sys_argv[1:]:
+		return parser, parser.parse_args(['--help'])
+
+# Parse arguments from Stdin
+args = parser.parse_args(args=None)
 endsnippet
 
 snippet #! "Shebang"

@@ -249,6 +249,13 @@ snippet eb "end book"
 \`\`\`
 endsnippet
 
+snippet cen "center"
+\vspace{-3mm}
+\begin{center}
+$1
+\end{center}
+endsnippet
+
 snippet aslr "ASLR mitigation"
 Address Space Layout Randomization
 endsnippet
@@ -303,9 +310,53 @@ snippet toc
 
 endsnippet
 
+snippet poc "Principio de POC de una Vuln"
+Para reportar el presente hallazgo, se realizaron los siguientes pasos en un navegador configurado con la herramienta Burp Suite en modo *proxy*.
+endsnippet
+
+snippet poc2 "Poc mas trabajado"
+Para documentar el presente hallazgo, se realizaron los siguientes pasos mediante un navegador web configurado con la herramienta Burp Suite como *proxy*.
+endsnippet
+
+snippet rec "Recomendacion"
+Se recomienda implementar un control de acceso en el *endpoint* para asegurar que los usuarios solo puedan acceder a los datos que les corresponden.
+endsnippet
+
 snippet module "Module for PUC"
 #### Módulo $2
 
 ![](res/ai/${2:single-levi-ratatack.jpg}){height=70%}
 
+endsnippet
+
+snippet stock "Stock Log"
+* Stock: $1
+* Price/Book: 
+* P/E: 
+* Volume (3m): 
+* Dividend: 
+* Div freq: 
+* Div date: 
+* Date: `!v strftime("%Y-%m-%dT%H:%M:%S")`
+
+endsnippet
+
+snippet ad "Documentos adjuntos para CyScope.io"
+# Adjuntos
+
+| __Archivo__ | __Descripción__ |
+| ---         | --- |
+|             |   |
+|             |   |
+|             |   |
+|             |   |
+
+# Tiempos
+
+| __Tarea__                    | __Tiempo__ | __Explicación__ |
+| ---                          | ---        | --- |
+| Encontrar la vulnerabilidad  |            |   |
+| Explotar la vulnerabilidad   |            |   |
+| Reportar la vulnerabilidad   |            |   |
+| Reproducir la vulnerabilidad |            |   |
 endsnippet
