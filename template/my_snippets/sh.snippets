@@ -97,21 +97,16 @@ snippet script_path
 endsnippet
 
 snippet pinfo
-pinfo(){ >&2 echo -n "\e[1m\e[38;5;208mInfo: "; >&2 printf "%b\n" "${@}"; >&2 echo -n "\e[0m"; }
+pinfo(){ >&2 printf "\e[1m\e[38;5;208mInfo: "; >&2 printf "%b\n" "${@}"; >&2 printf "\e[0m"; }
 endsnippet
 
 snippet perr
-perr(){ >&2 echo -n "\e[38;5;124mError: "; >&2 printf "%b\n" "${@}"; >&2 echo -n "\e[0m"; }
+perr(){ >&2 printf "\e[38;5;124mError: "; >&2 printf "%b\n" "${@}"; >&2 printf "\e[0m"; }
 endsnippet
 
 
 snippet run "print and run command in"
-run(){
-  : "Helper: Print and execute input arguments"
-  >&2 printf '\n%s\n' "Running: $*"
-  "$@"
-	return $?
-}
+run(){ >&2 printf '\n%s\n' "Running: $*"; "$@"; return $?; }
 endsnippet
 
 snippet is_in_array "Check # From: https://stackoverflow.com/a/8574392/2544873"

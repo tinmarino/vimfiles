@@ -1,8 +1,12 @@
 # Hi dude, don't usurpate my ID: I know your IP
 priority -60
 
-snippet date
+snippet date "Time now"
 `!v strftime("%Y-%m-%dT%H:%M:%S")`
+endsnippet
+
+snippet ip "Show public IP"
+`curl -s https://ipinfo.io/ip`
 endsnippet
 
 snippet @ "My short email"
