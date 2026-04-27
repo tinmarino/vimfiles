@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# ocstop: counterpart of `ocinit`.
+#
+# `ocinit` creates three tmux windows next to the original shell window
+# (which it renames to "SHELL"): VIM, IA, PROMPT. `ocstop` tears them
+# down, leaving the session focused on the SHELL window if it still
+# exists.
+set -euo pipefail
+
+if [[ -z "${TMUX:-}" ]]; then
+  echo "ocstop: not inside a tmux session" >&2
+  exit 1
+fi
+
+# Windows spawned by ocinit; kept in the same order for readability.
+OCINIT_WINDOWS=(VIM IA PROMPT)
+
+existing_windows=$(tmux list-windows -F '#{window_name}')
+
+for name in "${OCINIT_WINDOWS[@]}"; do
+  if grep -qx "$name" <<<"$existing_windows"; then
+    tmux kill-window -t "=$name"
+  fi
+done
+
+# Try to land the user back on the SHELL window if it is still around.
+if tmux list-windows -F '#{window_name}' | grep -qx SHELL; then
+  tmux select-window -t '=SHELL'
+fi
