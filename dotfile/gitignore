@@ -1,3 +1,7 @@
+# IA
+.claude/
+.opencode/
+
 # Custom
 *.lof
 *.lot
@@ -5,6 +9,9 @@
 
 # Generic
 #########
+
+.env
+out/
 
 # Custom
 donotgit/
@@ -16,6 +23,7 @@ donotgit/
 .ropeproject
 jupyter.log
 __pycache__/
+*.pyc
 
 # Ctag
 tags
