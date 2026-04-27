@@ -2,17 +2,23 @@
 # tmuxstop: gracefully try to close every pane in the current tmux session.
 #
 # For each pane we look at `pane_current_command` and send a shutdown
-# sequence that fits the foreground program:
+# sequence that fits the foreground program. After the program has had
+# a chance to exit, a trailing Ctrl-D is sent so the wrapping bash
+# (if any) also quits and the tmux window closes.
 #
-#   vim / nvim / vi / view -> Escape then ':q<CR>'
-#   ipython / ipython3     -> Ctrl-D twice (confirms the exit prompt)
-#   opencode               -> Ctrl-D twice
-#   bash / zsh / sh / ...  -> Ctrl-D
-#   anything else          -> Ctrl-D as a best-effort fallback
+#   vim / nvim / vi / view                         -> Escape + ':q<CR>'      then C-d
+#   ipython / ipython3 / python / python3[.x]      -> C-d C-d                 then C-d
+#   opencode                                       -> C-d C-d                 then C-d
+#   bash / zsh / sh / ...                          -> C-d
+#   anything else                                  -> C-d (best-effort fallback)
 #
-# The pane hosting tmuxstop itself is skipped so we don't kill the shell
-# that invoked the script. Pair with `ocstop` to fully tear the session
-# back down once panes have released their state.
+# The pane hosting tmuxstop itself is skipped (detected via $TMUX_PANE)
+# so we don't kill the shell that invoked the script. Pair with
+# `ocstop` to fully tear the session back down once panes have
+# released their state.
+#
+# tmux errors during send-keys (for example a pane that already exited
+# between listing and signalling) are swallowed so the loop keeps going.
 set -euo pipefail
 
 if [[ -z "${TMUX:-}" ]]; then
@@ -20,7 +26,14 @@ if [[ -z "${TMUX:-}" ]]; then
   exit 1
 fi
 
-SELF=$(tmux display-message -p '#{session_name}:#{window_index}.#{pane_index}')
+SELF=$(tmux display-message -p -t "${TMUX_PANE:-}" '#{session_name}:#{window_index}.#{pane_index}')
+
+# Send keys to a pane, quietly ignoring the case where the pane died
+# between listing and sending (common when the first key-sequence
+# already triggered an exit, e.g. vim :q closes the bash wrapper).
+send_keys() {
+  tmux send-keys "$@" 2>/dev/null || true
+}
 
 # Read "target<TAB>command" one line per pane.
 while IFS=$'\t' read -r target cmd; do
@@ -29,24 +42,34 @@ while IFS=$'\t' read -r target cmd; do
   case "$cmd" in
     vim|nvim|vi|view)
       # Leave any mode (insert/visual/command) first, then quit.
-      tmux send-keys -t "$target" Escape
-      tmux send-keys -t "$target" ':q' Enter
+      send_keys -t "$target" Escape
+      send_keys -t "$target" ':q' Enter
+      # Give vim a moment to shut down, then close the wrapping shell.
+      sleep 0.2
+      send_keys -t "$target" C-d
       ;;
-    ipython|ipython3)
-      tmux send-keys -t "$target" C-d
+    ipython|ipython3|python|python3|python3.*)
+      # Two C-d exit the REPL (first may just clear buffered input).
+      send_keys -t "$target" C-d
       sleep 0.1
-      tmux send-keys -t "$target" C-d
+      send_keys -t "$target" C-d
+      # Third C-d closes the bash shell that was hosting the REPL.
+      sleep 0.2
+      send_keys -t "$target" C-d
       ;;
     opencode)
-      tmux send-keys -t "$target" C-d
+      # Two C-d leave the TUI, third C-d closes the wrapping shell.
+      send_keys -t "$target" C-d
       sleep 0.1
-      tmux send-keys -t "$target" C-d
+      send_keys -t "$target" C-d
+      sleep 0.2
+      send_keys -t "$target" C-d
       ;;
     bash|zsh|sh|fish|dash|ksh)
-      tmux send-keys -t "$target" C-d
+      send_keys -t "$target" C-d
       ;;
     *)
-      tmux send-keys -t "$target" C-d
+      send_keys -t "$target" C-d
       ;;
   esac
 done < <(tmux list-panes -s -F '#{session_name}:#{window_index}.#{pane_index}	#{pane_current_command}')
