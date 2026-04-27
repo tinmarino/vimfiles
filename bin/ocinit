@@ -16,7 +16,13 @@ ensure_window() {
   if tmux list-windows -F '#{window_name}' | grep -qx "$name"; then
     return 0        # already there → no-op
   fi
-  tmux new-window -n "$name" -c "$OCINIT_CWD" "$cmd"
+  # Launch through an interactive bash so ~/.bashrc is sourced before the
+  # command runs; that way the new tmux window inherits the user's env
+  # vars, aliases and PATH tweaks. `printf %q` shell-escapes the cmd so
+  # embedded quotes (PROMPT_VIM has them for vim -c '…') survive the
+  # trip through tmux → /bin/sh → bash.
+  tmux new-window -n "$name" -c "$OCINIT_CWD" \
+    "bash -ic $(printf '%q' "$cmd")"
 }
 
 PROMPT_VIM="vim \
