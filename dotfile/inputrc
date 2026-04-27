@@ -6,9 +6,9 @@
 $include /etc/inputrc
 
 # Intelligent previous command
-# bind '"\e[A": history-search-backward'; bind '"\e[B": history-search-forward'  # GREPME-BIND
 "\e[A": history-search-backward 
 "\e[B": history-search-forward
+# bind '"\e[A": history-search-backward'; bind '"\e[B": history-search-forward'  # GREPME-BIND
 #"\C-p": history-search-backward 
 #"\C-n": history-search-forward
 
@@ -49,7 +49,7 @@ set completion-map-case on
 # Immediately add a trailing slash when autocompleting symlinks to directories
 set mark-symlinked-directories on
 
-# enables color for tab completion to show different colors for executable files, directories, etc., 
+# Enables color for tab completion to show different colors for executable files, directories, etc., 
 set colored-stats on
 # Color the matching part
 set colored-completion-prefix on

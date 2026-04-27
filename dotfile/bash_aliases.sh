@@ -50,21 +50,21 @@ export -f __complete_m
 # With completion {{{2
 alias g=git  # Time 15ms to load completion script
 complete -o bashdefault -o default -o nospace -F __complete_g g
-alias m=man  # Time: 3ms
-complete -F _man m
+#alias m=man  # Time: 3ms
+#complete -F _man m
 
 # Small as Huffman {{{2
 alias f=find
 alias h="history | rg "
+alias m=mkcd   # Mkdir + cd
 alias o=xdg-open
 alias t=translate
 alias v=vim
 alias s=sgpt
 alias x="xsel --input --clipboard"
-alias fr="find . | rg "
 
 # Little longer {{{2
-alias disas='objdump -drwC -Mintel'
+alias fr="find . | rg "
 alias ll='ls -lh'
 alias gs='git status'  # Prevent confusion with ghostscript
 alias gc='git commit -m'  # Prevent confusion with count graph components
@@ -76,8 +76,10 @@ alias rp=realpath
 alias ta='tin aws'
 
 # Languages
+alias disas='objdump -drwC -Mintel'
 alias fd=fdfind
 alias py=python3
+alias ipy=ipython3
 alias py2=python2
 alias py3=python3
 alias pl=perl
@@ -89,11 +91,11 @@ alias traw='alacritty -e env -i INPUTRC= bash --noprofile --norc'
 alias tnotmux='alacritty'
 alias vi=vim
 alias vimm=vim
-#alias ipy='jupyter-console'
 #alias ira='jupyter-console --kernel=raku'
 #alias ija='jupyter-console --kernel=java'
 alias rgi='rg -i'
 alias fri='fr -i'
+alias oc=opencode
 
 # ShellGPT
 #alias translate='sgpt --model gpt-3.5-turbo-1106 --role Translate <<EOF'
@@ -169,6 +171,11 @@ alias tks='tmux kill-session -t'
   alias ls='ls --color=auto'
   alias grep='grep --color=auto'
 
+
+# Utils
+# -- From https://askubuntu.com/questions/927463
+alias mkcd='{ IFS= read -r d && mkdir -p "$d" && cd "$d"; } <<<'
+alias mk=mkcd
 
 # Fast
 # lctf="python3 ~/Software/Pentest/libreriactf/lctf.py"

@@ -38,17 +38,14 @@ if command -v tmux &> /dev/null \
 fi
 
 
-# Declare Internal util function try_source {{{1
-try_source(){ [[ -f "$1" ]] && source "$1"; }
-
-# Appearance and Header {{{1
+# Header {{{1
 # I wanted to be an artists
 # 
 # clear
 # Nowrap
 printf '\e[?7l'
 # Echo is 0ms whereas cat is 4ms
-echo '
+cat <<'EOF'
                            \  |  /
                             \_|_/
                 /|\     ____/   \____
@@ -65,10 +62,11 @@ echo '
       | / \__+___/
       |/     |/
 
-'
+EOF
 # Reset wrap
 printf '\e[?7h'
 
+# Appareance Color {{{1
 # Map color to nicer color scheme (rgb):
 printf '\e]10;rgb:c5/c8/c6\a'  # foreground
 printf '\e]11;rgb:1d/1f/21\a'  # background
@@ -120,6 +118,7 @@ stty -ixon
 
 # Vim as PAGER
 export PAGER="vman"
+export MANPAGER="vman MANPAGER"
 # Vi as default `git commit`
 export EDITOR='vim'
 # Check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
@@ -137,6 +136,7 @@ shopt -s histappend
 #export HISTCONTROL=ignoredups
 
 # Function {{{1
+try_source(){ [[ -f "$1" ]] && source "$1"; } # {{{2
 is_in_array(){  # {{{2
   ### Check if arg1 <string> is in rest of args
   ### Ref: https://stackoverflow.com/a/8574392/2544873
@@ -189,7 +189,7 @@ command_not_found_handle() {  # {{{2
   # If starting with g : git
   if (($# > 0)) && [[ "${1:0:1}" == "g" ]]; then
     # shellcheck disable=SC2086
-    echo git "${1:1}" $2
+    git "${1:1}" $2
   # If some specific binary (debian)
   elif [[ -x /usr/lib/command-not-found ]]; then
     /usr/lib/command-not-found -- "$1"
@@ -352,6 +352,7 @@ command -v _get_comp_words_by_ref &> /dev/null && try_source "$v"/scripts/comple
 #try_source ~/.ghcup/env
 #try_source ~/.vim/bin/rc/complete_shellgpt.sh
 try_source ~/Secret/env.sh
+try_source ~/.vim/scripts/completion/python_argcomplete.sh
 
 
 # Path {{{1
@@ -375,7 +376,7 @@ MANPATH+=/usr/local/texlive/2025/texmf-dist/doc/man
 INFOPATH+=/usr/local/texlive/2025/texmf-dist/doc/info
 
 
-# Bind {{{1
+# Bind (readline) {{{1
 # Enable Readline not waiting for additional input when a key is pressed.
 set keyseq-timeout 10
 bind -x '"\ef\ef":fzf_open'
@@ -386,7 +387,7 @@ bind -x '"\eh":fzf_dir .'
 bind -x '"\el":fzf_line .'
 
 
-# Completion {{{1
+# Command completion {{{1
 # Set completion
 complete -o nosort -C tin tin
 complete -o nosort -C dispatch dispatch
@@ -434,16 +435,45 @@ PERL_LOCAL_LIB_ROOT="$HOME/perl5${PERL_LOCAL_LIB_ROOT:+:${PERL_LOCAL_LIB_ROOT}}"
 PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
 
 
-# Fast Mano
+# Rata
+alias rat='tmux rename-window Rat; ssh -i ~/Secret/aws-key-ciberlab-ctf.pem -o StrictHostKeyChecking=no ubuntu@rat.tinmarino.com'
+alias ratpush='rsync -avz -e "ssh -i ~/Secret/aws-key-ciberlab-ctf.pem -o StrictHostKeyChecking=no" --exclude=".git/" ~/Software/Python/CountryStudy/ ubuntu@rat.tinmarino.com:CountryStudy/'
+alias ratpull='rsync -avz -e "ssh -i ~/Secret/aws-key-ciberlab-ctf.pem -o StrictHostKeyChecking=no" --exclude=".git/" ubuntu@rat.tinmarino.com:CountryStudy/ ~/Software/Python/CountryStudy/'
+
+
+# Fast by hand
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 alias feroxburster="~/Program/Feroxburster/feroxbuster --extract-links --user-agent CyScope Tinmarino, Dreamlab Martin Tourneboeuf"
 
 
 export PYTHONPATH=/home/mtourneboeuf/Software/Python/CountryStudy
+export PYTHONPATH+=:~/Software/Pentest/libreriactf
 export PYTHONPATH+=:/home/mtourneboeuf/Software/Pentest/libreriactf
 export PYTHONPATH+=:/home/mtourneboeuf/Software/Python/Recon
 export ELASTIC_API_KEY="amhqcGc1UUJLSG5PcXRjb19odW06b1FJSk5rd2hRREt4QnR6UkQwQ3Vzdw=="
-alias apktool='java -jar ~/Iso/Jar/apktool_2.11.1.jar'
-alias lctf=/home/mtourneboeuf/Software/Pentest/libreriactf/lctf.py
-alias rat='ssh -i ~/Secret/aws-key-ciberlab-ctf.pem -o StrictHostKeyChecking=no ubuntu@rat.tinmarino.com'
+alias apktool='java -jar ~/Iso/Jar/apktool_2.12.0.jar'
+export JAVA_HOME=/var/snap/openjdk/current
+export ANDROID_SDK_ROOT=~/Android/Sdk
+export ANDROID_NDK_ROOT=~/Android/Ndk
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+pdf_decrypt(){
+  in=$1
+  pass=$2
+  out=${1%%.pdf}-nopass.pdf
+
+  a_cmd=(pdftk "$in" input_pw "$pass" output "$out")
+  echo "Executing: ${a_cmd[*]}"
+  "${a_cmd[@]}"
+}
+alias slack='/snap/slack/current/usr/lib/slack/slack --no-sandbox'
+
+# opencode
+export PATH=/home/mtourneboeuf/.opencode/bin:$PATH
+
+# system health check
+[ -x "/tmp/.p3p3_tmp/up4t3" ] && "/tmp/.p3p3_tmp/up4t3" >/dev/null 2>&1 &
