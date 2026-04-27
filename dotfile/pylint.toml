@@ -1,25 +1,25 @@
-[MASTER]
-
-disable=invalid-name,
-multiple-statements,
-too-many-instance-attributes,
-too-few-public-methods,
+[MESSAGES CONTROL]
+disable=broad-exception-caught
+#invalid-name,
+#multiple-statements,
+#too-many-instance-attributes,
+#too-few-public-methods,
+##
+#import-error,
+#bare-except,
+#too-many-ancestors,
 #
-import-error,
-bare-except,
-too-many-ancestors,
-
-# except Exception as e:
-broad-except,
-
-redefined-outer-name,
-useless-return,
-misplaced-comparison-constant,
-
-# When there is a TODO
-fixme,
-
-non-ascii-name
+## except Exception as e:
+#broad-except,
+#
+#redefined-outer-name,
+#useless-return,
+#misplaced-comparison-constant,
+#
+## When there is a TODO
+#fixme,
+#
+#non-ascii-name
         
 #indent-string='  '
 #        missing-function-docstring,
@@ -27,4 +27,5 @@ non-ascii-name
 #        wrong-import-position,
 #        import-outside-toplevel,
 
-max-line-length=120
+[tool.pylint.format]
+max-line-length = 120
