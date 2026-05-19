@@ -16,18 +16,17 @@ ensure_window() {
   if tmux list-windows -F '#{window_name}' | grep -qx "$name"; then
     return 0        # already there → no-op
   fi
-  # Launch through an interactive bash so ~/.bashrc is sourced before the
-  # command runs; that way the new tmux window inherits the user's env
-  # vars, aliases and PATH tweaks. `printf %q` shell-escapes the cmd so
-  # embedded quotes (PROMPT_VIM has them for vim -c '…') survive the
-  # trip through tmux → /bin/sh → bash.
-  tmux new-window -n "$name" -c "$OCINIT_CWD" \
-    "bash -ic $(printf '%q' "$cmd")"
+  # Start an interactive bash shell first, then send the command to it.
+  # This way ~/.bashrc is sourced (PATH, aliases, env) AND when the
+  # command exits the shell stays alive — the user can restart the
+  # command without destroying the pane.
+  tmux new-window -n "$name" -c "$OCINIT_CWD"
+  tmux send-keys -t "$name" "$cmd" Enter
 }
 
 PROMPT_VIM="vim \
-    -c 'edit doc/idea.md | vsplit doc/ai-todo.md' \
-    -c 'tabnew doc/ai-done.md' \
+    -c 'edit doc/ai-todo.md | vsplit doc/ai-done.md' \
+    -c 'tabnew doc/idea.md' \
     -c 'tabnew doc/ai-feedback.md' \
     -c 'tabfirst'"
 
