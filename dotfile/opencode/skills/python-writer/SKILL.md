@@ -1,6 +1,6 @@
 ---
 name: python-writer
-description: Write Python modules, CLIs, and tests in Tinmarino's personal style (shebang + module docstring layout, verb-first function docstrings, overindented multi-line signatures, paragraph comments, `argparse` + `argcomplete` CLI dispatcher pattern, `from X import Y` stdlib imports for early-fail, closures over one-shot helpers, flat branches via guard clauses / dispatch tables). Use whenever you are about to create or substantially edit a `.py` file in Stock, sistema-fair-risk, libreriactf, or any future Python project of Tinmarino's.
+description: Write Python modules, CLIs, and tests in Martin's personal style (shebang + module docstring layout, verb-first function docstrings, overindented multi-line signatures, paragraph comments, `argparse` + `argcomplete` CLI dispatcher pattern, `from X import Y` stdlib imports for early-fail, closures over one-shot helpers, flat branches via guard clauses / dispatch tables). Use whenever you are about to create or substantially edit a `.py` file in Stock, sistema-fair-risk, libreriactf, or any future Python project of Martin's.
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,9 +10,9 @@ metadata:
 
 # python-writer
 
-Writes Python code the way Tinmarino writes it. Loaded any time we are
+Writes Python code the way Martin writes it. Loaded any time we are
 about to create a new `.py` file, add a function, or refactor an
-existing one inside any of Tinmarino's Python projects.
+existing one inside any of his Python projects.
 
 ## 1. Hard rules (never violate)
 
@@ -175,7 +175,7 @@ def build_tech_panel(nemo: str, indicators: dict) -> Panel:
 ```python
 def fetch_loop(nemo: str) -> None:
     """ Refresh *nemo* while the dashboard is running. """
-    client = BolsaClient()
+    client = MarketClient()
 
     # Closure captures client + nemo so the callback stays a pure function
     def _one_cycle() -> None:
@@ -217,7 +217,7 @@ Refactor a block into its own function when any of these is true:
 
 ## 4. CLI scaffold (argparse + argcomplete)
 
-Tinmarino's reference layout lives in
+Martin's reference layout lives in
 `~/Software/Pentest/libreriactf/lctf.py` (tiny shim) and
 `~/Software/Pentest/libreriactf/lctf/run.py` (dispatcher). Copy this
 pattern for every new Python project.
@@ -528,22 +528,7 @@ Notes:
 - Integration tests are expected to hit a canonical fixture
   (e.g. `pdf/ibd150426.pdf`) rather than a dynamic download.
 
-## 6. Parallel HTTP fan-out and IP rotation → use the `http-async-rotate` skill
-
-When a script must fire many HTTP requests in parallel (enumeration, fuzzing,
-bulk API calls) or rotate the source IP through AWS API Gateway, do NOT
-re-derive the pattern here. Load the **http-async-rotate** skill instead — it
-owns the canonical continuous bounded worker pool (always `--workers` in flight,
-refill on `FIRST_COMPLETED`), the `requests_ip_rotator` start/`shutdown`,
-the `--workers`/`--rotate`/`--resume` CLI contract, the per-input file +
-`hits.csv` output layout, and the short-lived-token `session.yaml` flow.
-
-This skill (python-writer) still governs HOW that code is written — file
-layout, naming, `from X import Y` imports, docstrings, guard clauses. The two
-compose: http-async-rotate for the concurrency/rotation pattern, python-writer
-for the style it is written in.
-
-## 7. When in doubt
+## 6. When in doubt
 
 - Open the nearest `CLAUDE.md` of the target project first
   (e.g. `~/Software/Python/Stock/CLAUDE.md`,
