@@ -1,1 +1,2 @@
+* [X] 2026-05-19T20:10:26: Edit bin/ocinit code so tht in vim, cursor is on ai-todo file => solved adding wincmd h after vsplit to move cursor back to left window (ai-todo.md)
 * [X] 2026-05-19T19:56:36: Edit bin/ocinit code so that a bash is started first in the directory and then the command is run. That way I can restart the command without destroying the pane => solved using tmux send-keys instead of bash -ic, shell stays alive after command exits

@@ -25,7 +25,7 @@ ensure_window() {
 }
 
 PROMPT_VIM="vim \
-    -c 'edit doc/ai-todo.md | vsplit doc/ai-done.md' \
+    -c 'edit doc/ai-todo.md | vsplit doc/ai-done.md | wincmd h' \
     -c 'tabnew doc/idea.md' \
     -c 'tabnew doc/ai-feedback.md' \
     -c 'tabfirst'"
