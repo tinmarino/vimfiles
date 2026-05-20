@@ -30,9 +30,13 @@ PROMPT_VIM="vim \
     -c 'tabnew doc/ai-feedback.md' \
     -c 'tabfirst'"
 
-# Rename the current window (index 0) to SHELL — rename-window with the same
-# name is a silent no-op, so this is idempotent by itself.
-tmux rename-window -t 1 SHELL
+# Rename the current window to the project directory basename (e.g. ".vim")
+# only if it still has the default shell name (bash/zsh/fish/sh).
+CURRENT_NAME="$(tmux display-message -p '#{window_name}')"
+DEFAULT_SHELLS="bash|zsh|fish|sh"
+if [[ "$CURRENT_NAME" =~ ^($DEFAULT_SHELLS)$ ]]; then
+  tmux rename-window "$(basename "$OCINIT_CWD")"
+fi
 
 # Create windows
 ensure_window VIM      "vim"
