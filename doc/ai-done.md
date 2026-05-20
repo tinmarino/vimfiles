@@ -1,3 +1,4 @@
+* [X] 2026-05-19T20:18:18: Rename tmux session (not window) to basename of CWD when session name is default numeric => solved using tmux rename-session with guard checking session_name =~ ^[0-9]+$
 * [X] 2026-05-19T20:16:35: Edit bin/ocinit code so that the tmux windows name in case it is not set, is set to the basename of the current directory like ctrl-b .vim => solved by checking if window name matches default shell names (bash/zsh/fish/sh) and renaming to basename of $PWD
 * [X] 2026-05-19T20:10:26: Edit bin/ocinit code so tht in vim, cursor is on ai-todo file => solved adding wincmd h after vsplit to move cursor back to left window (ai-todo.md)
 * [X] 2026-05-19T19:56:36: Edit bin/ocinit code so that a bash is started first in the directory and then the command is run. That way I can restart the command without destroying the pane => solved using tmux send-keys instead of bash -ic, shell stays alive after command exits
