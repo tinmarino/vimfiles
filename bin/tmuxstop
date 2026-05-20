@@ -43,7 +43,7 @@ while IFS=$'\t' read -r target cmd; do
     vim|nvim|vi|view)
       # Leave any mode (insert/visual/command) first, then quit.
       send_keys -t "$target" Escape
-      send_keys -t "$target" ':q' Enter
+      send_keys -t "$target" ':qa' Enter
       # Give vim a moment to shut down, then close the wrapping shell.
       sleep 0.2
       send_keys -t "$target" C-d

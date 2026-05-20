@@ -79,8 +79,8 @@ _python_argcomplete() {
 }
 if [[ -z "${ZSH_VERSION-}" ]]; then
     complete -o nospace -o default -o bashdefault -F _python_argcomplete lctf
-    complete -o nospace -o default -o bashdefault -F _python_argcomplete stock.py
     complete -o nospace -o default -o bashdefault -F _python_argcomplete stock
+    complete -o nospace -o default -o bashdefault -F _python_argcomplete book
 else
     # When called by the Zsh completion system, this will end with
     # "loadautofunc" when initially autoloaded and "shfunc" later on, otherwise,

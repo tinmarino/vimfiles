@@ -287,7 +287,7 @@ let g:ale_linters = {'python': ['mypy', 'pylint', 'pyright'], 'asm': 'nasm'}
 let g:ale_pattern_options = {'.*\.md$': {'ale_enabled': 0}}
 
 " ALE Yaml
-let g:ale_yaml_yamllint_options='-d "{extends: relaxed, rules: {line-length: disable}}"'
+" let g:ale_yaml_yamllint_options='-d "{extends: relaxed, rules: {line-length: disable}}"'
 " AlE python {{{3
 let g:ale_python_autopep8_options = '--indent-size=4  --max-line-length=120 '
 let pi = "--disable='fixme'"
@@ -526,6 +526,10 @@ Plug 'michaeljsmith/vim-indent-object'
 
 Plug 'mileszs/ack.vim'
 
+Plug 'xolox/vim-colorscheme-switcher'  " F8 to change color
+Plug 'xolox/vim-misc'
+" Plug 'vim-utils/vim-man'
+
 call plug#end()
 
 
@@ -586,6 +590,8 @@ set statusline+=%=      " left/right separator
 set statusline+=%P\ \   " percent through file
 set statusline+=%c,     " cursor column
 set statusline+=%l/%L   " cursor line/total lines
+
+set splitright
 
 " File format {{{2
 set fileformat=unix
@@ -900,7 +906,7 @@ endfunction
 " Maps for Package : On demand load {{{2
 " F8 : Colorscheme-switcher
 noremap <F8> :packadd misc<CR>:packadd colorscheme-switcher<CR><F8>
-map <ESC>[19;2~ <S-F8>
+map <ESC>[19;2~ <S-F8>   " Not sure why this bugs
 
 " Indent < and > {{{2
 noremap > >>

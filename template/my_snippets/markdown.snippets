@@ -164,6 +164,10 @@ snippet high "Change code size"
 \slide{\DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\\\\{\\},fontsize=\fontsize{12}{11}\selectfont}}
 endsnippet
 
+snippet fs "Font Size"
+\fontsize{${1:9pt}}{${2:11pt}}\selectfont 
+endsnippet
+
 snippet snippet "Embed code from other file"
 \`\`\`{.python include="code/interpreting/parse_raw_file.py"}
 \`\`\`
@@ -339,6 +343,16 @@ snippet stock "Stock Log"
 * Div date: 
 * Date: `!v strftime("%Y-%m-%dT%H:%M:%S")`
 
+endsnippet
+
+snippet rs "Relative Scale"
+\relscale{${1:0.8}}
+endsnippet
+
+snippet inc "Include other markdown"
+\`\`\`{.include shift-heading-level-by=0}
+$1
+\`\`\`
 endsnippet
 
 snippet ad "Documentos adjuntos para CyScope.io"
