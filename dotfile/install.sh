@@ -53,6 +53,11 @@ try_link() {
 # Trash
 mkdir "$HOME/.Trash"
 
+# Opencode
+try_link "$scriptpath/opencode" ~/.config/opencode
+try_link ~/.config/opencode/commands ~/.claude/commands
+try_link ~/.config/opencode/skills ~/.claude/skills
+
 # Git
 try_link "$scriptpath/gitconfig"  ~/.gitconfig
 try_link "$scriptpath/gitignore"  ~/.gitignore
