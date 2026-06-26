@@ -95,10 +95,11 @@ alias vimm=vim
 #alias ija='jupyter-console --kernel=java'
 alias rgi='rg -i'
 alias fri='fr -i'
-alias oc=opencode
+alias oc='systemd-run --user --scope -p MemoryMax=12G -- opencode'
 
 # ShellGPT
 #alias translate='sgpt --model gpt-3.5-turbo-1106 --role Translate <<EOF'
+alias master="cd ~/Software/Python/AI/OpenCodeMaster/"
 
 # New terminal (without tmux)
 alias tnew='TMUX=1 gnome-terminal'
