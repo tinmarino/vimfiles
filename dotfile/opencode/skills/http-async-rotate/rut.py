@@ -4,7 +4,7 @@
 Chilean RUT (Rol Unico Tributario) helper routines.
 
 Compute the verification digit (digito verificador) from a bare numeric
-body and format the full RUT with dots and dash (e.g. 23712470 -> 23.712.470-7).
+body and format the full RUT with dots and dash (e.g. 11111111 -> 11.111.111-1).
 
 Import from this module in any http-async-rotate requester that sweeps
 over incremental RUT bodies.
@@ -39,7 +39,7 @@ def rut_dv(body: int) -> str:
 def rut_format(body: int) -> str:
     """Format a RUT body into the canonical dotted form with DV.
 
-    Example: 15487632 -> '15.487.632-4'
+    Example: 11111111 -> '11.111.111-1'
     """
     dv = rut_dv(body)
     body_str = str(body)
@@ -54,5 +54,5 @@ def rut_format(body: int) -> str:
 
 
 def rut_plain(body: int) -> str:
-    """Return body-DV without dots (e.g. 15487632 -> '15487632-4')."""
+    """Return body-DV without dots (e.g. 11111111 -> '11111111-1')."""
     return f"{body}-{rut_dv(body)}"

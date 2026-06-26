@@ -217,8 +217,8 @@ A standalone module lives next to this file: `skills/http-async-rotate/rut.py`. 
 
 Three functions:
 - `rut_dv(body: int) -> str` — compute the verification digit (módulo 11). Returns `'0'`–`'9'` or `'K'`.
-- `rut_format(body: int) -> str` — canonical dotted form: `15487632` → `'15.487.632-4'`.
-- `rut_plain(body: int) -> str` — plain hyphenated: `15487632` → `'15487632-4'`.
+- `rut_format(body: int) -> str` — canonical dotted form: `11111111` → `'11.111.111-1'`.
+- `rut_plain(body: int) -> str` — plain hyphenated: `11111111` → `'11111111-1'`.
 
 Usage inside `produce_inputs()` or `make_one_request()`:
 
@@ -226,7 +226,7 @@ Usage inside `produce_inputs()` or `make_one_request()`:
 from rut import rut_dv, rut_format
 
 for body in range(args.start, args.end, args.step):
-    full_rut = rut_format(body)          # "15.487.632-4"
+    full_rut = rut_format(body)          # "11.111.111-1"
     dv = rut_dv(body)                    # "4"
     yield f"{body}-{dv}"                 # or yield full_rut
 ```
