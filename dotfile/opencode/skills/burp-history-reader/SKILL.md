@@ -67,8 +67,8 @@ post '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_proxy_
 ```
 
 Common regex patterns:
-- API domain: `"api\\.dalecoopeuch\\.cl"`
-- Transmit Security: `"transmitsecurity|transmit"`
+- API domain: `"api\\.target-example\\.cl"`
+- Transmit Security: `"<idp-vendor>|<idp-product>"`
 - Biometric/FIDO: `"webauthn|fido|credential|attestation|enroll|facet|challenge"`
 - Auth endpoints: `"auth|token|login|session"`
 - Specific path: `"passwordless|2fa|biometric"`
@@ -149,7 +149,7 @@ sleep 0.2
 curl -sS -X POST "http://127.0.0.1:9876/?${session}" -H 'Content-Type: application/json' \
   -d '{"jsonrpc":"2.0","method":"notifications/initialized","params":{}}' >/dev/null
 curl -sS -X POST "http://127.0.0.1:9876/?${session}" -H 'Content-Type: application/json' \
-  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_proxy_http_history_regex","arguments":{"regex":"transmitsecurity","count":30,"offset":0}}}' >/dev/null
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_proxy_http_history_regex","arguments":{"regex":"<idp-vendor>","count":30,"offset":0}}}' >/dev/null
 sleep 4
 kill "$pid" 2>/dev/null; true
 
