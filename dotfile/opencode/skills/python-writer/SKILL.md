@@ -1,6 +1,6 @@
 ---
 name: python-writer
-description: Write Python modules, CLIs, and tests in Martin's personal style (shebang + module docstring layout, verb-first function docstrings, overindented multi-line signatures, paragraph comments, `argparse` + `argcomplete` CLI dispatcher pattern, `from X import Y` stdlib imports for early-fail, closures over one-shot helpers, flat branches via guard clauses / dispatch tables). Use whenever you are about to create or substantially edit a `.py` file in Stock, sistema-fair-risk, libreriactf, or any future Python project of Martin's.
+description: Write Python modules, CLIs, and tests in Tinmarino's personal style (shebang + module docstring layout, verb-first function docstrings, overindented multi-line signatures, paragraph comments, `argparse` + `argcomplete` CLI dispatcher pattern, `from X import Y` stdlib imports for early-fail, closures over one-shot helpers, flat branches via guard clauses / dispatch tables). Use whenever you are about to create or substantially edit a `.py` file in Stock, sistema-fair-risk, libreriactf, or any future Python project of Tinmarino's.
 license: MIT
 compatibility: opencode
 metadata:
@@ -10,9 +10,9 @@ metadata:
 
 # python-writer
 
-Writes Python code the way Martin writes it. Loaded any time we are
+Writes Python code the way Tinmarino writes it. Loaded any time we are
 about to create a new `.py` file, add a function, or refactor an
-existing one inside any of his Python projects.
+existing one inside any of Tinmarino's Python projects.
 
 ## 1. Hard rules (never violate)
 
@@ -217,7 +217,7 @@ Refactor a block into its own function when any of these is true:
 
 ## 4. CLI scaffold (argparse + argcomplete)
 
-Martin's reference layout lives in
+Tinmarino's reference layout lives in
 `~/Software/Pentest/libreriactf/lctf.py` (tiny shim) and
 `~/Software/Pentest/libreriactf/lctf/run.py` (dispatcher). Copy this
 pattern for every new Python project.
@@ -528,7 +528,235 @@ Notes:
 - Integration tests are expected to hit a canonical fixture
   (e.g. `pdf/ibd150426.pdf`) rather than a dynamic download.
 
-## 6. When in doubt
+## 6. Thread-pool pattern for parallel HTTP workers
+
+When a script needs to fire many HTTP requests in parallel (enumeration,
+fuzzing, bulk API calls), use this queue-fed thread-pool pattern. It keeps
+exactly `--workers N` threads busy at all times — when one finishes, it
+immediately grabs the next item from the queue. No batch boundaries, no
+idle threads waiting for the slowest in a batch.
+
+Default expectation: when the user asks for **multiple HTTP requests**, lists,
+enumeration, bulk probing, or “try these values”, implement the requests
+systematically in parallel unless the action is explicitly state-changing,
+transactional, or the program forbids automation. Add `--workers` and
+`--offset` by default, print `offset=N` for each item, and persist per-item
+outputs when they are useful for audit or resume.
+
+Output placement expectation for future vulnerability work: for bulk HTTP
+scripts tied to a finding, write per-request results under
+`Findings/<vuln-id>/wave<NN>/`, where `<vuln-id>` is the vulnerability/report
+identifier the user is working on and `<NN>` is the next zero-padded wave
+number inside that finding directory (`wave01`, `wave02`, ...). Create the
+directory automatically, never overwrite an existing wave unless the user asks,
+and include the absolute input offset in filenames or file contents so a scan
+can be resumed and audited. Only use ad-hoc output directories when the user
+explicitly names one.
+
+Key properties:
+- A `Queue(maxsize=N*2)` feeds the pool — backpressure keeps memory flat.
+- Each output line prints the **stdin offset** so the user can resume
+  with `--offset <last_offset + 1>` after a crash or Ctrl-C.
+- A shared `stats` dict (ok/err/expired counters) lets the feeder
+  detect session expiry and drain+refresh without killing the process.
+- Workers are `daemon=True` threads so the process exits cleanly on
+  unhandled exceptions in the main thread.
+
+```python
+from queue import Queue
+from threading import Thread
+
+# Sentinel pushed to the queue to signal a worker to exit.
+_STOP = None
+DEFAULT_WORKERS = 50
+
+
+def _worker_loop(
+        queue: Queue,
+        session_params: dict,
+        stats: dict,
+        ) -> None:
+    """ Worker thread: pull (offset, item) from *queue* until _STOP. """
+    while True:
+        item = queue.get()
+        if item is _STOP:
+            queue.task_done()
+            break
+
+        offset, payload = item
+        try:
+            status = do_one_request(payload, **session_params)
+            print(f"  offset={offset} {payload}: {status}")
+        except Exception as err:
+            print(f"  [ERR] offset={offset} {payload}: {err}")
+            stats["err"] += 1
+            queue.task_done()
+            continue
+
+        if status == 200:
+            stats["ok"] += 1
+        elif status == 403:
+            stats["err"] += 1
+            stats["expired"] = True
+        else:
+            stats["err"] += 1
+        queue.task_done()
+
+
+def _start_workers(n: int, queue: Queue, session_params: dict, stats: dict) -> list[Thread]:
+    """ Spawn *n* daemon worker threads attached to *queue*. """
+    workers: list[Thread] = []
+    for _ in range(n):
+        t = Thread(target=_worker_loop, args=(queue, session_params, stats), daemon=True)
+        t.start()
+        workers.append(t)
+    return workers
+
+
+def _stop_workers(queue: Queue, workers: list[Thread]) -> None:
+    """ Send _STOP to each worker and join them all. """
+    for _ in workers:
+        queue.put(_STOP)
+    for t in workers:
+        t.join()
+
+
+def run_scan(items: list[tuple[int, str]], n_workers: int, session_params: dict) -> None:
+    """ Feed (offset, item) pairs into a pool of n_workers threads. """
+    stats: dict = {"ok": 0, "err": 0, "expired": False}
+    queue: Queue = Queue(maxsize=n_workers * 2)
+
+    workers = _start_workers(n_workers, queue, session_params, stats)
+
+    for offset, item in items:
+        if stats["expired"]:
+            queue.join()
+            _stop_workers(queue, workers)
+            # Refresh session / credentials here, then restart pool:
+            # session_params = refresh_session()
+            # stats["expired"] = False
+            # queue = Queue(maxsize=n_workers * 2)
+            # workers = _start_workers(n_workers, queue, session_params, stats)
+            break
+
+        queue.put((offset, item))
+
+    queue.join()
+    _stop_workers(queue, workers)
+    print(f"DONE: ok={stats['ok']} err={stats['err']}")
+```
+
+CLI wiring:
+
+```python
+parser.add_argument("--workers", type=int, default=DEFAULT_WORKERS,
+                    help=f"Parallel worker threads (default {DEFAULT_WORKERS})")
+parser.add_argument("--offset", type=int, default=0,
+                    help="Skip the first N items from stdin (resume from last offset)")
+```
+
+Rules for this pattern:
+- Always print `offset=N` on every output line (stdout or stderr).
+- The offset is the **absolute** position in the original input (accounting
+  for `--offset` skipping), so the resume command is always
+  `--offset <highest_offset_seen + 1>`.
+- Use `queue.task_done()` in every code path (success, exception, _STOP).
+- The feeder (main thread) checks `stats["expired"]` before each `queue.put`
+  so it can drain the queue, refresh credentials, and spin a fresh pool.
+- Stats writes without locks are acceptable on CPython (GIL protects `+=`
+  on ints and simple dict mutations from the same thread pool).
+
+## 7. IP rotation with `requests_ip_rotator`
+
+When hammering a single target from one IP risks rate-limiting or bans,
+rotate source IPs via AWS API Gateway using `requests_ip_rotator`. Each
+request exits from a different AWS edge IP across multiple regions.
+
+Default expectation: for bulk HTTP scripts that send many independent requests
+to one public HTTPS origin, include optional IP rotation from the start. Wire
+`--no-rotate` to disable it, `--regions` to choose AWS regions, and wrap setup
+in a safe fallback so missing AWS credentials or missing `requests_ip_rotator`
+does not break direct execution. Always shut the gateway down in `finally`.
+Do **not** add rotation for login, payment, money movement, account mutation,
+or any request where source-IP changes could invalidate state or increase risk
+unless the user explicitly asks.
+
+```python
+from requests import Session
+from requests_ip_rotator import ApiGateway
+
+SITE = "https://api.example.com"
+
+DEFAULT_REGIONS = [
+    "us-east-1", "us-east-2", "us-west-1", "us-west-2",
+    "eu-west-1", "eu-west-2", "eu-west-3", "eu-central-1",
+    "ca-central-1",
+]
+
+EXTRA_REGIONS = DEFAULT_REGIONS + [
+    "ap-south-1", "ap-northeast-3", "ap-northeast-2",
+    "ap-southeast-1", "ap-southeast-2", "ap-northeast-1",
+    "sa-east-1",
+]
+
+
+def start_gateway(regions: list[str] | None = None):
+    """ Return an active ApiGateway adapter, or None on failure. """
+    if regions is None:
+        regions = DEFAULT_REGIONS
+    try:
+        gateway = ApiGateway(SITE, regions=regions)
+        gateway.start()
+        print(f"[*] API Gateway started ({len(regions)} regions)")
+        return gateway
+    except Exception as err:
+        print(f"[!] Gateway setup failed: {err}")
+        print("[!] Falling back to direct requests.")
+        return None
+
+
+def make_request(gateway, url: str, **kwargs):
+    """ POST through the gateway (fallback to direct on pool drain). """
+    session = Session()
+    if gateway:
+        session.mount(SITE, gateway)
+    try:
+        return session.post(url, verify=False, **kwargs)
+    except IndexError:
+        # "empty sequence" — gateway pool drained, fallback to direct.
+        direct = Session()
+        return direct.post(url, verify=False, **kwargs)
+```
+
+CLI wiring:
+
+```python
+parser.add_argument("--no-rotate", action="store_true",
+                    help="Disable IP rotation (direct requests)")
+parser.add_argument("--regions", default="us-east-1,us-east-2,us-west-1,eu-west-1",
+                    help="Comma-separated AWS regions for IP rotation")
+```
+
+Rules:
+- Always wrap gateway usage in a `try/finally` that calls `gateway.shutdown()`
+  to tear down the API Gateway endpoints (they cost money if left dangling).
+- Catch `IndexError("empty sequence")` — it means the gateway ran out of
+  endpoints. Fall back to a direct `Session()` request.
+- Use `verify=False` with gateway requests because the rotated IP's TLS
+  cert won't match the upstream Host header. Suppress the warning once:
+  ```python
+  from urllib3 import disable_warnings
+  from urllib3.exceptions import InsecureRequestWarning
+  disable_warnings(InsecureRequestWarning)
+  ```
+- Requires `pip install requests-ip-rotator` and valid AWS credentials
+  (`~/.aws/credentials` or `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`
+  env vars).
+- The `--no-rotate` flag should bypass gateway setup entirely and send
+  requests directly — essential for debugging and for environments without
+  AWS credentials.
+
+## 8. When in doubt
 
 - Open the nearest `CLAUDE.md` of the target project first
   (e.g. `~/Software/Python/Stock/CLAUDE.md`,
