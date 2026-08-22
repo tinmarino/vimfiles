@@ -42,7 +42,13 @@ disable_warnings(InsecureRequestWarning)
 # ── target ──────────────────────────────────────────────────────────────────
 S_SITE   = "https://api.example.com"          # scheme+host ONLY (what gets mounted)
 S_URL    = S_SITE + "/endpoint"
-S_HITS   = "hits.csv"                          # consolidated, one level above --out
+# (EDIT 0) case id of the finding this sweep belongs to, e.g. "acme203".
+S_CASE   = "caseXX"
+# (EDIT 0) what the rows actually hold: pii, mail, phone, bank, policy, doc...
+S_KIND   = "pii"
+# Consolidated CSV, one level above --out. NEVER a bare "hits.csv": several sweeps
+# land in the same parent directory and a generic name silently merges them.
+S_HITS   = f"hits-{S_CASE}-{S_KIND}.csv"
 D_HEADER = {"X-Bug-Bounty-Cyscope": "Tinmarino"}
 
 # Default to a SINGLE region (us-east-1) — fewer gateways to create/tear down.
@@ -110,7 +116,7 @@ def parse_result(mutator, response, args):
         json_dump(content, handle, indent=4, ensure_ascii=False)
 
     # Consolidated hit: only when this input carried data worth flattening.
-    # (EDIT 3b) pick the fields you care about; hits.csv lives ONE level above --out.
+    # (EDIT 3b) pick the fields you care about; the CSV lives ONE level above --out.
     value = (content or {}).get("value")
     if value:
         with open(hits_path(args), "a", encoding="utf8") as handle:
@@ -123,8 +129,12 @@ def output_path(mutator, args):
 
 
 def hits_path(args):
-    """hits.csv lives ONE level above --out so it doesn't mix with per-input files."""
-    return join(dirname(normpath(args.out)) or ".", S_HITS)
+    """The hits CSV lives ONE level above --out so it doesn't mix with per-input files.
+
+    Named hits-<case>-<kind>.csv (not a bare hits.csv) so that sibling sweeps
+    sharing a parent directory stay separable. --hits-name overrides it.
+    """
+    return join(dirname(normpath(args.out)) or ".", getattr(args, "hits_name", None) or S_HITS)
 
 
 def run(args):
@@ -186,6 +196,9 @@ def main():
                     help="increment per iteration for --start/--end range (default 1)")
     ap.add_argument("--sleep", type=float, default=0.0, help="per-request throttle (s)")
     ap.add_argument("--out", default="out", help="output directory")
+    ap.add_argument("--hits-name", default=S_HITS,
+                    help=f"consolidated CSV filename, one level above --out "
+                         f"(default {S_HITS})")
     ap.add_argument("--resume", action="store_true", help="skip inputs already done")
     args = ap.parse_args()
     if args.start is not None and args.end is None:

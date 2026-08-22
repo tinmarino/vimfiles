@@ -67,8 +67,8 @@ post '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"get_proxy_
 ```
 
 Common regex patterns:
-- API domain: `"api\\.target-example\\.cl"`
-- Transmit Security: `"<idp-vendor>|<idp-product>"`
+- API domain: `"api\\.target\\.example\\.com"`
+- Identity provider: `"<idp-vendor>|<idp-product>"`
 - Biometric/FIDO: `"webauthn|fido|credential|attestation|enroll|facet|challenge"`
 - Auth endpoints: `"auth|token|login|session"`
 - Specific path: `"passwordless|2fa|biometric"`

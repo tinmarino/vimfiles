@@ -1,11 +1,11 @@
 ---
 name: http-async-rotate
-description: Write Python scripts that fan out many HTTP requests concurrently with a CONTINUOUS bounded worker pool (always N workers busy, no per-batch fork-join — when one finishes another starts) and rotate the source IP through AWS API Gateway via requests-ip-rotator. Use whenever building a mass-enumeration / IDOR / fuzzing / bulk-fetch script that hits one endpoint with many inputs (RUTs, phones, ids) from --file/--start/--end, needs --workers and --rotate, must dodge IP-based rate limits, writes one output file per input plus a consolidated hits.csv one level up, supports --resume to skip already-fetched ids, and (when auth is short-lived) follows a session.yaml refreshed by a sidecar keepalive job with a --max-authfail abort guard. Composes with the python-writer skill for style.
+description: Write Python scripts that fan out many HTTP requests concurrently with a CONTINUOUS bounded worker pool (always N workers busy, no per-batch fork-join — when one finishes another starts) and rotate the source IP through AWS API Gateway via requests-ip-rotator. Use whenever building a mass-enumeration / IDOR / fuzzing / bulk-fetch script that hits one endpoint with many inputs (RUTs, phones, ids) from --file/--start/--end, needs --workers and --rotate, must dodge IP-based rate limits, writes one output file per input plus a consolidated hits-<case>-<kind>.csv (e.g. hits-acme203-pii.csv, never a bare hits.csv) one level up, supports --resume to skip already-fetched ids, and (when auth is short-lived) follows a session.yaml refreshed by a sidecar keepalive job with a --max-authfail abort guard. Composes with the python-writer skill for style.
 license: MIT
 compatibility: opencode
 metadata:
   audience: opencode-agents
-  reference-projects: pentest-requesters
+  reference-projects: http-async-rotate
   reference-impl: skills/http-async-rotate/reference.py
 ---
 
@@ -13,7 +13,7 @@ metadata:
 
 Loaded whenever Tinmarino asks to "fan out / fuzz / enumerate / mass-fetch over a list", to add `--file`/`--workers`/`--rotate`/`--resume` to a requester, or to "rotate IPs". It captures a pattern proven across Tinmarino's bulk-fetch requesters (REST and GraphQL, with and without short-lived auth). Always write code in Tinmarino's style — defer to the **python-writer** skill for layout, naming, imports, docstrings.
 
-Defaults to bake into EVERY requester: continuous pool (§2), per-input file + `hits.csv` one level up (§5), `--resume` skip (§8), and — when the target needs a short-lived token — `--follow session.yaml` + `--max-authfail` (§6).
+Defaults to bake into EVERY requester: continuous pool (§2), per-input file + `hits-<case>-<kind>.csv` one level up (§5), `--resume` skip (§8), and — when the target needs a short-lived token — `--follow session.yaml` + `--max-authfail` (§6).
 
 ## 1. When to use / not use
 
@@ -122,7 +122,8 @@ Throughput / rotation:
 - `--timeout SECONDS` (default 20–30), `--sleep SECONDS` (optional per-request throttle to avoid DoS-ing the target).
 
 Output / resume (see §5):
-- `--out DIR` — per-input files go here; the consolidated `hits.csv` is written ONE LEVEL ABOVE it.
+- `--out DIR` — per-input files go here; the consolidated `hits-<case>-<kind>.csv` is written ONE LEVEL ABOVE it.
+- `--hits-name NAME` — override that CSV filename (default `hits-<case>-<kind>.csv`).
 - `--resume` — skip inputs whose output file already exists.
 
 Auth (see §6) — when the target needs a Bearer/JWT:
@@ -130,24 +131,38 @@ Auth (see §6) — when the target needs a Bearer/JWT:
 - `--session PATH` (default `session.yaml`) + `--follow` — read the token from a file a sidecar keepalive job keeps fresh; this is the default for big runs.
 - `--max-authfail N` (default 100) — abort the run after N CONSECUTIVE auth failures (dead/expired token), so a sweep never spins for hours producing nothing. Reset the counter on any success.
 
-## 5. Output layout — per-input files + consolidated `hits.csv` one level up
+## 5. Output layout — per-input files + a consolidated `hits-<case>-<kind>.csv` one level up
 
 Two outputs, deliberately separated so the consolidated CSV never mixes with the
 millions of per-input files (and `--resume`'s `exists()` check stays cheap):
 
 - **Per-input raw**: `{out_dir}/{input}.json` — one file per input (e.g. `{rut}-{dv}.json`). Idempotent, parallel-safe (distinct paths, no lock), and the basis of `--resume`.
-- **Consolidated `hits.csv`**: ONE LEVEL ABOVE `--out`, i.e. `dirname(out_dir)/hits.csv`. Only rows that actually carried data (a hit) are appended — one row per record, the fields you care about flattened for grepping/Excel.
+- **Consolidated CSV**: ONE LEVEL ABOVE `--out`. Only rows that actually carried data (a hit) are appended — one row per record, the fields you care about flattened for grepping/Excel.
+
+**Never name it a bare `hits.csv`.** The file is what you hand to the report and what survives months after the run, so its name must say *which finding* produced it and *what it holds*, with no other context. Use:
+
+```
+hits-<case>-<kind>.csv        e.g. hits-acme203-pii.csv, hits-acme206-mail.csv
+```
+
+`<case>` is the finding id (`acme203`, `ai004`); `<kind>` is the payload class — `pii`, `mail`, `phone`, `bank`, `policy`, `doc`. Two reasons this matters: sibling sweeps of the same finding land in the SAME parent directory, and a generic `hits.csv` silently merges them into one unattributable file; and a CSV of third-party PII must be identifiable at a glance so it is never mistaken for scratch output and committed.
 
 ```python
+S_CASE = "acme203"                      # finding id
+S_KIND = "pii"                          # pii | mail | phone | bank | policy | doc
+S_HITS = f"hits-{S_CASE}-{S_KIND}.csv"
+
 def output_path(item, args):
     return join(args.out, f"{item}.json")
 
 def hits_path(args):
-    # hits.csv lives ONE level above --out so it doesn't mix with per-input JSON
-    return join(dirname(normpath(args.out)) or ".", S_HITS)
+    # one level above --out so it doesn't mix with per-input JSON
+    return join(dirname(normpath(args.out)) or ".", args.hits_name or S_HITS)
 ```
 
-So `--out Findings/Case01/Detail` yields `Findings/Case01/hits.csv` + `Findings/Case01/Detail/<id>.json`. Append rows under a short lock-free `open(..., "a")` (lines < PIPE_BUF are atomic), or accept minor interleave — never rewrite the whole CSV from threads.
+Expose `--hits-name` defaulting to `S_HITS` so a re-run can be parked beside the first without clobbering it.
+
+So `--out Findings/Acme203/Detail` yields `Findings/Acme203/hits-acme203-pii.csv` + `Findings/Acme203/Detail/<id>.json`. Write the header row on first creation. Append rows under a short lock-free `open(..., "a")` (lines < PIPE_BUF are atomic), or accept minor interleave — never rewrite the whole CSV from threads.
 
 For runs tied to a specific finding, default `--out` to `Findings/<vuln-id>/wave<NN>/`, where `<vuln-id>` is the report identifier and `<NN>` is the next zero-padded wave number inside that finding directory (`wave01`, `wave02`, ...). Create it automatically, never overwrite an existing wave unless the user asks, and keep the absolute input offset/id in the per-input filename so the run is resumable and auditable.
 
@@ -235,4 +250,4 @@ Copy `rut.py` into the same directory as your requester script, or add the skill
 
 ## 11. Reference implementation
 
-A complete, runnable template lives next to this file: `skills/http-async-rotate/reference.py`. Copy it, replace `produce_inputs`, `make_one_request`'s URL/body, and `parse_result`. It already wires `--file/--start/--end/--workers/--rotate/--region/--timeout/--sleep/--out/--resume`, the continuous pool, ApiGateway start/shutdown, per-item output, `hits.csv` one level up, and resume-skip. Applied example: a phone-to-PII requester wired with `--file/--workers/--rotate`.
+A complete, runnable template lives next to this file: `skills/http-async-rotate/reference.py`. Copy it, replace `produce_inputs`, `make_one_request`'s URL/body, and `parse_result`. It already wires `--file/--start/--end/--workers/--rotate/--region/--timeout/--sleep/--out/--resume`, the continuous pool, ApiGateway start/shutdown, per-item output, the `hits-<case>-<kind>.csv` one level up, and resume-skip. Applied example: a phone-to-PII requester wired with `--file/--workers/--rotate`.
