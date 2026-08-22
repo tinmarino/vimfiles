@@ -160,9 +160,9 @@ Este es el estilo canónico del consultor y es el **formato por defecto** para t
 
 Reglas concretas del perfil (con ejemplo real):
 
-1. **`## Title` compacto con prefijo e *endpoint***: formato `BT<id>: /<ruta-endpoint>: <descripción corta> (<calificadores>)`. El calificador entre paréntesis resume el contexto (`no autenticado, masivo`, `autenticado`, `corredor`, etc.). Conserva el identificador interno (`BT226`, `Acme224`) como prefijo. Ejemplo:
+1. **`## Title` compacto con prefijo e *endpoint***: formato `<PFX><id>: /<ruta-endpoint>: <descripción corta> (<calificadores>)`. El calificador entre paréntesis resume el contexto (`no autenticado, masivo`, `autenticado`, `corredor`, etc.). Conserva el identificador interno (`AI042`, `<PFX>224`) como prefijo. Ejemplo:
 
-   `BT226: /<flujo>/datoscliente: datos de contacto y domicilio de terceros por \`idParty\` secuencial (no autenticado, masivo)`
+   `AI042: /<flujo>/datoscliente: datos de contacto y domicilio de terceros por \`idParty\` secuencial (no autenticado, masivo)`
 
    No uses la forma larga "IDOR no autenticado en X de Y".
 
@@ -192,11 +192,104 @@ Reglas concretas del perfil (con ejemplo real):
 
 9. **Carpeta de adjuntos `Ad/`**: **todos** los adjuntos viven exclusivamente en `Report/<ID>/Ad/`; en la raíz de `Report/<ID>/` solo quedan los `report*.md`. Nunca dejes `.json`, `.csv`, `.xlsx`, scripts ni imágenes sueltos en la raíz: muévelos a `Ad/` (bundle, evidencias base, script, `.xlsx`, las N respuestas `.json` más grandes como muestra, y la imagen). El `.csv` no se adjunta si ya va el `.xlsx`. En la tabla `# Adjuntos` se cita el **nombre base pelado** del archivo (sin el prefijo `Ad/`), que se sobreentiende.
 
+## 2f. Calificadores obligatorios en el `## Title`
+
+El titulo termina SIEMPRE con un parentesis que resume el contexto de explotacion, para que el triaje entienda el alcance sin leer el cuerpo. Formato: `<ID>: <endpoint>: <que ocurre> (<calificadores>)`.
+
+Los calificadores van en este orden, separados por coma:
+
+| Calificador | Cuando se pone |
+| --- | --- |
+| `no autenticado` | El ataque no necesita credencial alguna. Es el que mas sube la severidad percibida: ponlo primero y siempre que aplique. |
+| `autenticado` | Hace falta una sesion valida. Se declara igual, para que nadie sobrestime el hallazgo. |
+| `masivo` | El defecto se repite sobre muchos objetos: una solicitud por RUT, por id, por folio. Enumeracion a escala. |
+| `dirigido` | Solo afecta a un objeto concreto que el atacante ya conoce, sin escalar a barrido. |
+| `one shot` | **Una sola** solicitud devuelve muchos datos de una vez (un listado completo, un volcado, un arreglo completo de entidades). Es distinto de `masivo`: `masivo` son N solicitudes, `one shot` es una. |
+
+Se combinan cuando corresponde: `(no autenticado, masivo)`, `(autenticado, one shot)`, `(no autenticado, masivo, one shot)`, `(autenticado, dirigido)`.
+
+Ejemplo real de la forma correcta:
+
+```markdown
+## Title
+
+AI042: /Auth/v1/login revela el estado de la cuenta de un cliente a quien solo conoce su RUT, y permite inutilizarla de forma dirigida (no autenticado, masivo)
+```
+
+## 2h. Formato de los bloques de codigo: sin `$`, salida como comentario
+
+Los bloques ejecutables se escriben para copiar y pegar. El comando va **pelado**, sin prompt `$`, y la salida va **comentada**, de modo que el triaje seleccione el bloque entero y lo pegue en su terminal sin editar nada.
+
+Mal — el `$` obliga a limpiar a mano y la salida se ejecutaria como comando:
+
+```bash
+$ python3 verify.py
+404 NO REGISTRADO
+```
+
+Bien:
+
+```bash
+python3 verify.py
+# Out: 404 NO REGISTRADO
+```
+
+Reglas:
+
+- **El comando no lleva `$` ni ningun otro prompt.** Tampoco `#` de root: si hace falta privilegio, se escribe `sudo` explicito.
+- **La salida de una sola linea** va en la misma marca: `# Out: <salida>`.
+- **La salida de varias lineas** abre con `# Out:` sola y continua con cada linea prefijada por `# `, respetando la indentacion original dentro del comentario.
+- **Las lineas en blanco dentro de una misma salida** se escriben como `#`, para que se vea que el bloque de salida sigue.
+- **Entre dos invocaciones distintas** se deja una linea realmente vacia, no un `#`: separa pares comando/salida y hace legible el bloque.
+- Un comentario explicativo del comando va al final de su linea (`python3 verify.py     # extracto; salida completa en el adjunto`), nunca confundido con la salida.
+
+Ejemplo con las dos formas y el separador:
+
+```bash
+openssl pkcs12 -in cliente.pfx -passin 'pass:<clave>' -clcerts -nokeys -out client.crt
+# Out: MAC verified OK
+
+python3 cliente.py login '{"user":"<id>","password":"<arbitraria>"}'
+# Out: 401
+# {"timestamp":"<fecha>","title":"Error de login",
+#  "message":"Uno de los datos que ingresaste no es valido."}
+```
+
+Aplica a `report.md` y a `report-small.md` por igual. Los bloques ` ```ruby ` de `## Solicitud` son transcripciones de HTTP crudo, no comandos: esos no se comentan ni se tocan.
+
+## 2g. `report-small.md`: la version ejecutiva
+
+Todo hallazgo se entrega en dos archivos dentro de `Report/<ID>/`:
+
+| Archivo | Para quien | Regla de extension |
+| --- | --- | --- |
+| `report.md` | El analista que reproduce y discute | Sin limite; justifica, matiza, documenta lo que no funciono |
+| `report-small.md` | El triaje y el ejecutivo que decide en dos minutos | **Maximo 2 frases SVO por seccion `##`, exactamente 1 frase por `### Paso N`** |
+
+Reglas de `report-small.md`:
+
+- **Frases SVO.** Sujeto, verbo, objeto. Directas, en presente, sin subordinadas encadenadas. "Un atacante remoto sin credenciales lee el estado de cualquier cuenta" — no "Se ha podido observar que seria posible que un atacante..."
+- **Un paso, una frase.** Cada `### Paso N` es una sola frase que dice que se hizo y que salio. El bloque de codigo que sigue aporta la prueba; la frase no lo repite en prosa.
+- **Se conserva literal, sin recortar:** la solicitud HTTP, las respuestas, los comandos ejecutables, la tabla `# Adjuntos` y la tabla `# Tiempos`. Eso es lo que hace el reporte reproducible, y la brevedad jamas se paga con reproducibilidad.
+- **Se elimina sin piedad:** justificaciones metodologicas, matices ("cabe senalar", "es importante destacar"), repeticiones entre `Descripcion` e `Impacto`, explicaciones de por que se eligio una herramienta, y toda frase que no cambie la decision del triaje.
+- **Salidas de consola recortadas al renglon que prueba el punto.** Un `stdout` de 30 lineas se queda en las 2 que muestran el codigo de estado; el volcado completo vive en el adjunto.
+- **Objetivo de tamano:** entre un quinto y un cuarto de las palabras de `report.md`. Si `report-small.md` supera el 40% del original, no se ha recortado, se ha reformateado.
+
+**La exactitud manda sobre el recuento.** El limite de frases es un objetivo, no una licencia para mentir por omision. Se admite una frase adicional —y se deja constancia de por que— cuando sin ella el reporte:
+
+- **pondria en riesgo un activo real**: toda advertencia operativa se conserva entera. Si reproducir el hallazgo puede bloquear una cuenta, borrar un dato o degradar un servicio, el paso dice cuantas repeticiones lo provocan, que hace falta para revertirlo y sobre que cuenta debe probarlo el triaje. Una advertencia recortada que lleve al triaje a destruir una cuenta de produccion es el peor resultado posible de este formato.
+- **afirmaria mas de lo observado**: si el informe largo declara que algo *no* se midio (no se capturaron respuestas intermedias, no se ensayaron los controles anti-automatizacion, no se enumeraron identificadores ajenos), esa reserva viaja al corto. Borrar el matiz convierte una frase prudente en una afirmacion refutable, y una sola afirmacion refutada desacredita el informe completo.
+- **dejaria de ser reproducible**: rutas fijas, huellas de certificado, nombres de recurso, el segundo paso de un flujo, el entrecomillado exacto de un cuerpo. Si el triaje no puede rehacer la solicitud, la brevedad no sirvio de nada.
+
+Nunca se recorta una salida de consola de forma que cambie su significado, ni se edita una respuesta citada: o se transcribe literal, o se cita el adjunto que la contiene. Si un bloque es un extracto, se rotula como extracto, porque la tabla de `# Adjuntos` promete que el adjunto es literal.
+
+El orden de secciones, los encabezados y el formato de las tablas son identicos a `report.md`. `report-small.md` es un recorte, no otro documento: nunca contiene un dato que no este en el largo.
+
 ## 3. Mapeo desde CyScope JSON
 
 Cuando partas de una exportación `out/json/*.json`, mapea así:
 
-- `## Title`: usa `name`; elimina prefijos internos solo si estorban la lectura, pero conserva identificadores útiles como `AB143`, `CD089` o el nombre del endpoint.
+- `## Title`: usa `name`; elimina prefijos internos solo si estorban la lectura, pero conserva identificadores útiles como `<PFX>143`, `AI089` o el nombre del endpoint.
 - `## CVSS`: usa `cvss_vector` y `severity_score`; si falta el score, calcula o deja el vector y marca el cálculo como pendiente solo si no hay datos suficientes.
 - `## Sistemas afectados`: por defecto (perfil 2e) escribe solo la(s) URL(s) de `urls[].url`/`targets`, una por línea y sin viñetas. Solo desglosa host/endpoint/ambiente en viñetas si el consultor lo pide.
 - `## Descripción`: parte desde `description`; explica la causa técnica sin mezclar impacto ni mitigación.
