@@ -49,7 +49,7 @@ S_KIND   = "pii"
 # Consolidated CSV, one level above --out. NEVER a bare "hits.csv": several sweeps
 # land in the same parent directory and a generic name silently merges them.
 S_HITS   = f"hits-{S_CASE}-{S_KIND}.csv"
-D_HEADER = {"X-Bug-Bounty-Cyscope": "Tinmarino"}
+D_HEADER = {"X-Bug-Bounty-CyScope": "Tinmarino"}
 
 # Default to a SINGLE region (us-east-1) — fewer gateways to create/tear down.
 # Pass --region repeatedly for wider IP spread (some regions need manual AWS opt-in).

@@ -49,7 +49,7 @@ Earnings-oriented. Where the pentest suite asks "how do I test this", these ask 
 - Engagement root holds `AGENTS.md`, `todo.md`, `done.md`, `MEMORY.md`, `program*.md`, `scope.md`, and the directories `Report/`, `Findings/`, `Script/`, `Lot/`, `doc/`.
 - Agents own the `AI###` finding namespace; the human's own prefix is never assigned by an agent.
 - Read-only by default — state-changing methods need explicit human authorisation for a concrete payload.
-- Every request carries the attribution header, byte-exact from the program page. See `pentest-scope-gate`.
+- **Every HTTP request carries `X-Bug-Bounty-CyScope: Tinmarino`**, byte-exact. Required by CyScope.io; unattributed traffic gets the program blocked. Wrong casing returns the same 200 as the right value, so it is verified with grep, never assumed. See `pentest-scope-gate`.
 - Evidence is copied into `Report/<ID>/Ad/`, never moved out of `Findings/`.
 - Markdown is never hard-wrapped; one line per paragraph, bullet or table cell.
 - Nothing lives in `/tmp`. What is not on local disk is not evidence later.

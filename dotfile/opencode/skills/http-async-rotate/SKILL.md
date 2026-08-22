@@ -193,7 +193,7 @@ the rotator — the refresh endpoint lives on another domain and must go direct.
 ## 7. Conventions (Tinmarino's codebase)
 
 - `#!/usr/bin/env python3`, pylint-disable header (`invalid-name`, `broad-exception-caught`, `bare-except`), module docstring with a run-log markdown table: `| N. | Time | IP | Range | Comment |` so each live run is logged.
-- Headers always include `"X-Bug-Bounty-Cyscope": "Tinmarino"` (authorised-testing marker for attribution and registry on the client server — this is a bug bounty program).
+- Headers always include `"X-Bug-Bounty-CyScope": "Tinmarino"` (authorised-testing marker for attribution and registry on the client server — this is a bug bounty program).
 - One output file per input: `write_response(mutator, json)` → `{out_dir}/{mutator}.json` (or `.txt`/`.pdf`). Makes runs resumable and parallel-safe (distinct paths, no lock needed).
 - Imports `from X import Y`; prefixes `s_`/`d_`/`i_`/`a_`; verb-first docstrings.
 - Optional JWT refresh every `i_reset` items via a separate `update_jwt()` against a different host (NOT routed through the gateway).
@@ -224,7 +224,7 @@ the flag but reach for it on every real run; print the skipped count at the end.
 - **Two-stage chains in one worker**: when endpoint B needs an id that endpoint A returns, do both inside `make_one_request` (A → collect ids → loop B). Keeps the unit of work "one input", so `--resume`/pool/rotation all still apply.
 - **Derived inputs**: compute what the API needs from the bare input locally (e.g. the Chilean RUT verifier digit via mod-11) instead of requiring it in the `--file`. Keep the helper copied in-file (no cross-repo import for a one-liner).
 - **Shared token module**: import `TokenManager`/`read_session_state`/`jwt_remaining_seconds` from one canonical script rather than re-implementing per requester.
-- **`X-Bug-Bounty-Cyscope: Tinmarino`** header on every request (authorised-testing marker), and a run-log markdown table in the module docstring.
+- **`X-Bug-Bounty-CyScope: Tinmarino`** header on every request (authorised-testing marker), and a run-log markdown table in the module docstring.
 
 ## 10. RUT helper — `rut.py`
 

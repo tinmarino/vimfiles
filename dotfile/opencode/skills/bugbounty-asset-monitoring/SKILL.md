@@ -7,6 +7,15 @@ description: Continuous attack-surface monitoring for first-mover advantage on b
 
 On a mature public program almost every non-duplicate high bounty comes from surface that did not exist last week. The edge is **latency, not cleverness**. Target: new asset discovered → tested in under 4 hours. That is a scheduling problem. Everything here is cron-able, idempotent, and emits a **diff**; the diff is the work queue.
 
+> **Identify your traffic on every request.** Set the attribution header the program asks for; if the policy names none, set one anyway so the blue team can separate you from a real incident. On CyScope.io the byte-exact value is:
+>
+> ```
+> X-Bug-Bounty-CyScope: Tinmarino
+> ```
+>
+> On HackerOne / Bugcrowd / Intigriti / YesWeHack use the handle-based header or UA the program specifies. A wrong-cased header returns the same 200 as the correct one, so verify with `grep`, never assume. See `pentest-scope-gate`.
+
+
 Rule that governs the whole skill: every stage ends in `... | anew state/X.txt > new/$D/X.txt`. `anew` appends only unseen lines to the baseline **and prints exactly those new lines**. Non-empty file ⇒ something shipped ⇒ go hunt.
 
 ## 0. Environment gotchas — read before copy-pasting anything
@@ -88,6 +97,7 @@ Streaming is where first-mover really lives (minutes after issuance): a small pe
 
 ```bash
 ~/go/bin/httpx -l new/$D/subs.txt -silent -sc -title -tech-detect -cdn -favicon -location \
+  -H 'X-Bug-Bounty-CyScope: Tinmarino' \
   -json -o log/httpx-$D.json -rl 10 -H "User-Agent: bugbounty-<your-platform-handle>"
 jq -r '[.url,.status_code,((.tech//[])|join(",")),.title,.favicon]|@tsv' log/httpx-$D.json \
   | anew state/live.txt > new/$D/live.txt
@@ -109,7 +119,7 @@ waybackurls target.example.com  | grep -E '\.js(\?|$)'   | anew state/js.txt >> 
 
 while read -r u; do
   h=$(printf '%s' "$u" | sha1sum | cut -c1-12)
-  curl -sL --max-time 30 "$u" | js-beautify -f - > /tmp/$h.new 2>/dev/null || continue   # `-f -` = read stdin
+  curl -sL --max-time 30 -H 'X-Bug-Bounty-CyScope: Tinmarino' "$u" | js-beautify -f - > /tmp/$h.new 2>/dev/null || continue   # `-f -` = read stdin
   if [ -f state/js/$h.js ]; then
     diff -u state/js/$h.js /tmp/$h.new > new/$D/jsdiff-$h.patch || echo "CHANGED $u" >> new/$D/js-events.txt
   else

@@ -7,6 +7,15 @@ description: Ranked dollars-per-hour playbook of bug-bounty vulnerability classe
 
 Bug count is not the metric. Realized dollars-per-hour is set by three multipliers: **class base rate** (authz/logic classes pay 3–10x reflected-XSS-tier on the same program), **the escalation move** (the one extra step that crosses a tenant/user boundary or reaches cloud credentials), and **triage friction** (an Informative closure is pure unpaid time). This skill ranks the classes and, for each, gives the four things that decide the money: what to check, when to keep digging, how to escalate a tier, and which closure reason to pre-empt in the report body. All ratios and dollar figures here are indicative orders of magnitude observed across public platform data as of 2026-08; re-read the program's own reward table before trusting any of them.
 
+> **Identify your traffic on every request.** Set the attribution header the program asks for; if the policy names none, set one anyway so the blue team can separate you from a real incident. On CyScope.io the byte-exact value is:
+>
+> ```
+> X-Bug-Bounty-CyScope: Tinmarino
+> ```
+>
+> On HackerOne / Bugcrowd / Intigriti / YesWeHack use the handle-based header or UA the program specifies. A wrong-cased header returns the same 200 as the correct one, so verify with `grep`, never assume. See `pentest-scope-gate`.
+
+
 Authorized, in-scope testing only. Read the program policy and `oos.txt` before the first request; honour stated rate ceilings and any required test-account convention; never brute-force credentials or touch a real user's account; no social engineering, phishing or physical testing; no availability testing. Put your platform handle in the User-Agent (`User-Agent: bb-<handle>`) so the blue team can attribute the traffic.
 
 ## 1. Workflow — pick the next class in 7 steps

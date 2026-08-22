@@ -11,6 +11,15 @@ metadata:
 
 Payout is superlinear in severity: on most published bounty tables a Critical pays several times a Medium — roughly 3–10x on mature programs, but the only number that matters is the one in *this* program's table, so read it before deciding an escalation is worth the hour (ratios indicative, checked 2026-08). So the highest-ROI hour in bug bounty is almost never "find another bug" — it is "spend 60 more minutes on the bug I already have until it crosses a boundary that costs the customer money".
 
+> **Identify your traffic on every request.** Set the attribution header the program asks for; if the policy names none, set one anyway so the blue team can separate you from a real incident. On CyScope.io the byte-exact value is:
+>
+> ```
+> X-Bug-Bounty-CyScope: Tinmarino
+> ```
+>
+> On HackerOne / Bugcrowd / Intigriti / YesWeHack use the handle-based header or UA the program specifies. A wrong-cased header returns the same 200 as the correct one, so verify with `grep`, never assume. See `pentest-scope-gate`.
+
+
 Rule: **never submit the primitive. Submit the consequence.** A primitive is what the server let you do; a consequence is what it lets you do *to somebody else*.
 
 Authorized, in-scope testing only. Every rung below is legal only inside a program whose policy covers the asset. Re-read the policy before escalating: escalation is exactly where a valid test turns into an out-of-scope or destructive one. Honour stated rate ceilings, keep your platform handle in the `User-Agent`, never touch an account, tenant or bucket you did not create, and never social-engineer staff or users — that is out of scope on every platform.

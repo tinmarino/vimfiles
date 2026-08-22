@@ -7,6 +7,15 @@ description: "Write the English-language bug-bounty report that maximizes payout
 
 The English counterpart to `vuln-reporter`. On a bounty platform the report is a **sales document read in about 90 seconds by a triage contractor with a queue**. Payout is set by how fast they reproduce it, what business impact they can forward verbatim to the customer, and whether you made the severity easy to agree with. Technical quality is necessary and not sufficient.
 
+> **Identify your traffic on every request.** Set the attribution header the program asks for; if the policy names none, set one anyway so the blue team can separate you from a real incident. On CyScope.io the byte-exact value is:
+>
+> ```
+> X-Bug-Bounty-CyScope: Tinmarino
+> ```
+>
+> On HackerOne / Bugcrowd / Intigriti / YesWeHack use the handle-based header or UA the program specifies. A wrong-cased header returns the same 200 as the correct one, so verify with `grep`, never assume. See `pentest-scope-gate`.
+
+
 Everything here is for **authorized, in-scope** testing under a published program policy. Read the policy before the first request, not after.
 
 Non-negotiable, on every platform: no denial-of-service or load testing, no automated scanning where the policy forbids it, no social engineering of staff or users, no persistence/backdoors, no pivoting to out-of-scope hosts, and no touching accounts you do not own. Test cross-account authorization with **two accounts you registered yourself** — never against a real customer's record. Stop enumerating the moment the boundary is proven. Rate-limit yourself to what the policy states and identify your traffic with the header the program asks for (commonly `X-Bug-Bounty: <handle>` or a program-specified UA); if none is specified, set one anyway so the blue team can tell you apart from an incident.
