@@ -88,6 +88,14 @@ while IFS= read -r l; do hit public-ip "$l"; done < <(
     | grep -oE '([0-9]{1,3}\.){3}[0-9]{1,3}' \
     | sort -u | grep -vE '^(10\.|127\.|172\.(1[6-9]|2[0-9]|3[01])\.|192\.168\.|169\.254\.|0\.|255\.|203\.0\.113\.|198\.51\.100\.|192\.0\.2\.|224\.|1\.1\.1\.1$|8\.8\.8\.8$)')
 
+
+# 6. Client-derived finding-id prefixes. Skills must only ever use the agent
+#    namespace AI### or an explicit <PFX> placeholder; a two/three-letter
+#    prefix plus three digits is almost always a real client's report id.
+while IFS= read -r l; do hit finding-id "$l"; done < <(
+  grep -rIn --include='SKILL.md' -oE '\b[A-Z]{2,3}[0-9]{3}\b' "$DIR" 2>/dev/null \
+    | grep -vE ':(AI|PFX|CWE|CVE|RFC|ISO|UTF|SHA|MD5|AES|RSA|JWT|SQL|XSS|API|TLS|SSL|HTTP)[0-9]{3}$')
+
 n=$(ls -d "$DIR"/*/SKILL.md 2>/dev/null | wc -l)
 if ((rc)); then echo; echo "FAILED -- placeholder these before pushing."
 else echo "OK -- $n skills clean (client names, hosts, secrets, national IDs, public IPs)."; fi

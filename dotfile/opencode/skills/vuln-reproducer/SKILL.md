@@ -7,6 +7,9 @@ description: Reproduce and report pentest vulnerabilities from todo.md task list
 
 Automates the workflow of reproducing a vulnerability described in `todo.md` and writing a CyScope Markdown report using the `vuln-reporter` skill format.
 
+> **`todo.md` and `done.md` are the human's.** Never tick a top-level `* [ ]` task, never move or append anything to `done.md`, and never delete or reword what he wrote — you only ADD. Indented sub-bullets ARE yours to tick. When a task is finished, add a dated sub-bullet with the outcome and evidence paths, leave the parent box empty, and tell him it is ready to close. See `pentest-engagement-init`.
+
+
 ## 1. Workflow
 
 When triggered, execute these steps in order:
