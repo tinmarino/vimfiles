@@ -17,3 +17,7 @@ pack/bundle/opt/gfm-syntax
 
 # This is for vim-plug
 plugged/
+
+# Operational skills that must never be published: they name live attacker
+# infrastructure (C2 host, ssh user, private-key path). Keep them local.
+dotfile/opencode/skills/rat-c2-tmux/
