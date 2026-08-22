@@ -216,6 +216,34 @@ Ejemplo real de la forma correcta:
 AI042: /Auth/v1/login revela el estado de la cuenta de un cliente a quien solo conoce su RUT, y permite inutilizarla de forma dirigida (no autenticado, masivo)
 ```
 
+## 2g. `report-small.md`: la version ejecutiva
+
+Todo hallazgo se entrega en dos archivos dentro de `Report/<ID>/`:
+
+| Archivo | Para quien | Regla de extension |
+| --- | --- | --- |
+| `report.md` | El analista que reproduce y discute | Sin limite; justifica, matiza, documenta lo que no funciono |
+| `report-small.md` | El triaje y el ejecutivo que decide en dos minutos | **Maximo 2 frases SVO por seccion `##`, exactamente 1 frase por `### Paso N`** |
+
+Reglas de `report-small.md`:
+
+- **Frases SVO.** Sujeto, verbo, objeto. Directas, en presente, sin subordinadas encadenadas. "Un atacante remoto sin credenciales lee el estado de cualquier cuenta" — no "Se ha podido observar que seria posible que un atacante..."
+- **Un paso, una frase.** Cada `### Paso N` es una sola frase que dice que se hizo y que salio. El bloque de codigo que sigue aporta la prueba; la frase no lo repite en prosa.
+- **Se conserva literal, sin recortar:** la solicitud HTTP, las respuestas, los comandos ejecutables, la tabla `# Adjuntos` y la tabla `# Tiempos`. Eso es lo que hace el reporte reproducible, y la brevedad jamas se paga con reproducibilidad.
+- **Se elimina sin piedad:** justificaciones metodologicas, matices ("cabe senalar", "es importante destacar"), repeticiones entre `Descripcion` e `Impacto`, explicaciones de por que se eligio una herramienta, y toda frase que no cambie la decision del triaje.
+- **Salidas de consola recortadas al renglon que prueba el punto.** Un `stdout` de 30 lineas se queda en las 2 que muestran el codigo de estado; el volcado completo vive en el adjunto.
+- **Objetivo de tamano:** entre un quinto y un cuarto de las palabras de `report.md`. Si `report-small.md` supera el 40% del original, no se ha recortado, se ha reformateado.
+
+**La exactitud manda sobre el recuento.** El limite de frases es un objetivo, no una licencia para mentir por omision. Se admite una frase adicional —y se deja constancia de por que— cuando sin ella el reporte:
+
+- **pondria en riesgo un activo real**: toda advertencia operativa se conserva entera. Si reproducir el hallazgo puede bloquear una cuenta, borrar un dato o degradar un servicio, el paso dice cuantas repeticiones lo provocan, que hace falta para revertirlo y sobre que cuenta debe probarlo el triaje. Una advertencia recortada que lleve al triaje a destruir una cuenta de produccion es el peor resultado posible de este formato.
+- **afirmaria mas de lo observado**: si el informe largo declara que algo *no* se midio (no se capturaron respuestas intermedias, no se ensayaron los controles anti-automatizacion, no se enumeraron identificadores ajenos), esa reserva viaja al corto. Borrar el matiz convierte una frase prudente en una afirmacion refutable, y una sola afirmacion refutada desacredita el informe completo.
+- **dejaria de ser reproducible**: rutas fijas, huellas de certificado, nombres de recurso, el segundo paso de un flujo, el entrecomillado exacto de un cuerpo. Si el triaje no puede rehacer la solicitud, la brevedad no sirvio de nada.
+
+Nunca se recorta una salida de consola de forma que cambie su significado, ni se edita una respuesta citada: o se transcribe literal, o se cita el adjunto que la contiene. Si un bloque es un extracto, se rotula como extracto, porque la tabla de `# Adjuntos` promete que el adjunto es literal.
+
+El orden de secciones, los encabezados y el formato de las tablas son identicos a `report.md`. `report-small.md` es un recorte, no otro documento: nunca contiene un dato que no este en el largo.
+
 ## 2h. Formato de los bloques de codigo: sin `$`, salida como comentario
 
 Los bloques ejecutables se escriben para copiar y pegar. El comando va **pelado**, sin prompt `$`, y la salida va **comentada**, de modo que el triaje seleccione el bloque entero y lo pegue en su terminal sin editar nada.
@@ -257,33 +285,39 @@ python3 cliente.py login '{"user":"<id>","password":"<arbitraria>"}'
 
 Aplica a `report.md` y a `report-small.md` por igual. Los bloques ` ```ruby ` de `## Solicitud` son transcripciones de HTTP crudo, no comandos: esos no se comentan ni se tocan.
 
-## 2g. `report-small.md`: la version ejecutiva
+## 2i. Adjuntos: extension `.txt` forzada y orden por fecha
 
-Todo hallazgo se entrega en dos archivos dentro de `Report/<ID>/`:
+**Todo adjunto cuya extension no acepte la plataforma lleva un `.txt` anadido al final**, conservando la extension original: `mpos.py` -> `mpos.py.txt`, `server.crt` -> `server.crt.txt`, `cliente.pfx` -> `cliente.pfx.txt`. El nombre real vive en la tabla `# Adjuntos` tal como esta en disco, con el `.txt`, y el cuerpo del informe explica en una frase que hay que quitarlo antes de usar el archivo.
 
-| Archivo | Para quien | Regla de extension |
-| --- | --- | --- |
-| `report.md` | El analista que reproduce y discute | Sin limite; justifica, matiza, documenta lo que no funciono |
-| `report-small.md` | El triaje y el ejecutivo que decide en dos minutos | **Maximo 2 frases SVO por seccion `##`, exactamente 1 frase por `### Paso N`** |
+Se suben **sin tocar** unicamente estas familias:
 
-Reglas de `report-small.md`:
+| Se sube tal cual | Se le anade `.txt` |
+| --- | --- |
+| Imagenes: `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp` | Codigo: `.py`, `.sh`, `.js`, `.rb`, `.ps1` |
+| Texto plano: `.txt` | Cripto y certificados: `.crt`, `.pem`, `.pfx`, `.p12`, `.key`, `.der` |
+| Datos tabulares: `.csv`, `.xlsx` | Datos estructurados: `.json`, `.xml`, `.yaml`, `.har` |
+| | Capturas y binarios: `.pcap`, `.log`, `.zip`, `.apk`, `.jar`, `.bin` |
 
-- **Frases SVO.** Sujeto, verbo, objeto. Directas, en presente, sin subordinadas encadenadas. "Un atacante remoto sin credenciales lee el estado de cualquier cuenta" — no "Se ha podido observar que seria posible que un atacante..."
-- **Un paso, una frase.** Cada `### Paso N` es una sola frase que dice que se hizo y que salio. El bloque de codigo que sigue aporta la prueba; la frase no lo repite en prosa.
-- **Se conserva literal, sin recortar:** la solicitud HTTP, las respuestas, los comandos ejecutables, la tabla `# Adjuntos` y la tabla `# Tiempos`. Eso es lo que hace el reporte reproducible, y la brevedad jamas se paga con reproducibilidad.
-- **Se elimina sin piedad:** justificaciones metodologicas, matices ("cabe senalar", "es importante destacar"), repeticiones entre `Descripcion` e `Impacto`, explicaciones de por que se eligio una herramienta, y toda frase que no cambie la decision del triaje.
-- **Salidas de consola recortadas al renglon que prueba el punto.** Un `stdout` de 30 lineas se queda en las 2 que muestran el codigo de estado; el volcado completo vive en el adjunto.
-- **Objetivo de tamano:** entre un quinto y un cuarto de las palabras de `report.md`. Si `report-small.md` supera el 40% del original, no se ha recortado, se ha reformateado.
+Ante la duda, se anade el `.txt`: un adjunto rechazado por la plataforma obliga a rehacer el envio, y un `.txt` de mas solo cuesta una frase de aclaracion.
 
-**La exactitud manda sobre el recuento.** El limite de frases es un objetivo, no una licencia para mentir por omision. Se admite una frase adicional —y se deja constancia de por que— cuando sin ella el reporte:
+El comando de restauracion va en el propio informe y nombra las extensiones que se renombran, nunca un `*` ciego que estropee los adjuntos que ya eran `.txt` legitimos:
 
-- **pondria en riesgo un activo real**: toda advertencia operativa se conserva entera. Si reproducir el hallazgo puede bloquear una cuenta, borrar un dato o degradar un servicio, el paso dice cuantas repeticiones lo provocan, que hace falta para revertirlo y sobre que cuenta debe probarlo el triaje. Una advertencia recortada que lleve al triaje a destruir una cuenta de produccion es el peor resultado posible de este formato.
-- **afirmaria mas de lo observado**: si el informe largo declara que algo *no* se midio (no se capturaron respuestas intermedias, no se ensayaron los controles anti-automatizacion, no se enumeraron identificadores ajenos), esa reserva viaja al corto. Borrar el matiz convierte una frase prudente en una afirmacion refutable, y una sola afirmacion refutada desacredita el informe completo.
-- **dejaria de ser reproducible**: rutas fijas, huellas de certificado, nombres de recurso, el segundo paso de un flujo, el entrecomillado exacto de un cuerpo. Si el triaje no puede rehacer la solicitud, la brevedad no sirvio de nada.
+```bash
+cd Ad
+for f in *.py.txt *.pfx.txt *.crt.txt; do mv "$f" "${f%.txt}"; done
+```
 
-Nunca se recorta una salida de consola de forma que cambie su significado, ni se edita una respuesta citada: o se transcribe literal, o se cita el adjunto que la contiene. Si un bloque es un extracto, se rotula como extracto, porque la tabla de `# Adjuntos` promete que el adjunto es literal.
+**El orden por fecha de modificacion de `Ad/` reproduce el orden de la tabla `# Adjuntos`.** La plataforma se carga arrastrando los archivos, y el gestor de archivos los ordena por fecha: si las fechas no siguen la tabla, el consultor reordena a mano trece adjuntos en cada envio. Se fija una base y se avanza un minuto por fila, en el orden exacto de la tabla:
 
-El orden de secciones, los encabezados y el formato de las tablas son identicos a `report.md`. `report-small.md` es un recorte, no otro documento: nunca contiene un dato que no este en el largo.
+```bash
+i=0
+while IFS= read -r f; do
+  touch -d "2026-01-01 12:00 +$i minutes" "Ad/$f"
+  i=$((i+1))
+done < <(sed -n 's/^| \([A-Za-z0-9._-]*\.[A-Za-z0-9]*\) *|.*/\1/p' report.md)
+```
+
+Esto altera la fecha del sistema de archivos, no el contenido: las marcas de tiempo que sirven de prueba viajan dentro de los `resp-*.txt` y en el cuerpo del informe, y no dependen del `mtime`.
 
 ## 3. Mapeo desde CyScope JSON
 
