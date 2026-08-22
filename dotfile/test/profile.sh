@@ -458,7 +458,7 @@ alias feroxburster="~/Program/Feroxburster/feroxbuster --extract-links --user-ag
 #try_source ~/Secret/env.sh
 export PYTHONPATH=/home/mtourneboeuf/Software/Python/CountryStudy
 export PYTHONPATH+=:/home/mtourneboeuf/Software/Python/Recon
-export ELASTIC_API_KEY="***REMOVED-ROTATE-THIS-KEY***"
+[ -r ~/Secret/elastic.env ] && . ~/Secret/elastic.env   # ungitted; rotate the key there
 alias apktool='java -jar ~/Iso/Jar/apktool_2.11.1.jar'
 
 set +x

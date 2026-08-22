@@ -837,7 +837,7 @@ vnoremap s <C-C>:update!<CR>
 function! OpenLink(...)
   let link = a:0 ? a:1 : expand('<cWORD>')
   if link =~? '^ICT-\d*'
-    let link = 'https://jira.example.com/browse/' . link
+    let link = get(g:, 'jira_url', 'https://jira.example.com/browse/') . link
   elseif link =~? '^\S*=SC\d*'
     let link = substitute(link, '\w*=\(SC\d*\)', '\1', '')
     let link = 'https://github.com/koalaman/shellcheck/wiki/' . link

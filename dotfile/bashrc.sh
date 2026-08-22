@@ -453,7 +453,7 @@ export PYTHONPATH=/home/mtourneboeuf/Software/Python/CountryStudy
 export PYTHONPATH+=:~/Software/Pentest/libreriactf
 export PYTHONPATH+=:/home/mtourneboeuf/Software/Pentest/libreriactf
 export PYTHONPATH+=:/home/mtourneboeuf/Software/Python/Recon
-export ELASTIC_API_KEY="***REMOVED-ROTATE-THIS-KEY***"
+[ -r ~/Secret/elastic.env ] && . ~/Secret/elastic.env   # ungitted; rotate the key there
 alias apktool='java -jar ~/Iso/Jar/apktool_2.12.0.jar'
 # export JAVA_HOME=/var/snap/openjdk/current
 export ANDROID_SDK_ROOT=~/Android/Sdk

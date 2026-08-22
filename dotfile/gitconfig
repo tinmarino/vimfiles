@@ -122,4 +122,4 @@
 	email = tinmarino@gmail.com
 	name = Tinmarino
 [safe]
-	directory = /var/www/site
+	directory = /var/www/*
