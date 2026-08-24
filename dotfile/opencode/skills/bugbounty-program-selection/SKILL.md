@@ -1,6 +1,6 @@
 ---
 name: bugbounty-program-selection
-description: Decide which bug-bounty program, scope asset or target deserves the next block of hours, using an expected-value rubric (bounty table x scope breadth x asset freshness x competition x triage speed x duplicate risk x payment trigger), platform-specific notes for CyScope.io / HackerOne / Intigriti / Bugcrowd / YesWeHack, the private-invite reputation math, a go/no-go gate and a hard scope-and-legality gate that must pass before the first packet. Use when the operator says "which program should I hunt", "is this program worth it", "should I keep hunting this target", "compare these programs", "do the EV math", "vale la pena este programa", "que programa cazo ahora", "en que target invierto las horas", "esto paga poco, me cambio?", "me conviene el VDP", "cual plataforma me paga mas", or before starting any new hunting wave on a platform.
+description: Decide which bug-bounty program, scope asset or target deserves the next block of hours, using an expected-value rubric (bounty x scope x freshness x competition x triage speed x duplicate risk x payment trigger), platform notes for CyScope / HackerOne / Intigriti / Bugcrowd / YesWeHack, and a hard scope-and-legality gate. Use when the operator says "which program should I hunt", "is this program worth it", "compare these programs", "do the EV math", "vale la pena este programa", "que programa cazo ahora", "en que target invierto las horas", "cual plataforma me paga mas", or before starting any new hunting wave.
 ---
 
 # bugbounty-program-selection

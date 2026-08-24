@@ -171,6 +171,34 @@ Closure decision table:
 
 Never: all caps, "this is clearly critical", threats to disclose, public tweeting, contacting the company outside the platform, or re-litigating the same point twice. Disclosure happens only through the platform's coordinated-disclosure request — a unilateral write-up forfeits the bounty and can get you banned.
 
+## 5.5 Adversary pass (mandatory before you submit)
+
+A report is not ready because *you* believe it. It is ready when a reviewer whose only goal is to **refute** it fails. Run this pass on every H1/Bugcrowd/Intigriti/YWH submission — it is what separates a paid report from an Informative closure. Fork a subagent with a single instruction: *disprove this finding*. It works from the **raw evidence on disk** (the saved requests/responses, the script output), never from the report prose, and logs every request it sends.
+
+```
+Your only job is to REFUTE the finding in <report path>. Do not confirm it.
+Work from the raw request/response evidence, not from the report text.
+Re-send the reproduction block verbatim. Log every request you emit.
+Set the program's attribution header on EVERY request, including static assets — it is not inherited.
+No automated scanners. Sequential curl with sleep. Stop at proof of existence.
+```
+
+The three controls it must run, each surfaced in the final report as a reproduction step (not a footnote):
+
+- **Echo** — resend the request with and without the field you claim leaks. If the value returned is the value you sent, there is no read, only an echo.
+- **Negative control** — a non-existent id and a non-numeric id. If the response does not change, there is no read and no oracle; your "success" code proves nothing.
+- **Discrimination** — a malformed body. If the endpoint answers everything identically, it is a sink and the 200 is meaningless.
+
+Then it walks the refutation checklist:
+
+1. **Scope** — every host/endpoint is in the program's declared scope; nothing on `test/stage/uat/dev/qa`; no third party; no asset found only in a cert SAN or a JS bundle.
+2. **Program rules** — attribution header on every request; no forbidden scanners; sequential curl with `sleep`; nothing state-changing on accounts you do not own.
+3. **Reproducibility** — the inline reproduction block runs clean from a fresh account; every declared output matches a file on disk.
+4. **Severity** — CVSS vector derived from the *demonstrated* CIA, not copied from a neighbor. Downgrade explicitly rather than defend. The recurring failure is entering `9.1 Critical` and honestly leaving `5.3 Medium`.
+5. **Honesty of limits** — every inconclusive branch is written as an explicit caveat ("persistence could not be verified"). Declared limits *add* credibility with triage; hidden ones get caught and cost you the report.
+
+Reading rules it always applies: never read a status code as success without resolving its meaning; never equate "not 401" with "unauthenticated" (a static credential from a public bundle is a different, smaller finding); never write the impact you fear, only the one you proved; distinguish a syntactic error-string from a real existence oracle. Output is a one-line verdict per finding — `CONFIRMED` / `DOWNGRADED but salvageable` / `REFUTED — pull it` / `NOT VERIFIABLE` — plus the exact edits the draft needs. Apply them before submitting. For the CyScope-Spanish engagement layout with `Report/<ID>/Ad/` folders, `pentest-report-package` runs this same pass wired to that structure; this section is the self-contained version for a bounty submission with no engagement repo.
+
 ## 6. Payout checklist (run before submit)
 
 - [ ] Reproduces first try, from a clean account, in under 5 minutes

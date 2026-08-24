@@ -26,6 +26,20 @@ The engagement lifecycle, in order. `pentest-router` is the entry point when the
 | `pentest-report-package` | `Report/<ID>/` + `Ad/` attachments + the adversary review pass before submission |
 | `pentest-memory-feedback` | `doc/feedback/feedback-<NNN>-<title>.md` and `MEMORY.md`, written at the end of every task |
 
+## Injection & protocol classes
+
+Per-class exploitation methodology — how to detect, safely confirm and escalate each class in an authorised engagement. Every one composes with `pentest-scope-gate` (technique must be authorised first) and `pentest-endpoint-summary` (record the injectable parameter so no agent re-tests it).
+
+| Skill | Use it for |
+| --- | --- |
+| `pentest-injection-server` | SQLi, NoSQL, OS-command, LDAP and SSTI — detect, confirm read-only, escalate |
+| `pentest-xss` | Reflected / stored / DOM XSS, CSP bypass, CSTI, blind XSS via own callback |
+| `pentest-ssrf` | SSRF sinks, blind confirmation, filter bypass, escalation to cloud metadata |
+| `pentest-deserialization-xxe` | XXE (in-band, blind via external DTD) and insecure deserialization gadget chains |
+| `pentest-http-desync` | HTTP request smuggling: CL.TE / TE.CL / TE.TE and HTTP/2 downgrade desync |
+| `pentest-race-conditions` | Limit-overrun and state races via single-packet / last-byte-sync bursts |
+| `pentest-web-cache` | Web cache poisoning (unkeyed inputs) and cache deception (path confusion) |
+
 ## Bug-bounty suite
 
 Earnings-oriented. Where the pentest suite asks "how do I test this", these ask "is this worth my hours and how do I get paid the most for it".
@@ -42,7 +56,7 @@ Earnings-oriented. Where the pentest suite asks "how do I test this", these ask 
 
 ## Supporting skills
 
-`http-async-rotate` (concurrent sweeps with IP rotation), `burp-history-reader`, `burp-repeater-capture`, `rat-c2-tmux` (own C2 for callbacks), `persistent-terminal-control`, `python-writer` (code style), `write-feedback`, `opencode-chat-history`, `slide-writer`, `dalle-prompt`.
+`http-async-rotate` (concurrent sweeps with IP rotation), `burp-history-reader`, `burp-repeater-capture`, `rat-c2-tmux` (own C2 for callbacks), `persistent-terminal-control`, `python-writer` (code style), `write-feedback`, `opencode-chat-history`, `slide-writer`, `dalle-prompt`, `skill-writer` (author/review/package a skill the optimal way — the meta-skill for this folder).
 
 ## Conventions the pentest suite shares
 

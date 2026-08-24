@@ -7,7 +7,7 @@ description: Reproduce and report pentest vulnerabilities from todo.md task list
 
 Automates the workflow of reproducing a vulnerability described in `todo.md` and writing a CyScope Markdown report using the `vuln-reporter` skill format.
 
-> **`todo.md` and `done.md` are the human's.** Never tick a top-level `* [ ]` task, never move or append anything to `done.md`, and never delete or reword what he wrote — you only ADD. Indented sub-bullets ARE yours to tick. When a task is finished, add a dated sub-bullet with the outcome and evidence paths, leave the parent box empty, and tell him it is ready to close. See `pentest-engagement-init`.
+> **`todo.md` and `done.md` are the human's — read-only.** Never tick any checkbox in `todo.md` (top-level or sub), never move or append anything to `done.md`, never delete or reword what he wrote. The only write allowed is a brief ADDED reference line pointing to the AI work or its report (`→ ver AI###`, or a reference bullet `* [ ] [AI###](Report/AI###/report-small.md)` you never tick) — never a change to his existing lines. All AI progress and outcomes go in `doc/ai-todo.md` / `doc/ai-done.md`; when a task is finished, record it there and tell him in the chat it is ready to close. See `pentest-engagement-init`.
 
 
 ## 1. Workflow

@@ -1,6 +1,6 @@
 ---
 name: http-async-rotate
-description: Write Python scripts that fan out many HTTP requests concurrently with a CONTINUOUS bounded worker pool (always N workers busy, no per-batch fork-join — when one finishes another starts) and rotate the source IP through AWS API Gateway via requests-ip-rotator. Use whenever building a mass-enumeration / IDOR / fuzzing / bulk-fetch script that hits one endpoint with many inputs (RUTs, phones, ids) from --file/--start/--end, needs --workers and --rotate, must dodge IP-based rate limits, writes one output file per input plus a consolidated hits-<case>-<kind>.csv (e.g. hits-acme203-pii.csv, never a bare hits.csv) one level up, supports --resume to skip already-fetched ids, and (when auth is short-lived) follows a session.yaml refreshed by a sidecar keepalive job with a --max-authfail abort guard. Composes with the python-writer skill for style.
+description: Write Python scripts that fan out many HTTP requests through a CONTINUOUS bounded worker pool (always N workers busy, no per-batch fork-join) and rotate the source IP through AWS API Gateway via requests-ip-rotator. Use whenever building a mass-enumeration / IDOR / fuzzing / bulk-fetch script that hits one endpoint with many inputs, needs --workers and --rotate, must dodge IP-based rate limits, supports --resume, and (when auth is short-lived) follows a session.yaml refreshed by a keepalive sidecar. Composes with the python-writer skill for style.
 license: MIT
 compatibility: opencode
 metadata:

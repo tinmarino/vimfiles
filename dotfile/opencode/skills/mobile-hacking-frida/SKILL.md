@@ -1,6 +1,6 @@
 ---
 name: mobile-hacking-frida
-description: Use when testing an Android app in an authorized engagement — pulling an APK off a device (including App Bundle splits), decompiling with apktool/jadx, injecting the Frida Gadget (libfg.so + libfg.config.so) and rebuilding/zipaligning/signing, running frida-server on a rooted AVD, bypassing TLS certificate pinning and root/anti-tamper checks (JailMonkey, RootBeer, Conscrypt TrustManagerImpl), and logging intercepted plaintext HTTP to Burp-pasteable files or to a proxy on a port other than 8080/8081. Triggers on "apk", "apktool", "jadx", "frida", "frida-gadget", "certificate pinning", "SSL unpinning", "hook the app", "intercept app traffic", "okhttp logger", "reflutter", "mitmproxy on android", "hackear la app", "sacar el apk", "descompilar el apk", "parchar el apk", "inyectar frida", "saltar el pinning", "quitar el pinning", "deteccion de root", "interceptar el trafico de la app", "loguear las requests de la app".
+description: Test an Android app in an authorized engagement — pull the APK (including App Bundle splits), decompile with apktool/jadx, inject the Frida Gadget and rebuild/zipalign/sign, run frida-server on a rooted AVD, bypass TLS certificate pinning and root/anti-tamper checks, and log intercepted plaintext HTTP to Burp. Triggers on "apk", "apktool", "jadx", "frida", "certificate pinning", "SSL unpinning", "sacar el apk", "descompilar el apk", "inyectar frida", "saltar el pinning", "deteccion de root", "interceptar el trafico de la app".
 ---
 
 # Android app hacking with Frida

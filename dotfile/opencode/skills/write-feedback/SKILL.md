@@ -1,6 +1,6 @@
 ---
 name: write-feedback
-description: Persist findings to the project MEMORY.md (team-visible) and a doc/ref/feedback-step-<NNN>-<title>.md file, dispatched to a BACKGROUND subagent so the main session keeps working uninterrupted. Trigger whenever the user says "write feedback", "write memory", "record findings", "save this to memory", "document this", or asks to checkpoint progress to disk. Use for any pentest project where notes must outlive the chat.
+description: Persist findings to the project MEMORY.md (team-visible) and a doc/ref/feedback-step-<NNN>-<title>.md file — the legacy doc/ref/feedback-step-* variant, not the pentest-engagement doc/feedback/ series (pentest-memory-feedback) — dispatched to a BACKGROUND subagent so the main session keeps working uninterrupted. Trigger whenever the user says "write feedback", "write memory", "record findings", "save this to memory", "document this", or asks to checkpoint progress to disk. Use for any pentest project where notes must outlive the chat.
 license: MIT
 compatibility: opencode
 metadata:
