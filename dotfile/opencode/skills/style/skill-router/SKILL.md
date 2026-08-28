@@ -11,10 +11,13 @@ metadata:
 
 The single entry point for the suite. Load this when the next step is unclear, a request is ambiguous, or a session opens without obvious context. Its job is to send you to the right skill in the right order — not to do the work itself. Once the target skill is chosen, load it and follow it; come back here only when the situation changes.
 
-The suite is split into two trees under `skills/`:
+The suite is split into five directories under `skills/`:
 
-- **`mine/`** — Tinmarino's own style/tooling skills (house code style, decks, image prompts, CyScope reporting, terminal/session tooling, and this router / the skill authoring meta-skill).
-- **`vendor/`** — pentest & bug-bounty methodology derived from public sources (PortSwigger, OWASP, HackTricks) plus own field tooling. Each carries a `source:` field recording its origin.
+- **`pentest/`** — engagement lifecycle + vulnerability classes + hunt loop
+- **`bugbounty/`** — program selection, earnings, English reporting
+- **`report/`** — evidence capture, report packaging, memory/feedback
+- **`tooling/`** — Burp, HTTP rotation, C2, terminal, browser evidence
+- **`style/`** — code style, skill authoring, slides, image prompts, session mgmt
 
 ## Fast routing
 
@@ -40,29 +43,25 @@ The suite is split into two trees under `skills/`:
 
 ## Full catalog
 
-### mine/ — style & tooling
+### style/ — code, skills, slides & prompts
 - `python-writer` — Python in Tinmarino's house style.
 - `slide-writer` — Markdown decks (AcademyBook).
 - `dalle-prompt` — image-generation prompts, house visual style.
-- `vuln-reporter` — CyScope Spanish finding format.
-- `vuln-reproducer` — drive a report from a `todo.md` item.
-- `persistent-terminal-control` — long-lived terminal/session control.
 - `opencode-chat-history` — inspect/resume OpenCode sessions.
-- `write-feedback` — persist findings to `MEMORY.md` + `doc/ref/feedback-step-*`.
 - `skill-writer` — author/review/package a skill (meta-skill for this folder).
 - `skill-router` — this dispatcher.
 
-### vendor/ — pentest lifecycle (public-methodology)
-`pentest-router` (lifecycle entry) · `pentest-scope-gate` · `pentest-engagement-init` · `pentest-recon-surface` · `pentest-js-recon` · `pentest-endpoint-summary` · `pentest-lot-idor` · `pentest-auth-session` · `pentest-burp-to-script` · `pentest-authz-matrix` · `pentest-graphql-hunt` · `pentest-findings-http` · `pentest-report-package` · `pentest-memory-feedback`.
+### pentest/ — lifecycle + vuln classes + hunt
+`pentest-router` (lifecycle entry) · `pentest-scope-gate` · `pentest-engagement-init` · `pentest-recon-surface` · `pentest-js-recon` · `pentest-endpoint-summary` · `pentest-lot-idor` · `pentest-auth-session` · `pentest-burp-to-script` · `pentest-authz-matrix` · `pentest-graphql-hunt` · `mobile-hacking-frida` · `hunt-hunter` · `hunt-triage` · `pentest-injection-server` · `pentest-xss` · `pentest-ssrf` · `pentest-deserialization-xxe` · `pentest-http-desync` · `pentest-race-conditions` · `pentest-web-cache`.
 
-### vendor/ — injection & protocol classes (public-methodology)
-`pentest-injection-server` · `pentest-xss` · `pentest-ssrf` · `pentest-deserialization-xxe` · `pentest-http-desync` · `pentest-race-conditions` · `pentest-web-cache`. Each composes with `pentest-scope-gate` (technique must be authorised) and `pentest-endpoint-summary` (record the parameter).
+### bugbounty/
+`bugbounty-program-selection` · `bugbounty-high-yield-classes` · `bugbounty-asset-monitoring` · `bugbounty-impact-escalation` · `bugbounty-report-en`.
 
-### vendor/ — bug-bounty (public-methodology)
-`bugbounty-program-selection` · `bugbounty-high-yield-classes` · `bugbounty-asset-monitoring` · `bugbounty-impact-escalation` · `bugbounty-report-en` · `mobile-hacking-frida`.
+### report/ — evidence, packaging & memory
+`pentest-findings-http` · `pentest-report-package` · `pentest-memory-feedback` · `vuln-reporter` · `vuln-reproducer` · `write-feedback`.
 
-### vendor/ — own field tooling (own-tooling)
-`http-async-rotate` (concurrent sweeps + IP rotation) · `burp-history-reader` · `burp-repeater-capture` · `rat-c2-tmux` (own C2 for callbacks).
+### tooling/ — Burp, HTTP, C2 & terminal
+`http-async-rotate` · `burp-history-reader` · `burp-repeater-capture` · `rat-c2-tmux` · `browser-burp-evidence` · `persistent-terminal-control`.
 
 ## Composes with
 

@@ -4,8 +4,9 @@
 # takes the command name from the directory basename. OpenCode reads the real
 # nested tree directly (glob skills/**/SKILL.md) and does NOT use this farm.
 #
-# Source of truth: this folder, with every skill under mine/<name>/ or vendor/<name>/
-# (the root holds no skills). Farm target: ~/.claude/skills (a real dir of
+# Source of truth: this folder, with every skill under <domain>/<name>/
+# (domains: pentest, bugbounty, report, tooling, style).
+# The root holds no skills. Farm target: ~/.claude/skills (a real dir of
 # one-level symlinks, one per skill, each -> the real nested directory).
 #
 # Idempotent: wipes stale skill symlinks, recreates from the tree. Run it after
@@ -16,10 +17,11 @@ SRC="$(dirname "$(readlink -f "$0")")"
 FARM="${CLAUDE_SKILLS_DIR:-$HOME/.claude/skills}"
 CHECK=0; [ "${1:-}" = "--check" ] && CHECK=1
 
-# Collect real skill dirs: one level under mine/ and vendor/ (every skill lives
-# in one of the two trees; the root holds only README/check-leaks/this script).
+# Collect real skill dirs: one level under each domain subdir (every skill lives
+# in one of the domain trees; the root holds only README/check-leaks/this script).
 mapfile -t DIRS < <(
-  find "$SRC/mine" "$SRC/vendor" -mindepth 1 -maxdepth 1 -type d 2>/dev/null
+  find "$SRC/pentest" "$SRC/bugbounty" "$SRC/report" "$SRC/tooling" "$SRC/style" \
+    -mindepth 1 -maxdepth 1 -type d 2>/dev/null
 )
 
 # Guard: every collected dir must hold a SKILL.md, and names must be unique.

@@ -24,9 +24,17 @@ Claude only consults a skill for tasks it can't easily handle alone — "read th
 
 ## 1b. Where a skill lives, and its `source`
 
-The suite is split into two trees so provenance stays legible and mine-vs-derived never blurs. **OpenCode** discovers with the glob `skills/**/SKILL.md`, so nesting is transparent to it — it reads the real tree directly and addresses a skill by its frontmatter `name`, never its path — and moving one between trees is a pure `git mv`.
+The suite is split into five domain directories under `skills/`:
 
-**Claude Code is different and this is a hard constraint:** it scans only ONE level (`~/.claude/skills/<name>/SKILL.md`) and takes the command name from the *directory basename* (the frontmatter `name` is only a display label). It will not descend into `mine/`/`vendor/`. To keep both tools working off the one nested source of truth, `~/.claude/skills` is a REAL directory holding a flat symlink farm — one `<name>` symlink per skill pointing at its real nested dir (Claude Code follows symlinks at the skill-entry level). OpenCode never reads that farm, so there is no double-registration. Rebuild the farm whenever you add, move or remove a skill:
+- **`pentest/`** — engagement lifecycle + vulnerability classes + hunt loop
+- **`bugbounty/`** — program selection, earnings, English reporting
+- **`report/`** — evidence capture, report packaging, memory/feedback
+- **`tooling/`** — Burp, HTTP rotation, C2, terminal, browser evidence
+- **`style/`** — code style, skill authoring, slides, image prompts, session mgmt
+
+**OpenCode** discovers with the glob `skills/**/SKILL.md`, so nesting is transparent to it — it reads the real tree directly and addresses a skill by its frontmatter `name`, never its path.
+
+**Claude Code is different and this is a hard constraint:** it scans only ONE level (`~/.claude/skills/<name>/SKILL.md`) and takes the command name from the *directory basename* (the frontmatter `name` is only a display label). It will not descend into subdirs. To keep both tools working off the one nested source of truth, `~/.claude/skills` is a REAL directory holding a flat symlink farm — one `<name>` symlink per skill pointing at its real nested dir (Claude Code follows symlinks at the skill-entry level). OpenCode never reads that farm, so there is no double-registration. Rebuild the farm whenever you add, move or remove a skill:
 
 ```bash
 cd ~/.vim/dotfile/opencode/skills && ./sync-claude-skills.sh          # rebuild farm
@@ -35,11 +43,9 @@ cd ~/.vim/dotfile/opencode/skills && ./sync-claude-skills.sh          # rebuild 
 
 The farm lives under `~/.claude/skills`; keep `~/.config/opencode/skills` pointing at the real tree. Never create the symlinks *inside* the real tree — OpenCode's `**` glob would then register every skill twice.
 
-- **`mine/`** — skills you wrote that encode house style or personal tooling. `source: mine`.
-- **`vendor/`** — methodology derived from public sources (`source: public-methodology`, e.g. PortSwigger/OWASP/HackTricks) or your own field tooling (`source: own-tooling`, e.g. Burp MCP glue, own C2, the IP-rotation requester).
-- **root** — no skills; only `README.md`, `check-leaks.sh`, `sync-claude-skills.sh` (the router lives at `mine/skill-router/`).
+The `source:` frontmatter field records the origin category (`mine`, `public-methodology`, `own-tooling`). Pick the directory by domain, not by source.
 
-Every `SKILL.md` frontmatter MUST carry a top-level `source:` with one of those three values, plus `license: MIT` and `metadata.audience: opencode-agents`. When you add a skill, put it in the right tree, set `source`, and add its row to `README.md` under the matching table. When origin changes, `git mv` the folder and update `source` — keep the two in sync.
+Every `SKILL.md` frontmatter MUST carry a top-level `source:` with one of those three values, plus `license: MIT` and `metadata.audience: opencode-agents`. When you add a skill, put it in the right domain directory, set `source`, and add its row to `README.md` under the matching table.
 
 `skill-router` is the single always-load entry point for the whole suite; `pentest-router` is the lifecycle dispatcher inside an engagement. A new skill does not need its own routing logic — add it to the router's catalog and let the chain (`skill-router` → `pentest-router` → concrete skill → `references/`) reach it.
 
@@ -92,7 +98,7 @@ Keep it under ~500 lines. The body loads in full whenever the skill fires, so it
 
 ## 5. Where it lives, and no client data
 
-Author directly in `~/.vim/dotfile/opencode/skills/{mine,vendor}/<name>/` — that path is what OpenCode indexes, via the symlinks (pick the tree per §1b). There is no separate "draft" location.
+Author directly in `~/.vim/dotfile/opencode/skills/<domain>/<name>/` (where `<domain>` is `pentest`, `bugbounty`, `report`, `tooling`, or `style`) — that path is what OpenCode indexes, via the symlinks. There is no separate "draft" location.
 
 The public-repo rule is absolute and applies to *every* file including throwaway examples: no real client name, hostname, IP, token, cookie, national ID, employee name, or internal engagement path. This is not only OPSEC — a leaked client identifier in a published skill is a contract breach. When a skill genuinely needs an example of client-shaped data, use the placeholders the suite already standardizes on: `target.example.com`, ACME, `AI###`, `<PFX><NNN>`, `<token>`, synthetic IDs like `11111111-1`.
 
