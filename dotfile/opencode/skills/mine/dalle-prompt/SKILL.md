@@ -1,6 +1,7 @@
 ---
 name: dalle-prompt
-description: Write image-generation prompts (DALL-E / ChatGPT / gpt-image) in Tinmarino's house style — moody gloomy cyberpunk, a single action frozen at one moment, faces never visible, almost-monochromatic blue #00233e, Ghost-in-the-Shell impressionist cartoon — where every visual element maps 1:1 to the technical/security concept being taught. Use whenever asked to create an image prompt, a portada / title-page image, a DALLE prompt, a class/CTF/talk illustration, or to design the `\classimage` of a deck. Corpus lives in ~/Software/Python/AI/Openai/Dalle.
+description: Write image-generation prompts (DALL-E / gpt-image) in Tinmarino's house style — moody gloomy cyberpunk, one action frozen at a moment, faces never visible, near-monochromatic blue #00233e, Ghost-in-the-Shell impressionist cartoon — where each visual element maps to the concept taught. Use for an image prompt, a portada / title-page image, a DALLE prompt, a `\classimage`, a `classimage`, a ChatGPT image, or a class/CTF/talk illustration. Corpus in ~/Software/Python/AI/Openai/Dalle.
+source: mine
 license: MIT
 metadata:
   audience: opencode-agents

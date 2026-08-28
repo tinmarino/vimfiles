@@ -1,6 +1,10 @@
 ---
 name: skill-writer
-description: "Author, review and package an OpenCode/Claude skill the optimal way — the SKILL.md frontmatter and body, a description written to trigger reliably (bilingual EN/ES triggers, third person, a little pushy), progressive disclosure into references/ and scripts/, the public-repo leak discipline (no client name, host, token or national ID, verified with check-leaks.sh), and the .skill bundle for delivery. Use when the operator says 'escribe un skill', 'crea un skill para X', 'mejora este skill', 'optimiza la descripción', 'por qué no se activa mi skill', 'empaqueta el skill', 'convierte este workflow en skill', 'write a skill', 'create a skill for X', 'improve this skill', 'optimize the trigger description', 'why won't my skill fire', 'package this skill', 'turn this workflow into a skill', or whenever a repeatable workflow is worth capturing so it outlives the chat."
+description: "Author, review and package an OpenCode/Claude skill — SKILL.md frontmatter and body, a reliably-triggering bilingual EN/ES description, progressive disclosure into references/ and scripts/, public-repo leak discipline (check-leaks.sh, placeholder names), and the .skill bundle. Use when the operator says 'escribe/crea/mejora un skill', 'optimiza la descripción', 'por qué no se activa mi skill', 'empaqueta el skill', 'write/create/improve a skill', 'why won't my skill fire', 'package this skill', or turns a repeatable workflow into a skill so it outlives the chat."
+source: mine
+license: MIT
+metadata:
+  audience: opencode-agents
 ---
 
 # skill-writer
@@ -17,6 +21,27 @@ OpenCode keeps every skill's **name + description** always in context and nothin
 - **Descriptions are a shared, always-on budget.** N skills each with a 150-word description is N×150 words of permanent context across every session. Tight descriptions are not a nicety; they are why the suite scales. Write the shortest description that still triggers reliably.
 
 Claude only consults a skill for tasks it can't easily handle alone — "read this file" won't trigger anything regardless of wording. Design for substantive, multi-step tasks.
+
+## 1b. Where a skill lives, and its `source`
+
+The suite is split into two trees so provenance stays legible and mine-vs-derived never blurs. **OpenCode** discovers with the glob `skills/**/SKILL.md`, so nesting is transparent to it — it reads the real tree directly and addresses a skill by its frontmatter `name`, never its path — and moving one between trees is a pure `git mv`.
+
+**Claude Code is different and this is a hard constraint:** it scans only ONE level (`~/.claude/skills/<name>/SKILL.md`) and takes the command name from the *directory basename* (the frontmatter `name` is only a display label). It will not descend into `mine/`/`vendor/`. To keep both tools working off the one nested source of truth, `~/.claude/skills` is a REAL directory holding a flat symlink farm — one `<name>` symlink per skill pointing at its real nested dir (Claude Code follows symlinks at the skill-entry level). OpenCode never reads that farm, so there is no double-registration. Rebuild the farm whenever you add, move or remove a skill:
+
+```bash
+cd ~/.vim/dotfile/opencode/skills && ./sync-claude-skills.sh          # rebuild farm
+./sync-claude-skills.sh --check                                        # CI/pre-push drift check
+```
+
+The farm lives under `~/.claude/skills`; keep `~/.config/opencode/skills` pointing at the real tree. Never create the symlinks *inside* the real tree — OpenCode's `**` glob would then register every skill twice.
+
+- **`mine/`** — skills you wrote that encode house style or personal tooling. `source: mine`.
+- **`vendor/`** — methodology derived from public sources (`source: public-methodology`, e.g. PortSwigger/OWASP/HackTricks) or your own field tooling (`source: own-tooling`, e.g. Burp MCP glue, own C2, the IP-rotation requester).
+- **root** — no skills; only `README.md`, `check-leaks.sh`, `sync-claude-skills.sh` (the router lives at `mine/skill-router/`).
+
+Every `SKILL.md` frontmatter MUST carry a top-level `source:` with one of those three values, plus `license: MIT` and `metadata.audience: opencode-agents`. When you add a skill, put it in the right tree, set `source`, and add its row to `README.md` under the matching table. When origin changes, `git mv` the folder and update `source` — keep the two in sync.
+
+`skill-router` is the single always-load entry point for the whole suite; `pentest-router` is the lifecycle dispatcher inside an engagement. A new skill does not need its own routing logic — add it to the router's catalog and let the chain (`skill-router` → `pentest-router` → concrete skill → `references/`) reach it.
 
 ## 2. Anatomy
 
@@ -67,7 +92,7 @@ Keep it under ~500 lines. The body loads in full whenever the skill fires, so it
 
 ## 5. Where it lives, and no client data
 
-Author directly in `~/.vim/dotfile/opencode/skills/<name>/` — that path is what OpenCode indexes, via the symlinks. There is no separate "draft" location.
+Author directly in `~/.vim/dotfile/opencode/skills/{mine,vendor}/<name>/` — that path is what OpenCode indexes, via the symlinks (pick the tree per §1b). There is no separate "draft" location.
 
 The public-repo rule is absolute and applies to *every* file including throwaway examples: no real client name, hostname, IP, token, cookie, national ID, employee name, or internal engagement path. This is not only OPSEC — a leaked client identifier in a published skill is a contract breach. When a skill genuinely needs an example of client-shaped data, use the placeholders the suite already standardizes on: `target.example.com`, ACME, `AI###`, `<PFX><NNN>`, `<token>`, synthetic IDs like `11111111-1`.
 

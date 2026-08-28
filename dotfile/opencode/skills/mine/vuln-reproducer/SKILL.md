@@ -1,6 +1,10 @@
 ---
 name: vuln-reproducer
-description: Reproduce and report pentest vulnerabilities from todo.md task lists. Use when the user asks to reproduce a vulnerability, automate a vuln report from notes, or process AI todo items that describe security findings to be reported to CyScope. Triggers on keywords like "reproduce", "report vuln", "CyScope", or when processing items from todo.md under the "# AI" heading.
+description: Reproduce and report pentest vulnerabilities from todo.md task lists. Use when the user asks to reproduce a vulnerability, automate a vuln report from notes, or process AI todo items describing security findings for CyScope. Triggers on "reproduce", "report vuln", "CyScope", or items in todo.md under the "# AI" heading. Writes the report via the `vuln-reporter` skill.
+source: mine
+license: MIT
+metadata:
+  audience: opencode-agents
 ---
 
 # vuln-reproducer

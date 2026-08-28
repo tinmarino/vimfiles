@@ -1,6 +1,10 @@
 ---
 name: slide-writer
 description: Use when creating, editing, extending, or reviewing Markdown slide decks in Tinmarino style, especially files listed in doc/all-prez.md or decks compiled with ~/Software/Latex/AcademyBook/book.py.
+source: mine
+license: MIT
+metadata:
+  audience: opencode-agents
 ---
 
 # slide-writer

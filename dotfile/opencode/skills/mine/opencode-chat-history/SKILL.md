@@ -1,6 +1,10 @@
 ---
 name: opencode-chat-history
 description: Use when the user asks where OpenCode stores chats, how to inspect an opencode session, or says to restart/resume/read from a ses_*.json or ses_* session id.
+source: mine
+license: MIT
+metadata:
+  audience: opencode-agents
 ---
 
 # OpenCode Chat History

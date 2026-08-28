@@ -1,6 +1,7 @@
 ---
 name: python-writer
-description: Write Python modules, CLIs, and tests in Tinmarino's personal style (shebang + module docstring layout, verb-first function docstrings, overindented multi-line signatures, paragraph comments, `argparse` + `argcomplete` CLI dispatcher pattern, `from X import Y` stdlib imports for early-fail, closures over one-shot helpers, flat branches via guard clauses / dispatch tables). Use whenever you are about to create or substantially edit a `.py` file in Stock, sistema-fair-risk, libreriactf, or any future Python project of Tinmarino's.
+description: Write Python modules, CLIs, and tests in Tinmarino's personal style (shebang + module docstring layout, verb-first docstrings, overindented multi-line signatures, `argparse` + `argcomplete` CLI dispatcher, `from X import Y` stdlib imports for early-fail, guard clauses / dispatch tables). Use when creating or substantially editing a `.py` file in Stock, sistema-fair-risk, libreriactf, or any Python project of Tinmarino's.
+source: mine
 license: MIT
 compatibility: opencode
 metadata:

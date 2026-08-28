@@ -1,6 +1,10 @@
 ---
 name: persistent-terminal-control
 description: Use when the user wants OpenCode to drive a local or remote shell interactively with lower latency than repeated SSH or tmux capture-pane polling, especially for "persistent shell", "capture only command output", "tmux pane automation", "PTY", or command-by-command troubleshooting loops.
+source: mine
+license: MIT
+metadata:
+  audience: opencode-agents
 ---
 
 # Persistent Terminal Control
