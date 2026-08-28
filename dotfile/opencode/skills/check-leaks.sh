@@ -37,7 +37,7 @@ for n in "${ALL[@]}"; do
 done
 
 rc=0
-hit() { rc=1; printf '\033[31mLEAK\033[0m %-12s %s\n' "$1" "$2"; }
+hit() { rc=1; local rel="${2#"$DIR"/}"; printf '\033[31mLEAK\033[0m %-12s \033[1;33m%s\033[0m\n' "$1" "$rel"; }
 FILES=(--include='SKILL.md' --include='*.py' --include='*.sh' --include='*.md')
 # Unescape regex-escaped dots so "api\.acme\.cl" is seen as a hostname.
 scan() { grep -rIh "${FILES[@]}" -o '' "$DIR" >/dev/null 2>&1; }
@@ -50,7 +50,7 @@ if ((${#CI[@]})); then
   while IFS= read -r l; do hit client-name "$l"; done < <(
     grep -rIn "${FILES[@]}" -Ei "($pat)" "$DIR" 2>/dev/null \
       | grep -v "^$DIR/check-leaks.sh:" \
-      | grep -viE 'CyscopeCli')   # tool-repo name, collides by substring with a client token
+      | grep -viE 'CyscopeCli|CyScope|HackerOne|Bugcrowd|Intigriti|YesWeHack')   # bug-bounty platforms, not clients
 fi
 # 1b. Client names that ARE dictionary words: capitalised form only, substring.
 if ((${#CS[@]})); then
@@ -96,7 +96,12 @@ while IFS= read -r l; do hit finding-id "$l"; done < <(
   grep -rIn --include='SKILL.md' -oE '\b[A-Z]{2,3}[0-9]{3}\b' "$DIR" 2>/dev/null \
     | grep -vE ':(AI|PFX|CWE|CVE|RFC|ISO|UTF|SHA|MD5|AES|RSA|JWT|SQL|XSS|API|TLS|SSL|HTTP)[0-9]{3}$')
 
-n=$(ls -d "$DIR"/*/SKILL.md 2>/dev/null | wc -l)
+# 7. Personal real name (must not appear; "tinmarino" handle is fine).
+while IFS= read -r l; do hit personal-name "$l"; done < <(
+  grep -rIn "${FILES[@]}" -Ei 'mtourneboeuf|tourneboeuf' "$DIR" 2>/dev/null \
+    | grep -v "check-leaks.sh:")
+
+n=$(find "$DIR" -name SKILL.md 2>/dev/null | wc -l)
 if ((rc)); then echo; echo "FAILED -- placeholder these before pushing."
 else echo "OK -- $n skills clean (client names, hosts, secrets, national IDs, public IPs)."; fi
 exit $rc
