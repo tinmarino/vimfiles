@@ -446,13 +446,13 @@ alias ratpull='rsync -avz -e "ssh -i ~/Secret/aws-key-ciberlab-ctf.pem -o Strict
 # Fast by hand
 export LANGUAGE=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-alias feroxburster="~/Program/Feroxburster/feroxbuster --extract-links --user-agent CyScope Tinmarino, Dreamlab Martin Tourneboeuf"
+alias feroxburster="~/Program/Feroxburster/feroxbuster --extract-links --user-agent 'CyScope Tinmarino, Dreamlab'"
 
 
-export PYTHONPATH=/home/mtourneboeuf/Software/Python/CountryStudy
+export PYTHONPATH=$HOME/Software/Python/CountryStudy
 export PYTHONPATH+=:~/Software/Pentest/libreriactf
-export PYTHONPATH+=:/home/mtourneboeuf/Software/Pentest/libreriactf
-export PYTHONPATH+=:/home/mtourneboeuf/Software/Python/Recon
+export PYTHONPATH+=:$HOME/Software/Pentest/libreriactf
+export PYTHONPATH+=:$HOME/Software/Python/Recon
 [ -r ~/Secret/elastic.env ] && . ~/Secret/elastic.env   # ungitted; rotate the key there
 alias apktool='java -jar ~/Iso/Jar/apktool_2.12.0.jar'
 # export JAVA_HOME=/var/snap/openjdk/current
@@ -475,4 +475,18 @@ pdf_decrypt(){
 alias slack='/snap/slack/current/usr/lib/slack/slack --no-sandbox'
 
 # opencode
-export PATH=/home/mtourneboeuf/.opencode/bin:$PATH
+export PATH=$HOME/.opencode/bin:$PATH
+
+# >>> claude memory cap >>>
+# Launch every Claude Code instance inside the memory-capped claude.slice
+# (aggregate 16G hard / 15G soft). Uses --scope so the TUI keeps the TTY.
+# Falls back to the raw binary if systemd-run is unavailable.
+claude() {
+  local bin="$HOME/.local/bin/claude"
+  if command -v systemd-run >/dev/null 2>&1; then
+    systemd-run --user --scope --slice=claude.slice --quiet -- "$bin" "$@"
+  else
+    command "$bin" "$@"
+  fi
+}
+# <<< claude memory cap <<<

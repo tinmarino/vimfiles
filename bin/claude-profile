@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Shared launcher behind csek / ctin.
+#
+# Each account gets its OWN CLAUDE_CONFIG_DIR, which on Linux is what decides
+# where .credentials.json lives. That is the only approach that survives token
+# expiry: Claude Code refreshes the short-lived access token by rewriting the
+# credential file, so each account needs a writable file of its own. Exporting a
+# copied token via CLAUDE_CODE_OAUTH_TOKEN instead would go stale in hours, and a
+# setup-token cannot use claude.ai connectors or Remote Control.
+#
+# Usage: claude-profile <sek|tin> [claude args...]
+
+set -euo pipefail
+
+profile="${1:?usage: claude-profile <sek|tin> [args...]}"
+shift || true
+
+case "$profile" in
+  tin) cfg="$HOME/.claude" ;;      # primary: the pre-existing config dir
+  sek) cfg="$HOME/.claude-sek" ;; # secondary: shares config, own credentials
+  *) echo "claude-profile: unknown profile '$profile' (want sek|tin)" >&2; exit 2 ;;
+esac
+
+# Bootstrap a secondary config dir, sharing everything except identity/state.
+# Read-mostly config is symlinked back to ~/.claude so both accounts see the same
+# skills, commands, hooks, settings and memory. Only credentials and per-account
+# caches stay separate.
+if [[ ! -d $cfg ]]; then
+  echo "claude-profile: bootstrapping $cfg" >&2
+  mkdir -p "$cfg"
+  chmod 700 "$cfg"
+  for item in CLAUDE.md commands skills hooks plugins settings.json projects todos; do
+    [[ -e $HOME/.claude/$item ]] || continue
+    ln -sfn "$HOME/.claude/$item" "$cfg/$item"
+  done
+fi
+
+export CLAUDE_CONFIG_DIR="$cfg"
+
+# These launchers are for the per-profile claude.ai logins stored under
+# $CLAUDE_CONFIG_DIR. Higher-precedence auth env vars would silently override the
+# selected profile, disable connectors, and collapse both launchers onto the
+# same account.
+unset ANTHROPIC_AUTH_TOKEN ANTHROPIC_API_KEY CLAUDE_CODE_OAUTH_TOKEN
+
+# Snapshot the outgoing credential before this session can refresh or replace it.
+"$(dirname "$(readlink -f "$0")")/claude-cred-archive" "$cfg" || true
+
+exec claude "$@"

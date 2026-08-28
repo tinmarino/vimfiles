@@ -11,7 +11,7 @@ Message(
     msg="Exactly one space required before assignment\ninNone    = inColor('\\033[0m')\n          ^", C='C',
     category='convention',
     confidence=Confidence(name='UNDEFINED', description='Warning without any associated confidence level.'),
-    abspath='/home/tourneboeuf/Test/ACULinearCoeff.py', path='ACULinearCoeff.py', module='ACULinearCoeff', obj='',
+    abspath='/home/user/Test/ACULinearCoeff.py', path='ACULinearCoeff.py', module='ACULinearCoeff', obj='',
     line=50,
     column=10),
 """

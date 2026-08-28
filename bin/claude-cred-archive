@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Archive a Claude Code credential file into the local vault, tagged by account.
+#
+# Claude Code overwrites $CLAUDE_CONFIG_DIR/.credentials.json in place on every
+# /login and on every silent access-token refresh (~8 h), destroying whatever was
+# there before. This script snapshots it first. It is idempotent and deduplicating,
+# so it is safe to call on every launch and from an inotify watcher.
+#
+# NOTE: this file lives in a public repo. It must never contain a token.
+# Secrets only ever land under $CLAUDE_CRED_VAULT (default ~/Secret/Claude).
+
+set -euo pipefail
+
+VAULT="${CLAUDE_CRED_VAULT:-$HOME/Secret/Claude}"
+CFG="${1:-${CLAUDE_CONFIG_DIR:-$HOME/.claude}}"
+SRC="$CFG/.credentials.json"
+
+if [[ ! -r $SRC ]]; then
+  echo "claude-cred-archive: no credential at $SRC (not logged in yet)" >&2
+  exit 0
+fi
+
+# Which account is this? subscriptionType is the only identifying field the
+# credential file carries -- there is no email or org in it.
+#   team / enterprise -> sek.io  (work)
+#   max / pro         -> gmail   (personal, "tin")
+sub=$(jq -r '.claudeAiOauth.subscriptionType // empty' "$SRC" 2>/dev/null || true)
+case "$sub" in
+  team|enterprise) label=sek ;;
+  max|pro)         label=tin ;;
+  '') echo "claude-cred-archive: $SRC has no claudeAiOauth block, skipping" >&2; exit 0 ;;
+  *)  label="unknown-$sub" ;;
+esac
+
+mkdir -p "$VAULT"
+chmod 700 "$VAULT"
+
+# Dedup: a token refresh rewrites the file every few hours. Only archive when the
+# oauth blob actually differs from the newest snapshot we already hold.
+new_hash=$(jq -Sc '.claudeAiOauth' "$SRC" | sha256sum | cut -d' ' -f1)
+newest=$(ls -1t "$VAULT"/claude-credentials-"$label"-*.json 2>/dev/null | head -1 || true)
+if [[ -n $newest ]]; then
+  old_hash=$(jq -Sc '.claudeAiOauth' "$newest" 2>/dev/null | sha256sum | cut -d' ' -f1 || true)
+  if [[ $new_hash == "$old_hash" ]]; then
+    exit 0
+  fi
+fi
+
+dst="$VAULT/claude-credentials-$label-$(date +%Y-%m-%dT%H:%M:%S).json"
+(umask 077; cp "$SRC" "$dst")
+echo "claude-cred-archive: archived '$label' -> $dst" >&2

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Claude Code as the gmail personal account (subscriptionType: max).
+exec "$(dirname "$(readlink -f "$0")")/claude-profile" tin "$@"

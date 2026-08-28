@@ -96,6 +96,7 @@ alias vimm=vim
 alias rgi='rg -i'
 alias fri='fr -i'
 alias oc='systemd-run --user --scope -p MemoryMax=12G -- opencode'
+alias ca=claude
 
 # ShellGPT
 #alias translate='sgpt --model gpt-3.5-turbo-1106 --role Translate <<EOF'
