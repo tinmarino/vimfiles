@@ -14,7 +14,7 @@ Read this important truth first and relay it to me in one line before doing anyt
 What FORCE mode legitimately changes — the loop's *voluntary* throttling only:
 
 1. Do **not** stop, pause, or shrink the hunter pool because Claude Code shows a soft usage-limit
-   **warning** (e.g. "you are approaching your limit"). Keep `POOL = 5` and keep refilling exactly as
+   **warning** (e.g. "you are approaching your limit"). Keep `POOL = 10` and keep refilling exactly as
    the `hunt` command specifies, right up until the server returns a hard usage-limit **error**.
 2. When a hard usage-limit error DOES arrive, stop spawning, log `hunt/LOOP.md` with
    `force-mode: hard usage limit hit at <timestamp>`, print the last-known findings summary, and end
