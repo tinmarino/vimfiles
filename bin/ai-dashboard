@@ -1,0 +1,2271 @@
+#!/usr/bin/env python3
+# PYTHON_ARGCOMPLETE_OK
+
+"""
+Render Claude and OpenCode session history as a terminal TUI or a local web UI.
+
+The terminal view is the default and prints a fast Rich table. The web view is
+opt-in via `--ui web` and starts a small localhost server with incremental
+loading so the newest sessions appear first.
+
+"""
+
+from __future__ import annotations
+
+# Import the shared data loader and UI dependencies
+from argparse import ArgumentParser, Namespace
+from base64 import b64encode
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from json import dumps as json_dumps
+from os import read as os_read, write as os_write
+from pathlib import Path
+from re import compile as re_compile
+from select import select as select_select
+from shutil import which
+from subprocess import DEVNULL, run as subprocess_run
+from sys import path as sys_path, stdin as sys_stdin, stdout as sys_stdout
+from termios import TCSADRAIN, tcgetattr, tcsetattr
+from textwrap import wrap as text_wrap
+from tty import setcbreak
+from urllib.parse import parse_qs, urlparse
+from webbrowser import open as webbrowser_open
+
+from argcomplete import autocomplete
+from rich import box
+from rich.console import Console, Group
+from rich.live import Live
+from rich.panel import Panel
+from rich.table import Table
+from rich.text import Text
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys_path:
+    sys_path.insert(0, str(SCRIPT_DIR))
+
+from ai_dashboard_data import (
+    DashboardStore,
+    PATH_CLAUDE_PROJECTS,
+    PromptRecord,
+    SessionDetail,
+    SessionSummary,
+)
+
+
+RE_MOUSE = re_compile(r"^\x1b\[<(\d+);(\d+);(\d+)([Mm])")
+
+
+def parse_argument() -> Namespace:
+    """ Return parsed CLI arguments. """
+    # Build the command-line parser
+    parser = ArgumentParser(
+        prog="ai-dashboard",
+        description=(
+            "Browse Claude and OpenCode sessions in a Rich terminal table or a "
+            "lazy-loaded local web UI."
+        ),
+    )
+    parser.add_argument(
+        "--ui",
+        choices=("txt", "term", "web"),
+        default="txt",
+        help=(
+            "Pick the plain-text, interactive-terminal, or web UI "
+            "(default: txt, the machine-readable view for LLMs and pipes)."
+        ),
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=100,
+        help="Show at most N root sessions per source (0 means all).",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=0,
+        help="Listen on this localhost TCP port for --ui web (0 picks a free port).",
+    )
+    parser.add_argument(
+        "--no-open",
+        action="store_true",
+        help="Start the web server without opening a browser tab.",
+    )
+    parser.add_argument(
+        "--dir",
+        default="",
+        metavar="SUBSTRING",
+        help=(
+            "Filter --ui txt sessions to those whose path contains SUBSTRING "
+            "(case-insensitive), e.g. --dir myproject."
+        ),
+    )
+    parser.add_argument(
+        "--source",
+        choices=("all", "claude", "opencode"),
+        default="all",
+        help="Restrict --ui txt output to one source (default: all).",
+    )
+    parser.add_argument(
+        "--session",
+        default="",
+        metavar="ID",
+        help=(
+            "Print the prompts and nested subsessions of one root session "
+            "in --ui txt instead of the list."
+        ),
+    )
+    parser.add_argument(
+        "--full",
+        action="store_true",
+        help="Show untruncated prompt text in --ui txt --session output.",
+    )
+    autocomplete(parser)
+    return parser.parse_args()
+
+
+def format_datetime_line(time_ms: int | None) -> str:
+    """ Return one compact local datetime line. """
+    # Handle missing timestamps early
+    if time_ms is None:
+        return "-"
+    return DashboardStore.format_time_ms(time_ms)
+
+
+def format_terminal_datetime_line(time_ms: int | None) -> str:
+    """ Return one narrower datetime line for the terminal table. """
+    # Handle missing timestamps early
+    if time_ms is None:
+        return "-"
+    return DashboardStore.datetime_from_ms(time_ms).strftime("%y-%m-%d %H:%M")
+
+
+def build_date_cell(summary: SessionSummary) -> Text:
+    """ Return the two-line date cell for the terminal table. """
+    # Build the date cell with end then start
+    cell = Text()
+    cell.append(format_terminal_datetime_line(summary.end_ms), style="bold white")
+    cell.append("\n")
+    cell.append(format_terminal_datetime_line(summary.start_ms), style="dim")
+    return cell
+
+
+def clamp_lines(value: str, width: int, max_lines: int) -> str:
+    """ Wrap *value* into at most *max_lines* lines. """
+    # Normalize paragraphs into wrapped lines
+    stripped = value.strip() or "-"
+    lines: list[str] = []
+    was_truncated = False
+    for paragraph in stripped.splitlines() or [stripped]:
+        wrapped = text_wrap(paragraph, width=width, break_long_words=True)
+        next_lines = wrapped or [""]
+        if len(lines) + len(next_lines) > max_lines:
+            was_truncated = True
+        lines.extend(next_lines)
+        if len(lines) >= max_lines:
+            break
+
+    # Clamp the output and add an ellipsis when needed
+    lines = lines[:max_lines] or ["-"]
+    if was_truncated and lines:
+        last_line = lines[-1]
+        if len(last_line) >= width:
+            last_line = last_line[: max(1, width - 3)].rstrip()
+        lines[-1] = f"{last_line}..."
+    return "\n".join(lines)
+
+
+def split_token(value: str, width: int = 18) -> str:
+    """ Split a long token into fixed-width lines. """
+    # Handle short values early
+    if len(value) <= width:
+        return value
+    return "\n".join(
+        value[index:index + width]
+        for index in range(0, len(value), width)
+    )
+
+
+def build_folder_cell(summary: SessionSummary) -> Text:
+    """ Return the basename-first folder cell for the terminal table. """
+    # Show only the basename so the session-id column survives narrower terminals
+    return Text(summary.folder_name, style="bold cyan")
+
+
+def build_title_cell(summary: SessionSummary) -> Text:
+    """ Return the wrapped title cell for the terminal table. """
+    # Build a three-line title preview
+    cell = Text()
+    cell.append(clamp_lines(summary.title, width=48, max_lines=3), style="white")
+    return cell
+
+
+def build_id_cell(summary: SessionSummary) -> Text:
+    """ Return the wrapped session-id cell for the terminal table. """
+    # Show the full id across multiple lines so it stays copyable by selection
+    cell = Text()
+    cell.append(split_token(summary.session_id), style="bright_cyan")
+    return cell
+
+
+def build_summary_table(source: str, summaries: list[SessionSummary]) -> Table:
+    """ Return one source table for the terminal UI. """
+    # Pick the source-specific title and color
+    title_style = "bold magenta" if source == "claude" else "bold cyan"
+    title_text = "Claude" if source == "claude" else "OpenCode"
+
+    # Build the Rich table in the Stock style
+    table = Table(
+        box=box.SIMPLE_HEAVY,
+        header_style=title_style,
+        title=f"[bold white]{title_text} - {len(summaries)} root sessions[/bold white]",
+        show_lines=False,
+        expand=True,
+    )
+    table.add_column("Date (end/start)", min_width=14, style="white")
+    table.add_column("Folder", min_width=12)
+    table.add_column("Title", min_width=32, ratio=2)
+    table.add_column("Session ID", min_width=18)
+
+    # Append one row per session summary
+    for summary in summaries:
+        table.add_row(
+            build_date_cell(summary),
+            build_folder_cell(summary),
+            build_title_cell(summary),
+            build_id_cell(summary),
+        )
+    return table
+
+
+def render_term_snapshot(store: DashboardStore) -> None:
+    """ Print the fast Rich terminal UI. """
+    # Gather both source summaries once
+    claude_summaries = store.list_summaries(source="claude")
+    opencode_summaries = store.list_summaries(source="opencode")
+
+    # Build the terminal renderables
+    group = Group(
+        build_summary_table("claude", claude_summaries),
+        build_summary_table("opencode", opencode_summaries),
+        Panel(
+            "Use drag selection to copy text in the terminal.\n"
+            "Run `ai-dashboard --ui web` for copy buttons, prompt details, and lazy loading.",
+            border_style="green",
+            title="Hint",
+        ),
+    )
+
+    # Print the Rich dashboard
+    console = Console()
+    console.print(group)
+
+
+def wrap_plain_lines(value: str, width: int, max_lines: int | None = None) -> list[str]:
+    """ Return wrapped plain-text lines for *value*. """
+    # Normalize the input into wrapped visual lines
+    cleaned = DashboardStore.normalize_text(value)
+    if not cleaned:
+        return ["-"]
+    lines: list[str] = []
+    for paragraph in cleaned.splitlines() or [cleaned]:
+        lines.extend(text_wrap(paragraph, width=max(4, width), break_long_words=True) or [""])
+    if max_lines is not None:
+        return lines[:max_lines] or ["-"]
+    return lines or ["-"]
+
+
+def pad_text(text: Text, width: int) -> Text:
+    """ Right-pad *text* up to *width* cells. """
+    plain_length = len(text.plain)
+    if plain_length < width:
+        text.append(" " * (width - plain_length))
+    elif plain_length > width:
+        text = Text(text.plain[:width])
+    return text
+
+
+def copy_to_clipboard(value: str) -> tuple[bool, str]:
+    """ Copy *value* to the system clipboard via OSC52 (preferred) or helpers. """
+    # Reject empty copies early
+    if not value:
+        return False, "Nothing to copy"
+
+    # Prefer OSC52 so the copy works inside a Rich Live screen and over SSH
+    if sys_stdout.isatty():
+        encoded = b64encode(value.encode("utf-8")).decode("ascii")
+        osc52 = f"\033]52;c;{encoded}\a"
+        try:
+            os_write(sys_stdout.fileno(), osc52.encode("ascii"))
+        except OSError:
+            sys_stdout.write(osc52)
+            sys_stdout.flush()
+        return True, "Copied (OSC52)"
+
+    # Fall back to common clipboard helpers when stdout is not a terminal
+    command_list = [
+        ["wl-copy"],
+        ["xclip", "-selection", "clipboard"],
+        ["xsel", "--clipboard", "--input"],
+    ]
+    for command in command_list:
+        if which(command[0]) is None:
+            continue
+        result = subprocess_run(
+            command,
+            check=False,
+            input=value,
+            text=True,
+            stdout=DEVNULL,
+            stderr=DEVNULL,
+        )
+        if result.returncode == 0:
+            return True, f"Copied with {command[0]}"
+    return False, "No clipboard helper found"
+
+
+class InteractiveTermDashboard:
+    """ Run the full-screen Rich terminal dashboard. """
+
+    def __init__(self, store: DashboardStore):
+        """ Capture the starting dashboard state. """
+        self.store = store
+        self.max_root_sessions = store.max_root_sessions
+        self.console = Console()
+        self.live: Live | None = None
+        self.running = True
+        self.source_names = ["claude", "opencode"]
+        self.source = "claude"
+        self.selected_index = {source: 0 for source in self.source_names}
+        self.list_offset = {source: 0 for source in self.source_names}
+        self.detail_scroll = 0
+        self.expanded_prompts: set[int] = set()
+        self.expanded_children: set[int] = set()
+        self.hitboxes: list[dict] = []
+        self.input_buffer = ""
+        self.status = "Click rows or use j/k and arrows. q quits."
+
+    def run(self) -> None:
+        """ Enter the alternate-screen interactive dashboard. """
+        file_descriptor = sys_stdin.fileno()
+        old_termios = tcgetattr(file_descriptor)
+        try:
+            setcbreak(file_descriptor)
+            sys_stdout.write("\033[?1000h\033[?1006h")
+            sys_stdout.flush()
+            with Live(
+                self.render_screen(),
+                console=self.console,
+                screen=True,
+                auto_refresh=False,
+                transient=False,
+            ) as live:
+                self.live = live
+                while self.running:
+                    event = self.read_event(timeout=0.1)
+                    if event is None:
+                        continue
+                    self.handle_event(event)
+                    live.update(self.render_screen(), refresh=True)
+        finally:
+            sys_stdout.write("\033[?1000l\033[?1006l")
+            sys_stdout.flush()
+            tcsetattr(file_descriptor, TCSADRAIN, old_termios)
+
+    def read_event(self, timeout: float) -> dict | None:
+        """ Read one keyboard or mouse event from stdin. """
+        # Keep filling the input buffer until one event can be parsed
+        while True:
+            event = self.parse_buffer_event()
+            if event is not None:
+                return event
+            ready, _write, _error = select_select([sys_stdin], [], [], timeout)
+            if not ready:
+                return None
+            chunk = os_read(sys_stdin.fileno(), 128).decode("utf-8", errors="ignore")
+            if not chunk:
+                return {"type": "key", "key": "q"}
+            self.input_buffer += chunk
+
+    def parse_buffer_event(self) -> dict | None:
+        """ Parse and consume the next buffered event, if any. """
+        # Handle an empty buffer early
+        if not self.input_buffer:
+            return None
+
+        # Parse SGR mouse events
+        mouse_match = RE_MOUSE.match(self.input_buffer)
+        if mouse_match:
+            button = int(mouse_match.group(1))
+            xpos = int(mouse_match.group(2)) - 1
+            ypos = int(mouse_match.group(3)) - 1
+            suffix = mouse_match.group(4)
+            self.input_buffer = self.input_buffer[mouse_match.end():]
+            return {
+                "type": "mouse",
+                "button": button,
+                "x": xpos,
+                "y": ypos,
+                "press": suffix == "M",
+            }
+
+        # Parse common escape-key sequences
+        escape_map = {
+            "\x1b[A": "up",
+            "\x1b[B": "down",
+            "\x1b[C": "right",
+            "\x1b[D": "left",
+            "\x1b[5~": "pageup",
+            "\x1b[6~": "pagedown",
+        }
+        for sequence, key_name in escape_map.items():
+            if self.input_buffer.startswith(sequence):
+                self.input_buffer = self.input_buffer[len(sequence):]
+                return {"type": "key", "key": key_name}
+
+        # Wait for more bytes when the buffer contains an incomplete escape
+        if self.input_buffer.startswith("\x1b") and len(self.input_buffer) == 1:
+            return None
+
+        # Fall back to one plain character keypress
+        char = self.input_buffer[0]
+        self.input_buffer = self.input_buffer[1:]
+        if char == "\r":
+            return {"type": "key", "key": "enter"}
+        return {"type": "key", "key": char}
+
+    def current_summaries(self) -> list[SessionSummary]:
+        """ Return the summaries for the current source. """
+        return self.store.list_summaries(self.source)
+
+    def current_summary(self) -> SessionSummary | None:
+        """ Return the currently selected root-session summary. """
+        summaries = self.current_summaries()
+        if not summaries:
+            return None
+        index = max(0, min(self.selected_index[self.source], len(summaries) - 1))
+        self.selected_index[self.source] = index
+        return summaries[index]
+
+    def current_detail(self) -> SessionDetail | None:
+        """ Return the detail payload for the selected session. """
+        summary = self.current_summary()
+        if summary is None:
+            return None
+        try:
+            return self.store.get_detail(source=summary.source, session_id=summary.session_id)
+        except Exception as exc:  # pylint: disable=broad-except
+            self.status = f"Failed to load details: {exc}"
+            return None
+
+    def clear_detail_state(self) -> None:
+        """ Reset local expansion and scroll state. """
+        self.detail_scroll = 0
+        self.expanded_prompts.clear()
+        self.expanded_children.clear()
+
+    def refresh_store(self) -> None:
+        """ Rebuild the shared store and clamp the current selection. """
+        self.store = DashboardStore(max_root_sessions=self.max_root_sessions)
+        for source in self.source_names:
+            summaries = self.store.list_summaries(source)
+            if not summaries:
+                self.selected_index[source] = 0
+                self.list_offset[source] = 0
+                continue
+            self.selected_index[source] = min(self.selected_index[source], len(summaries) - 1)
+            self.list_offset[source] = min(self.list_offset[source], max(0, len(summaries) - 1))
+        self.clear_detail_state()
+        self.status = "Refreshed session summaries."
+
+    def switch_source(self, delta: int) -> None:
+        """ Switch to the previous or next source tab. """
+        current_index = self.source_names.index(self.source)
+        self.source = self.source_names[(current_index + delta) % len(self.source_names)]
+        self.clear_detail_state()
+        self.status = f"Switched to {self.source}."
+
+    def move_selection(self, delta: int) -> None:
+        """ Move the selected root session by *delta*. """
+        summaries = self.current_summaries()
+        if not summaries:
+            return
+        old_index = self.selected_index[self.source]
+        new_index = max(0, min(old_index + delta, len(summaries) - 1))
+        if new_index == old_index:
+            return
+        self.selected_index[self.source] = new_index
+        self.clear_detail_state()
+
+    def scroll_detail_by(self, delta: int) -> None:
+        """ Scroll the detail pane body. """
+        self.detail_scroll = max(0, self.detail_scroll + delta)
+
+    def copy_current_field(self, field_name: str) -> None:
+        """ Copy one field from the current detail. """
+        detail = self.current_detail()
+        if detail is None:
+            self.status = "No session selected."
+            return
+        value_map = {
+            "id": detail.session_id,
+            "folder": detail.cwd,
+            "title": detail.title,
+            "resume": detail.resume_command,
+        }
+        ok, message = copy_to_clipboard(value_map.get(field_name, ""))
+        self.status = message if ok else f"Copy failed: {message}"
+
+    def expand_all_children(self, expand: bool) -> None:
+        """ Expand or collapse all child-session blocks. """
+        detail = self.current_detail()
+        if detail is None:
+            return
+        if expand:
+            self.expanded_children = set(range(len(detail.children)))
+            self.status = f"Expanded {len(detail.children)} child sessions."
+        else:
+            self.expanded_children.clear()
+            self.status = "Collapsed child sessions."
+
+    def toggle_prompt(self, prompt_index: int) -> None:
+        """ Toggle one prompt block in the detail pane. """
+        if prompt_index in self.expanded_prompts:
+            self.expanded_prompts.remove(prompt_index)
+            return
+        self.expanded_prompts.add(prompt_index)
+
+    def toggle_child(self, child_index: int) -> None:
+        """ Toggle one child-session block in the detail pane. """
+        if child_index in self.expanded_children:
+            self.expanded_children.remove(child_index)
+            return
+        self.expanded_children.add(child_index)
+
+    def activate_hitbox(self, hitbox: dict) -> None:
+        """ Execute one mouse-activated action. """
+        action = hitbox["action"]
+        if action == "select-source":
+            if self.source != hitbox["source"]:
+                self.source = hitbox["source"]
+                self.clear_detail_state()
+            return
+        if action == "select-row":
+            if self.selected_index[self.source] != hitbox["index"]:
+                self.selected_index[self.source] = hitbox["index"]
+                self.clear_detail_state()
+            return
+        if action == "copy-id":
+            self.copy_current_field("id")
+            return
+        if action == "copy-folder":
+            self.copy_current_field("folder")
+            return
+        if action == "copy-title":
+            self.copy_current_field("title")
+            return
+        if action == "copy-resume":
+            self.copy_current_field("resume")
+            return
+        if action == "refresh":
+            self.refresh_store()
+            return
+        if action == "expand-children":
+            self.expand_all_children(True)
+            return
+        if action == "collapse-children":
+            self.expand_all_children(False)
+            return
+        if action == "toggle-prompt":
+            self.toggle_prompt(hitbox["index"])
+            return
+        if action == "toggle-child":
+            self.toggle_child(hitbox["index"])
+            return
+        if action == "quit":
+            self.running = False
+
+    def handle_event(self, event: dict) -> None:
+        """ Handle one keyboard or mouse event. """
+        # Handle keypress events
+        if event["type"] == "key":
+            key_name = event["key"]
+            if key_name in ("q", "Q"):
+                self.running = False
+                return
+            if key_name in ("j", "down"):
+                self.move_selection(1)
+                return
+            if key_name in ("k", "up"):
+                self.move_selection(-1)
+                return
+            if key_name in ("h", "left"):
+                self.switch_source(-1)
+                return
+            if key_name in ("l", "right"):
+                self.switch_source(1)
+                return
+            if key_name in ("c", "i"):
+                self.copy_current_field("id")
+                return
+            if key_name == "f":
+                self.copy_current_field("folder")
+                return
+            if key_name == "t":
+                self.copy_current_field("title")
+                return
+            if key_name == "u":
+                self.scroll_detail_by(-3)
+                return
+            if key_name == "d":
+                self.scroll_detail_by(3)
+                return
+            if key_name == "pageup":
+                self.scroll_detail_by(-8)
+                return
+            if key_name == "pagedown":
+                self.scroll_detail_by(8)
+                return
+            if key_name == "r":
+                self.refresh_store()
+                return
+            if key_name == "e":
+                self.expand_all_children(True)
+                return
+            if key_name == "E":
+                self.expand_all_children(False)
+                return
+            return
+
+        # Ignore mouse release events and only process presses/wheel
+        if not event.get("press") and event["button"] < 64:
+            return
+        if event["button"] == 64:
+            if event["x"] < self.left_width:
+                self.move_selection(-1)
+            else:
+                self.scroll_detail_by(-3)
+            return
+        if event["button"] == 65:
+            if event["x"] < self.left_width:
+                self.move_selection(1)
+            else:
+                self.scroll_detail_by(3)
+            return
+        for hitbox in reversed(self.hitboxes):
+            if hitbox["x1"] <= event["x"] <= hitbox["x2"] and hitbox["y1"] <= event["y"] <= hitbox["y2"]:
+                self.activate_hitbox(hitbox)
+                return
+
+    def append_button(self, line: Text, x_pos: int, y_pos: int, label: str, action: str, style: str) -> int:
+        """ Append one clickable button to *line* and register its hitbox. """
+        button_text = f"[{label}]"
+        line.append(button_text, style=style)
+        self.hitboxes.append(
+            {
+                "action": action,
+                "x1": x_pos,
+                "x2": x_pos + len(button_text) - 1,
+                "y1": y_pos,
+                "y2": y_pos,
+            }
+        )
+        return x_pos + len(button_text)
+
+    def render_header(self, width: int) -> list[Text]:
+        """ Build the fixed dashboard header lines. """
+        lines: list[Text] = []
+
+        # Render the source tabs and global buttons
+        line0 = Text()
+        line0.append(" AI Dashboard ", style="bold black on bright_white")
+        x_pos = len(line0.plain)
+        for source_name in self.source_names:
+            line0.append(" ")
+            x_pos += 1
+            button_style = "bold black on magenta" if source_name == "claude" else "bold black on cyan"
+            if self.source != source_name:
+                button_style = "magenta" if source_name == "claude" else "cyan"
+            label = f"{source_name.capitalize()} {len(self.store.list_summaries(source_name))}"
+            button_text = f"[{label}]"
+            line0.append(button_text, style=button_style)
+            self.hitboxes.append(
+                {
+                    "action": "select-source",
+                    "source": source_name,
+                    "x1": x_pos,
+                    "x2": x_pos + len(button_text) - 1,
+                    "y1": 0,
+                    "y2": 0,
+                }
+            )
+            x_pos += len(button_text)
+        line0.append("   ")
+        x_pos += 3
+        x_pos = self.append_button(line0, x_pos, 0, "Refresh", "refresh", "bold green")
+        line0.append(" ")
+        x_pos += 1
+        self.append_button(line0, x_pos, 0, "Quit", "quit", "bold red")
+        lines.append(pad_text(line0, width))
+
+        # Render the status/help line
+        status_text = (
+            f"Source: {self.source} | j/k/arrows move | mouse clicks and wheel work | "
+            f"i/c id  f folder  t title  u/d detail scroll  e/E children  r refresh  q quit | {self.status}"
+        )
+        lines.append(pad_text(Text(clamp_lines(status_text, width=width - 1, max_lines=1), style="dim"), width))
+        lines.append(Text("-" * width, style="dim"))
+        return lines
+
+    def ensure_visible_selection(self, visible_rows: int) -> None:
+        """ Adjust the current list offset to keep the selection visible. """
+        index = self.selected_index[self.source]
+        offset = self.list_offset[self.source]
+        if index < offset:
+            self.list_offset[self.source] = index
+        elif index >= offset + visible_rows:
+            self.list_offset[self.source] = max(0, index - visible_rows + 1)
+
+    def build_left_row_line(
+            self,
+            summary: SessionSummary,
+            title_line: str,
+            id_line: str,
+            date_text: str,
+            folder_text: str,
+            left_width: int,
+            title_width: int,
+            id_width: int,
+            ) -> Text:
+        """ Build one line in the left summary pane. """
+        line = Text()
+        line.append(f"{date_text:<14}", style="bold white")
+        line.append(" ")
+        line.append(f"{folder_text:<12}"[:12], style="bold cyan")
+        line.append(" ")
+        line.append(f"{title_line:<{title_width}}"[:title_width], style="white")
+        line.append(" ")
+        line.append(f"{id_line:<{id_width}}"[:id_width], style="bright_cyan")
+        return pad_text(line, left_width)
+
+    def render_left_pane(self, left_width: int, body_height: int, y_base: int) -> list[Text]:
+        """ Build the left summary-pane lines. """
+        lines: list[Text] = []
+        summaries = self.current_summaries()
+        pane_title = Text(f" {self.source.capitalize()} Sessions ", style="bold")
+        pane_title.append(f" {len(summaries)} total", style="dim")
+        lines.append(pad_text(pane_title, left_width))
+        header = Text()
+        header.append("Date", style="bold magenta")
+        header.append(" " * 11)
+        header.append("Folder", style="bold magenta")
+        header.append(" " * 7)
+        header.append("Title", style="bold magenta")
+        header.append(" " * max(1, left_width - len(header.plain) - 10))
+        header.append("ID", style="bold magenta")
+        lines.append(pad_text(header, left_width))
+
+        # Fill the pane with fixed two-line rows
+        visible_rows = max(1, (body_height - 2) // 2)
+        self.ensure_visible_selection(visible_rows)
+        start = self.list_offset[self.source]
+        end = min(len(summaries), start + visible_rows)
+        title_width = max(16, left_width - 14 - 1 - 12 - 1 - 18 - 1)
+        id_width = 18
+        for visible_index, summary in enumerate(summaries[start:end]):
+            actual_index = start + visible_index
+            title_lines = wrap_plain_lines(summary.title, title_width, max_lines=2)
+            while len(title_lines) < 2:
+                title_lines.append("")
+            id_lines = split_token(summary.session_id, width=id_width).splitlines()
+            while len(id_lines) < 2:
+                id_lines.append("")
+            row_y = y_base + 2 + visible_index * 2
+            line1 = self.build_left_row_line(
+                summary,
+                title_lines[0],
+                id_lines[0],
+                format_terminal_datetime_line(summary.end_ms),
+                summary.folder_name,
+                left_width,
+                title_width,
+                id_width,
+            )
+            line2 = self.build_left_row_line(
+                summary,
+                title_lines[1],
+                id_lines[1],
+                format_terminal_datetime_line(summary.start_ms),
+                "",
+                left_width,
+                title_width,
+                id_width,
+            )
+            if actual_index == self.selected_index[self.source]:
+                line1.stylize("black on bright_white")
+                line2.stylize("black on bright_white")
+            else:
+                line2.stylize("dim")
+            lines.extend([line1, line2])
+            self.hitboxes.append(
+                {
+                    "action": "select-row",
+                    "index": actual_index,
+                    "x1": 0,
+                    "x2": left_width - 1,
+                    "y1": row_y,
+                    "y2": row_y + 1,
+                }
+            )
+
+        while len(lines) < body_height:
+            lines.append(Text(" " * left_width))
+        return lines[:body_height]
+
+    def render_right_pane(self, right_width: int, body_height: int, x_base: int, y_base: int) -> list[Text]:
+        """ Build the right detail-pane lines. """
+        detail = self.current_detail()
+        if detail is None:
+            return [pad_text(Text(" Select a session to inspect details.", style="dim"), right_width)] + [Text(" " * right_width) for _ in range(body_height - 1)]
+
+        fixed_lines: list[Text] = []
+        title_line = Text(f" Detail - {detail.folder_name} ", style="bold")
+        fixed_lines.append(pad_text(title_line, right_width))
+        for wrapped_line in wrap_plain_lines(detail.title, width=right_width - 1, max_lines=5):
+            fixed_lines.append(pad_text(Text(wrapped_line, style="white"), right_width))
+
+        # Render copy buttons as a fixed action bar
+        action_line = Text()
+        x_pos = 0
+        for label, action, style in (
+            ("Copy ID", "copy-id", "bold cyan"),
+            ("Copy Folder", "copy-folder", "bold green"),
+            ("Copy Title", "copy-title", "bold magenta"),
+            ("Copy Resume", "copy-resume", "bold yellow"),
+        ):
+            if x_pos:
+                action_line.append(" ")
+                x_pos += 1
+            x_pos = self.append_button(action_line, x_base + x_pos, y_base + 2, label, action, style)
+        fixed_lines.append(pad_text(action_line, right_width))
+
+        meta1 = Text(f"Folder: {detail.cwd_short or '-'}", style="cyan")
+        meta1.append(f" | Model: {detail.model_label or '-'}", style="dim")
+        fixed_lines.append(pad_text(Text(clamp_lines(meta1.plain, width=right_width - 1, max_lines=1), style="dim"), right_width))
+        meta2 = Text(f"End: {format_datetime_line(detail.end_ms)}", style="white")
+        meta2.append(f" | Start: {format_datetime_line(detail.start_ms)}", style="dim")
+        fixed_lines.append(pad_text(Text(clamp_lines(meta2.plain, width=right_width - 1, max_lines=1), style="dim"), right_width))
+        fixed_lines.append(Text("-" * right_width, style="dim"))
+
+        # Build the scrollable body lines
+        body_lines: list[Text] = []
+        prompt_header = Text(f" Prompts ({len(detail.prompts)}) ", style="bold magenta")
+        body_lines.append(pad_text(prompt_header, right_width))
+        for prompt_index, prompt in enumerate(detail.prompts):
+            prefix = "[-]" if prompt_index in self.expanded_prompts else "[+]"
+            prompt_title = DashboardStore.build_title(prompt.text, fallback=f"Prompt {prompt_index + 1}")
+            first_line_prefix = f"{prefix} {prompt_index + 1:02d} {format_datetime_line(prompt.time_ms)} "
+            content_width = max(12, right_width - len(first_line_prefix) - 1)
+            content_lines = wrap_plain_lines(prompt_title, width=content_width, max_lines=3)
+            line1 = Text(first_line_prefix, style="white")
+            line1.append(content_lines[0], style="white")
+            body_lines.append(pad_text(line1, right_width))
+            indent = " " * len(first_line_prefix)
+            for continuation_line in content_lines[1:3]:
+                body_lines.append(pad_text(Text(f"{indent}{continuation_line}", style="white"), right_width))
+            if prompt_index in self.expanded_prompts:
+                for line in wrap_plain_lines(prompt.text, width=max(12, right_width - 4)):
+                    body_lines.append(pad_text(Text(f"    {line}", style="dim"), right_width))
+
+        body_lines.append(Text(" " * right_width))
+        child_header = Text(f" Subagents ({len(detail.children)}) ", style="bold cyan")
+        body_lines.append(pad_text(child_header, right_width))
+        child_action_line = Text()
+        child_x = 0
+        child_x = self.append_button(child_action_line, x_base + child_x, y_base + len(fixed_lines) + len(body_lines) - 1 - self.detail_scroll, "Expand all", "expand-children", "bold cyan")
+        child_action_line.append(" ")
+        child_x += 1
+        self.append_button(child_action_line, x_base + child_x, y_base + len(fixed_lines) + len(body_lines) - 1 - self.detail_scroll, "Collapse all", "collapse-children", "bold cyan")
+        body_lines.append(pad_text(child_action_line, right_width))
+        for child_index, child in enumerate(detail.children):
+            prefix = "[-]" if child_index in self.expanded_children else "[+]"
+            child_first_prefix = f"{prefix} {child_index + 1:02d} "
+            child_content_width = max(12, right_width - len(child_first_prefix) - 1)
+            child_title_lines = wrap_plain_lines(child.title, width=child_content_width, max_lines=3)
+            line1 = Text(child_first_prefix, style="white")
+            line1.append(child_title_lines[0], style="white")
+            body_lines.append(pad_text(line1, right_width))
+            child_indent = " " * len(child_first_prefix)
+            for continuation in child_title_lines[1:3]:
+                body_lines.append(pad_text(Text(f"{child_indent}{continuation}", style="white"), right_width))
+            if child_index in self.expanded_children:
+                body_lines.append(pad_text(Text(f"    {child.description}", style="dim"), right_width))
+                body_lines.append(pad_text(Text(f"    {child.cwd_short or '-'} | {child.model_label or child.kind}", style="dim"), right_width))
+                body_lines.append(pad_text(Text(f"    {format_datetime_line(child.end_ms)} / {format_datetime_line(child.start_ms)}", style="dim"), right_width))
+
+        # Slice the scrollable body into the visible window and register hitboxes
+        visible_body = max(1, body_height - len(fixed_lines))
+        max_scroll = max(0, len(body_lines) - visible_body)
+        self.detail_scroll = max(0, min(self.detail_scroll, max_scroll))
+        scrolled_body = body_lines[self.detail_scroll:self.detail_scroll + visible_body]
+        rendered_lines = fixed_lines + scrolled_body
+
+        # Register hitboxes only for visible prompt and child toggles
+        # Build a helper to count how many body_lines each prompt summary takes
+        def _prompt_summary_lines(prompt_index: int) -> int:
+            """ Return the number of body lines the prompt summary occupies. """
+            prompt = detail.prompts[prompt_index]
+            prompt_title = DashboardStore.build_title(prompt.text, fallback=f"Prompt {prompt_index + 1}")
+            first_line_prefix = f"[x] {prompt_index + 1:02d} {format_datetime_line(prompt.time_ms)} "
+            content_width = max(12, right_width - len(first_line_prefix) - 1)
+            return min(3, len(wrap_plain_lines(prompt_title, width=content_width, max_lines=3)))
+
+        body_row = 0
+        detail_line_index = 0
+        visible_prompt_row_map: dict[int, int] = {}
+        prompt_row_heights: dict[int, int] = {}
+        for prompt_index, prompt in enumerate(detail.prompts):
+            visible_prompt_row_map[prompt_index] = detail_line_index
+            summary_height = _prompt_summary_lines(prompt_index)
+            prompt_row_heights[prompt_index] = summary_height
+            detail_line_index += summary_height
+            if prompt_index in self.expanded_prompts:
+                detail_line_index += len(wrap_plain_lines(prompt.text, width=max(12, right_width - 4)))
+        detail_line_index += 2
+        visible_child_row_map: dict[int, int] = {}
+        detail_line_index += 1
+        for child_index, child in enumerate(detail.children):
+            visible_child_row_map[child_index] = detail_line_index
+            detail_line_index += 1
+            if child_index in self.expanded_children:
+                detail_line_index += 3
+
+        for prompt_index, row_index in visible_prompt_row_map.items():
+            height = prompt_row_heights[prompt_index]
+            visible_row = row_index - self.detail_scroll
+            if visible_row + height > 0 and visible_row < visible_body:
+                absolute_y = y_base + len(fixed_lines) + max(0, visible_row)
+                absolute_y2 = y_base + len(fixed_lines) + min(visible_body - 1, visible_row + height - 1)
+                self.hitboxes.append(
+                    {
+                        "action": "toggle-prompt",
+                        "index": prompt_index,
+                        "x1": x_base,
+                        "x2": x_base + right_width - 1,
+                        "y1": absolute_y,
+                        "y2": absolute_y2,
+                    }
+                )
+        for child_index, row_index in visible_child_row_map.items():
+            visible_row = row_index - self.detail_scroll
+            if 0 <= visible_row < visible_body:
+                absolute_y = y_base + len(fixed_lines) + visible_row
+                self.hitboxes.append(
+                    {
+                        "action": "toggle-child",
+                        "index": child_index,
+                        "x1": x_base,
+                        "x2": x_base + right_width - 1,
+                        "y1": absolute_y,
+                        "y2": absolute_y,
+                    }
+                )
+
+        while len(rendered_lines) < body_height:
+            rendered_lines.append(Text(" " * right_width))
+        return rendered_lines[:body_height]
+
+    def render_screen(self):
+        """ Build the full Rich screen for the current dashboard state. """
+        self.hitboxes = []
+        width = self.console.size.width
+        height = self.console.size.height
+        if width < 90 or height < 18:
+            return Panel(
+                "Terminal too small for the interactive dashboard.\nResize it or run with --ui web.",
+                border_style="red",
+                title="ai-dashboard",
+            )
+
+        header_lines = self.render_header(width)
+        footer_height = 1
+        body_height = max(8, height - len(header_lines) - footer_height)
+        self.left_width = max(48, min(width * 44 // 100, width - 44))
+        right_width = max(32, width - self.left_width - 3)
+
+        left_lines = self.render_left_pane(self.left_width, body_height, y_base=len(header_lines))
+        right_lines = self.render_right_pane(right_width, body_height, x_base=self.left_width + 3, y_base=len(header_lines))
+
+        output_lines: list[Text] = []
+        output_lines.extend(header_lines)
+        for row_index in range(body_height):
+            line = Text()
+            line.append_text(pad_text(left_lines[row_index], self.left_width))
+            line.append(" | ", style="dim")
+            line.append_text(pad_text(right_lines[row_index], right_width))
+            output_lines.append(line)
+        footer = Text(clamp_lines(self.status, width=width - 1, max_lines=1), style="dim")
+        output_lines.append(pad_text(footer, width))
+        return Group(*output_lines)
+
+
+# ---------------------------------------------------------------------------
+# Plain-text UI (machine-readable view for LLMs and shell pipes)
+# ---------------------------------------------------------------------------
+
+# Cap one prompt block at this many characters unless --full is requested so a
+# huge paste cannot flood the reader; --full lifts the cap entirely.
+TXT_PROMPT_CAP = 1200
+
+
+def sources_for_arg(source_arg: str) -> tuple[str, ...]:
+    """ Return the ordered source names selected by *source_arg*. """
+    # Expand the "all" shortcut into both concrete sources
+    if source_arg == "all":
+        return ("claude", "opencode")
+    return (source_arg,)
+
+
+def summary_matches_dir(summary: SessionSummary, needle: str) -> bool:
+    """ Return True when *summary* lives under a path matching *needle*. """
+    # An empty needle matches every session
+    if not needle:
+        return True
+    lowered = needle.lower()
+    haystacks = (summary.cwd, summary.cwd_short, summary.folder_name)
+    return any(lowered in (value or "").lower() for value in haystacks)
+
+
+def filter_summaries_by_dir(
+        summaries: list[SessionSummary],
+        needle: str,
+) -> list[SessionSummary]:
+    """ Return the summaries whose directory matches *needle*. """
+    return [summary for summary in summaries if summary_matches_dir(summary, needle)]
+
+
+def clamp_prompt_text(text: str, full: bool) -> str:
+    """ Return the prompt body, capped unless *full* is requested. """
+    # Normalize newlines so the output stays greppable line by line
+    cleaned = DashboardStore.normalize_text(text) or "-"
+    if full or len(cleaned) <= TXT_PROMPT_CAP:
+        return cleaned
+    hidden = len(cleaned) - TXT_PROMPT_CAP
+    trimmed = cleaned[:TXT_PROMPT_CAP].rstrip()
+    return f"{trimmed}\n[... {hidden} more characters; pass --full to show all]"
+
+
+def format_txt_summary(summary: SessionSummary, index: int) -> str:
+    """ Return one labelled plain-text list entry for *summary*. """
+    # Assemble aligned key/value lines an LLM can scan or grep
+    return "\n".join((
+        f"[{index}] {summary.source} {summary.session_id}",
+        f"    when   : {format_datetime_line(summary.start_ms)}"
+        f" -> {format_datetime_line(summary.end_ms)}",
+        f"    folder : {summary.folder_name}",
+        f"    cwd    : {summary.cwd_short or '-'}",
+        f"    title  : {DashboardStore.normalize_text(summary.title) or '-'}",
+        f"    resume : {summary.resume_command or '-'}",
+    ))
+
+
+def format_txt_prompt(
+        prompt: PromptRecord,
+        order: int,
+        full: bool,
+        indent: str,
+) -> str:
+    """ Return one indented prompt block for the detail view. """
+    # Show the timestamp header, then the (possibly capped) body
+    when = format_datetime_line(prompt.time_ms)
+    body = clamp_prompt_text(prompt.text, full)
+    lines = [f"{indent}  prompt #{order} [{when}]"]
+    lines.extend(f"{indent}    {line}" for line in body.split("\n"))
+    return "\n".join(lines)
+
+
+def format_txt_detail(detail: SessionDetail, depth: int, full: bool) -> str:
+    """ Return the recursive plain-text detail for one session tree. """
+    # Indent this node by its depth in the subsession tree
+    indent = "  " * depth
+    kind_label = detail.kind or "session"
+    lines = [
+        f"{indent}{kind_label}: {detail.source} {detail.session_id}",
+        f"{indent}  when   : {format_datetime_line(detail.start_ms)}"
+        f" -> {format_datetime_line(detail.end_ms)}",
+        f"{indent}  folder : {detail.folder_name}",
+        f"{indent}  cwd    : {detail.cwd_short or '-'}",
+        f"{indent}  model  : {detail.model_label or '-'}",
+        f"{indent}  title  : {DashboardStore.normalize_text(detail.title) or '-'}",
+    ]
+
+    # A subagent carries a distinct task description worth surfacing
+    description = DashboardStore.normalize_text(detail.description)
+    if description and description != DashboardStore.normalize_text(detail.title):
+        lines.append(f"{indent}  desc   : {description}")
+    if detail.resume_command:
+        lines.append(f"{indent}  resume : {detail.resume_command}")
+
+    # List the captured user prompts in chronological order
+    lines.append(f"{indent}  prompts: {len(detail.prompts)}")
+    for order, prompt in enumerate(detail.prompts, start=1):
+        lines.append(format_txt_prompt(prompt, order, full, indent))
+
+    # Recurse into nested subagent / subsession trees
+    if detail.children:
+        lines.append(f"{indent}  subsessions: {len(detail.children)}")
+        for child in detail.children:
+            lines.append(format_txt_detail(child, depth + 2, full))
+    return "\n".join(lines)
+
+
+def find_summary_source(
+        store: DashboardStore,
+        session_id: str,
+        sources: tuple[str, ...],
+) -> str | None:
+    """ Return the source that owns *session_id*, or None when unknown. """
+    # Scan the loaded root summaries of each candidate source
+    for source in sources:
+        for summary in store.list_summaries(source):
+            if summary.session_id == session_id:
+                return source
+    return None
+
+
+def locate_subagent_parent(session_id: str) -> str | None:
+    """ Return the Claude root id whose subagents include *session_id*. """
+    # Only Claude subagent transcripts are stored as on-disk meta files
+    if not session_id.startswith("agent-"):
+        return None
+    matches = sorted(
+        PATH_CLAUDE_PROJECTS.glob(f"*/*/subagents/{session_id}.meta.json")
+    )
+    if not matches:
+        return None
+    # .../projects/<project>/<root-id>/subagents/<id>.meta.json -> <root-id>
+    return matches[0].parent.parent.name
+
+
+def render_txt_list(store: DashboardStore, args: Namespace) -> None:
+    """ Print the filtered plain-text session list. """
+    printed_any = False
+    for source in sources_for_arg(args.source):
+        # Filter this source by the directory needle, then cap for display
+        summaries = filter_summaries_by_dir(store.list_summaries(source), args.dir)
+        if args.limit and args.limit > 0:
+            summaries = summaries[:args.limit]
+
+        # Build a header that records the active directory filter
+        header = f"=== {source} ({len(summaries)} sessions"
+        if args.dir:
+            header += f", dir~={args.dir!r}"
+        header += ") ==="
+        print(header)
+
+        # Emit each session as its own labelled block
+        if not summaries:
+            print("  (none)")
+            print()
+            continue
+        for index, summary in enumerate(summaries, start=1):
+            print(format_txt_summary(summary, index))
+            print()
+        printed_any = True
+
+    # Point the reader at the detail view when the list has content
+    if printed_any:
+        print(
+            "Tip: ai-dashboard --session <ID> shows prompts and subsessions "
+            "(add --full for whole prompts)."
+        )
+
+
+def render_txt_detail(store: DashboardStore, args: Namespace) -> None:
+    """ Print the recursive detail for one requested root session. """
+    # Locate which source actually owns the requested id
+    sources = sources_for_arg(args.source)
+    source = find_summary_source(store, args.session, sources)
+    if source is None:
+        # Point subagent ids at their parent root, which the tool can open
+        parent = locate_subagent_parent(args.session)
+        if parent is not None:
+            print(
+                f"{args.session!r} is a subagent of root session {parent}. "
+                f"Run: ai-dashboard --session {parent}"
+            )
+            return
+        print(
+            f"No root session found for id {args.session!r} in "
+            f"{', '.join(sources)}. Run ai-dashboard --ui txt to list ids."
+        )
+        return
+
+    # Load the full detail tree and print it
+    detail = store.get_detail(source, args.session)
+    print(format_txt_detail(detail, depth=0, full=args.full))
+
+
+def render_txt_ui(store: DashboardStore, args: Namespace) -> None:
+    """ Dispatch the plain-text list or single-session detail view. """
+    # A session id switches from the list to the drill-down view
+    if args.session:
+        render_txt_detail(store, args)
+        return
+    render_txt_list(store, args)
+
+
+def render_term_ui(store: DashboardStore) -> None:
+    """ Run the interactive terminal UI when attached to a TTY. """
+    if not (sys_stdin.isatty() and sys_stdout.isatty()):
+        render_term_snapshot(store)
+        return
+    InteractiveTermDashboard(store).run()
+
+
+def open_browser_url(url: str) -> None:
+    """ Open *url* in the default browser. """
+    # Prefer the desktop opener on Linux
+    command = ["xdg-open", url]
+    try:
+        completed = subprocess_run(
+            command,
+            check=False,
+            stdout=DEVNULL,
+            stderr=DEVNULL,
+        )
+        if completed.returncode == 0:
+            return
+    except FileNotFoundError:
+        pass
+
+    # Fall back to Python's browser integration
+    webbrowser_open(url)
+
+
+def build_web_html() -> str:
+    """ Return the lazily-loaded web dashboard HTML. """
+    return """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Dashboard</title>
+  <style>
+    :root {
+      --bg: #07101c;
+      --panel: rgba(11, 18, 32, 0.92);
+      --panel-soft: rgba(17, 24, 39, 0.88);
+      --panel-strong: rgba(15, 23, 42, 0.96);
+      --line: rgba(148, 163, 184, 0.16);
+      --line-strong: rgba(148, 163, 184, 0.28);
+      --text: #eef4ff;
+      --muted: #aab9d6;
+      --claude: #d946ef;
+      --claude-soft: rgba(217, 70, 239, 0.16);
+      --opencode: #22d3ee;
+      --opencode-soft: rgba(34, 211, 238, 0.16);
+      --green: #22c55e;
+      --shadow: 0 20px 48px rgba(0, 0, 0, 0.34);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: Inter, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 24%),
+        radial-gradient(circle at top right, rgba(217, 70, 239, 0.16), transparent 24%),
+        linear-gradient(180deg, #08111f 0%, #040913 55%, #02050a 100%);
+    }
+
+    button { font: inherit; }
+
+    .page {
+      max-width: 1700px;
+      margin: 0 auto;
+      padding: 24px 20px 64px;
+    }
+
+    .hero {
+      padding: 22px 24px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(11, 18, 32, 0.94), rgba(8, 14, 28, 0.92));
+      box-shadow: var(--shadow);
+    }
+
+    .hero-head {
+      display: flex;
+      gap: 18px;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      letter-spacing: -0.03em;
+    }
+
+    .hero p {
+      margin: 10px 0 0;
+      max-width: 72ch;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(140px, 1fr));
+      gap: 12px;
+      min-width: min(100%, 320px);
+    }
+
+    .metric {
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(8, 15, 31, 0.74);
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .metric .value {
+      display: block;
+      margin-top: 6px;
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-foot {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+      color: var(--muted);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(8, 15, 31, 0.66);
+    }
+
+    .sections {
+      display: grid;
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .section {
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .section.claude { border-top: 3px solid var(--claude); }
+    .section.opencode { border-top: 3px solid var(--opencode); }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 18px 20px 14px;
+      background: rgba(8, 15, 31, 0.56);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 1.16rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-body {
+      padding: 14px;
+      overflow-x: auto;
+    }
+
+    .column-header {
+      min-width: 1050px;
+      display: grid;
+      grid-template-columns: 210px 210px minmax(360px, 1fr) 250px;
+      gap: 14px;
+      margin: 0 4px 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.8rem;
+    }
+
+    .summary-list {
+      min-width: 1050px;
+      display: grid;
+      gap: 12px;
+    }
+
+    details.session-card {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgba(8, 15, 31, 0.74);
+      overflow: hidden;
+    }
+
+    details.session-card[open] {
+      border-color: var(--line-strong);
+      background: rgba(8, 15, 31, 0.9);
+    }
+
+    details.session-card > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 14px;
+    }
+
+    details.session-card > summary::-webkit-details-marker { display: none; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 210px 210px minmax(360px, 1fr) 250px;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .summary-field {
+      position: relative;
+      min-width: 0;
+      padding: 12px 64px 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.08);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .summary-value {
+      min-width: 0;
+      font-weight: 650;
+      white-space: pre-line;
+      word-break: break-word;
+    }
+
+    .summary-sub {
+      margin-top: 6px;
+      color: var(--muted);
+      white-space: pre-line;
+      word-break: break-word;
+    }
+
+    .title-value {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      white-space: normal;
+      line-height: 1.42;
+    }
+
+    .id-value {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      line-height: 1.35;
+      color: #b6f3ff;
+      font-family: "JetBrains Mono", monospace;
+      word-break: break-all;
+    }
+
+    .copy-button {
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.94);
+      color: var(--text);
+      padding: 4px 9px;
+      cursor: pointer;
+    }
+
+    .summary-field .copy-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    .copy-button:hover {
+      border-color: rgba(148, 163, 184, 0.32);
+      background: rgba(30, 41, 59, 0.96);
+    }
+
+    .details-body {
+      padding: 0 18px 18px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 2px;
+    }
+
+    .detail-card {
+      min-width: 0;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(15, 23, 42, 0.62);
+    }
+
+    .detail-card h3 {
+      margin: 0 0 10px;
+      font-size: 0.84rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .detail-card pre,
+    .detail-card .value {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.45;
+    }
+
+    .detail-card .value.id {
+      color: #b6f3ff;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .detail-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .panel {
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(15, 23, 42, 0.54);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+      background: rgba(8, 15, 31, 0.38);
+    }
+
+    .panel-head h3 {
+      margin: 0;
+      font-size: 0.96rem;
+    }
+
+    .prompt-list,
+    .child-list {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+    }
+
+    details.prompt-item,
+    details.child-item {
+      border-radius: 16px;
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      background: rgba(8, 15, 31, 0.56);
+      overflow: hidden;
+    }
+
+    details.prompt-item > summary,
+    details.child-item > summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 12px 14px;
+    }
+
+    details.prompt-item > summary::-webkit-details-marker,
+    details.child-item > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .prompt-body,
+    .child-body {
+      padding: 0 14px 14px;
+    }
+
+    .prompt-text {
+      margin: 0;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(2, 6, 23, 0.72);
+      color: #dbeafe;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.92rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.5;
+    }
+
+    .empty,
+    .loading {
+      padding: 18px;
+      color: var(--muted);
+    }
+
+    .loading::before {
+      content: "Loading... ";
+      color: var(--green);
+    }
+
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(34, 197, 94, 0.24);
+      background: rgba(6, 78, 59, 0.92);
+      color: #ecfdf5;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      pointer-events: none;
+    }
+
+    .toast.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 980px) {
+      .page { padding: 16px 12px 52px; }
+      .hero { padding: 18px; }
+      .hero-meta { width: 100%; }
+      .detail-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="hero-head">
+        <div>
+          <h1>AI Session Dashboard</h1>
+          <p>Load the newest Claude and OpenCode sessions first, expand any row for prompts and child sessions, and copy any field with its button while keeping the text draggable.</p>
+        </div>
+        <div class="hero-meta" id="hero-meta"></div>
+      </div>
+      <div class="hero-foot">
+        <span class="pill">Newest 10 sessions load first</span>
+        <span class="pill">More sessions stream in behind them</span>
+        <span class="pill">Expand a row to fetch full prompts lazily</span>
+      </div>
+    </section>
+    <div class="sections" id="sections"></div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script>
+    const state = {
+      sources: {
+        claude: { label: "Claude", items: [], total: null, loaded: 0, done: false, errorText: "", listEl: null, countEl: null, loadingEl: null },
+        opencode: { label: "OpenCode", items: [], total: null, loaded: 0, done: false, errorText: "", listEl: null, countEl: null, loadingEl: null },
+      },
+    };
+
+    const sectionsEl = document.getElementById("sections");
+    const heroMetaEl = document.getElementById("hero-meta");
+    const toastEl = document.getElementById("toast");
+    let toastTimer = null;
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add("visible");
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove("visible"), 1600);
+    }
+
+    async function copyText(value, label) {
+      const text = String(value ?? "");
+      if (!text) return;
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+          showToast(`Copied ${label}`);
+          return;
+        }
+      } catch (error) {
+      }
+
+      const area = document.createElement("textarea");
+      area.value = text;
+      area.readOnly = true;
+      area.style.position = "fixed";
+      area.style.opacity = "0";
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+      const copied = document.execCommand("copy");
+      document.body.removeChild(area);
+      showToast(copied ? `Copied ${label}` : `Failed to copy ${label}`);
+    }
+
+    async function fetchJson(url) {
+      const response = await fetch(url, { cache: "no-store" });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status} for ${url}`);
+      }
+      return response.json();
+    }
+
+    function ensureSection(source) {
+      const info = state.sources[source];
+      if (info.listEl) return info;
+
+      const section = document.createElement("section");
+      section.className = `section ${source}`;
+      section.innerHTML = `
+        <div class="section-head">
+          <h2>${escapeHtml(info.label)}</h2>
+          <span class="pill" data-count>0 loaded</span>
+        </div>
+        <div class="section-body">
+          <div class="column-header">
+            <div>Date (end/start)</div>
+            <div>Folder</div>
+            <div>Title</div>
+            <div>Session ID</div>
+          </div>
+          <div class="summary-list"></div>
+          <div class="loading">summary batches</div>
+        </div>
+      `;
+      info.listEl = section.querySelector(".summary-list");
+      info.countEl = section.querySelector("[data-count]");
+      info.loadingEl = section.querySelector(".loading");
+      sectionsEl.appendChild(section);
+      return info;
+    }
+
+    function updateHeroMeta() {
+      const claude = state.sources.claude;
+      const opencode = state.sources.opencode;
+      const claudeTotal = claude.total === null ? "..." : claude.total;
+      const opencodeTotal = opencode.total === null ? "..." : opencode.total;
+      heroMetaEl.innerHTML = `
+        <div class="metric">
+          <span class="label">Claude</span>
+          <span class="value">${claude.loaded}/${claudeTotal}</span>
+        </div>
+        <div class="metric">
+          <span class="label">OpenCode</span>
+          <span class="value">${opencode.loaded}/${opencodeTotal}</span>
+        </div>
+      `;
+    }
+
+    function updateSectionState(source) {
+      const info = state.sources[source];
+      if (!info.countEl) return;
+      const totalText = info.total === null ? "..." : info.total;
+      info.countEl.textContent = `${info.loaded}/${totalText} loaded`;
+      if (info.errorText) {
+        info.loadingEl.className = "empty";
+        info.loadingEl.textContent = info.errorText;
+        info.loadingEl.style.display = "block";
+        updateHeroMeta();
+        return;
+      }
+      if (info.done && info.total === 0 && !info.items.length) {
+        info.loadingEl.className = "empty";
+        info.loadingEl.textContent = `No ${info.label} sessions were found locally.`;
+        info.loadingEl.style.display = "block";
+        updateHeroMeta();
+        return;
+      }
+      info.loadingEl.className = "loading";
+      info.loadingEl.textContent = "summary batches";
+      info.loadingEl.style.display = info.done ? "none" : "block";
+      updateHeroMeta();
+    }
+
+    function renderSummaryField(valueHtml, subHtml, copyValue, copyLabel, extraClass = "") {
+      return `
+        <div class="summary-field ${extraClass}">
+          <div class="summary-value ${extraClass.includes("title") ? "title-value" : ""} ${extraClass.includes("id") ? "id-value" : ""}">${valueHtml}</div>
+          <div class="summary-sub">${subHtml}</div>
+          <button class="copy-button" data-copy="${escapeHtml(copyValue)}" data-copy-label="${escapeHtml(copyLabel)}">Copy</button>
+        </div>
+      `;
+    }
+
+    function renderSummaryRow(item) {
+      const dateCopy = `${item.end_text}\n${item.start_text}`;
+      return `
+        <details class="session-card" data-source="${escapeHtml(item.source)}" data-session-id="${escapeHtml(item.session_id)}">
+          <summary>
+            <div class="summary-grid">
+              ${renderSummaryField(escapeHtml(item.end_text), escapeHtml(item.start_text), dateCopy, "dates")}
+              ${renderSummaryField(escapeHtml(item.folder_name), escapeHtml(item.cwd_short || "-"), item.cwd, "folder")}
+              ${renderSummaryField(escapeHtml(item.title), "Expand for prompts and child sessions", item.title, "title", "title")}
+              ${renderSummaryField(escapeHtml(item.session_id), escapeHtml(item.source), item.session_id, "session id", "id")}
+            </div>
+          </summary>
+          <div class="details-body"><div class="loading">session details</div></div>
+        </details>
+      `;
+    }
+
+    function renderPromptItem(prompt, promptKey) {
+      const promptId = `prompt-${promptKey}`;
+      return `
+        <details class="prompt-item">
+          <summary>
+            <div class="summary-value">${escapeHtml(prompt.title || prompt.time_text || "Prompt")}</div>
+            <div class="summary-sub">${escapeHtml(prompt.time_text || "-")}</div>
+          </summary>
+          <div class="prompt-body">
+            <div class="detail-actions">
+              <button class="copy-button static-copy" data-copy-target="${escapeHtml(promptId)}" data-copy-label="prompt">Copy</button>
+            </div>
+            <pre id="${escapeHtml(promptId)}" class="prompt-text">${escapeHtml(prompt.text)}</pre>
+          </div>
+        </details>
+      `;
+    }
+
+    function renderPromptList(prompts, prefix) {
+      return prompts.map((prompt, index) => renderPromptItem(prompt, `${prefix}-${index}`)).join("");
+    }
+
+    function renderChildSummary(child, childKey) {
+      return `
+        <details class="child-item" data-child-key="${escapeHtml(childKey)}">
+          <summary>
+            <div class="summary-value title-value">${escapeHtml(child.title)}</div>
+            <div class="summary-sub">${escapeHtml(child.description || child.model_label || child.kind)}</div>
+          </summary>
+          <div class="child-body"><div class="loading">child details</div></div>
+        </details>
+      `;
+    }
+
+    function renderChildBody(child, childKey) {
+      const detailCards = `
+        <div class="detail-grid">
+          <section class="detail-card">
+            <h3>Title</h3>
+            <div class="value">${escapeHtml(child.title)}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(child.title)}" data-copy-label="child title">Copy</button></div>
+          </section>
+          <section class="detail-card">
+            <h3>Model</h3>
+            <div class="value">${escapeHtml(child.model_label || "-")}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(child.model_label || "")}" data-copy-label="child model">Copy</button></div>
+          </section>
+          <section class="detail-card">
+            <h3>Session ID</h3>
+            <div class="value id">${escapeHtml(child.session_id)}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(child.session_id)}" data-copy-label="child id">Copy</button></div>
+          </section>
+        </div>
+        <div class="detail-grid">
+          <section class="detail-card">
+            <h3>Description</h3>
+            <div class="value">${escapeHtml(child.description || "-")}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(child.description || "")}" data-copy-label="child description">Copy</button></div>
+          </section>
+          <section class="detail-card">
+            <h3>Folder</h3>
+            <div class="value">${escapeHtml(child.cwd_short || "-")}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(child.cwd)}" data-copy-label="child folder">Copy</button></div>
+          </section>
+          <section class="detail-card">
+            <h3>Dates</h3>
+            <div class="value">${escapeHtml(child.end_text)}\n${escapeHtml(child.start_text)}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(`${child.end_text}\n${child.start_text}`)}" data-copy-label="child dates">Copy</button></div>
+          </section>
+        </div>
+      `;
+      const promptPanel = child.prompts.length ? `
+        <section class="panel">
+          <div class="panel-head">
+            <h3>Prompts Used</h3>
+            <span class="pill">${child.prompts.length}</span>
+          </div>
+          <div class="prompt-list">${renderPromptList(child.prompts, `${childKey}-prompt`)}</div>
+        </section>
+      ` : "";
+      return `${detailCards}${promptPanel}`;
+    }
+
+    function wireChildCards(container, detail) {
+      const cards = [...container.querySelectorAll(".child-item")];
+      cards.forEach((card, index) => {
+        const child = detail.children[index];
+        card.addEventListener("toggle", () => {
+          if (!card.open || card.dataset.loaded === "1") {
+            return;
+          }
+          const body = card.querySelector(".child-body");
+          body.innerHTML = renderChildBody(child, `${detail.session_id}-child-${index}`);
+          card.dataset.loaded = "1";
+        });
+      });
+    }
+
+    function renderDetail(detail) {
+      const cards = `
+        <div class="detail-grid">
+          <section class="detail-card">
+            <h3>Title</h3>
+            <div class="value">${escapeHtml(detail.title)}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(detail.title)}" data-copy-label="title">Copy</button></div>
+          </section>
+          <section class="detail-card">
+            <h3>Folder</h3>
+            <div class="value">${escapeHtml(detail.cwd_short || "-")}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(detail.cwd)}" data-copy-label="folder">Copy</button></div>
+          </section>
+          <section class="detail-card">
+            <h3>Session ID</h3>
+            <div class="value id">${escapeHtml(detail.session_id)}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(detail.session_id)}" data-copy-label="session id">Copy</button></div>
+          </section>
+        </div>
+        <div class="detail-grid">
+          <section class="detail-card">
+            <h3>Dates</h3>
+            <div class="value">${escapeHtml(detail.end_text)}\n${escapeHtml(detail.start_text)}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(`${detail.end_text}\n${detail.start_text}`)}" data-copy-label="dates">Copy</button></div>
+          </section>
+          <section class="detail-card">
+            <h3>Model</h3>
+            <div class="value">${escapeHtml(detail.model_label || "-")}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(detail.model_label || "")}" data-copy-label="model">Copy</button></div>
+          </section>
+          <section class="detail-card">
+            <h3>Resume Command</h3>
+            <div class="value">${escapeHtml(detail.resume_command || "-")}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(detail.resume_command || "")}" data-copy-label="resume command">Copy</button></div>
+          </section>
+        </div>
+        <div class="detail-grid">
+          <section class="detail-card">
+            <h3>Source File</h3>
+            <div class="value">${escapeHtml(detail.source_file || "-")}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(detail.source_file || "")}" data-copy-label="source file">Copy</button></div>
+          </section>
+          <section class="detail-card">
+            <h3>Kind</h3>
+            <div class="value">${escapeHtml(detail.kind)}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(detail.kind)}" data-copy-label="kind">Copy</button></div>
+          </section>
+          <section class="detail-card">
+            <h3>Source</h3>
+            <div class="value">${escapeHtml(detail.source)}</div>
+            <div class="detail-actions"><button class="copy-button static-copy" data-copy="${escapeHtml(detail.source)}" data-copy-label="source">Copy</button></div>
+          </section>
+        </div>
+      `;
+
+      const promptPanel = detail.prompts.length ? `
+        <section class="panel">
+          <div class="panel-head">
+            <h3>Prompts Used</h3>
+            <span class="pill">${detail.prompts.length}</span>
+          </div>
+          <div class="prompt-list">${renderPromptList(detail.prompts, `${detail.source}-${detail.session_id}`)}</div>
+        </section>
+      ` : `
+        <section class="panel">
+          <div class="panel-head">
+            <h3>Prompts Used</h3>
+            <span class="pill">0</span>
+          </div>
+          <div class="empty">No prompt text was captured for this session.</div>
+        </section>
+      `;
+
+      const childPanel = detail.children.length ? `
+        <section class="panel">
+          <div class="panel-head">
+            <h3>Child Sessions</h3>
+            <span class="pill">${detail.children.length}</span>
+          </div>
+          <div class="child-list">${detail.children.map((child, index) => renderChildSummary(child, `${detail.session_id}-${index}`)).join("")}</div>
+        </section>
+      ` : "";
+
+      return `${cards}<div class="stack">${promptPanel}${childPanel}</div>`;
+    }
+
+    async function loadDetail(card) {
+      if (card.dataset.loading === "1") return;
+      const loadedAt = Number(card.dataset.loadedAt || "0");
+      if (card.dataset.loaded === "1" && Date.now() - loadedAt < 5000) return;
+      card.dataset.loading = "1";
+      const body = card.querySelector(".details-body");
+      const source = card.dataset.source;
+      const sessionId = card.dataset.sessionId;
+      try {
+        const payload = await fetchJson(`/api/detail?source=${encodeURIComponent(source)}&session_id=${encodeURIComponent(sessionId)}`);
+        body.innerHTML = renderDetail(payload.item);
+        wireChildCards(body, payload.item);
+        card.dataset.loaded = "1";
+        card.dataset.loadedAt = String(Date.now());
+      } catch (error) {
+        body.innerHTML = `<div class="empty">Failed to load details: ${escapeHtml(error.message)}</div>`;
+      } finally {
+        card.dataset.loading = "0";
+      }
+    }
+
+    function appendSummaries(source, items) {
+      const info = ensureSection(source);
+      for (const item of items) {
+        info.items.push(item);
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = renderSummaryRow(item);
+        const card = wrapper.firstElementChild;
+        card.addEventListener("toggle", () => {
+          if (card.open) {
+            loadDetail(card);
+          }
+        });
+        info.listEl.appendChild(card);
+      }
+      info.loaded = info.items.length;
+      updateSectionState(source);
+    }
+
+    async function loadSummaryBatch(source, offset, limit) {
+      const payload = await fetchJson(`/api/summary?source=${encodeURIComponent(source)}&offset=${offset}&limit=${limit}`);
+      const info = ensureSection(source);
+      info.total = payload.total;
+      appendSummaries(source, payload.items);
+      info.done = info.loaded >= info.total;
+      updateSectionState(source);
+      return payload.items.length;
+    }
+
+    async function loadSource(source) {
+      const firstBatch = 10;
+      const backgroundBatch = 30;
+      try {
+        await loadSummaryBatch(source, 0, firstBatch);
+        let offset = state.sources[source].loaded;
+        while (offset < state.sources[source].total) {
+          const loaded = await loadSummaryBatch(source, offset, backgroundBatch);
+          if (!loaded) break;
+          offset += loaded;
+        }
+      } catch (error) {
+        const info = ensureSection(source);
+        info.errorText = `Failed to load ${info.label}: ${error.message}`;
+      } finally {
+        state.sources[source].done = true;
+        updateSectionState(source);
+      }
+    }
+
+    document.addEventListener("click", async (event) => {
+      const button = event.target.closest("[data-copy]");
+      if (button) {
+        event.preventDefault();
+        event.stopPropagation();
+        const value = button.getAttribute("data-copy") || "";
+        const label = button.getAttribute("data-copy-label") || "value";
+        await copyText(value, label);
+        return;
+      }
+      const targetButton = event.target.closest("[data-copy-target]");
+      if (!targetButton) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const targetId = targetButton.getAttribute("data-copy-target") || "";
+      const target = document.getElementById(targetId);
+      const label = targetButton.getAttribute("data-copy-label") || "value";
+      if (!target) {
+        showToast(`Failed to copy ${label}`);
+        return;
+      }
+      await copyText(target.textContent || "", label);
+    });
+
+    updateHeroMeta();
+    loadSource("claude");
+    loadSource("opencode");
+  </script>
+</body>
+</html>
+"""
+
+
+def build_handler(store: DashboardStore):
+    """ Return the request handler bound to *store*. """
+    # Close over the shared store in a local handler class
+    class DashboardHandler(BaseHTTPRequestHandler):
+        """ Serve the AI dashboard page and JSON endpoints. """
+
+        def log_message(self, format_str: str, *args) -> None:  # noqa: A003
+            """ Silence per-request logging. """
+            _ = format_str, args
+
+        def do_GET(self) -> None:  # noqa: N802
+            """ Serve GET requests for HTML and JSON resources. """
+            # Route the request by path
+            parsed = urlparse(self.path)
+            if parsed.path == "/":
+                self._send_html(build_web_html())
+                return
+            if parsed.path == "/api/summary":
+                self._serve_summary(parsed.query)
+                return
+            if parsed.path == "/api/detail":
+                self._serve_detail(parsed.query)
+                return
+            self.send_error(404, "Not found")
+
+        def _serve_summary(self, query_string: str) -> None:
+            """ Serve one summary page. """
+            try:
+                query = parse_qs(query_string)
+                source = query.get("source", [""])[0]
+                offset = int(query.get("offset", ["0"])[0] or 0)
+                limit = int(query.get("limit", ["10"])[0] or 10)
+                payload = store.get_summary_page(source=source, offset=offset, limit=limit)
+            except ValueError as exc:
+                self._send_json({"error": str(exc)}, status=400)
+                return
+            except Exception as exc:  # pylint: disable=broad-except
+                self._send_json({"error": str(exc)}, status=500)
+                return
+            self._send_json(payload)
+
+        def _serve_detail(self, query_string: str) -> None:
+            """ Serve one lazily-loaded session detail. """
+            try:
+                query = parse_qs(query_string)
+                source = query.get("source", [""])[0]
+                session_id = query.get("session_id", [""])[0]
+                payload = {"item": store.get_detail(source=source, session_id=session_id).to_dict()}
+            except ValueError as exc:
+                self._send_json({"error": str(exc)}, status=400)
+                return
+            except (KeyError, FileNotFoundError) as exc:
+                self._send_json({"error": str(exc)}, status=404)
+                return
+            except Exception as exc:  # pylint: disable=broad-except
+                self._send_json({"error": str(exc)}, status=500)
+                return
+            self._send_json(payload)
+
+        def _send_html(self, document: str) -> None:
+            """ Emit one HTML response. """
+            body = document.encode("utf-8")
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(body)
+
+        def _send_json(self, payload: dict, status: int = 200) -> None:
+            """ Emit one JSON response. """
+            body = json_dumps(payload, ensure_ascii=False).encode("utf-8")
+            self.send_response(status)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(body)
+
+    return DashboardHandler
+
+
+def serve_web_ui(store: DashboardStore, args: Namespace) -> None:
+    """ Start the lazy-loaded localhost web UI. """
+    # Start the local dashboard server
+    handler = build_handler(store)
+    server = ThreadingHTTPServer(("127.0.0.1", args.port), handler)
+
+    # Print the URL and optionally open it in a browser
+    url = f"http://127.0.0.1:{server.server_port}/"
+    print(url)
+    if not args.no_open:
+        open_browser_url(url)
+
+    # Keep serving until the user stops the command
+    try:
+        server.serve_forever(poll_interval=0.2)
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()
+
+
+def ai_dashboard_main() -> None:
+    """ Dispatch the requested ai-dashboard UI. """
+    # Parse arguments and choose how many root sessions to load
+    args = parse_argument()
+
+    # A dir filter must scan every session; a plain list respects --limit
+    store_limit = 0 if (args.ui == "txt" and args.dir) else args.limit
+    store = DashboardStore(max_root_sessions=store_limit)
+
+    # A single-id lookup starts cheap and only widens to a full parse on a miss
+    if args.ui == "txt" and args.session and store_limit != 0:
+        sources = sources_for_arg(args.source)
+        if find_summary_source(store, args.session, sources) is None:
+            store = DashboardStore(max_root_sessions=0)
+
+    # Dispatch the selected UI
+    if args.ui == "txt":
+        render_txt_ui(store, args)
+        return
+    if args.ui == "term":
+        render_term_ui(store)
+        return
+    serve_web_ui(store=store, args=args)
+
+
+if __name__ == "__main__":
+    ai_dashboard_main()

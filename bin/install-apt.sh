@@ -16,6 +16,18 @@ wget
 fzf
 ripgrep  # faster find
 
+# --- Auditoria dotfiles: paquetes que la config REALMENTE usa y faltaban aca ---
+# (el loop de abajo solo instala este array 'android', no 'pg')
+bc                # faltaba: tmux.conf compara version con bc (linea 106)
+xclip             # faltaba: tmux.conf paste C-p (175) y alias 'clip'
+universal-ctags   # faltaba: navegacion de tags en vim (binario: ctags)
+perl              # faltaba: alias git qs/qp/qd/qk en gitconfig usan perl
+nodejs            # faltaba: coc.nvim (vimrc) necesita node
+npm               # faltaba: coc.nvim / diff-so-fancy (npm -g)
+bash-completion   # faltaba: bashrc.sh sourcea /etc/bash_completion
+bat               # faltaba: bin/fzf_preview usa bat (en ubuntu el binario es batcat)
+fd-find           # faltaba: alias fd=fdfind en bash_aliases.sh
+
 python3
 python3-pip
 
