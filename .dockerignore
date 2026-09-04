@@ -1,0 +1,12 @@
+# Usado por test/ubuntu.dockerfile (contexto de build = ~/.vim).
+# CRITICO: .git tiene un remote con token -> jamas debe entrar a la imagen.
+.git
+.gitattributes
+.github
+undo/
+# plugged/ es pesado (~330M, con .git por plugin); el vimrc ya protege
+# `colorscheme gruvbox` con try/catch E185, asi que no hace falta en el test.
+plugged/
+.netrwhist
+**/.mypy_cache
+dotfile/opencode/skills/rat-c2-tmux/
