@@ -1,31 +1,36 @@
-[MESSAGES CONTROL]
-disable=broad-exception-caught
-#invalid-name,
-#multiple-statements,
-#too-many-instance-attributes,
-#too-few-public-methods,
-##
-#import-error,
-#bare-except,
-#too-many-ancestors,
+# pylint configuration, TOML flavour.
 #
-## except Exception as e:
-#broad-except,
+# A .toml file must use TOML syntax: tables are [tool.pylint.<section>] and
+# multi-valued options are arrays. The old INI form ([MESSAGES CONTROL] with
+# disable=a,b) makes pylint abort config parsing with F0011 and silently fall
+# back to its own defaults, so every option here is ignored -- including
+# max-line-length, which is why 120-char lines were still flagged at 100.
 #
-#redefined-outer-name,
-#useless-return,
-#misplaced-comparison-constant,
-#
-## When there is a TODO
-#fixme,
-#
-#non-ascii-name
-        
-#indent-string='  '
-#        missing-function-docstring,
-#        missing-module-docstring,
-#        wrong-import-position,
-#        import-outside-toplevel,
+# Section names with a space must be quoted: "messages control".
+
+[tool.pylint."messages control"]
+disable = [
+  "broad-exception-caught",
+
+  # Kept as a record of what has been switched off in the past. Uncomment to
+  # re-enable the exemption; each entry must stay a quoted array element.
+  #"invalid-name",
+  #"multiple-statements",
+  #"too-many-instance-attributes",
+  #"too-few-public-methods",
+  #"import-error",
+  #"bare-except",
+  #"too-many-ancestors",
+  #"broad-except",              # except Exception as e:
+  #"redefined-outer-name",
+  #"useless-return",
+  #"non-ascii-name",
+  #"fixme",                     # when there is a TODO
+  #"missing-function-docstring",
+  #"missing-module-docstring",
+  #"wrong-import-position",
+  #"import-outside-toplevel",
+]
 
 [tool.pylint.format]
 max-line-length = 120
